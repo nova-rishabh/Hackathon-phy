@@ -128,7 +128,7 @@ def guard(text: str, surface: str = "claim", lang: str = "en", template: str | N
     return fb, GuardResult(passed=True, blocked_terms=terms, rewritten=rewritten)
 
 
-def check(text: str, allow_person: bool = False) -> GuardResult:
+def check(text: str, allow_person: bool = False, surface: str | None = None) -> GuardResult:
     """Pure check, no logging, no rewrite."""
     terms = _structural(text) or find_terms(text, allow_person=allow_person)
     return GuardResult(passed=not terms, blocked_terms=terms)

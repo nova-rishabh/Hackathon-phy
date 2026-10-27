@@ -313,7 +313,8 @@ def phrase_with_llm(text: str, lang: str) -> tuple[str, GuardResult]:
     Expected (A1): api.llm.phrase(text, lang=, surface=) -> str; api.guard.check(text, surface=) -> GuardResult.
     """
     ok = GuardResult(passed=True)
-    if os.environ.get("DEMO_MODE") == "1" or not os.environ.get("ANTHROPIC_API_KEY"):
+    from api import keys
+    if os.environ.get("DEMO_MODE") == "1" or not keys.get("gemini"):
         return text, ok
     try:
         llm = importlib.import_module("api.llm")
@@ -350,12 +351,11 @@ def _review_line(lang: str) -> str:
 
 
 def _transcribe(audio_b64: str) -> str:
-    """Web audio path (S3). Needs SARVAM_API_KEY; returns '' when unavailable."""
-    if not os.environ.get("SARVAM_API_KEY"):
-        return ""
+    """Web audio path (S3). ElevenLabs STT (X-ElevenLabs-Key or ELEVENLABS_API_KEY); '' when unavailable."""
     try:
-        from bot import sarvam
-        return sarvam.stt_any(base64.b64decode(audio_b64)) or ""
+        from api import voice
+        out = voice.stt(base64.b64decode(audio_b64.split(",")[-1]), "audio/webm")
+        return (out or {}).get("text", "")
     except Exception:
         return ""
 

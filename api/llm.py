@@ -1,8 +1,9 @@
-"""One LLM client: Claude (tool use, temperature 0) -> Gemini -> None (caller uses its template).
+"""One LLM client: Gemini (gemini-2.5-flash, temperature 0, JSON out) -> None (caller uses its template).
 
 Every call is cached on disk in cache/llm/<sha256(model+prompt+input)>.json. Under DEMO_MODE=1 only
 the cache is read; a miss returns None so the caller falls back to its template. Without API keys the
-client never touches the network. The LLM never produces numbers that are shown: callers only use it
+client never touches the network. The key comes from the request (X-Gemini-Key, BYOK)
+or GEMINI_API_KEY; see api/keys.py. The LLM never produces numbers that are shown: callers only use it
 to split claims, read images and phrase text.
 """
 from __future__ import annotations
@@ -14,9 +15,11 @@ import os
 from pathlib import Path
 
 from api import constants as C
+from api import keys
 from api.ops import record_llm
 
 ROOT = Path(__file__).resolve().parent.parent
+TIMEOUT_MS = int(float(os.environ.get("GEMINI_TIMEOUT_S", "12")) * 1000)
 
 
 def demo_mode() -> bool:
@@ -57,41 +60,45 @@ def _cache_put(k: str, value: dict):
 
 
 def available() -> bool:
-    return bool(os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("GEMINI_API_KEY"))
+    return bool(keys.get("gemini"))
 
 
-def _claude(model, system, user, tool, image_b64):
-    import anthropic
-    client = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"], timeout=20.0)
-    content = []
-    if image_b64:
-        content.append({"type": "image", "source": {"type": "base64", "media_type": "image/png", "data": image_b64}})
-    content.append({"type": "text", "text": user})
-    msg = client.messages.create(model=model, max_tokens=1024, temperature=0, system=system,
-                                 messages=[{"role": "user", "content": content}],
-                                 tools=[tool], tool_choice={"type": "tool", "name": tool["name"]})
-    out = next((b.input for b in msg.content if getattr(b, "type", "") == "tool_use"), None)
-    return out, msg.usage.input_tokens, msg.usage.output_tokens
+def _mime(raw: bytes) -> str:
+    if raw[:3] == b"\xff\xd8\xff":
+        return "image/jpeg"
+    if raw[:4] == b"RIFF" and raw[8:12] == b"WEBP":
+        return "image/webp"
+    return "image/png"
 
 
 def _gemini(system, user, tool, image_b64):
+    """Gemini (google-genai), JSON out, temperature 0. One attempt, short timeout: the free tier is
+    rate-limited, so a 429 or any error goes straight to the caller's template."""
     from google import genai
     from google.genai import types
-    client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
-    parts = [types.Part.from_text(text=user + "\nReturn JSON matching this schema: "
+    client = genai.Client(api_key=keys.get("gemini"),
+                          http_options=types.HttpOptions(timeout=TIMEOUT_MS,
+                                                         retry_options=types.HttpRetryOptions(attempts=1)))
+    parts = [types.Part.from_text(text=user + "\nReturn only JSON matching this schema: "
                                   + json.dumps(tool["input_schema"], ensure_ascii=False))]
     if image_b64:
-        parts.append(types.Part.from_bytes(data=base64.b64decode(image_b64), mime_type="image/png"))
+        raw = base64.b64decode(image_b64)
+        parts.append(types.Part.from_bytes(data=raw, mime_type=_mime(raw)))
     resp = client.models.generate_content(
         model=C.MODEL_GEMINI, contents=[types.Content(role="user", parts=parts)],
         config=types.GenerateContentConfig(system_instruction=system, temperature=0,
                                            response_mime_type="application/json"))
     um = resp.usage_metadata
-    return json.loads(resp.text), getattr(um, "prompt_token_count", 0) or 0, getattr(um, "candidates_token_count", 0) or 0
+    out = json.loads(resp.text or "null")
+    if isinstance(out, list) and out and isinstance(out[0], dict):
+        out = out[0]
+    return (out if isinstance(out, dict) else None,
+            getattr(um, "prompt_token_count", 0) or 0, getattr(um, "candidates_token_count", 0) or 0)
 
 
 def call(model: str, system: str, user: str, tool: dict, image_b64: str | None = None) -> dict | None:
     """Return the tool input dict, or None (caller falls back to its template/rule path)."""
+    model = C.MODEL_GEMINI  # Gemini is the only live model
     payload = {"user": user, "tool": tool, "img": hashlib.sha256((image_b64 or "").encode()).hexdigest()}
     k = _key(model, system, payload)
     hit = _cache_get(k)
@@ -100,22 +107,14 @@ def call(model: str, system: str, user: str, tool: dict, image_b64: str | None =
         return hit.get("output")
     if demo_mode() or not available():
         return None
-    out, tin, tout, used = None, 0, 0, model
-    if os.environ.get("ANTHROPIC_API_KEY"):
-        try:
-            out, tin, tout = _claude(model, system, user, tool, image_b64)
-        except Exception:  # network, quota, bad key: fall through
-            out = None
-    if out is None and os.environ.get("GEMINI_API_KEY"):
-        try:
-            out, tin, tout = _gemini(system, user, tool, image_b64)
-            used = C.MODEL_GEMINI
-        except Exception:
-            out = None
+    try:
+        out, tin, tout = _gemini(system, user, tool, image_b64)
+    except Exception:  # 429 / quota, network, bad key, bad JSON: template fallback
+        return None
     if out is None:
         return None
-    record_llm(used, tin, tout, False)
-    _cache_put(k, {"model": used, "tokens_in": tin, "tokens_out": tout, "output": out})
+    record_llm(model, tin, tout, False)
+    _cache_put(k, {"model": model, "tokens_in": tin, "tokens_out": tout, "output": out})
     return out
 
 
@@ -126,7 +125,7 @@ PHRASE_TOOL = {
 }
 
 
-def phrase(text: str, lang: str, instruction: str = "Rewrite this in plain, calm language.") -> str | None:
+def phrase(text: str, lang: str, instruction: str = "Rewrite this in plain, calm language.", **_kw) -> str | None:
     sys_p = (f"{instruction} Language: {lang}. Keep every number exactly. Never name parties, people, "
              "institutions, religions, castes or communities. Never use words implying fraud or intent.")
     out = call(C.MODEL_PHRASE, sys_p, text, PHRASE_TOOL)

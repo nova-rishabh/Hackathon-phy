@@ -175,9 +175,16 @@ PRICE_INR_PER_MTOK = {  # ASSUMPTION: USD list price per 1M tokens x USD_INR
     "gemini-2.5-flash": {"in": 0.30 * USD_INR, "out": 2.5 * USD_INR},
     "template": {"in": 0.0, "out": 0.0},
 }
-MODEL_SPLIT = "claude-sonnet-5-5"
-MODEL_PHRASE = "claude-haiku-5-5"
-MODEL_GEMINI = "gemini-2.5-flash"
+MODEL_GEMINI = "gemini-2.5-flash"  # the only live model (free tier)
+MODEL_SPLIT = MODEL_GEMINI
+MODEL_PHRASE = MODEL_GEMINI
+
+# ------------------------------------------------------------------ voice (ElevenLabs)
+ELEVEN_TTS_MODEL = "eleven_multilingual_v2"
+ELEVEN_STT_MODEL = "scribe_v1"
+ELEVEN_VOICE_ID = "JBFqnCBsd6RMkjVDRZzb"  # stock multilingual voice
+ELEVEN_LANG = {"hi": "hin", "en": "eng", "pa": "pan"}
+TTS_MAX_CHARS = 1400
 
 # ------------------------------------------------------------------ Claim Court (A1)
 CLAIM_TOLERANCE = 0.15
