@@ -2,6 +2,7 @@
 // calls to the API (long-poll /wa/outbox, /wa/heartbeat, /wa/inbound). No phone numbers in logs.
 import { fileURLToPath } from "node:url";
 import path from "node:path";
+import fs from "node:fs";
 import dotenv from "dotenv";
 import pino from "pino";
 import qrcodeTerminal from "qrcode-terminal";
@@ -21,6 +22,7 @@ const quiet = pino({ level: "silent" });
 let sock = null;
 let state = "connecting";
 let myNumber = null;
+let pairing = false;
 
 async function call(method, route, body, ms = 30000) {
   const ctl = new AbortController();
@@ -84,9 +86,20 @@ async function start() {
   sock.ev.on("connection.update", async (u) => {
     if (u.qr) {
       state = "qr";
-      qrcodeTerminal.generate(u.qr, { small: true });
-      await QRCode.toFile(path.join(HERE, "qr.png"), u.qr, { margin: 2, width: 360 });
-      log("scan the QR (also saved to wa/qr.png): WhatsApp > Linked devices > Link a device");
+      // WA_PAIR_NUMBER (digits with country code) links by an 8-character code instead of the fast-rotating QR.
+      const pairNo = (process.env.WA_PAIR_NUMBER || "").replace(/\D/g, "");
+      if (pairNo && !auth.creds.registered && !pairing) {
+        pairing = true;
+        try {
+          const code = await sock.requestPairingCode(pairNo);
+          fs.writeFileSync(path.join(HERE, "pair-code.txt"), code + "\n");
+          log("pairing code ready in wa/pair-code.txt: WhatsApp > Linked devices > Link a device > Link with phone number instead");
+        } catch (e) { pairing = false; log("pairing code failed:", e.message); }
+      } else if (!pairNo) {
+        qrcodeTerminal.generate(u.qr, { small: true });
+        await QRCode.toFile(path.join(HERE, "qr.png"), u.qr, { margin: 2, width: 360 });
+        log("scan the QR (also saved to wa/qr.png): WhatsApp > Linked devices > Link a device");
+      }
       heartbeat();
     }
     if (u.connection === "open") {
