@@ -115,10 +115,24 @@ export default function StoryPanel({ base }: { base: StoryResult }) {
               {!offline && <> {res.residual.significant ? "Above" : "Within"} background, p = <span className="mono">{p < 0.001 ? "<0.001" : p.toFixed(3)}</span>.</>}
             </p>
             <div className="mt-4"><Chip kind={res.outcome} /></div>
+            <p className="text-[13px] leading-5 text-ink-2 mt-3">{meaning(res)}</p>
             {offline && <p className="mono text-[11px] text-ink-3 mt-3">offline estimate · api not reachable</p>}
           </div>
         </div>
       </div>
     </section>
   );
+}
+
+/** What the outcome chip means for this booth, in its own numbers. */
+export function meaning(r: { outcome: string; stories: { code: string; label: string; share: number }[] }) {
+  const top = r.stories.filter((s) => s.code !== "unexplained").sort((a, b) => b.share - a.share)[0];
+  const lead = top && top.share > 0 ? `${Math.round(top.share * 100)}% match “${top.label.toLowerCase()}”` : "";
+  if (r.outcome === "likely_benign")
+    return `The removals are high, but a record explains them: ${lead}. What is left is no more than a normal booth loses. A person should still confirm.`;
+  if (r.outcome === "mixed")
+    return `No single record explains most removals, but together they do (${lead} is the largest). What is left is no more than a normal booth loses.`;
+  if (r.outcome === "unusual")
+    return "After every available record is checked, more names are left unexplained than a normal booth loses. A person should look at this booth.";
+  return "Removals here are in line with a normal booth.";
 }

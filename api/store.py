@@ -31,7 +31,8 @@ def _read_json(p: Path):
 def _card(f: Flag) -> Card | None:
     """Template flag card (numbers from the engine; phrasing fixed)."""
     m, b = f.metrics, f.scope.booth_id
-    conf = f"Confidence {round(f.confidence * 100)}% ({f.confidence_band}, from {f.confidence_n} training cases). Needs human review."
+    fit = f"fit on {f.confidence_n} training cases" if f.confidence_n else "rule of thumb, not yet fit on training cases"
+    conf = f"{round(f.confidence * 100)}% chance this is a real problem ({f.confidence_band}, {fit}). Needs human review."
     if f.type == "deletion_spike":
         st = f.stories
         innocent = []

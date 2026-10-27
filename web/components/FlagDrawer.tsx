@@ -4,7 +4,7 @@ import type { Flag } from "@/lib/types";
 import { fmt, boothNo } from "@/lib/api";
 import Chip from "./Chip";
 import Glyph from "./Glyph";
-import { StoryBar } from "./StoryPanel";
+import { StoryBar, meaning } from "./StoryPanel";
 
 const TYPE_LABEL: Record<string, string> = {
   deletion_spike: "Deletion spike", addition_spike: "Addition spike", duplicate_cluster: "Duplicate cluster",
@@ -28,7 +28,8 @@ export default function FlagDrawer({ flag, onClose }: { flag: Flag | null; onClo
   const c = flag.card;
   const rows: [string, string][] = c ? [
     ["what we found.", c.found],
-    ["why it's unusual.", c.why_unusual],
+    ...(flag.stories ? [["what this means.", meaning(flag.stories)] as [string, string]] : []),
+    ["why it was flagged.", c.why_unusual],
     ["innocent explanations checked.", c.innocent_explanations.join(" · ")],
     ["how sure.", c.confidence_text],
   ] : [];
