@@ -4,6 +4,8 @@ FROM python:3.12-slim
 ENV PYTHONUTF8=1 PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PIP_NO_CACHE_DIR=1
 WORKDIR /app
 
+# ffmpeg turns the spoken reply into an OGG/Opus voice note (a proper voice-note bubble on WhatsApp/Telegram)
+RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg && rm -rf /var/lib/apt/lists/*
 COPY requirements.lock .
 RUN pip install -r requirements.lock
 
@@ -16,9 +18,11 @@ COPY cache/ cache/
 COPY smoke_test.py .
 
 # Build the synthetic demo district at image build time, so a cold start only boots the API.
+# Four training districts (seeds 7-10) for the confidence curves; engine.run finds every artifacts/training*.
 RUN python -m generator --auto-plant 60 --seed 7 --out artifacts && \
+    for s in 8 9 10; do python -m generator --auto-plant 60 --seed $s --out artifacts --name training_$s; done && \
     python -m generator --config generator/demo_config.yaml --key artifacts/answer_key.json --seed 42 --out artifacts && \
-    python -m engine.run --data artifacts --out artifacts --train-data artifacts/training --train-key artifacts/training/answer_key.json && \
+    python -m engine.run --data artifacts --out artifacts && \
     python -m engine.eval --key artifacts/answer_key.json && \
     cp cache/bench.json artifacts/bench.json  # measured on the dev laptop (machine recorded inside), not on the host
 

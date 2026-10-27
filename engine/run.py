@@ -179,14 +179,19 @@ def build_flags(raw: list[dict], cal: Calibrator) -> list[Flag]:
     return sorted(flags, key=lambda f: (f.type, f.scope.booth_id, f.flag_id))
 
 
-def train_calibrator(train_dir, key_path, workers: int = 1) -> Calibrator:
-    """Platt per type on the training district. Flags already judged likely_benign are left out (their confidence
-    is scaled separately), and NO_CALIBRATION types keep the documented heuristic."""
+def train_calibrator(train_dir, key_path, workers: int = 1, samples: dict | None = None) -> Calibrator:
+    """Platt per type on one or more training districts (train_dir/key_path may be comma-separated lists).
+    Flags already judged likely_benign are left out unless their feature encodes it (TRAIN_WITH_BENIGN)."""
     from .eval import load_background, load_key, matches, on_background  # key read only via explicit CLI path
+    samples = {} if samples is None else samples
+    dirs, keys = str(train_dir).split(","), str(key_path).split(",")
+    if len(dirs) > 1:
+        for d_, k_ in zip(dirs, keys):
+            train_calibrator(d_, k_, workers, samples)
+        return Calibrator().fit(samples)
     key = [p for p in load_key(key_path) if not p.is_benign]
     bg = load_background(key_path)
     raw = raw_flags(analyse(train_dir, workers=workers))
-    samples: dict = {}
     for r in raw:
         if r["type"] in NO_CALIBRATION or (r.get("benign") and r["type"] not in TRAIN_WITH_BENIGN):
             continue
@@ -222,8 +227,11 @@ def main():
     ap.add_argument("--bench", action="store_true", help="time every stage and write <out>/bench.json")
     ap.add_argument("--scale", type=int, default=0, help="with --bench: also run a clone of the district x N (20 = ~1M)")
     a = ap.parse_args()
-    if a.train_data is None and (Path(a.data) / "training" / "answer_key.json").exists() and a.train_key is None:
-        a.train_data, a.train_key = str(Path(a.data) / "training"), str(Path(a.data) / "training" / "answer_key.json")
+    if a.train_data is None and a.train_key is None:  # every <data>/training* district with an answer key
+        found = sorted(p for p in Path(a.data).glob("training*") if (p / "answer_key.json").exists())
+        if found:
+            a.train_data = ",".join(str(p) for p in found)
+            a.train_key = ",".join(str(p / "answer_key.json") for p in found)
     if a.bench:
         from .bench import run_bench
         run_bench(a)

@@ -608,11 +608,12 @@ def main():
     ap.add_argument("--key", help="answer key output path (JSON list of Planting)")
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--out", default="artifacts")
-    ap.add_argument("--auto-plant", type=int, default=0, help="random plantings; writes to <out>/training/")
+    ap.add_argument("--auto-plant", type=int, default=0, help="random plantings; writes to <out>/<name>/")
+    ap.add_argument("--name", default="training", help="with --auto-plant: folder name (training, training_8, ...)")
     a = ap.parse_args()
     out = Path(a.out)
     if a.auto_plant:
-        out = out / "training"
+        out = out / a.name
         out.mkdir(parents=True, exist_ok=True)
         run(auto_plantings(a.auto_plant, a.seed), a.seed, out, Path(a.key) if a.key else out / "answer_key.json")
     else:
