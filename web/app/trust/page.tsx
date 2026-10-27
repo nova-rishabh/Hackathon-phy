@@ -1,5 +1,6 @@
 "use client";
 import { useApi, pct } from "@/lib/api";
+import { benchSummary, big } from "@/lib/bench";
 import type { EvalResult, RuleCard, GuardLog } from "@/lib/types";
 import Glyph from "@/components/Glyph";
 import { Display, Eyebrow } from "@/components/Display";
@@ -129,7 +130,11 @@ function benchLine(b: unknown) {
   const o = b as Record<string, number>;
   const voters = o.voters ?? o.n_voters, secs = o.seconds ?? o.runtime_s ?? (o.runtime_ms != null ? o.runtime_ms / 1000 : undefined);
   if (voters != null && secs != null) return `scale run · ${voters.toLocaleString("en-IN")} voters in ${secs.toFixed(1)}s`;
-  return `scale run · ${JSON.stringify(b)}`;
+  const s = benchSummary(b);
+  if (!s) return "scale run not computed yet";
+  return `scale run · ${s.voters.toLocaleString("en-IN")} voters in ${s.secs.toFixed(1)}s on one core` +
+    (s.base ? ` (${s.base.voters.toLocaleString("en-IN")} in ${s.base.secs.toFixed(1)}s)` : "") +
+    ` · duplicate check compares ${big(s.pairs)} pairs, not ${big(s.naive)}`;
 }
 
 function Reliability({ bins }: { bins: EvalResult["reliability"] }) {

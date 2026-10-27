@@ -20,7 +20,7 @@ export const CLAIM_MOCK = {
       verdict: "verified", reason: "Booth 47 has 412 removals, the highest of all 100 booths.", evidence: { series: [], note: "" }, confidence: 0.9 },
     { id: "s2", text: "600 names were removed in Booth 47", tool: "deletion_count", params: { booth_id: "B047" },
       query_shown: "count removed where booth = B047 → 412", claimed_value: 600, computed_value: 412, tolerance: 0.15,
-      verdict: "disputed", reason: "The roll shows 412 removals, 31% below the claimed 600, outside the 15% tolerance.", evidence: { series: [], note: "" }, confidence: 0.86 },
+      verdict: "disputed", reason: "Computed 412 vs claimed 600: 46% off, outside the 15% tolerance.", evidence: { series: [], note: "" }, confidence: 0.86 },
     { id: "s3", text: "All of them are from one community", tool: "unanswerable", params: {},
       query_shown: "no field for community → not answerable", claimed_value: null, computed_value: null, tolerance: 0.15,
       verdict: "unprovable", reason: "The roll has no community field, and RollWatch never infers one.", evidence: { series: [], note: "" }, confidence: 1,

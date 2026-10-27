@@ -111,7 +111,8 @@ button { cursor: pointer; font: inherit; color: inherit; background: none; borde
 .tile--benign { background: var(--color-benign); }
 .tile--mixed .a, .tile--mixed .b { background: var(--color-signal); padding: 1px 2px; border-radius: 3px; color: var(--color-ink); }
 @media (max-width: 640px) { .grid10 { gap: 4px; } .tile { border-radius: 6px; } .tile .b { display: none; } .tile .a { left: 3px; top: 3px; font-size: 10px; } }
-.tile-inline { width: 0.78em; height: 0.78em; border-radius: 0.14em; font: 400 0.16em/1 var(--font-mono); display: inline-flex; align-items: flex-start; justify-content: flex-start; padding: 0.35em; letter-spacing: 0; }
+.tile-inline { width: 0.78em; height: 0.78em; border-radius: 0.14em; display: inline-flex; align-items: flex-start; justify-content: flex-start; padding: 0.06em; letter-spacing: 0; }
+.tile-inline-n { font: 400 0.16em/1 var(--font-mono); }
 
 /* Story bar */
 .sbar { display: flex; height: 28px; border-radius: 6px; overflow: hidden; background: var(--color-surface); }
@@ -138,3 +139,38 @@ button { cursor: pointer; font: inherit; color: inherit; background: none; borde
 .tbl th { font: 400 12px/16px var(--font-mono); color: var(--color-ink-3); text-align: left; padding: 10px 12px; }
 .tbl td { padding: 12px; border-top: 1px solid var(--color-line); font-size: 14px; vertical-align: top; }
 .tbl .r { text-align: right; }
+
+/* ---------- motion (butter-style: slow, calm, purposeful) ---------- */
+:root { --color-brand: #AA875F; } /* the logo's brown: logo and the hero mark only */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 700ms ease, transform 700ms cubic-bezier(.2,.7,.2,1); }
+.reveal.in { opacity: 1; transform: none; }
+
+.words > span { display: inline-block; opacity: 0; transform: translateY(0.4em); animation: wordIn 700ms cubic-bezier(.2,.7,.2,1) forwards; }
+@keyframes wordIn { to { opacity: 1; transform: none; } }
+
+.eyering { max-width: 100%; height: auto; }
+.eyering-spin { transform-origin: 250px 250px; animation: spin 40s linear infinite; }
+.eyering-blink { transform-origin: 250px 250px; animation: blink 6s ease-in-out infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes blink { 0%, 46%, 50%, 100% { transform: scaleY(1); } 48% { transform: scaleY(0.08); } }
+
+.grid10 .tile { opacity: 0; animation: tileIn 500ms cubic-bezier(.2,.7,.2,1) forwards; }
+@keyframes tileIn { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: none; } }
+.tile--unusual.ping::after { content: ""; position: absolute; inset: -4px; border-radius: 13px; border: 2px solid var(--color-signal); animation: ping 2.4s ease-out infinite; }
+@keyframes ping { 0% { opacity: .9; transform: scale(.9); } 80%, 100% { opacity: 0; transform: scale(1.35); } }
+
+.marquee { overflow: hidden; white-space: nowrap; border-block: 1px solid var(--color-line); }
+.marquee-track { display: inline-flex; animation: marquee 45s linear infinite; }
+.marquee-track span { font: 400 13px/44px var(--font-mono); color: var(--color-ink-2); padding-right: 0; }
+@keyframes marquee { to { transform: translateX(-50%); } }
+
+.group-row { transition: background 120ms; }
+.group-row:hover { background: var(--color-page); }
+.caret { display: inline-block; transition: transform 200ms; }
+.caret[data-open="true"] { transform: rotate(90deg); }
+.flaglist { max-height: 560px; overflow-y: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .words > span, .grid10 .tile { opacity: 1; transform: none; animation: none; transition: none; }
+  .eyering-spin, .eyering-blink, .marquee-track, .tile--unusual.ping::after { animation: none; }
+}

@@ -100,7 +100,7 @@ All of it is synthetic: the fictional district **Sampleabad** (10 wards, 100 boo
 
 - **The forward:** *"Booth 47 mein 600 naam kaat diye, sabse zyada, aur sab ek community ke!"* ("600 names cut in Booth 47, the most anywhere, and all from one community!")
   - **Verified:** B047 has the most removals of any booth (`compare_booths`)
-  - **Disputed:** "600 names": the count is 412, 31% off, outside the 15% tolerance (`deletion_count`)
+  - **Disputed:** "600 names": the count is 412, 46% off (error against the computed count), outside the 15% tolerance (`deletion_count`)
   - **Cannot be proven:** "one community", because we never infer community
   - Card confidence 76%.
 - **Citizen:** "meena kumaari booth 47" → मीना कुमारी, not in the new list, likely reason shifted, next steps, the deadline, the official portal, 1950.

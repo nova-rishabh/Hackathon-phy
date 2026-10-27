@@ -16,7 +16,7 @@ export function Obj({ children }: { children: ReactNode }) {
 
 const FILL: Record<string, string> = { unusual: "tile--unusual", likely_benign: "tile--benign", mixed: "hatch", normal: "" };
 export function BoothTile({ booth, outcome = "unusual" }: { booth: string; outcome?: string }) {
-  return <span className={`tile tile-inline ${FILL[outcome] ?? ""}`} style={{ border: outcome === "normal" ? "1px solid var(--color-line)" : 0 }}>{boothNo(booth)}</span>;
+  return <span className={`tile tile-inline ${FILL[outcome] ?? ""}`} style={{ border: outcome === "normal" ? "1px solid var(--color-line)" : 0 }}><span className="tile-inline-n">{boothNo(booth)}</span></span>;
 }
 
 export function Eyebrow({ children, className = "" }: { children: ReactNode; className?: string }) {

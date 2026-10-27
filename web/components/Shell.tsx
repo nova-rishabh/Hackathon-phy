@@ -18,7 +18,10 @@ export default function Shell({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen">
       <div className="sticky top-0 z-20 px-4 pt-3 bg-page">
         <header className="mx-auto max-w-[1240px] bg-panel rounded-[12px] h-14 px-2 sm:px-3 flex items-center justify-between">
-          <Link href="/" className="px-2 text-[20px] tracking-[-0.04em]">rollwatch</Link>
+          <Link href="/" className="px-2 flex items-center" aria-label="RollWatch home">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo-word.png" alt="RollWatch" className="h-12 w-auto -my-1" />
+          </Link>
           <nav aria-label="Main" className="hidden sm:flex items-center gap-1">
             {TABS.map(([h, l]) => tab(h, l))}
           </nav>
