@@ -170,9 +170,11 @@ list ka ki ke kya hain main hun
 # ASSUMPTION: per-token prices in INR, for the ops strip only. Update from the provider's price page.
 USD_INR = 84.0  # ASSUMPTION
 
-# National scale projection (Trust page). Electorate as reported by the Election Commission, 2025.
-ELECTORS_INDIA = 991_000_000
-ELECTORS_SOURCE = "ECI, 2025: 99.1 crore electors"
+# National scale projection (Trust page). Per-state electors: ECI's official Lok Sabha 2024 report 9 (api/data);
+# the national total is their sum, 97.8 crore (ECI reported 99.1 crore by 2025).
+ELECTORS_FILE = "api/data/electors_2024_states.csv"
+ELECTORS_SOURCE = "ECI Lok Sabha 2024, report 9 (state-wise electors); 99.1 crore by 2025"
+STATE_AUDIT_CORES = 16  # one ordinary server
 # ASSUMPTION for request sizing: share of electors who check once during a revision window, its length, peak/average.
 SCALE_SHARE_CHECKING, SCALE_WINDOW_DAYS, SCALE_PEAK_FACTOR = 0.10, 30, 5
 PRICE_INR_PER_MTOK = {  # ASSUMPTION: USD list price per 1M tokens x USD_INR

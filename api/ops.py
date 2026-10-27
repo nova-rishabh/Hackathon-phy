@@ -87,6 +87,16 @@ def _norm_route(r: str) -> str:
     return r
 
 
+def _states() -> dict[str, int]:
+    """ECI's official state-wise elector totals (Lok Sabha 2024); comment lines start with #."""
+    p = ROOT / C.ELECTORS_FILE
+    try:
+        rows = [ln.split(",") for ln in p.read_text(encoding="utf-8").splitlines() if ln and not ln.startswith("#")][1:]
+        return {r[0]: int(r[1]) for r in rows}
+    except (OSError, ValueError, IndexError):
+        return {}
+
+
 def _projection(bench: dict | None, loadtest: dict) -> dict | None:
     """All-India numbers computed from what we measured. Audit: per-voter engine cost on one core times the
     electorate, split across independent constituency runs. Requests: checks per second in a revision window,
@@ -94,7 +104,10 @@ def _projection(bench: dict | None, loadtest: dict) -> dict | None:
     per_us = ((bench or {}).get("scale") or {}).get("per_voter_us_serial")
     if not per_us:
         return None
-    n = C.ELECTORS_INDIA
+    states = _states()
+    if not states:
+        return None
+    n = sum(states.values())
     core_h = n * per_us / 1e6 / 3600
     avg = n * C.SCALE_SHARE_CHECKING / (C.SCALE_WINDOW_DAYS * 86400)
     peak = avg * C.SCALE_PEAK_FACTOR
@@ -107,6 +120,10 @@ def _projection(bench: dict | None, loadtest: dict) -> dict | None:
         "checks_per_day": round(avg * 86400), "checks_per_s_avg": round(avg, 1), "checks_per_s_peak": round(peak, 1),
         "citizen_answers_per_s_4proc": rps4,
         "machines_at_peak": math.ceil(peak / rps4) if rps4 else None,
+        "states": [{"state": s, "electors": e, "core_hours": round(e * per_us / 1e6 / 3600, 2),
+                    f"minutes_on_{C.STATE_AUDIT_CORES}_cores": round(e * per_us / 1e6 / 60 / C.STATE_AUDIT_CORES, 1)}
+                   for s, e in sorted(states.items(), key=lambda x: -x[1])],
+        "state_cores": C.STATE_AUDIT_CORES,
         "note": "Audit assumes constituencies run as independent jobs; the machine count uses the laptop's measured "
                 "lower bound and ignores CDN and claim caching, which cut real load further.",
     }
