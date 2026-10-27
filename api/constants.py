@@ -204,3 +204,27 @@ DEADLINE_LINE = {  # VERIFY the claims/objections window at H0 on voters.eci.gov
 }
 
 STOPWORDS |= set("boot age umar umr saal sal years old naam: hello hi namaste".split())
+
+# ------------------------------------------------------------------ rule cards (Trust page, M10)
+# Per rule: (innocent explanations, what resolves it). Rates come from engine/eval.py -> rules.json.
+RULE_CONTEXT = {
+    "deletion_spike": (["Deaths recorded in the death register", "A hostel or institution emptying",
+                        "A boundary redraw moving records out", "Duplicate cleanup"],
+                       "Match the removals against death, hostel and boundary records; then the BLO's field check."),
+    "addition_spike": (["New housing or a new colony in the booth area",
+                        "A registration drive (for example, first-time voters turning 18)",
+                        "Records moved in by a boundary change"],
+                       "Compare with Form 6 receipts and the boundary change log."),
+    "duplicate_cluster": (["Two different people with similar names in one family",
+                           "The same name typed in two scripts"],
+                          "A field check by the BLO; a Form 7 objection if one record is truly extra."),
+    "gender_ratio_swing": (["A hostel or institution for one gender opening or closing",
+                            "A boundary change"],
+                           "Check institution lists and the boundary change log for the booth."),
+    "impossible_age": (["A data entry error in the age or birth year"],
+                       "A Form 8 correction after the voter confirms their age."),
+    "oversized_household": (["A hostel, ashram or other shared residence", "Several flats sharing one house number"],
+                            "A BLO field check of the address."),
+    "relation_conflict": (["A typing error in the relative's name or age", "Two people with the same name in one house"],
+                          "A Form 8 correction after the family confirms the relation."),
+}

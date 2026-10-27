@@ -161,7 +161,21 @@ class Store:
         return res.get(booth)
 
     def rule_cards(self):
-        return [RuleCard.model_validate(x) for x in self.rules] if self.rules else None
+        """rules.json from engine/eval.py ({rules: [...]}) mapped onto RuleCard; context text from constants."""
+        from api.constants import RULE_CONTEXT
+        if not self.rules:
+            return None
+        rows = self.rules["rules"] if isinstance(self.rules, dict) else self.rules
+        out = []
+        for r in rows:
+            if "rule_id" in r:
+                out.append(RuleCard.model_validate(r))
+                continue
+            innocent, resolves = RULE_CONTEXT.get(r["rule"], ([], "A human review of the flagged records."))
+            out.append(RuleCard(rule_id=r["rule"], what=r["definition"],
+                                fires_on_benign_rate=r["false_positive_rate"],
+                                innocent_explanations=innocent, resolves_with=resolves))
+        return out
 
     def eval_result(self):
         return EvalResult.model_validate(self.eval) if self.eval else None
