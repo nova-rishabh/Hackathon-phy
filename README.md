@@ -25,11 +25,14 @@ All numbers below come from the engine, seed 42.
 - **Citizen lookup.** Search a name in any script, even misspelled. You get your status, the likely reason, Form 6 or Form 7, the 1950 helpline, and a reminder that a BLO never asks for an OTP or money. Hindi answers can be read aloud.
 - **WhatsApp (+91 80764 99841) and Telegram.** Say "hi", type a name, forward a claim (the verdict comes back with a share image), or send a Hindi voice note: it is transcribed and answered with a spoken reply in a native Hindi voice, written to be heard, not the card read aloud.
 - **Watch a booth.** Signed-in users get its current state on WhatsApp, and a message whenever a new audit changes it.
+- **Which documents if a notice comes.** For anyone off the list or with changed details, the answer says what a notice would ask for, from their age on the qualifying date (the SIR information sheet BLOs hand out): born before 1 July 1987, one document for yourself; 1987 to 2 December 2004, yourself and one parent; after that, yourself and both parents. Near a cutoff it shows both cases.
 
 ## The three questions
 
 ### 1. How does it scale?
 - **Compute.** Every test is per booth and booths are independent, so a state is just more booths. Measured on one laptop core: **1,020,720 voters in 54 s**. Duplicate search compares **9.9 million candidate pairs instead of 521 billion**. The numbers are in `cache/bench.json`, with the machine recorded.
+- **All of India.** From the Election Commission's own Lok Sabha 2024 state-wise table (97.8 crore electors, `api/data/`), the API computes: **13.5 minutes on 64 cores** for the whole country, and **Uttar Pradesh (15.4 crore) in 8.5 minutes on one 16-core server**.
+- **Requests.** If one in ten voters checks during a 30-day revision, that's about 33 lakh checks a day, or **about 190 a second at peak**. One laptop measured **163 full answers a second on four processes** (a lower bound; `python -m engine.loadtest`, results in `cache/`), so two machines cover the peak. Precomputed answers are served as cached bytes, and WhatsApp state can live in Redis (`REDIS_URL`) so any number of instances can run.
 - **Adoption.** No install. Answers go back as a share card into the chat the rumour came from (web, Telegram, WhatsApp), and each card brings the next user. Bring-your-own-key headers (`X-Gemini-Key`, `X-ElevenLabs-Key`) mean cost never blocks a newsroom or a volunteer group.
 - **Scope.** The method fits any public list that gets "cleaned", like ration cards, pensions or scholarships. Story rules are config (`engine/stories.yaml`), not code.
 
@@ -54,7 +57,7 @@ The core is fixed and measured. Everything that changes over time is a swappable
 
 | What will change | How RollWatch absorbs it |
 |---|---|
-| Data source (PDF rolls today, APIs tomorrow) | An open input schema (`contracts/models.py`, `RollRow`) plus adapters. The engine doesn't change. |
+| Data source (PDF rolls today, APIs tomorrow) | An open input schema (`contracts/models.py`, `RollRow`) plus adapters. `engine/adapters/inrolls.py` already converts parsed roll CSVs (the open in-rolls parser's format); a synthetic round trip gives identical results. The engine doesn't change. |
 | Process and evidence (new forms, new revision drives) | Story rules and evidence sources in `engine/stories.yaml`. Forms and helplines in `api/constants.py`. |
 | AI models | The model only splits claims and phrases text. Every number comes from Python. The model sits behind one client with a template fallback, so swapping it changes wording, never a verdict. We swapped both the model and the voice in an afternoon. |
 | Languages and channels | Per-language templates. Web, Telegram and WhatsApp are thin clients over one bot core (`bot/core.py`). |
