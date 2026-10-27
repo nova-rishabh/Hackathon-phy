@@ -164,3 +164,11 @@ list ka ki ke kya hain main hun
 मेरा मेरी नाम क्या है सूची में लिस्ट वोटर बूथ नंबर का की के हूँ हूं मैं कृपया देखें
 ਮੇਰਾ ਮੇਰੀ ਨਾਂ ਨਾਮ ਕੀ ਹੈ ਸੂਚੀ ਵਿੱਚ ਵਿੱਚ ਬੂਥ ਨੰਬਰ ਦਾ ਦੀ ਦੇ ਮੈਂ ਕਿਰਪਾ
 """.split())
+
+DEADLINE_LINE = {  # VERIFY the claims/objections window at H0 on voters.eci.gov.in
+    "en": "Claims and objections have a deadline. Check the current dates on the portal and act before then.",
+    "hi": "दावे और आपत्तियों की एक अंतिम तिथि होती है। पोर्टल पर मौजूदा तारीखें देखें और उससे पहले कार्रवाई करें।",
+    "pa": "ਦਾਅਵਿਆਂ ਅਤੇ ਇਤਰਾਜ਼ਾਂ ਦੀ ਇੱਕ ਆਖ਼ਰੀ ਤਾਰੀਖ਼ ਹੁੰਦੀ ਹੈ। ਪੋਰਟਲ 'ਤੇ ਮੌਜੂਦਾ ਤਾਰੀਖ਼ਾਂ ਵੇਖੋ ਅਤੇ ਉਸ ਤੋਂ ਪਹਿਲਾਂ ਕਾਰਵਾਈ ਕਰੋ।",
+}
+
+STOPWORDS |= set("boot age umar umr saal sal years old naam: hello hi namaste".split())
