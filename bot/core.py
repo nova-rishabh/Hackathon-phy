@@ -152,8 +152,16 @@ async def handle_claim(api: Api, text: str | None = None, image: bytes | None = 
     return out
 
 
+# A greeting or a "what is this" gets the welcome, not a name search.
+_GREETING = re.compile(r"^\W*(hi+|hello|hey|hii+|namaste|namaskar|helo|start|help|menu|sat\s*sri\s*akal|"
+                       r"नमस्ते|नमस्कार|हाय|हेलो|ਸਤ ਸ੍ਰੀ ਅਕਾਲ|ਹੈਲੋ|/start|/help)\W*$", re.I)
+
+
 async def handle_text(api: Api, text: str) -> list[Reply]:
     text = (text or "").strip()
+    if not text or _GREETING.match(text):
+        lang = lang_of(text) if text else "en"
+        return [Reply("text", with_footer(L["start"][lang], lang))]
     if looks_like_claim(text):
         return await handle_claim(api, text=strip_claim_prefix(text) or text)
     lang = lang_of(text)
