@@ -1,0 +1,168 @@
+{
+ "measured_on": "synthetic district with a planted answer key",
+ "n_voters_v2": 50043,
+ "note": "A flag that matches no planting and no background truth (the generator's ~0.5% realistic cross-script duplicates) is counted as a false positive. Every flag still needs human review.",
+ "rules": [
+  {
+   "rule": "addition_spike",
+   "definition": "additions in a booth exceed the background rate (one-sided binomial, Benjamini-Hochberg q < 0.05)",
+   "flags_total": 1,
+   "flags_raised": 1,
+   "flags_cleared_likely_benign": 0,
+   "cleared_on_planted_decoy": 0,
+   "raised_matching_planting": 1,
+   "raised_not_matching_planting": 0,
+   "false_positive_rate": 0.0,
+   "planted": 1,
+   "planted_found": 1,
+   "recall": 1.0,
+   "raised_per_10k_voters": 0.2
+  },
+  {
+   "rule": "deletion_spike",
+   "definition": "removals in a booth exceed the age-adjusted background rate (one-sided binomial, Benjamini-Hochberg q < 0.05)",
+   "flags_total": 11,
+   "flags_raised": 4,
+   "flags_cleared_likely_benign": 7,
+   "cleared_on_planted_decoy": 3,
+   "raised_matching_planting": 4,
+   "raised_not_matching_planting": 0,
+   "false_positive_rate": 0.0,
+   "planted": 4,
+   "planted_found": 4,
+   "recall": 1.0,
+   "raised_per_10k_voters": 0.8
+  },
+  {
+   "rule": "duplicate_cluster",
+   "definition": "two or more records in one booth with matching name across scripts (score >= 0.88), same gender, age within 1",
+   "flags_total": 249,
+   "flags_raised": 249,
+   "flags_cleared_likely_benign": 0,
+   "cleared_on_planted_decoy": 0,
+   "raised_matching_planting": 235,
+   "raised_not_matching_planting": 14,
+   "false_positive_rate": 0.0562,
+   "planted": 1,
+   "planted_found": 1,
+   "recall": 1.0,
+   "raised_per_10k_voters": 49.76
+  },
+  {
+   "rule": "gender_ratio_swing",
+   "definition": "female share of a booth moves by more than 8 percentage points between versions",
+   "flags_total": 1,
+   "flags_raised": 1,
+   "flags_cleared_likely_benign": 0,
+   "cleared_on_planted_decoy": 0,
+   "raised_matching_planting": 1,
+   "raised_not_matching_planting": 0,
+   "false_positive_rate": 0.0,
+   "planted": 1,
+   "planted_found": 1,
+   "recall": 1.0,
+   "raised_per_10k_voters": 0.2
+  },
+  {
+   "rule": "impossible_age",
+   "definition": "elector age below 18 or above 110",
+   "flags_total": 4,
+   "flags_raised": 4,
+   "flags_cleared_likely_benign": 0,
+   "cleared_on_planted_decoy": 0,
+   "raised_matching_planting": 4,
+   "raised_not_matching_planting": 0,
+   "false_positive_rate": 0.0,
+   "planted": 1,
+   "planted_found": 1,
+   "recall": 1.0,
+   "raised_per_10k_voters": 0.8
+  },
+  {
+   "rule": "oversized_household",
+   "definition": "more than 15 electors at one house number",
+   "flags_total": 5,
+   "flags_raised": 1,
+   "flags_cleared_likely_benign": 4,
+   "cleared_on_planted_decoy": 0,
+   "raised_matching_planting": 1,
+   "raised_not_matching_planting": 0,
+   "false_positive_rate": 0.0,
+   "planted": 1,
+   "planted_found": 1,
+   "recall": 1.0,
+   "raised_per_10k_voters": 0.2
+  },
+  {
+   "rule": "relation_conflict",
+   "definition": "the named relative's own record is in the same house and the pair is impossible (parent not older, or husband/wife gender mismatch)",
+   "flags_total": 23,
+   "flags_raised": 23,
+   "flags_cleared_likely_benign": 0,
+   "cleared_on_planted_decoy": 0,
+   "raised_matching_planting": 17,
+   "raised_not_matching_planting": 6,
+   "false_positive_rate": 0.2609,
+   "planted": 0,
+   "planted_found": 0,
+   "recall": null,
+   "raised_per_10k_voters": 4.6
+  },
+  {
+   "rule": "official_parent_age_gap",
+   "definition": "parent under 15 or over 50 years older than the elector · official check, measured, never raised · trips 84",
+   "flags_total": 84,
+   "flags_raised": 0,
+   "on_planted_anomaly": 6,
+   "false_positive_rate": 0.9286
+  },
+  {
+   "rule": "official_grandparent_age_gap",
+   "definition": "grandparent under 40 years older than the elector · official check, measured, never raised · trips 0",
+   "flags_total": 0,
+   "flags_raised": 0,
+   "on_planted_anomaly": 0,
+   "false_positive_rate": null
+  },
+  {
+   "rule": "official_many_children",
+   "definition": "6 or more electors listed as children of one parent · official check, measured, never raised · trips 183",
+   "flags_total": 183,
+   "flags_raised": 0,
+   "on_planted_anomaly": 1,
+   "false_positive_rate": 0.9945
+  },
+  {
+   "rule": "official_name_changed",
+   "definition": "the elector's own name differs from the previous roll · official check, measured, never raised · trips 185",
+   "flags_total": 185,
+   "flags_raised": 0,
+   "on_planted_anomaly": 0,
+   "false_positive_rate": 1.0
+  },
+  {
+   "rule": "official_relative_name_changed",
+   "definition": "the father's or husband's name differs from the previous roll · official check, measured, never raised · trips 335",
+   "flags_total": 335,
+   "flags_raised": 0,
+   "on_planted_anomaly": 0,
+   "false_positive_rate": 1.0
+  },
+  {
+   "rule": "official_relation_type_changed",
+   "definition": "the relation type differs from the previous roll (e.g. father vs husband) · official check, measured, never raised · trips 193",
+   "flags_total": 193,
+   "flags_raised": 0,
+   "on_planted_anomaly": 0,
+   "false_positive_rate": 1.0
+  },
+  {
+   "rule": "official_age_progression",
+   "definition": "the age did not move by the gap between the two rolls · official check, measured, never raised · trips 38",
+   "flags_total": 38,
+   "flags_raised": 0,
+   "on_planted_anomaly": 0,
+   "false_positive_rate": 1.0
+  }
+ ]
+}

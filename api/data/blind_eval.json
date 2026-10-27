@@ -1,0 +1,89 @@
+{
+ "planted_anomalies": 9,
+ "planted_decoys": 6,
+ "found": 9,
+ "decoys_cleared": 6,
+ "by_type": [
+  {
+   "type": "addition_spike",
+   "tp": 1,
+   "fp": 0,
+   "fn": 0,
+   "precision": 1.0,
+   "recall": 1.0
+  },
+  {
+   "type": "deletion_spike",
+   "tp": 4,
+   "fp": 7,
+   "fn": 0,
+   "precision": 0.36363636363636365,
+   "recall": 1.0
+  },
+  {
+   "type": "duplicate_cluster",
+   "tp": 1,
+   "fp": 14,
+   "fn": 0,
+   "precision": 0.06666666666666667,
+   "recall": 1.0
+  },
+  {
+   "type": "gender_ratio_swing",
+   "tp": 1,
+   "fp": 0,
+   "fn": 0,
+   "precision": 1.0,
+   "recall": 1.0
+  },
+  {
+   "type": "impossible_age",
+   "tp": 1,
+   "fp": 0,
+   "fn": 0,
+   "precision": 1.0,
+   "recall": 1.0
+  },
+  {
+   "type": "oversized_household",
+   "tp": 1,
+   "fp": 4,
+   "fn": 0,
+   "precision": 0.2,
+   "recall": 1.0
+  },
+  {
+   "type": "relation_conflict",
+   "tp": 0,
+   "fp": 6,
+   "fn": 0,
+   "precision": 0.0,
+   "recall": 0.0
+  }
+ ],
+ "benign_fp_rate": 0.0,
+ "reliability": [
+  {
+   "bin_lo": 0.0,
+   "bin_hi": 0.25,
+   "mean_conf": 0.087443789681514,
+   "frac_true": 0.08333333333333333,
+   "n": 12
+  },
+  {
+   "bin_lo": 0.5,
+   "bin_hi": 0.75,
+   "mean_conf": 0.575,
+   "frac_true": 1.0,
+   "n": 2
+  },
+  {
+   "bin_lo": 0.75,
+   "bin_hi": 1.0,
+   "mean_conf": 0.9383978063938418,
+   "frac_true": 0.9285714285714286,
+   "n": 280
+  }
+ ],
+ "misses": []
+}

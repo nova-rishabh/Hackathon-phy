@@ -20,3 +20,4 @@ cards/*.png
 # Generated data (committed at feature freeze via git add -f)
 artifacts/
 wa/pair-code.txt
+artifacts_blind/

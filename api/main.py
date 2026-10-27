@@ -93,6 +93,12 @@ def _frozen(key: str, build) -> Response:
     return Response(_FROZEN[key], media_type="application/json", headers={"Cache-Control": "public, max-age=300"})
 
 
+def _frozen_dict(key: str, build) -> Response:
+    if key not in _FROZEN:
+        _FROZEN[key] = json.dumps(build(), ensure_ascii=False).encode("utf-8")
+    return Response(_FROZEN[key], media_type="application/json", headers={"Cache-Control": "public, max-age=300"})
+
+
 @app.get("/overview", response_model=Overview)
 def overview():
     return _frozen("overview", lambda: store().overview())
@@ -225,6 +231,24 @@ def eval_():
     if store().eval_result() is None:
         raise HTTPException(404, "the blind eval has not run yet")
     return _frozen("eval", lambda: store().eval_result())
+
+
+@app.get("/eval/blind")
+def eval_blind():
+    """The blind test: a separate agent planted anomalies and decoys in a fresh district and kept the key; the
+    engine (calibrated only on public training districts) never saw it. Published scoreboard only."""
+    def build():
+        d = ROOT / "api" / "data"
+        e = json.loads((d / "blind_eval.json").read_text(encoding="utf-8"))
+        r = json.loads((d / "blind_rules.json").read_text(encoding="utf-8"))
+        rules = [{"rule": x["rule"], "raised": x["flags_raised"], "false_positive_rate": x["false_positive_rate"]}
+                 for x in r["rules"] if not x["rule"].startswith("official_")]
+        return {"eval": e, "rules": rules, "planted_by": "a separate AI agent; config and key kept private",
+                "calibration": "four public training districts only"}
+    try:
+        return _frozen_dict("eval_blind", build)
+    except (OSError, ValueError, KeyError):
+        raise HTTPException(404, "the blind test has not been published")
 
 
 @app.get("/rules", response_model=list[RuleCard])
