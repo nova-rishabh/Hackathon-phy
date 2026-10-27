@@ -27,9 +27,14 @@ PS1 lists four modules, and every team will build all four. **The modules are ta
 
 **What we keep thin (generic):** the dashboard chrome, the plain name search and the chat UI. They deliver the edge; they aren't the edge. No map, no KPI wall, no free-chat bot.
 
-## 2a. Judges' feedback from the presentation round: "not scalable" / "can't the government just do this?"
+## 2a. The three questions we always answer: scalable, why not the government, future-proof
 
-The score isn't out yet. This was the main criticism, so **every surface now answers it**: the pitch, the Q&A, the build and one demo beat.
+> **Standing rule (Rishabh, 27 Oct):** every pitch, slide set, Q&A sheet, README, video script and demo run answers all three of these, each with something we can show. The judges' main criticism in the presentation round was "not scalable / can't the government just do this?". The score is pending.
+
+**Short version, for any surface (one line each):**
+- **Scalable:** every check is per booth and linear, so a whole state is just more booths run in parallel (here's 1M voters in N s). It spreads through chat cards with no install, and the same method fits any public list that gets "cleaned".
+- **Why the government can't do this alone:** a self-audit can't settle a rumour about the auditor. They should run it before publishing (`POST /audit`), but the same open engine must also be in independent hands.
+- **Future-proof:** data, model, rules, languages and channels are all swappable parts around a fixed, tested core. New forms, new revision drives, a new LLM or WhatsApp is a config file or an adapter, not a rewrite, and the blind eval re-measures every change.
 
 **1. "Can't the government do it themselves?" Yes, and they should integrate it. But they can't be the only ones running it.**
 - **A self-audit settles nothing.** When the body that revised the list says the rumour about it is false, a sceptical voter has no reason to believe it. Trust needs an **independent** check that anyone can re-run, the way company accounts need an outside auditor.
@@ -48,6 +53,18 @@ The score isn't out yet. This was the main criticism, so **every surface now ans
 | **Scope** | The method isn't voter-specific. Any public list that gets "cleaned" (ration cards, pensions, scholarship beneficiaries) has the same question: *which removals are explained, and which aren't?* Story rules are **config**, so a new register or a new evidence source is a YAML file, not new code. | S12: `engine/stories.yaml`, and the demo adds an evidence source live |
 
 **What we don't claim:** real-roll ingestion. Real rolls are published as per-part PDFs, so PDF ingestion is roadmap. We show the open input schema and the adapter interface instead.
+
+**3. "Is it future-proof?" Yes: the core is fixed and tested, and everything that changes over time is a swappable part.**
+
+| What will change | How RollWatch absorbs it | Proof we build |
+|---|---|---|
+| **Data source.** PDFs today; machine-readable rolls or official APIs tomorrow. | An open input schema (`contracts/` RollRow) plus **adapters**. A new source is one adapter, and the engine never changes. | The schema in the README; CSV and parquet adapters; `POST /audit` |
+| **The law and the process.** New forms, a new revision drive (like this year's SIR), new evidence such as objection logs | Story rules and evidence sources live in `stories.yaml`; forms and helplines live in `constants.py` | S12: add an evidence source live by editing YAML |
+| **AI models** | The LLM only splits claims and phrases text; **every number comes from code**. The model sits behind one client with a fallback chain (Claude → Gemini → template), so swapping it changes wording, never verdicts. | The template fallback runs with the network unplugged (`DEMO_MODE`) |
+| **Languages** | Answers are per-language templates plus the TTS service, so a new language is a template file. Sarvam already covers 10+ Indian languages. | Hindi, English and Punjabi already working |
+| **Channels.** Telegram today; WhatsApp or the official app tomorrow. | One brain (`/citizen/ask`, `/claims/check`) with thin clients. A new channel is a thin client with no logic. | The web chat and the bot share the same API |
+| **Trust over time** | Every change is re-measured by the blind eval and the generator, with published error rates, so improvements are proven, not claimed. Recalibrating on real data is the same pipeline. | The Trust page scoreboard |
+| **Politics** | Neutral by construction: no actor fields in any schema, the mirror test, and no protected-attribute inference. It works the same whoever is in power. | Mirror side by side, the guard log |
 
 ## 3. Who we're building for: the judge
 

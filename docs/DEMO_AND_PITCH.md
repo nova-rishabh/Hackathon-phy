@@ -1,5 +1,6 @@
 # RollWatch: Demo, Pitch and Q&A
 
+> **Every version of the pitch answers the three questions: scalable, why the government can't do this alone, and future-proof** ([START_HERE §2a](START_HERE.md#2a-the-three-questions-we-always-answer-scalable-why-not-the-government-future-proof)).
 > Rules for the demo: everything is precomputed and cached, the network is optional, and a backup recording is ready. One persona carries the story: **Meena, Booth 47, Sampleabad** (fictional). The judge tries the bot **after** the pitch, not during it.
 
 ---
@@ -40,6 +41,7 @@ Hand judges a persona card (*Ravi Verma, Booth 12*, *Harpreet Kaur, Booth 63*, *
 | The LLM splits a claim wrong? | Every sub-claim shows the exact query it ran, so a human sees it. If a claim doesn't map to data we have, the answer is "cannot be proven", never a guess. |
 | Can't the government just do this, or build it in? | They should, and `POST /audit` is built for exactly that: run it on the draft before publishing. But a self-audit can't settle a rumour about the auditor, so the same open engine also has to be in independent hands. |
 | Is it scalable? | Every test is per booth and linear, so a state is just more booths in parallel. Here's 1M voters in N seconds. Adoption scales through cards inside chat apps, with no install. And the story rules are config, so the same method covers ration-card or pension lists. |
+| Is it future-proof? | The core is fixed and tested, and everything that changes is a swappable part. Data comes in through adapters to an open schema, rules and forms are config, the LLM sits behind a fallback chain and never makes a number, and a new language or channel is a template or a thin client. The blind eval re-measures every change. |
 | Who uses it, and who pays? | Data desks and election-watch NGOs during revision windows. It would be an open-source core, hosted for NGOs on civic-tech grants, with the citizen bot free. |
 | What does one check cost, and how fast is it? | Show the ops strip: p50 latency, ₹ per claim check and the cache hit rate, measured from our own request log. |
 | How does it scale to a real state? | The scale run: 1M voters in N seconds. Duplicate blocking scores only a fraction of the n² pairs, and union-find merges them in near-linear time. |
@@ -51,7 +53,7 @@ Hand judges a persona card (*Ravi Verma, Booth 12*, *Harpreet Kaur, Booth 63*, *
 2. **The problem in numbers.** The real SIR aggregates, with sources and neutral wording. "Flags with no published false-positive rate."
 3. **How it works.** One diagram: roll v1/v2 → engine (numbers) → stories + confidence → words (LLM) → guard → web, bot and card.
 4. **Why trust it.** The blind eval, the mirror test, the guard log, and "never infers protected attributes".
-5. **Two ways in, and scale.** Inside: election offices run it before publishing. Outside: newsrooms, observers and citizens. Then the three scale axes with their numbers (compute, adoption, scope), the first 100 users and sustainability.
+5. **Scale · why not the government · future-proof** (the three questions, always on one slide; see START_HERE §2a). **Two ways in, and scale.** Inside: election offices run it before publishing. Outside: newsrooms, observers and citizens. Then the three scale axes with their numbers (compute, adoption, scope), the first 100 users and sustainability.
 6. **Limitations + ask.** Synthetic data, recalibration needed on real data, not affiliated with any official body. Thank-you.
 
 Slides use [design system v2](DESIGN_SYSTEM.md) (butter.video style): a near-white page, grey panels, big regular-weight two-tone Geist headlines and yellow signal chips. No stock photos, no gradient title slides, no script read aloud: each slide carries one headline and one visual, and we talk over it.

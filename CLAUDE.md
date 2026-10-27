@@ -13,6 +13,7 @@ Read before coding: `docs/START_HERE.md` (what, the edge, demo numbers, decision
 `contracts/` + this file: Rishabh only · `generator/`: A1 · `engine/`: A2 · `api/`: A1 (`api/citizen.py`: B2) · `web/`: B1 · `bot/`: B2 · `private/`: partner only, **never read, import or list it**.
 
 ## Non-negotiable rules
+- **Always answer the three questions.** Every pitch, slide, Q&A, README, video script or demo you write must explain **how RollWatch scales**, **why the government can't do this alone**, and **how it's future-proof**, each with something we can show. The source is `docs/START_HERE.md` §2a.
 - **Python computes every number shown. The LLM only phrases text, splits claims and reads images.** It never writes code or invents numbers.
 - **Neutrality:** generated text never contains fraud/rigging words or party, person or institution names. Everything outbound passes through `api/guard.py`. Procedural text comes only from `api/constants.py`.
 - **Every output carries reasoning + confidence + "needs human review".**

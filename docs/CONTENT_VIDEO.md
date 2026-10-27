@@ -13,6 +13,9 @@
 | 0:45–0:52 | BTS: **the blind-eval reveal moment** (the partner opens the answer key, and the reaction). | VO: "My teammate hid the answers. The engine had to find them." |
 | 0:52–1:00 | End card: the RollWatch wordmark (Rishabh's logo) on the near-white page, "Auditable · Explainable · Accessible · On no one's side", Team Nova IDEAS-175. Label: **"Made with AI: voiceover, captions."** | VO: the end line. |
 
+## The three questions (standing rule)
+One line each, in VO or captions around 0:45: **scales** (per booth, 1M voters in N s, spreads through chat cards), **not just a government job** (a self-audit can't settle a rumour about the auditor; offices can run it before publishing), **future-proof** (new data, rules, model, language or channel = a config file or an adapter).
+
 ## AI used (say it in the video, label it on screen)
 - **Voiceover:** our own voices are the default (we dropped AI voice for the pitch). For the video's AI requirement, use AI auto-captions plus Sarvam Hindi TTS for the product's voice reply shown on screen.
 - **Captions:** auto-captions in CapCut or Vrew, then corrected by hand.

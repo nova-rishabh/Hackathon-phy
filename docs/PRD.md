@@ -168,6 +168,12 @@ Acceptance is checked by **one manual run-through of the demo script**, not by a
   - **compute:** per booth, linear, parallel per constituency (S10)
   - **adoption:** chat cards, no install, 3 languages
   - **scope:** config-driven stories reach other public registers such as ration cards and pensions (S12)
+- **Future-proof:**
+  - adapters to an open input schema (new data sources)
+  - config for rules, evidence and forms (new laws and revision drives)
+  - an LLM behind a fallback chain that never makes numbers (new models)
+  - template files per language, and thin clients per channel
+  - the blind eval re-measures every change
 - **Sustainability:** an open-source core, hosted for NGOs on civic-tech grants, with paid integration support for offices.
 - **Never:** scraping, individual-level public outputs, inferring protected attributes.
 
