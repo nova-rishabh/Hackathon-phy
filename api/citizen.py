@@ -13,7 +13,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from rapidfuzz import fuzz, process
 from rapidfuzz.distance import JaroWinkler
 
@@ -23,7 +23,7 @@ if str(ROOT) not in sys.path:
 
 from contracts.models import (CitizenAnswer, CitizenAsk, GuardResult, SearchMatch,  # noqa: E402
                               SearchResult)
-from api import constants as C  # noqa: E402
+from api import constants as C, limits  # noqa: E402
 from api.normalize import has_devanagari, has_gurmukhi, normalize  # noqa: E402
 
 MATCH_MIN = 0.70
@@ -470,5 +470,7 @@ def get_search(q: str, booth_id: str | None = None, age: int | None = None):
 
 
 @router.post("/citizen/ask", response_model=CitizenAnswer)
-def post_ask(req: CitizenAsk):
+def post_ask(req: CitizenAsk, _=Depends(limits.rate("ask"))):
+    limits.cap(req.text, limits.MAX_TEXT, "the question")
+    limits.cap(req.audio_b64, limits.MAX_B64, "the recording")
     return ask(req)

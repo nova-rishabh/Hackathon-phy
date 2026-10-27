@@ -391,3 +391,8 @@ PRICING_PRESETS = {
 }
 PRICING_FREE = ["Name lookup on web, WhatsApp and Telegram", "Claim checks with share image",
                 "Which documents a notice asks for", "Hindi, English and Punjabi, with voice"]
+
+WA_SLOW_TEXT = {
+    "en": "You're sending messages faster than we can answer. Please wait a few minutes and try again.\n"
+          "आप बहुत तेज़ी से संदेश भेज रहे हैं। कृपया कुछ मिनट रुककर फिर कोशिश करें।",
+}

@@ -12,12 +12,12 @@ import os
 from pathlib import Path
 
 import httpx
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import JSONResponse, Response
 from pydantic import BaseModel
 
 from api import constants as C
-from api import guard, keys
+from api import guard, keys, limits
 
 ROOT = Path(__file__).resolve().parent.parent
 TTS_CACHE = ROOT / "cache" / "tts"
@@ -110,7 +110,7 @@ class STTRequest(BaseModel):
 
 
 @router.post("/voice/tts")
-def voice_tts(req: TTSRequest):
+def voice_tts(req: TTSRequest, _=Depends(limits.rate("voice"))):
     lang = req.lang if req.lang in ("hi", "en", "pa") else "hi"
     if not req.text.strip():
         raise HTTPException(422, "text is empty")
@@ -125,7 +125,8 @@ def voice_tts(req: TTSRequest):
 
 
 @router.post("/voice/stt")
-def voice_stt(req: STTRequest):
+def voice_stt(req: STTRequest, _=Depends(limits.rate("voice"))):
+    limits.cap(req.audio_b64, limits.MAX_B64, "the recording")
     if not available():
         return JSONResponse(NO_KEY, status_code=503)
     try:

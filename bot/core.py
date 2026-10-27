@@ -59,7 +59,11 @@ def strip_claim_prefix(text: str) -> str:
 class Api:
     def __init__(self, base: str = API_BASE, client: httpx.AsyncClient | None = None, channel: str = "telegram"):
         self.base, self.channel = base, channel
-        self.client = client or httpx.AsyncClient(base_url=base, timeout=TIMEOUT)
+        # Bots carry many users from one address: identify as the operator so per-IP limits don't lump them together.
+        sec = os.environ.get("WA_WORKER_SECRET")
+        self.client = client or httpx.AsyncClient(base_url=base, timeout=TIMEOUT, headers={"X-WA-Secret": sec} if sec else None)
+        if client is not None and sec:
+            client.headers["X-WA-Secret"] = sec
 
     async def ask(self, text: str, lang: str | None = None) -> dict:
         r = await self.client.post("/citizen/ask", json={"text": text, "lang": lang, "channel": self.channel})

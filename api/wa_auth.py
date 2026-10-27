@@ -69,6 +69,9 @@ def mask(e164: str) -> str:
 
 
 # ------------------------------------------------------------------ shared state (memory, or Redis with REDIS_URL)
+WA_MSGS, WA_WINDOW = 20, 600  # messages per number per 10 minutes
+
+
 def S():
     return shared.state()
 
@@ -377,6 +380,14 @@ async def wa_inbound(msg: Inbound, x_wa_secret: str | None = Header(None)):
     """Same logic as the Telegram bot (bot/core.py), calling this app in-process."""
     _check_worker(x_wa_secret)
     await _beat()
+    if msg.sender:  # per-number limit; say "slow down" once per window, then stay quiet
+        now, key = time.time(), f"wa:{msg.sender}"
+        if await S().wait_for(key, WA_MSGS, WA_WINDOW, now):
+            if not await S().wait_for(key + ":told", 1, WA_WINDOW, now):
+                await S().hit(key + ":told", now, WA_WINDOW)
+                return {"replies": [{"text": C.WA_SLOW_TEXT["en"]}]}
+            return {"replies": []}
+        await S().hit(key, now, WA_WINDOW)
     from api.main import app  # late import: api.main includes this router
     from bot import core
     from bot.texts import L, with_footer

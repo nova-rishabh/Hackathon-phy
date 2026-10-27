@@ -15,10 +15,10 @@ import hmac
 import os
 
 import httpx
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
 
-from api import constants as C
+from api import constants as C, limits
 
 router = APIRouter()
 RZP = "https://api.razorpay.com/v1"
@@ -98,7 +98,7 @@ class Subscribe(BaseModel):
 
 
 @router.post("/billing/subscribe")
-def billing_subscribe(req: Subscribe):
+def billing_subscribe(req: Subscribe, _=Depends(limits.rate("subscribe"))):
     k = _keys()
     if not k:
         raise HTTPException(503, "payments are not set up yet: RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET are missing")

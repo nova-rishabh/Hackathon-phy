@@ -8,6 +8,7 @@ from __future__ import annotations
 import base64
 import hashlib
 import json
+import re
 import tempfile
 import threading
 import time
@@ -25,12 +26,12 @@ if os.environ.get("DEMO_MODE", "0") == "1":
     os.environ["ROLLWATCH_CACHE"] = str(_ROOT / "cache" / "llm")
     os.environ.pop("ROLLWATCH_OPS", None)
 
-from fastapi import FastAPI, Header, HTTPException, Query  # noqa: E402
+from fastapi import Depends, FastAPI, Header, HTTPException, Query  # noqa: E402
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, Response
 from pydantic import BaseModel
 
-from api import billing, citizen, claims, guard as guard_mod, keys, llm, ops, voice, wa_auth
+from api import billing, citizen, limits, claims, guard as guard_mod, keys, llm, ops, voice, wa_auth
 from api.store import ROOT, data_dir, store
 from contracts.models import (AuditEntry, ClaimCheckRequest, ClaimVerdict, EngineRunResult, Flag, FlagList,
                               GuardLog, Health, Overview, Review, ReviewRequest, ReviewResponse, RuleCard,
@@ -141,7 +142,7 @@ def flag(flag_id: str):
 
 
 @app.post("/stories/{booth_id}", response_model=StoryResult)
-def stories(booth_id: str, req: StoryToggleRequest):
+def stories(booth_id: str, req: StoryToggleRequest, _=Depends(limits.rate("stories"))):
     s = store()
     if booth_id not in s.agg:
         raise HTTPException(404, "unknown booth_id")
@@ -178,7 +179,8 @@ def _run_engine(d: str) -> dict:
 
 
 @app.post("/engine/run", response_model=EngineRunResult)
-def engine_run():
+def engine_run(x_wa_secret: str | None = Header(None)):
+    wa_auth._check_worker(x_wa_secret)  # a full engine rerun: operators only, never the public
     """Re-runs the engine on the frozen roll (in memory; artifacts are not overwritten)."""
     with _lock:
         r = _run_engine(str(data_dir()))
@@ -198,7 +200,11 @@ class AuditRequest(BaseModel):
 
 
 @app.post("/audit")
-def audit(req: AuditRequest):
+def audit(req: AuditRequest, _=Depends(limits.rate("audit"))):
+    total = sum(len(getattr(req, f) or "") for f in ("roll_v1_csv", "roll_v2_csv", "roll_v1_parquet_b64", "roll_v2_parquet_b64",
+                                                     "death_register_csv", "hostel_list_csv", "boundary_changes_csv"))
+    if total > limits.MAX_AUDIT:
+        raise HTTPException(413, "the rolls are too large for this demo server; run the open engine on your own machine")
     """Pre-publication check (PRD M12): run the open engine on a draft roll and return flags + stories."""
     with tempfile.TemporaryDirectory() as td:
         t = Path(td)
@@ -262,7 +268,9 @@ def _claims_dir() -> Path:
 
 
 @app.post("/claims/check", response_model=ClaimVerdict)
-def claims_check(req: ClaimCheckRequest):
+def claims_check(req: ClaimCheckRequest, _=Depends(limits.rate("claims"))):
+    limits.cap(req.text, limits.MAX_TEXT, "the claim text")
+    limits.cap(req.image_b64, limits.MAX_B64, "the screenshot")
     if not (req.text or req.image_b64):
         raise HTTPException(422, "send text or image_b64")
     v = claims.check(req)
@@ -290,8 +298,10 @@ def claim_get(claim_id: str):
 PNG_MAGIC = bytes([0x89]) + b"PNG"
 
 @app.get("/cards/{claim_id}.png")
-def card_png(claim_id: str):
-    name = f"{Path(claim_id).name}.png"
+def card_png(claim_id: str, _=Depends(limits.rate("cards"))):
+    if not re.fullmatch(r"[0-9a-f]{12}", claim_id):  # claim ids are 12 hex characters; nothing else is fetched or written
+        raise HTTPException(404, "unknown claim")
+    name = f"{claim_id}.png"
     p = next((x for x in (data_dir() / "cards" / name, ROOT / "cards" / name) if x.exists()), None)
     if p is None:  # draw it once on the web app (next/og route) and keep it
         import httpx
