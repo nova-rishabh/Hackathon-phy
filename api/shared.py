@@ -139,7 +139,12 @@ class Failover:
     never takes the WhatsApp bridge down. `kind` says which one is in use."""
 
     def __init__(self, url: str):
-        self.redis, self.mem, self.down = Redis(url), Memory(), False
+        self.mem, self.down, self.redis = Memory(), False, None
+        try:  # a malformed URL (stray quotes, a REST URL) must not take the bridge down either
+            self.redis = Redis(url.strip().strip("'\""))
+        except Exception as e:
+            self.down = True
+            log.warning("REDIS_URL not usable (%s); using in-memory state", type(e).__name__)
 
     @property
     def kind(self) -> str:
