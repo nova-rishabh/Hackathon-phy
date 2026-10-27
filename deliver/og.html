@@ -1,0 +1,39 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face { font-family: Geist; src: url("../web/public/fonts/Geist-Variable.woff2"); font-weight: 100 900; }
+@font-face { font-family: GeistMono; src: url("../web/public/fonts/GeistMono-Variable.woff2"); font-weight: 100 900; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 1200px; height: 630px; background: #F9F9F9; font-family: Geist, sans-serif; color: #0F0F0F; -webkit-font-smoothing: antialiased; }
+.panel { position: absolute; inset: 32px; background: #EDEDED; border-radius: 28px; padding: 52px 56px; }
+.top { display: flex; justify-content: space-between; align-items: center; }
+.logo { height: 58px; }
+.eyebrow { font: 400 20px/1 GeistMono, monospace; color: #9A9A9A; letter-spacing: .02em; }
+h1 { margin-top: 44px; font-weight: 400; font-size: 66px; line-height: 1.04; letter-spacing: -0.035em; max-width: 1000px; }
+h1 span { color: #9A9A9A; }
+.row { position: absolute; left: 56px; right: 56px; bottom: 52px; display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; }
+.bar { width: 480px; }
+.bar .label { font: 400 15px/1 GeistMono, monospace; color: #5C5C5C; margin-bottom: 10px; }
+.sbar { display: flex; height: 26px; border-radius: 6px; overflow: hidden; background: #fff; }
+.hatch { background: repeating-linear-gradient(135deg, #F6D84D 0 7px, #0F0F0F 7px 9px); }
+.chips { display: flex; gap: 10px; }
+.chip { white-space: nowrap; height: 38px; padding: 0 14px; border-radius: 8px; display: inline-flex; align-items: center; font: 500 16px/1 GeistMono, monospace; letter-spacing: .04em; text-transform: uppercase; }
+.foot { font: 400 17px/1.5 GeistMono, monospace; color: #5C5C5C; text-align: right; }
+</style></head>
+<body>
+<div class="panel">
+  <div class="top">
+    <img class="logo" src="../web/public/logo-word.png" alt="">
+    <span class="eyebrow">Voter roll transparency.</span>
+  </div>
+  <h1>Every change to a voter roll, explained. <span>And every rumour about it, checked.</span></h1>
+  <div class="row">
+    <div class="bar">
+      <p class="label">Booth 47 · 412 removed · 97% unexplained</p>
+      <div class="sbar"><div style="width:2.4%;background:#2E2E2E"></div><div style="width:.3%;background:#5C5C5C"></div><div class="hatch" style="width:97.3%"></div></div>
+      <div class="chips" style="margin-top:16px"><span class="chip" style="background:#D61F69;color:#fff">Disputed</span><span class="chip" style="background:#1CC691">Verified</span><span class="chip" style="background:#EDEDED;color:#5C5C5C;border:2px dashed #9A9A9A">Cannot be proven</span></div>
+    </div>
+    <p class="foot">Hindi · English · Punjabi · voice<br>WhatsApp +91 80764 99841<br>blind test: 9 of 9 found</p>
+  </div>
+</div>
+</body></html>
