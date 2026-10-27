@@ -79,7 +79,7 @@ export default function Audit() {
       </section>
 
       <section>
-        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] items-stretch">
+        <div className="grid gap-4 lg:grid-cols-2 items-stretch">
           <div className="min-w-0 flex flex-col">
             <Reveal><Eyebrow className="mb-5">How it works.</Eyebrow></Reveal>
             <div className="grid gap-4 sm:grid-cols-2 flex-1 auto-rows-fr">
@@ -103,33 +103,28 @@ export default function Audit() {
               </div>
             </Reveal>
             <Reveal delay={250} className="flex-1 flex mt-4">
-              <div className="panel !p-6 flex-1 flex flex-col">
-                <Eyebrow>Try it yourself.</Eyebrow>
-                <div className="grid gap-3 sm:grid-cols-2 mt-4">
-                  <a href="https://t.me/Rollwatch_bot" target="_blank" rel="noreferrer" className="card p-4 group-row block">
-                    <p className="text-[17px]">Message the Telegram bot <span className="dim">→</span></p>
-                    <p className="mono text-[12px] text-ink-3 mt-1">@Rollwatch_bot · send a name or forward a claim</p>
-                  </a>
-                  {WA_NUMBER && (
-                    <a href={`https://wa.me/${WA_NUMBER}`} target="_blank" rel="noreferrer" className="card p-4 group-row block">
-                      <p className="text-[17px]">Message on WhatsApp <span className="dim">→</span></p>
-                      <p className="mono text-[12px] text-ink-3 mt-1">same bot · send a name or forward a claim</p>
-                    </a>
-                  )}
-                  <a href="/ask" className="card p-4 group-row block">
-                    <p className="text-[17px]">Ask on the web <span className="dim">→</span></p>
-                    <p className="mono text-[12px] text-ink-3 mt-1">Hindi · English · Punjabi · voice · which documents</p>
-                  </a>
-                  <a href="/run" className="card p-4 group-row block">
-                    <p className="text-[17px]">Run it on your own list <span className="dim">→</span></p>
-                    <p className="mono text-[12px] text-ink-3 mt-1">two roll CSVs, or the 10-booth sample</p>
-                  </a>
+              <div className="panel !p-5 flex-1 flex flex-col">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <Eyebrow>Try it yourself.</Eyebrow>
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <span className="mono text-[11px] text-ink-3">try:</span>
+                    {[["Meena Kumari", "47"], ["Ravi Verma", "12"], ["Harpreet Kaur", "63"]].map(([n, d]) => (
+                      <a key={n} href="/ask" className="card px-2.5 py-1 group-row">
+                        <span className="text-[13px]">{n}</span> <span className="mono text-[10px] text-ink-3">{d}</span>
+                      </a>
+                    ))}
+                  </div>
                 </div>
-                <p className="mono text-[12px] text-ink-3 mt-auto pt-4">try one of these fictional voters</p>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {[["Meena Kumari", "47"], ["Ravi Verma", "12"], ["Harpreet Kaur", "63"]].map(([n, d]) => (
-                    <a key={n} href="/ask" className="card px-3 py-2 group-row">
-                      <span className="text-[14px]">{n}</span> <span className="mono text-[11px] text-ink-3">booth {d}</span>
+                <div className="grid gap-2.5 sm:grid-cols-2 mt-3 flex-1 content-end">
+                  {[
+                    ["https://t.me/Rollwatch_bot", "Telegram bot", "@Rollwatch_bot · name or forward", true],
+                    ...(WA_NUMBER ? [[`https://wa.me/${WA_NUMBER}`, "WhatsApp", "same bot · voice notes too", true]] : []),
+                    ["/ask", "Ask on the web", "3 languages · documents", false],
+                    ["/run", "Run it on your own list", "two roll CSVs or the sample", false],
+                  ].map(([href, title, hint, ext]) => (
+                    <a key={String(href)} href={String(href)} {...(ext ? { target: "_blank", rel: "noreferrer" } : {})} className="card px-4 py-3 group-row block">
+                      <p className="text-[15px]">{title} <span className="dim">→</span></p>
+                      <p className="mono text-[11px] text-ink-3 mt-0.5 truncate">{hint}</p>
                     </a>
                   ))}
                 </div>
