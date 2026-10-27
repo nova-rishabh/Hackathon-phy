@@ -1,11 +1,12 @@
 # Demo world (docs/START_HERE.md §4). Synthetic only. Run with --seed 42.
 # B047 unexplained spike · B012 hostel move-out (benign) · B063 boundary toggle · B030 additions (mirror claim).
 plantings:
-  - {plant_id: D01, type: deletion_spike,      booth_id: B047, size: 403, is_benign: false}
-  - {plant_id: D02, type: hostel_moveout,      booth_id: B012, size: 300, is_benign: true}
-  - {plant_id: D03, type: mass_death,          booth_id: B012, size: 45,  is_benign: true}
-  - {plant_id: D04, type: boundary_change,     booth_id: B063, size: 92,  is_benign: true, to_booth: B064}
-  - {plant_id: D05, type: mass_death,          booth_id: B063, size: 42,  is_benign: true}
+  - {plant_id: D01, type: deletion_spike,      booth_id: B047, size: 393, is_benign: false}
+  - {plant_id: D13, type: mass_death,          booth_id: B047, size: 10,  is_benign: true}
+  - {plant_id: D02, type: hostel_moveout,      booth_id: B012, size: 308, is_benign: true}
+  - {plant_id: D03, type: mass_death,          booth_id: B012, size: 58,  is_benign: true}
+  - {plant_id: D04, type: boundary_change,     booth_id: B063, size: 84,  is_benign: true, to_booth: B064}
+  - {plant_id: D05, type: mass_death,          booth_id: B063, size: 52,  is_benign: true}
   - {plant_id: D06, type: addition_spike,      booth_id: B030, size: 80,  is_benign: false}
   # supporting variety for the dashboard
   - {plant_id: D07, type: duplicate_cluster,   booth_id: B048, size: 12,  is_benign: false}
