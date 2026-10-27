@@ -21,6 +21,8 @@ export default function Trust() {
   const guard = useApi<GuardLog>("/guard/log");
   const ops = useApi<Ops>("/ops");
   const audit = useApi<{ ts: string; flag_id: string; action: string; hash: string }[]>("/audit/log");
+  const blind = useApi<Blind>("/eval/blind");
+  const b = blind.data?.eval;
   const e = ev.data;
   const o = ops.data;
   const bench = o?.bench as unknown;
@@ -35,7 +37,11 @@ export default function Trust() {
   return (
     <div>
       <Eyebrow className="mb-5 inline-flex items-center gap-2"><Glyph id="rw-tally" size={16} />Blind test.</Eyebrow>
-      {e ? (
+      {b ? (
+        <Display size="hero" dim={`Decoys cleared ${b.decoys_cleared} of ${b.planted_decoys}. Planted by a separate agent; we never saw the key.`}>
+          We found {b.found} of {b.planted_anomalies} hidden anomalies.
+        </Display>
+      ) : e ? (
         <Display size="hero" dim={`Decoys cleared ${e.decoys_cleared} of ${e.planted_decoys}. Missed ${e.misses.length}.`}>
           We found {e.found} of {e.planted_anomalies} hidden anomalies.
         </Display>
@@ -43,8 +49,45 @@ export default function Trust() {
         <Display size="hero" dim="The scoreboard appears once the blind eval has run.">We publish what we miss.</Display>
       )}
 
-      <section className="panel mt-16">
-        <Eyebrow className="mb-5">Scoreboard.</Eyebrow>
+      {b && blind.data && (
+        <section className="panel mt-16">
+          <Eyebrow className="mb-5">Blind test scoreboard.</Eyebrow>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 stagger">
+            {([
+              [<CountUp key="f" to={b.found} suffix={`/${b.planted_anomalies}`} />, "hidden anomalies found"],
+              [<CountUp key="d" to={b.decoys_cleared} suffix={`/${b.planted_decoys}`} />, "innocent decoys cleared"],
+              [<CountUp key="m" to={b.misses.length} />, "missed"],
+              [<CountUp key="w" to={Math.round(b.benign_fp_rate * 100)} suffix="%" />, "decoys wrongly flagged"],
+            ] as const).map(([v, k]) => (
+              <div key={k} className="card px-5 py-4">
+                <p className="mono text-[32px] leading-[40px] tracking-[-0.03em]">{v}</p>
+                <p className="text-[13px] text-ink-2 mt-1">{k}</p>
+              </div>
+            ))}
+          </div>
+          <div className="grid gap-3 lg:grid-cols-[3fr_2fr] mt-3">
+            <Reliability bins={b.reliability} />
+            <div className="card p-5">
+              <p className="eyebrow mb-3">Rules on the blind district.</p>
+              <ul className="stagger">
+                {blind.data.rules.map((r) => (
+                  <li key={r.rule} className="flex justify-between gap-3 py-1.5 border-t border-line first:border-t-0 text-[14px]">
+                    <span className="mono text-[13px]">{r.rule}</span>
+                    <span className="mono text-ink-2">{r.raised} raised · {pct(r.false_positive_rate ?? 0, 1)} false</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="text-[13px] text-ink-2 mt-3">Weakest spot: impossible-relation checks, about a quarter of which fire on innocent records here. Every flag still goes to a person.</p>
+            </div>
+          </div>
+          <p className="text-[13px] text-ink-2 mt-4 max-w-[80ch]">
+            A separate AI agent wrote the plantings (anomalies and innocent look-alikes) for a fresh district and kept the answer key private. The engine was calibrated only on {blind.data.calibration}, and never saw the key; only this scoreboard was published.
+          </p>
+        </section>
+      )}
+
+      <section className={`panel ${b ? "mt-6" : "mt-16"}`}>
+        <Eyebrow className="mb-5">{b ? "Demo district scoreboard (we planted it)." : "Scoreboard."}</Eyebrow>
         {e ? (
           <>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 stagger">
@@ -158,6 +201,8 @@ export default function Trust() {
   );
 }
 
+type Blind = { eval: EvalResult; rules: { rule: string; raised: number; false_positive_rate: number | null }[];
+  planted_by: string; calibration: string };
 type Proj = { electors: number; electors_source: string; audit_core_hours: number; audit_minutes_on_64_cores: number;
   checks_per_day: number; checks_per_s_avg: number; checks_per_s_peak: number; citizen_answers_per_s_4proc: number | null;
   machines_at_peak: number | null; assumption: { share_checking: number; window_days: number; peak_factor: number };
