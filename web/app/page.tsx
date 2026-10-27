@@ -110,6 +110,12 @@ export default function Audit() {
                     <p className="text-[17px]">Message the Telegram bot <span className="dim">→</span></p>
                     <p className="mono text-[12px] text-ink-3 mt-1">@Rollwatch_bot · send a name or forward a claim</p>
                   </a>
+                  {process.env.NEXT_PUBLIC_WA_NUMBER && (
+                    <a href={`https://wa.me/${process.env.NEXT_PUBLIC_WA_NUMBER}`} target="_blank" rel="noreferrer" className="card p-4 group-row block">
+                      <p className="text-[17px]">Message on WhatsApp <span className="dim">→</span></p>
+                      <p className="mono text-[12px] text-ink-3 mt-1">same bot · send a name or forward a claim</p>
+                    </a>
+                  )}
                   <a href="/ask" className="card p-4 group-row block">
                     <p className="text-[17px]">Ask on the web <span className="dim">→</span></p>
                     <p className="mono text-[12px] text-ink-3 mt-1">Hindi · English · Punjabi · voice</p>
