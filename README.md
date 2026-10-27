@@ -20,6 +20,8 @@ All numbers below come from the engine, seed 42.
 
 - **Which story fits?** Booth 47 lost 412 names against about 25 expected, and 97% of them fit no innocent story, so it gets **needs human review**. Booth 12 looks just as big to a rumour, but 79% of its removals fit a hostel move-out, so it's **likely benign**. In Booth 63, 64% of removals are unexplained. Switch on the boundary log and that drops to 8%.
 - **Claim court.** *"Booth 47 mein 600 naam kaat diye, sabse zyada, aur sab ek community ke!"* is split into three sub-claims. "600" is **disputed** (computed 412, 46% off). "Most removals" is **verified** (rank 1 of 100). "Community" **cannot be proven**, because we never infer it from names. The opposite claim is checked with the same tools and the same tolerance.
+- **Run it on your own roll** (`/run`, `POST /audit`). Drop two roll CSVs, or use the 10-booth sample. The same engine flags Booth 47 in about 3 seconds. This is how an office would check a draft before publishing.
+- **Human review.** Signed-in reviewers mark a flag "looks innocent" or "needs a field check". Each review joins a hash chain, so editing an entry breaks the chain.
 - **Citizen lookup.** Search a name in any script, even misspelled. You get your status, the likely reason, Form 6 or Form 7, the 1950 helpline, and a reminder that a BLO never asks for an OTP or money. Hindi answers can be read aloud.
 
 ## The three questions
@@ -61,6 +63,7 @@ Measured on the synthetic district with a planted answer key (`python -m engine.
 - Found **6 of 6** planted anomalies. Cleared **7 of 7** innocent decoys (deaths, hostel move-outs, a boundary move). A removal spike is cleared only when what's left after the innocent stories is no higher than background. A decoy that shares a booth with a real anomaly counts as cleared only if its records are matched to the innocent story.
 - False-positive rate per raised flag: duplicates 9.8%, relation conflicts 11%, removal spikes 0% (1 raised, 8 cleared as likely benign), addition spikes 50% (2 raised), impossible age / oversized household / gender swing 0%.
 - Confidence is a Platt curve per rule, fit on a separate training district. When we say about 93%, the flags are right 90% of the time. For removal spikes the input is the leftover after innocent stories, not the raw spike.
+- **The official parent-child age-gap check** (a parent under 14 or over 40 years older) is measured, not raised: on our district it trips 170 households, and 98% of them hide no planted anomaly. A grandparent named as the relative trips it innocently. Sibling gaps under 9 months can't be checked from a roll, because rolls carry ages in years, not birth dates.
 - The generator also adds realistic background noise (about 0.5% cross-script duplicates). It writes these to `<key>.background.json`, so a correct catch of one isn't counted as an error.
 - Still open: a blind test whose answer key we never see. The removal-spike curve rests on only 20 training flags, so its confidence is shown with that n.
 

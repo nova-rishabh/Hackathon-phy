@@ -95,7 +95,10 @@ DESIGN (strict)
 - **Audit** (home): booth grid, which-story bars, evidence on/off toggles.
 - **Check:** Claim Court. Paste a forward or drop a screenshot; it's split into sub-claims and each runs a fixed query (shown on screen). You get Verified / Disputed / Cannot be proven, plus the mirror claim and a share card with a QR code.
 - **Ask:** citizen lookup in any script or spelling. Status, reason, Form 6/7/8, 1950, "a BLO never asks for an OTP or money", Hindi voice.
-- **Trust:** scoreboard, reliability, the guard, error rate per rule, ops (latency, ₹ per check), the 1M-voter bench.
+- **Trust:** scoreboard, reliability, the guard, error rate per rule (including the official age-gap check, 98% innocent), human reviews in a hash chain, ops (latency, ₹ per check), the 1M-voter bench.
+- **Run it:** drop two roll CSVs (or the 10-booth sample) and get the audit in about 3 s. This is the "inside the government" path.
+- **Share card PNG:** every checked claim becomes a 1080×1350 image the bots send back into the chat.
+- **WhatsApp voice:** send a Hindi voice note and get the answer as text and audio.
 - **Bots:** Telegram and WhatsApp share one brain (`bot/core.py`). WhatsApp also handles sign-in codes.
 - **Account:** sign in with a WhatsApp code, then save checks and watch booths (Supabase).
 - **Bring your own key:** paste your own Gemini or ElevenLabs key; it stays in the browser.
@@ -131,6 +134,10 @@ DESIGN (strict)
 - *Do you infer religion or caste?* Never. Rolls don't contain them and we won't guess from names, so any claim that needs them returns "cannot be proven", with the reason.
 - *How would real data get in?* Rolls are published per polling part. A newsroom or observer runs it locally on rolls they already get legally, through an adapter to our open schema. Public outputs are booth-level, and auditor views mask names.
 - *Couldn't a card be misused as "AI proves deletions"?* Every card says "pattern for human review, not a finding", shows the innocent explanations and the query, and never shows a voter's name.
+
+**Official checks**
+- *Why not just use the official "logical discrepancy" rules?* We ran one. The parent-child age-gap rule (under 14 or over 40 years) trips 170 households in our district, and 98% of them are innocent, mostly a grandparent named as the relative. A rule without a published error rate creates work and fear. We publish ours per rule.
+- *Can you check siblings born under 9 months apart?* Not from a roll: it lists age in whole years, not birth dates. We'd need the date of birth, and we say so instead of guessing.
 
 **Neutrality**
 - *Isn't the guard just a regex?* It's three layers. The model sees only computed numbers, our schemas have no field for parties or people, and a final check blocks or rewrites, logs it, and falls back to a template. The mirror test is the behavioural proof: the opposite claim gets identical treatment.

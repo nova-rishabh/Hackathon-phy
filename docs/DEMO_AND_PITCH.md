@@ -30,7 +30,7 @@ Hand judges a persona card (*Ravi Verma, Booth 12*, *Harpreet Kaur, Booth 63*, *
 
 | Question | Answer (≤2 sentences) |
 |---|---|
-| Synthetic data proves nothing? | It proves the method. A teammate hid anomalies and innocent decoys the engine's author never saw, and the district's age and death profile is fitted to published aggregate figures (we show the chart). |
+| Synthetic data proves nothing? | It proves the method against a known answer key: anomalies plus innocent decoys, scored by a separate eval the engine never reads. A teammate's blind plantings are the next step. |
 | Will you infer religion or caste? | **Never.** Rolls don't contain them and we refuse to guess from names, so any claim that depends on them returns "cannot be proven", with the reason shown. |
 | 78% of what? | It's the probability that a flag is a true anomaly rather than an innocent pattern. It was calibrated on a separate synthetic district and checked blind on my teammate's plantings, and the n is on screen. |
 | The official app already searches names. Why yours? | It tells you *whether* you're listed; we tell you *why* you changed and *what to do next*, in voice and Punjabi, tolerant of typos and script, and we always hand off to the official portal. |
