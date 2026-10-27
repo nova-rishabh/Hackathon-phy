@@ -174,7 +174,7 @@ class Store:
                 continue
             innocent, resolves = RULE_CONTEXT.get(r["rule"], ([], "A human review of the flagged records."))
             out.append(RuleCard(rule_id=r["rule"], what=r["definition"],
-                                fires_on_benign_rate=r["false_positive_rate"],
+                                fires_on_benign_rate=r["false_positive_rate"] or 0.0,  # None = never fired
                                 innocent_explanations=innocent, resolves_with=resolves))
         return out
 

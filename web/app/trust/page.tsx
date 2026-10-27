@@ -106,7 +106,7 @@ export default function Trust() {
           </div>
         ) : <Empty what="Rule error rates" />}
         <p className="text-[13px] text-ink-2 mt-4 max-w-[75ch]">
-          <span className="mono">official_parent_age_gap</span> is the parent-child age check reported in official discrepancy lists (gap under 14 or over 40 years). We measure it and never raise it as a flag: a grandparent named as the relative trips it innocently.
+          Rows starting <span className="mono">official_</span> are the &ldquo;logical discrepancy&rdquo; checks reported for the 2025&ndash;26 revision (parent gap under 15 or over 50 years, six or more children, names or relation changed since the last roll, age not progressing). We run them and never raise them as flags: marriages, spelling fixes and large families trip them innocently. Sibling gaps under 9 months can&apos;t be checked from a roll, which carries ages in years. Rates here are on synthetic data.
         </p>
         <p className="mono text-[12px] text-ink-3 mt-3">
           human reviews recorded {audit.data?.length ?? 0}
