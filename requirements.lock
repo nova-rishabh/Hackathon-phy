@@ -43,6 +43,7 @@ pycparser==3.12
 pydantic-core==2.50.1
 pydantic==2.14.1
 pygments==2.21.0
+pypdf==6.21.3
 python-dateutil==3.0.0
 python-dotenv==1.2.4
 python-telegram-bot==22.8
