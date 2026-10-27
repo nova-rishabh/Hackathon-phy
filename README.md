@@ -58,10 +58,11 @@ The core is fixed and measured. Everything that changes over time is a swappable
 
 ## What we publish about our own errors
 Measured on the synthetic district with a planted answer key (`python -m engine.eval`), and shown live on `/trust`:
-- Found **6 of 6** planted anomalies. Cleared **3 of 7** innocent decoys. The other 4 are still flagged, so they go to a person.
-- False-positive rate per rule: duplicates 9.8%, relation conflicts 11%, impossible age / oversized household / gender swing 0%, booth spikes 50–67% (2–3 flags each, the rest cleared as likely benign).
+- Found **6 of 6** planted anomalies. Cleared **7 of 7** innocent decoys (deaths, hostel move-outs, a boundary move). A removal spike is cleared only when what's left after the innocent stories is no higher than background. A decoy that shares a booth with a real anomaly counts as cleared only if its records are matched to the innocent story.
+- False-positive rate per raised flag: duplicates 9.8%, relation conflicts 11%, removal spikes 0% (1 raised, 8 cleared as likely benign), addition spikes 50% (2 raised), impossible age / oversized household / gender swing 0%.
+- Confidence is a Platt curve per rule, fit on a separate training district. When we say about 93%, the flags are right 90% of the time. For removal spikes the input is the leftover after innocent stories, not the raw spike.
 - The generator also adds realistic background noise (about 0.5% cross-script duplicates). It writes these to `<key>.background.json`, so a correct catch of one isn't counted as an error.
-- Still open: a blind test whose answer key we never see, and better-calibrated confidence (too few training plantings today).
+- Still open: a blind test whose answer key we never see. The removal-spike curve rests on only 20 training flags, so its confidence is shown with that n.
 
 ## Run it
 ```
