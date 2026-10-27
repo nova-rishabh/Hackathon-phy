@@ -172,10 +172,10 @@ USD_INR = 84.0  # ASSUMPTION
 PRICE_INR_PER_MTOK = {  # ASSUMPTION: USD list price per 1M tokens x USD_INR
     "claude-sonnet-5-5": {"in": 3.0 * USD_INR, "out": 15.0 * USD_INR},
     "claude-haiku-5-5": {"in": 1.0 * USD_INR, "out": 5.0 * USD_INR},
-    "gemini-2.5-flash": {"in": 0.30 * USD_INR, "out": 2.5 * USD_INR},
+    "gemini-3.5-flash": {"in": 0.0, "out": 0.0},  # free tier
     "template": {"in": 0.0, "out": 0.0},
 }
-MODEL_GEMINI = "gemini-2.5-flash"  # the only live model (free tier)
+MODEL_GEMINI = "gemini-3.5-flash"  # the only live model (free tier); 2.5-flash is closed to new keys
 MODEL_SPLIT = MODEL_GEMINI
 MODEL_PHRASE = MODEL_GEMINI
 

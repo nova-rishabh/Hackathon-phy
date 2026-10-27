@@ -1,4 +1,4 @@
-"""One LLM client: Gemini (gemini-2.5-flash, temperature 0, JSON out) -> None (caller uses its template).
+"""One LLM client: Gemini (gemini-3.5-flash, temperature 0, JSON out) -> None (caller uses its template).
 
 Every call is cached on disk in cache/llm/<sha256(model+prompt+input)>.json. Under DEMO_MODE=1 only
 the cache is read; a miss returns None so the caller falls back to its template. Without API keys the
