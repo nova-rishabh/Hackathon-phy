@@ -164,3 +164,36 @@ list ka ki ke kya hain main hun
 मेरा मेरी नाम क्या है सूची में लिस्ट वोटर बूथ नंबर का की के हूँ हूं मैं कृपया देखें
 ਮੇਰਾ ਮੇਰੀ ਨਾਂ ਨਾਮ ਕੀ ਹੈ ਸੂਚੀ ਵਿੱਚ ਵਿੱਚ ਬੂਥ ਨੰਬਰ ਦਾ ਦੀ ਦੇ ਮੈਂ ਕਿਰਪਾ
 """.split())
+
+
+# ------------------------------------------------------------------ ops / LLM (A1)
+# ASSUMPTION: per-token prices in INR, for the ops strip only. Update from the provider's price page.
+USD_INR = 84.0  # ASSUMPTION
+PRICE_INR_PER_MTOK = {  # ASSUMPTION: USD list price per 1M tokens x USD_INR
+    "claude-sonnet-5-5": {"in": 3.0 * USD_INR, "out": 15.0 * USD_INR},
+    "claude-haiku-5-5": {"in": 1.0 * USD_INR, "out": 5.0 * USD_INR},
+    "gemini-2.5-flash": {"in": 0.30 * USD_INR, "out": 2.5 * USD_INR},
+    "template": {"in": 0.0, "out": 0.0},
+}
+MODEL_SPLIT = "claude-sonnet-5-5"
+MODEL_PHRASE = "claude-haiku-5-5"
+MODEL_GEMINI = "gemini-2.5-flash"
+
+# ------------------------------------------------------------------ Claim Court (A1)
+CLAIM_TOLERANCE = 0.15
+REASON_MOTIVE = "Motive can't be measured from roll data."
+REASON_COMMUNITY = "We never infer religion, caste or community from names."
+REASON_PLACE = "This tool only has data for the demo district (Sampleabad)."
+REASON_NO_NUMBER = "The claim gives no number or comparison we can check."
+REASON_UNKNOWN = "This part does not map to any check we can run on roll data."
+SETTLE_COMMUNITY = "Cannot be settled from roll data; no attribute of this kind is recorded."
+SETTLE_MOTIVE = "A formal objection (Form 7) or an inquiry by the electoral officer, not roll arithmetic."
+SETTLE_DEFAULT = "Ask your Booth Level Officer (BLO) or check voters.eci.gov.in."
+NEEDS_REVIEW = "Needs human review."
+
+# Neutral fallback text for guard failures (templates; already neutral).
+GUARD_FALLBACK = {
+    "en": "This text was replaced by a neutral summary. The numbers above are computed from the roll. Needs human review.",
+    "hi": "यह पाठ एक तटस्थ सारांश से बदला गया। ऊपर की संख्याएँ सूची से गणना की गई हैं। मानवीय समीक्षा ज़रूरी है।",
+    "pa": "ਇਹ ਲਿਖਤ ਇੱਕ ਨਿਰਪੱਖ ਸਾਰ ਨਾਲ ਬਦਲੀ ਗਈ। ਉੱਪਰਲੇ ਅੰਕੜੇ ਸੂਚੀ ਤੋਂ ਗਿਣੇ ਗਏ ਹਨ। ਮਨੁੱਖੀ ਸਮੀਖਿਆ ਲੋੜੀਂਦੀ ਹੈ।",
+}
