@@ -2,12 +2,16 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { supabase, useSession } from "@/lib/supabase";
 
 const TABS = [["/", "Audit"], ["/check", "Check"], ["/ask", "Ask"]] as const;
 
 export default function Shell({ children }: { children: React.ReactNode }) {
   const path = usePathname();
   const [menu, setMenu] = useState(false);
+  const { session } = useSession();
+  const acct: readonly [string, string] = supabase && session ? ["/account", "Account"] : ["/login", "Sign in"];
+  const RIGHT = [["/trust", "Trust"], ["/settings", "Keys"], acct] as const;
   if (path.startsWith("/card")) return <>{children}</>;
   const active = (h: string) => (h === "/" ? path === "/" : path.startsWith(h));
   const tab = (h: string, l: string) => (
@@ -25,12 +29,12 @@ export default function Shell({ children }: { children: React.ReactNode }) {
           <nav aria-label="Main" className="hidden sm:flex items-center gap-1">
             {TABS.map(([h, l]) => tab(h, l))}
           </nav>
-          <nav aria-label="Trust" className="hidden sm:flex">{tab("/trust", "Trust")}</nav>
+          <nav aria-label="Trust and account" className="hidden sm:flex items-center gap-1">{RIGHT.map(([h, l]) => tab(h, l))}</nav>
           <button className="sm:hidden px-3 h-10 text-[15px]" aria-expanded={menu} onClick={() => setMenu(!menu)}>{menu ? "Close" : "Menu"}</button>
         </header>
         {menu && (
           <nav aria-label="Main" className="sm:hidden mt-2 bg-panel rounded-[12px] p-2 flex flex-col">
-            {[...TABS, ["/trust", "Trust"] as const].map(([h, l]) => tab(h, l))}
+            {[...TABS, ...RIGHT].map(([h, l]) => tab(h, l))}
           </nav>
         )}
         <p role="note" className="mx-auto max-w-[1240px] mono text-[12px] leading-4 text-ink-3 py-3 px-2">
