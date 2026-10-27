@@ -32,3 +32,8 @@ Fields: `plant_id`, `type`, `booth_id`, `size`, `is_benign` (all required); `to_
 Background: ~6.8/1000 age-specific deaths (80% registered), ~3% shift-outs, ~3% new electors, ~0.5% cross-script
 duplicates (half cleaned in v2), 4 background hostels, 2-3 boundary changes in total, ~0.4% spelling corrections.
 Every survivor ages +1 in v2. The real blind config lives in `private/` and is never committed.
+
+## Background truths (`<key>.background.json`)
+Next to the answer key the generator writes the realistic background it adds that is not a planting: about 0.5% cross-script duplicates, plus the relation conflicts a gender-swing planting causes as a side effect. `engine.eval` reads it if present, so a correct catch of one counts as correct, not as a false positive. It never counts toward "found N of M".
+
+Families are always possible: after all random draws (so the seed-42 district is unchanged), `fix_families` lists a member under 18 years younger than the head as the head's sibling, and gives no two people in one family the same given name.

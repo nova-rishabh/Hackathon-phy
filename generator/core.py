@@ -60,6 +60,7 @@ class Gen:
         self.boundary_rows: list[dict] = []
         self.keys: dict[str, dict] = {}
         self.removed_by: dict[str, str] = {}
+        self.background: list[dict] = []  # realistic background truths, written next to the key
 
     # ------------------------------------------------------------ names
     def lat_var(self, text: str) -> str:
@@ -82,6 +83,40 @@ class Gen:
 
     def given(self, gender: str):
         return self.rng.choice(FEMALE if gender == "F" else MALE)
+
+    def fix_families(self):
+        """Make every family possible, after all random draws so the RNG stream (and the demo district) is unchanged.
+        A 'child' under 18 years younger than the head becomes the head's sibling (same father). A child whose given
+        name repeats one already in the family (else a son reads as his own grandfather) moves to the next free name;
+        records already used by a planting or removed in v2 keep their name so every key and register still matches."""
+        v2 = {r["vid"]: r for r in self.v2}
+        for hh in {id(r["hh"]): r["hh"] for r in self.v1 if "head" in r["hh"]}.values():
+            fg, hg = hh["given"][0], hh["given"][1]
+            if fg[1] == hg[1]:  # the head shares his father's name: the father (not an elector) takes the next name
+                i = MALE.index(fg)
+                fg = hh["given"][0] = MALE[(i + 1) % len(MALE)]
+                hh["father_dev"], hh["father_lat"] = f"{fg[0]} {hh['sn'][0]}", f"{fg[1]} {hh['sn'][1]}"
+                for x in (hh["head"], v2.get(hh["head"]["vid"])):
+                    if x:
+                        x["rel_dev"], x["rel_lat"], x["rel_canon"] = hh["father_dev"], hh["father_lat"], hh["father_lat"]
+        news = [q for q in self.v2 if q.get("tag") == "new" and "given" in q["hh"]]
+        for r in [x for x in self.v1 if x.get("child")] + news:
+            new = r.get("tag") == "new"  # a v2 newcomer exists only in v2 and is free to rename
+            hh, q = r["hh"], (r if new else v2.get(r["vid"]))
+            if r.get("child") and r["age"] > hh["head_age"] - 18:
+                for x in (r, q) if q else (r,):
+                    x["rel_dev"], x["rel_lat"], x["rel_canon"] = hh["father_dev"], hh["father_lat"], hh["father_lat"]
+            names = FEMALE if r["gender"] == "F" else MALE
+            given = r["canon"][: -len(hh["sn"][1]) - 1]
+            gv = next((n for n in names if n[1] == given), None)
+            taken = {n[1] for n in hh["given"]}
+            if gv and gv[1] in taken and q and (new or not r["used"]):
+                i = names.index(gv)
+                gv = next((names[(i + j) % len(names)] for j in range(len(names)) if names[(i + j) % len(names)][1] not in taken), gv)
+                for x in (r, q):
+                    x["name_dev"], x["name_lat"], x["canon"] = f"{gv[0]} {hh['sn'][0]}", f"{gv[1]} {hh['sn'][1]}", f"{gv[1]} {hh['sn'][1]}"
+            if gv:
+                hh["given"].append(gv)
 
     # ------------------------------------------------------------ records
     def mk(self, b, house, gender, age, sn, gv, rel_type, rel_dev, rel_lat, hh, variant_p=0.10) -> dict:
@@ -114,15 +149,17 @@ class Gen:
         father = (f"{fg[0]} {sn[0]}", f"{fg[1]} {sn[1]}")
         hg = self.given("F" if head_f else "M")
         head_dev, head_lat = f"{hg[0]} {sn[0]}", f"{hg[1]} {sn[1]}"
-        hh = dict(sn=sn, head_dev=head_dev, head_lat=head_lat)
+        hh = dict(sn=sn, head_dev=head_dev, head_lat=head_lat, head_age=head_age, father_dev=father[0], father_lat=father[1])
+        hh["given"] = [fg, hg]  # given names already in this family, for fix_families
         if head_f:
-            self.mk(b, house, "F", head_age, sn, hg, "husband", father[0], father[1], hh)
+            hh["head"] = self.mk(b, house, "F", head_age, sn, hg, "husband", father[0], father[1], hh)
         else:
-            self.mk(b, house, "M", head_age, sn, hg, "father", father[0], father[1], hh)
+            hh["head"] = self.mk(b, house, "M", head_age, sn, hg, "father", father[0], father[1], hh)
         n = 1
         if k >= 2 and not head_f:
             g = self.given("F")
             self.mk(b, house, "F", max(18, head_age - rng.randint(0, 8)), sn, g, "husband", head_dev, head_lat, hh)
+            hh["given"].append(g)
             n += 1
         while n < k:
             age = head_age - rng.randint(20, 32)
@@ -130,10 +167,11 @@ class Gen:
                 age = self.sample_age(18, 35)
             x = rng.random()
             if x < 0.0008:
-                self.mk(b, house, "T", age, sn, self.given("M"), "other", head_dev, head_lat, hh)
+                r = self.mk(b, house, "T", age, sn, self.given("M"), "other", head_dev, head_lat, hh)
             else:
                 g = "M" if x < 0.545 else "F"
-                self.mk(b, house, g, age, sn, self.given(g), "father", head_dev, head_lat, hh)
+                r = self.mk(b, house, g, age, sn, self.given(g), "father", head_dev, head_lat, hh)
+            r["child"] = True
             n += 1
 
     def build_base(self):
@@ -259,6 +297,8 @@ class Gen:
                     r["flip"] = "M"
                 key["voter_ids"] = [r["vid"] for r in vic]
                 key["note"] = f"{len(vic)} F records recorded as M in v2 (booth gender ratio swing)"
+                # side effect: a flipped wife now reads as a male 'wife'; relation_conflict catching it is correct
+                self.background.append(dict(type="relation_conflict", booth_id=bid(b), voter_ids=key["voter_ids"]))
             elif t != "addition_spike":
                 raise ValueError(f"unknown planting type {t}")
 
@@ -300,6 +340,7 @@ class Gen:
             r["used"] = True
             d = self.mk_dup(r)
             d["used"] = True
+            self.background.append(dict(type="duplicate_cluster", booth_id=bid(r["b"]), voter_ids=[r["vid"], d["vid"]]))
             if rng.random() < 0.5:
                 self.removed_by[d["vid"]] = "dup_cleanup"
 
@@ -380,10 +421,17 @@ class Gen:
                 g = "M" if rng.random() < 0.51 else "F"
                 gv = self.given(g)
                 nm = f"{gv[1]} {sn[1]}"
+                name_lat = self.lat_var(nm) if rng.random() < 0.1 else nm
+                age = ages_fn()
+                # v2 ages are v1 + 1; someone not 18 years younger than the head joins as the head's sibling.
+                if "head_age" in hh and age > hh["head_age"] + 1 - 18:
+                    rd, rl = hh["father_dev"], hh["father_lat"]
+                else:
+                    rd, rl = hh["head_dev"], hh["head_lat"]
                 r = dict(vid=f"SBD{self.next_id:07d}", b=b, house=house, name_dev=f"{gv[0]} {sn[0]}",
-                         name_lat=self.lat_var(nm) if rng.random() < 0.1 else nm, canon=nm,
-                         rel_type="father", rel_dev=hh["head_dev"], rel_lat=hh["head_lat"], rel_canon=hh["head_lat"],
-                         age=ages_fn(), gender=g, hh=hh, used=False, tag="new")
+                         name_lat=name_lat, canon=nm,
+                         rel_type="father", rel_dev=rd, rel_lat=rl, rel_canon=rl,
+                         age=age, gender=g, hh=hh, used=False, tag="new")
                 self.next_id += 1
                 v2.append(r)
                 ids.append(r["vid"])
@@ -488,6 +536,7 @@ def run(plantings, seed, out: Path, key_path: Path, personas: list[dict] | None 
     g.background_context()
     g.churn()
     g.build_v2()
+    g.fix_families()
     d1, d2 = g.rows(g.v1, "v1"), g.rows(g.v2, "v2")
     if personas:
         apply_personas(g, d1, d2, personas)
@@ -508,6 +557,9 @@ def run(plantings, seed, out: Path, key_path: Path, personas: list[dict] | None 
     key_path.parent.mkdir(parents=True, exist_ok=True)
     with open(key_path, "w", encoding="utf-8") as f:
         json.dump(key, f, ensure_ascii=False, indent=2)
+    # Realistic background truths (not plantings): lets eval score a correct catch of them as correct, not as noise.
+    with open(key_path.with_name(key_path.stem + ".background.json"), "w", encoding="utf-8") as f:
+        json.dump(g.background, f, ensure_ascii=False, indent=2)
     i1, i2 = set(d1.voter_id), set(d2.voter_id)
     print(f"{out}: v1={len(d1)} v2={len(d2)} deleted={len(i1 - i2)} added={len(i2 - i1)} "
           f"deaths_reg={len(g.death_rows)} hostels={len(g.hostel_rows)} boundaries={len(g.boundary_rows)} "
