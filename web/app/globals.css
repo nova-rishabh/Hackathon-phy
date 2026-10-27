@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+/* RollWatch design tokens: Tailwind v4. Paste into web/app/globals.css after `@import "tailwindcss";`.
+   Light theme only. Source of truth: docs/DESIGN_SYSTEM.md */
+
+@font-face { font-family: "Plus Jakarta Sans"; src: url("/fonts/PlusJakartaSans-Variable.woff2") format("woff2"); font-weight: 200 800; font-display: swap; }
+@font-face { font-family: "JetBrains Mono"; src: url("/fonts/JetBrainsMono-Variable.woff2") format("woff2"); font-weight: 100 800; font-display: swap; }
+@font-face { font-family: "Noto Sans Devanagari"; src: url("/fonts/NotoSansDevanagari-Variable.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: "Noto Sans Gurmukhi"; src: url("/fonts/NotoSansGurmukhi-Variable.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", "Noto Sans Devanagari", "Noto Sans Gurmukhi", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --color-paper: #F7F4EE;
+  --color-surface: #FFFFFF;
+  --color-sunk: #EFEBE3;
+  --color-rule: #DDD7CB;
+  --color-rule-strong: #BDB5A6;
+  --color-ink: #1D1C1A;
+  --color-ink-2: #4A4741;
+  --color-ink-3: #77726A;
+
+  --color-voter-ink: #4C2A85;
+  --color-voter-ink-soft: #EEE8F6;
+  --color-voter-ink-deep: #36195F;
+
+  --color-unusual: #A3402B;
+  --color-unusual-soft: #F6E5DF;
+  --color-benign: #2E5E78;
+  --color-benign-soft: #E3EDF2;
+  --color-verified: #1F6A50;
+  --color-verified-soft: #E2F0EA;
+  --color-unprovable: #56606D;
+  --color-unprovable-soft: #E8EBEF;
+
+  --color-story-death: #6B5B45;
+  --color-story-hostel: #2E5E78;
+  --color-story-boundary: #7A6A9E;
+  --color-story-dupes: #8A8270;
+  --color-story-unexplained: #A3402B;
+
+  --radius-sm: 2px;
+  --radius-stamp: 3px;
+  --radius: 4px;
+}
+
+:root { color-scheme: light; }
+html, body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-sans); font-size: 15px; line-height: 23px; }
+.num, code, kbd { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+[lang="hi"], [lang="pa"] { line-height: 1.6; font-size: 1.0667em; }
+:focus-visible { outline: 2px solid var(--color-voter-ink); outline-offset: 2px; }
+
+.overline { font-size: 11px; line-height: 14px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--color-ink-2); }
+
+.stamp { display: inline-block; border: 2px solid currentColor; border-radius: var(--radius-stamp); padding: 2px 8px;
+  font: 700 12px/16px var(--font-sans); letter-spacing: .1em; text-transform: uppercase; transform: rotate(-1.5deg); background: transparent; }
+.stamp--verified { color: var(--color-verified); }
+.stamp--disputed { color: var(--color-unusual); }
+.stamp--unprovable { color: var(--color-unprovable); }
+.stamp--review { color: var(--color-voter-ink); }
+.stamp--benign { color: var(--color-benign); }
+
+.tile--mixed { background: repeating-linear-gradient(135deg, var(--color-unusual-soft) 0 4px, var(--color-surface) 4px 8px); }
+
+body { min-height: 100vh; }
+.tbl { width: 100%; border-collapse: collapse; background: var(--color-surface); border: 1px solid var(--color-rule); }
+.tbl th { background: var(--color-sunk); font-size: 11px; line-height: 14px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--color-ink-2); text-align: left; padding: 8px 12px; }
+.tbl td { height: 40px; padding: 0 12px; border-top: 1px solid var(--color-rule); font-size: 14px; }
+.tbl .r { text-align: right; }
+.tbl tbody tr { cursor: pointer; }
+.tbl tbody tr:hover, .tbl tbody tr.sel { background: var(--color-voter-ink-soft); }
+.btn { display: inline-block; height: 36px; padding: 0 16px; border-radius: var(--radius); font: 600 14px/36px var(--font-sans); border: 1px solid var(--color-rule-strong); background: var(--color-surface); color: var(--color-ink); cursor: pointer; }
+.btn-primary { background: var(--color-voter-ink); border-color: var(--color-voter-ink); color: #fff; }
+.btn-primary:active { background: var(--color-voter-ink-deep); }
+.chk { appearance: none; width: 14px; height: 14px; border: 1px solid var(--color-rule-strong); border-radius: 2px; background: #fff; display: inline-block; vertical-align: -2px; margin-right: 8px; cursor: pointer; }
+.chk:checked { background: var(--color-voter-ink); border-color: var(--color-voter-ink); position: relative; }
+.chk:checked::after { content: ""; position: absolute; left: 3px; top: 0px; width: 4px; height: 8px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+.tile { position: relative; width: 100%; aspect-ratio: 1; min-width: 0; border-radius: var(--radius); background: var(--color-surface); border: 1px solid var(--color-rule); cursor: pointer; padding: 0; text-align: left; }
+.tile:hover { border-color: var(--color-voter-ink); outline: 1px solid var(--color-voter-ink); }
+.tile--unusual { background: var(--color-unusual-soft); border: 2px solid var(--color-unusual); }
+.tile--benign { background: var(--color-benign-soft); border: 1px solid var(--color-benign); }
+.tile--mixed { border: 1px solid var(--color-unusual); }
+.tile .a { position: absolute; left: 4px; top: 3px; font: 500 12px/16px var(--font-mono); color: var(--color-ink-2); }
+.tile .b { position: absolute; right: 4px; bottom: 3px; font: 600 13px/16px var(--font-mono); font-variant-numeric: tabular-nums; }
