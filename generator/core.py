@@ -450,7 +450,36 @@ def load_config(path: str) -> list[dict]:
     return ps
 
 
-def run(plantings, seed, out: Path, key_path: Path):
+def apply_personas(g: "Gen", d1: pd.DataFrame, d2: pd.DataFrame, personas: list[dict]):
+    """Rename one deterministic record per persona (demo judges' lookups). Uses no RNG, so numbers don't move.
+
+    persona: {name_dev, name_lat, gender, booth_id, from: spike|hostel|boundary}
+    """
+    v2_booth = dict(zip(d2.voter_id, d2.booth_id))
+    dead = {(r["booth_id"], str(r["house_no"])) for r in g.death_rows}
+    taken = set()
+    for p in personas:
+        b = bnum(p["booth_id"])
+        if p["from"] == "boundary":
+            cand = [r for r in g.v1 if r["b"] == b and "move_to" in r]
+        else:
+            want = {"spike": "spike", "hostel": "hostel"}[p["from"]]
+            cand = [r for r in g.v1 if r["b"] == b and g.removed_by.get(r["vid"]) == want
+                    and r["vid"] not in v2_booth]
+        cand = [r for r in cand if r["vid"] not in taken and (p["booth_id"], str(r["house"])) not in dead]
+        cand.sort(key=lambda r: (r["gender"] != p["gender"], r["vid"]))
+        if not cand:
+            print(f"persona {p['name_lat']}: no candidate in {p['booth_id']}")
+            continue
+        vid = cand[0]["vid"]
+        taken.add(vid)
+        for df in (d1, d2):
+            m = df.voter_id == vid
+            df.loc[m, "name_dev"], df.loc[m, "name_lat"], df.loc[m, "gender"] = p["name_dev"], p["name_lat"], p["gender"]
+        print(f"persona {p['name_lat']} -> {vid} ({p['booth_id']}, {p['from']})")
+
+
+def run(plantings, seed, out: Path, key_path: Path, personas: list[dict] | None = None):
     t0 = time.time()
     from contracts.models import Planting, RollRow
     g = Gen(seed, plantings)
@@ -460,6 +489,8 @@ def run(plantings, seed, out: Path, key_path: Path):
     g.churn()
     g.build_v2()
     d1, d2 = g.rows(g.v1, "v1"), g.rows(g.v2, "v2")
+    if personas:
+        apply_personas(g, d1, d2, personas)
     (out / "context").mkdir(parents=True, exist_ok=True)
     for df, n in ((d1, "roll_v1"), (d2, "roll_v2")):
         df.to_parquet(out / f"{n}.parquet", index=False)
@@ -500,4 +531,6 @@ def main():
         if not a.config or not a.key:
             ap.error("--config and --key are required (or use --auto-plant N)")
         out.mkdir(parents=True, exist_ok=True)
-        run(load_config(a.config), a.seed, out, Path(a.key))
+        with open(a.config, encoding="utf-8") as f:
+            personas = (yaml.safe_load(f) or {}).get("personas", [])
+        run(load_config(a.config), a.seed, out, Path(a.key), personas)

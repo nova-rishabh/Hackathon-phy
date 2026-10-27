@@ -15,3 +15,8 @@ plantings:
   - {plant_id: D10, type: gender_ratio_swing,  booth_id: B074, size: 55,  is_benign: false}
   - {plant_id: D11, type: hostel_moveout,      booth_id: B022, size: 70,  is_benign: true}
   - {plant_id: D12, type: mass_death,          booth_id: B085, size: 22,  is_benign: true}
+# Judge personas (START_HERE §4): one record each is renamed, deterministically, after generation.
+personas:
+  - {name_dev: "मीना कुमारी", name_lat: "Meena Kumari",  gender: F, booth_id: B047, from: spike}
+  - {name_dev: "रवि वर्मा",   name_lat: "Ravi Verma",    gender: M, booth_id: B012, from: hostel}
+  - {name_dev: "हरप्रीत कौर", name_lat: "Harpreet Kaur", gender: F, booth_id: B063, from: boundary}
