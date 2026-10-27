@@ -1,0 +1,6402 @@
+[
+ {
+  "booth_id": "B001",
+  "removed_total": 23,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 4,
+    "share": 0.17391304347826086,
+    "ci_lo": 0.043478260869565216,
+    "ci_hi": 0.30434782608695654,
+    "evidence": "4 of 23 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.043478260869565216,
+    "ci_lo": 0.0,
+    "ci_hi": 0.08695652173913043,
+    "evidence": "1 of 23 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 23 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 23 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 18,
+    "share": 0.782608695652174,
+    "ci_lo": 0.6521739130434783,
+    "ci_hi": 0.9130434782608695,
+    "evidence": "18 of 23 removed records"
+   }
+  ],
+  "residual": {
+   "count": 18,
+   "expected_background": 20.803829893323947,
+   "p_value": 0.7652360772020065,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B002",
+  "removed_total": 19,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 5,
+    "share": 0.2631578947368421,
+    "ci_lo": 0.10526315789473684,
+    "ci_hi": 0.42105263157894735,
+    "evidence": "5 of 19 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.05263157894736842,
+    "ci_lo": 0.0,
+    "ci_hi": 0.15789473684210525,
+    "evidence": "1 of 19 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 19 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 19 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 13,
+    "share": 0.6842105263157895,
+    "ci_lo": 0.5263157894736842,
+    "ci_hi": 0.8421052631578947,
+    "evidence": "13 of 19 removed records"
+   }
+  ],
+  "residual": {
+   "count": 13,
+   "expected_background": 17.43452307865861,
+   "p_value": 0.8901985042455136,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B003",
+  "removed_total": 17,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 1,
+    "share": 0.058823529411764705,
+    "ci_lo": 0.0,
+    "ci_hi": 0.17647058823529413,
+    "evidence": "1 of 17 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 3,
+    "share": 0.17647058823529413,
+    "ci_lo": 0.058823529411764705,
+    "ci_hi": 0.35294117647058826,
+    "evidence": "3 of 17 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 17 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 17 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 13,
+    "share": 0.7647058823529411,
+    "ci_lo": 0.5882352941176471,
+    "ci_hi": 0.9411764705882353,
+    "evidence": "13 of 17 removed records"
+   }
+  ],
+  "residual": {
+   "count": 13,
+   "expected_background": 26.0991831968223,
+   "p_value": 0.9985416483581324,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B004",
+  "removed_total": 18,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 1,
+    "share": 0.05555555555555555,
+    "ci_lo": 0.0,
+    "ci_hi": 0.16666666666666666,
+    "evidence": "1 of 18 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.05555555555555555,
+    "ci_lo": 0.0,
+    "ci_hi": 0.16666666666666666,
+    "evidence": "1 of 18 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 18 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 18 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 16,
+    "share": 0.8888888888888888,
+    "ci_lo": 0.7777777777777778,
+    "ci_hi": 1.0,
+    "evidence": "16 of 18 removed records"
+   }
+  ],
+  "residual": {
+   "count": 16,
+   "expected_background": 18.867880439720132,
+   "p_value": 0.7815590375921064,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B005",
+  "removed_total": 12,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 1,
+    "share": 0.08333333333333333,
+    "ci_lo": 0.0,
+    "ci_hi": 0.25,
+    "evidence": "1 of 12 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.08333333333333333,
+    "ci_lo": 0.0,
+    "ci_hi": 0.25,
+    "evidence": "1 of 12 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 12 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 12 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 10,
+    "share": 0.8333333333333334,
+    "ci_lo": 0.6666666666666666,
+    "ci_hi": 1.0,
+    "evidence": "10 of 12 removed records"
+   }
+  ],
+  "residual": {
+   "count": 10,
+   "expected_background": 14.905554185072106,
+   "p_value": 0.9307827469485496,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B006",
+  "removed_total": 33,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 10,
+    "share": 0.30303030303030304,
+    "ci_lo": 0.18181818181818182,
+    "ci_hi": 0.42424242424242425,
+    "evidence": "10 of 33 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 33 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 33 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 33 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 23,
+    "share": 0.696969696969697,
+    "ci_lo": 0.5757575757575758,
+    "ci_hi": 0.8181818181818182,
+    "evidence": "23 of 33 removed records"
+   }
+  ],
+  "residual": {
+   "count": 23,
+   "expected_background": 22.250738830553733,
+   "p_value": 0.4652682941179817,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B007",
+  "removed_total": 15,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 5,
+    "share": 0.3333333333333333,
+    "ci_lo": 0.13333333333333333,
+    "ci_hi": 0.5333333333333333,
+    "evidence": "5 of 15 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.06666666666666667,
+    "ci_lo": 0.0,
+    "ci_hi": 0.2,
+    "evidence": "1 of 15 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 15 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 15 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 9,
+    "share": 0.6,
+    "ci_lo": 0.4,
+    "ci_hi": 0.8,
+    "evidence": "9 of 15 removed records"
+   }
+  ],
+  "residual": {
+   "count": 9,
+   "expected_background": 14.859549908459497,
+   "p_value": 0.9625111201226619,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B008",
+  "removed_total": 27,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 3,
+    "share": 0.1111111111111111,
+    "ci_lo": 0.037037037037037035,
+    "ci_hi": 0.2222222222222222,
+    "evidence": "3 of 27 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 2,
+    "share": 0.07407407407407407,
+    "ci_lo": 0.0,
+    "ci_hi": 0.14814814814814814,
+    "evidence": "2 of 27 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 27 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 27 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 22,
+    "share": 0.8148148148148148,
+    "ci_lo": 0.701851851851852,
+    "ci_hi": 0.9259259259259259,
+    "evidence": "22 of 27 removed records"
+   }
+  ],
+  "residual": {
+   "count": 22,
+   "expected_background": 27.210547412179242,
+   "p_value": 0.8699158903678048,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B009",
+  "removed_total": 23,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 5,
+    "share": 0.21739130434782608,
+    "ci_lo": 0.08695652173913043,
+    "ci_hi": 0.34782608695652173,
+    "evidence": "5 of 23 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.043478260869565216,
+    "ci_lo": 0.0,
+    "ci_hi": 0.13043478260869565,
+    "evidence": "1 of 23 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 23 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 23 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 17,
+    "share": 0.7391304347826086,
+    "ci_lo": 0.5652173913043478,
+    "ci_hi": 0.8695652173913043,
+    "evidence": "17 of 23 removed records"
+   }
+  ],
+  "residual": {
+   "count": 17,
+   "expected_background": 17.72869722566654,
+   "p_value": 0.6036858295047126,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B010",
+  "removed_total": 31,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 8,
+    "share": 0.25806451612903225,
+    "ci_lo": 0.12903225806451613,
+    "ci_hi": 0.3870967741935484,
+    "evidence": "8 of 31 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.03225806451612903,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0967741935483871,
+    "evidence": "1 of 31 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 31 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 31 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 22,
+    "share": 0.7096774193548387,
+    "ci_lo": 0.5806451612903226,
+    "ci_hi": 0.8387096774193549,
+    "evidence": "22 of 31 removed records"
+   }
+  ],
+  "residual": {
+   "count": 22,
+   "expected_background": 26.060597736625063,
+   "p_value": 0.8177014990051713,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B011",
+  "removed_total": 29,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 5,
+    "share": 0.1724137931034483,
+    "ci_lo": 0.06896551724137931,
+    "ci_hi": 0.3103448275862069,
+    "evidence": "5 of 29 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.034482758620689655,
+    "ci_lo": 0.0,
+    "ci_hi": 0.10344827586206896,
+    "evidence": "1 of 29 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 29 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 29 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 23,
+    "share": 0.7931034482758621,
+    "ci_lo": 0.6551724137931034,
+    "ci_hi": 0.896551724137931,
+    "evidence": "23 of 29 removed records"
+   }
+  ],
+  "residual": {
+   "count": 23,
+   "expected_background": 26.672886253401664,
+   "p_value": 0.7922582875812963,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B012",
+  "removed_total": 390,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 60,
+    "share": 0.15384615384615385,
+    "ci_lo": 0.12307692307692308,
+    "ci_hi": 0.18461538461538463,
+    "evidence": "60 of 390 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 2,
+    "share": 0.005128205128205128,
+    "ci_lo": 0.0,
+    "ci_hi": 0.010256410256410256,
+    "evidence": "2 of 390 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 390 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 308,
+    "share": 0.7897435897435897,
+    "ci_lo": 0.7538461538461538,
+    "ci_hi": 0.823076923076923,
+    "evidence": "308 of 390 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 20,
+    "share": 0.05128205128205128,
+    "ci_lo": 0.035769230769230775,
+    "ci_hi": 0.06923076923076923,
+    "evidence": "20 of 390 removed records"
+   }
+  ],
+  "residual": {
+   "count": 20,
+   "expected_background": 39.35845023254413,
+   "p_value": 0.9997996539971611,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "likely_benign"
+ },
+ {
+  "booth_id": "B013",
+  "removed_total": 23,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 1,
+    "share": 0.043478260869565216,
+    "ci_lo": 0.0,
+    "ci_hi": 0.13043478260869565,
+    "evidence": "1 of 23 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 23 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 23 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 23 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 22,
+    "share": 0.9565217391304348,
+    "ci_lo": 0.8695652173913043,
+    "ci_hi": 1.0,
+    "evidence": "22 of 23 removed records"
+   }
+  ],
+  "residual": {
+   "count": 22,
+   "expected_background": 26.526850753158705,
+   "p_value": 0.8403957221313262,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B014",
+  "removed_total": 19,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 2,
+    "share": 0.10526315789473684,
+    "ci_lo": 0.0,
+    "ci_hi": 0.2631578947368421,
+    "evidence": "2 of 19 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.05263157894736842,
+    "ci_lo": 0.0,
+    "ci_hi": 0.15789473684210525,
+    "evidence": "1 of 19 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 19 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 19 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 16,
+    "share": 0.8421052631578947,
+    "ci_lo": 0.6842105263157895,
+    "ci_hi": 0.9473684210526315,
+    "evidence": "16 of 19 removed records"
+   }
+  ],
+  "residual": {
+   "count": 16,
+   "expected_background": 17.070507575214904,
+   "p_value": 0.6385134116025739,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B015",
+  "removed_total": 50,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 4,
+    "share": 0.08,
+    "ci_lo": 0.02,
+    "ci_hi": 0.14,
+    "evidence": "4 of 50 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.02,
+    "ci_lo": 0.0,
+    "ci_hi": 0.06,
+    "evidence": "1 of 50 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 24,
+    "share": 0.48,
+    "ci_lo": 0.36,
+    "ci_hi": 0.58,
+    "evidence": "24 of 50 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 50 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 21,
+    "share": 0.42,
+    "ci_lo": 0.32,
+    "ci_hi": 0.54,
+    "evidence": "21 of 50 removed records"
+   }
+  ],
+  "residual": {
+   "count": 21,
+   "expected_background": 26.52793361699265,
+   "p_value": 0.8866881528532575,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B016",
+  "removed_total": 21,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 21 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.047619047619047616,
+    "ci_lo": 0.0,
+    "ci_hi": 0.14285714285714285,
+    "evidence": "1 of 21 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 21 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 21 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 20,
+    "share": 0.9523809523809523,
+    "ci_lo": 0.8571428571428571,
+    "ci_hi": 1.0,
+    "evidence": "20 of 21 removed records"
+   }
+  ],
+  "residual": {
+   "count": 20,
+   "expected_background": 26.2995091707194,
+   "p_value": 0.9165248336516043,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B017",
+  "removed_total": 28,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 2,
+    "share": 0.07142857142857142,
+    "ci_lo": 0.0,
+    "ci_hi": 0.17857142857142858,
+    "evidence": "2 of 28 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 28 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 28 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 28 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 26,
+    "share": 0.9285714285714286,
+    "ci_lo": 0.8214285714285714,
+    "ci_hi": 1.0,
+    "evidence": "26 of 28 removed records"
+   }
+  ],
+  "residual": {
+   "count": 26,
+   "expected_background": 21.428988118070645,
+   "p_value": 0.1828250833865749,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B018",
+  "removed_total": 20,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 6,
+    "share": 0.3,
+    "ci_lo": 0.15,
+    "ci_hi": 0.45,
+    "evidence": "6 of 20 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.05,
+    "ci_lo": 0.0,
+    "ci_hi": 0.15,
+    "evidence": "1 of 20 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 20 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 20 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 13,
+    "share": 0.65,
+    "ci_lo": 0.5,
+    "ci_hi": 0.85,
+    "evidence": "13 of 20 removed records"
+   }
+  ],
+  "residual": {
+   "count": 13,
+   "expected_background": 16.483298631183462,
+   "p_value": 0.8420045978973252,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B019",
+  "removed_total": 14,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 1,
+    "share": 0.07142857142857142,
+    "ci_lo": 0.0,
+    "ci_hi": 0.21428571428571427,
+    "evidence": "1 of 14 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 14 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 14 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 14 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 13,
+    "share": 0.9285714285714286,
+    "ci_lo": 0.7857142857142857,
+    "ci_hi": 1.0,
+    "evidence": "13 of 14 removed records"
+   }
+  ],
+  "residual": {
+   "count": 13,
+   "expected_background": 15.378872672889422,
+   "p_value": 0.7676288750294157,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B020",
+  "removed_total": 61,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 1,
+    "share": 0.01639344262295082,
+    "ci_lo": 0.0,
+    "ci_hi": 0.04918032786885246,
+    "evidence": "1 of 61 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.01639344262295082,
+    "ci_lo": 0.0,
+    "ci_hi": 0.04918032786885246,
+    "evidence": "1 of 61 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 61 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 46,
+    "share": 0.7540983606557377,
+    "ci_lo": 0.671311475409836,
+    "ci_hi": 0.8360655737704918,
+    "evidence": "46 of 61 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 13,
+    "share": 0.21311475409836064,
+    "ci_lo": 0.13114754098360656,
+    "ci_hi": 0.29508196721311475,
+    "evidence": "13 of 61 removed records"
+   }
+  ],
+  "residual": {
+   "count": 13,
+   "expected_background": 17.925771204779327,
+   "p_value": 0.9098067926625019,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "likely_benign"
+ },
+ {
+  "booth_id": "B021",
+  "removed_total": 16,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 1,
+    "share": 0.0625,
+    "ci_lo": 0.0,
+    "ci_hi": 0.1875,
+    "evidence": "1 of 16 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 2,
+    "share": 0.125,
+    "ci_lo": 0.0,
+    "ci_hi": 0.25,
+    "evidence": "2 of 16 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 16 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 16 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 13,
+    "share": 0.8125,
+    "ci_lo": 0.625,
+    "ci_hi": 0.9375,
+    "evidence": "13 of 16 removed records"
+   }
+  ],
+  "residual": {
+   "count": 13,
+   "expected_background": 20.866568553766854,
+   "p_value": 0.9758875402772317,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B022",
+  "removed_total": 87,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 1,
+    "share": 0.011494252873563218,
+    "ci_lo": 0.0,
+    "ci_hi": 0.034482758620689655,
+    "evidence": "1 of 87 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 2,
+    "share": 0.022988505747126436,
+    "ci_lo": 0.0,
+    "ci_hi": 0.05747126436781609,
+    "evidence": "2 of 87 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 87 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 70,
+    "share": 0.8045977011494253,
+    "ci_lo": 0.735632183908046,
+    "ci_hi": 0.8735632183908046,
+    "evidence": "70 of 87 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 14,
+    "share": 0.16091954022988506,
+    "ci_lo": 0.10344827586206896,
+    "ci_hi": 0.21839080459770116,
+    "evidence": "14 of 87 removed records"
+   }
+  ],
+  "residual": {
+   "count": 14,
+   "expected_background": 20.917297053089122,
+   "p_value": 0.9580201990557821,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "likely_benign"
+ },
+ {
+  "booth_id": "B023",
+  "removed_total": 25,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 4,
+    "share": 0.16,
+    "ci_lo": 0.04,
+    "ci_hi": 0.28,
+    "evidence": "4 of 25 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 25 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 25 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 25 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 21,
+    "share": 0.84,
+    "ci_lo": 0.72,
+    "ci_hi": 0.96,
+    "evidence": "21 of 25 removed records"
+   }
+  ],
+  "residual": {
+   "count": 21,
+   "expected_background": 22.77832049243424,
+   "p_value": 0.6776764687889476,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B024",
+  "removed_total": 10,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 4,
+    "share": 0.4,
+    "ci_lo": 0.2,
+    "ci_hi": 0.6049999999999954,
+    "evidence": "4 of 10 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 10 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 10 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 10 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 6,
+    "share": 0.6,
+    "ci_lo": 0.3950000000000003,
+    "ci_hi": 0.8,
+    "evidence": "6 of 10 removed records"
+   }
+  ],
+  "residual": {
+   "count": 6,
+   "expected_background": 11.638062976585628,
+   "p_value": 0.9764970643714225,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B025",
+  "removed_total": 23,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 5,
+    "share": 0.21739130434782608,
+    "ci_lo": 0.08695652173913043,
+    "ci_hi": 0.34782608695652173,
+    "evidence": "5 of 23 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 3,
+    "share": 0.13043478260869565,
+    "ci_lo": 0.043478260869565216,
+    "ci_hi": 0.2608695652173913,
+    "evidence": "3 of 23 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 23 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 23 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 15,
+    "share": 0.6521739130434783,
+    "ci_lo": 0.4782608695652174,
+    "ci_hi": 0.8260869565217391,
+    "evidence": "15 of 23 removed records"
+   }
+  ],
+  "residual": {
+   "count": 15,
+   "expected_background": 15.32505513662223,
+   "p_value": 0.5698263199133395,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B026",
+  "removed_total": 24,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 2,
+    "share": 0.08333333333333333,
+    "ci_lo": 0.0,
+    "ci_hi": 0.16666666666666666,
+    "evidence": "2 of 24 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 3,
+    "share": 0.125,
+    "ci_lo": 0.041666666666666664,
+    "ci_hi": 0.25,
+    "evidence": "3 of 24 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 24 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 24 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 19,
+    "share": 0.7916666666666666,
+    "ci_lo": 0.6666666666666666,
+    "ci_hi": 0.9166666666666666,
+    "evidence": "19 of 24 removed records"
+   }
+  ],
+  "residual": {
+   "count": 19,
+   "expected_background": 20.928986164760353,
+   "p_value": 0.6973134046176692,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B027",
+  "removed_total": 43,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 3,
+    "share": 0.06976744186046512,
+    "ci_lo": 0.023255813953488372,
+    "ci_hi": 0.13953488372093023,
+    "evidence": "3 of 43 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 3,
+    "share": 0.06976744186046512,
+    "ci_lo": 0.023255813953488372,
+    "ci_hi": 0.13953488372093023,
+    "evidence": "3 of 43 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 24,
+    "share": 0.5581395348837209,
+    "ci_lo": 0.4418604651162791,
+    "ci_hi": 0.6976744186046512,
+    "evidence": "24 of 43 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 43 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 13,
+    "share": 0.3023255813953488,
+    "ci_lo": 0.18604651162790697,
+    "ci_hi": 0.4186046511627907,
+    "evidence": "13 of 43 removed records"
+   }
+  ],
+  "residual": {
+   "count": 13,
+   "expected_background": 17.162570961659384,
+   "p_value": 0.8776951997874954,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B028",
+  "removed_total": 17,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 4,
+    "share": 0.23529411764705882,
+    "ci_lo": 0.058823529411764705,
+    "ci_hi": 0.4117647058823529,
+    "evidence": "4 of 17 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 17 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 17 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 17 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 13,
+    "share": 0.7647058823529411,
+    "ci_lo": 0.5882352941176471,
+    "ci_hi": 0.9411764705882353,
+    "evidence": "13 of 17 removed records"
+   }
+  ],
+  "residual": {
+   "count": 13,
+   "expected_background": 24.980412258793216,
+   "p_value": 0.9972457994984575,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B029",
+  "removed_total": 21,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 2,
+    "share": 0.09523809523809523,
+    "ci_lo": 0.0,
+    "ci_hi": 0.23809523809523808,
+    "evidence": "2 of 21 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.047619047619047616,
+    "ci_lo": 0.0,
+    "ci_hi": 0.14285714285714285,
+    "evidence": "1 of 21 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 21 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 21 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 18,
+    "share": 0.8571428571428571,
+    "ci_lo": 0.7142857142857143,
+    "ci_hi": 0.9523809523809523,
+    "evidence": "18 of 21 removed records"
+   }
+  ],
+  "residual": {
+   "count": 18,
+   "expected_background": 21.082938216009104,
+   "p_value": 0.78318295782697,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B030",
+  "removed_total": 20,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 2,
+    "share": 0.1,
+    "ci_lo": 0.0,
+    "ci_hi": 0.2,
+    "evidence": "2 of 20 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 2,
+    "share": 0.1,
+    "ci_lo": 0.0,
+    "ci_hi": 0.2,
+    "evidence": "2 of 20 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 20 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 20 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 16,
+    "share": 0.8,
+    "ci_lo": 0.65,
+    "ci_hi": 0.95,
+    "evidence": "16 of 20 removed records"
+   }
+  ],
+  "residual": {
+   "count": 16,
+   "expected_background": 26.91833435943498,
+   "p_value": 0.9917824760962259,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B031",
+  "removed_total": 12,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 1,
+    "share": 0.08333333333333333,
+    "ci_lo": 0.0,
+    "ci_hi": 0.25,
+    "evidence": "1 of 12 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 12 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 12 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 12 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 11,
+    "share": 0.9166666666666666,
+    "ci_lo": 0.75,
+    "ci_hi": 1.0,
+    "evidence": "11 of 12 removed records"
+   }
+  ],
+  "residual": {
+   "count": 11,
+   "expected_background": 17.00178455213487,
+   "p_value": 0.9540015704812168,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B032",
+  "removed_total": 15,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 1,
+    "share": 0.06666666666666667,
+    "ci_lo": 0.0,
+    "ci_hi": 0.2,
+    "evidence": "1 of 15 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 15 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 15 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 15 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 14,
+    "share": 0.9333333333333333,
+    "ci_lo": 0.8,
+    "ci_hi": 1.0,
+    "evidence": "14 of 15 removed records"
+   }
+  ],
+  "residual": {
+   "count": 14,
+   "expected_background": 20.01022660993102,
+   "p_value": 0.937777601790521,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B033",
+  "removed_total": 24,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 5,
+    "share": 0.20833333333333334,
+    "ci_lo": 0.08333333333333333,
+    "ci_hi": 0.3333333333333333,
+    "evidence": "5 of 24 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 2,
+    "share": 0.08333333333333333,
+    "ci_lo": 0.0,
+    "ci_hi": 0.20833333333333334,
+    "evidence": "2 of 24 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 24 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 24 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 17,
+    "share": 0.7083333333333334,
+    "ci_lo": 0.5416666666666666,
+    "ci_hi": 0.8354166666666648,
+    "evidence": "17 of 24 removed records"
+   }
+  ],
+  "residual": {
+   "count": 17,
+   "expected_background": 26.6956929633438,
+   "p_value": 0.9832876834489409,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B034",
+  "removed_total": 21,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 1,
+    "share": 0.047619047619047616,
+    "ci_lo": 0.0,
+    "ci_hi": 0.14285714285714285,
+    "evidence": "1 of 21 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 2,
+    "share": 0.09523809523809523,
+    "ci_lo": 0.0,
+    "ci_hi": 0.23809523809523808,
+    "evidence": "2 of 21 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 21 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 21 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 18,
+    "share": 0.8571428571428571,
+    "ci_lo": 0.7142857142857143,
+    "ci_hi": 1.0,
+    "evidence": "18 of 21 removed records"
+   }
+  ],
+  "residual": {
+   "count": 18,
+   "expected_background": 18.162782960479536,
+   "p_value": 0.5486113226889426,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B035",
+  "removed_total": 7,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 7 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 7 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 7 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 7 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 7,
+    "share": 1.0,
+    "ci_lo": 1.0,
+    "ci_hi": 1.0,
+    "evidence": "7 of 7 removed records"
+   }
+  ],
+  "residual": {
+   "count": 7,
+   "expected_background": 12.732028900622941,
+   "p_value": 0.9720406916708321,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B036",
+  "removed_total": 21,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 21 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.047619047619047616,
+    "ci_lo": 0.0,
+    "ci_hi": 0.14285714285714285,
+    "evidence": "1 of 21 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 21 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 21 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 20,
+    "share": 0.9523809523809523,
+    "ci_lo": 0.8571428571428571,
+    "ci_hi": 1.0,
+    "evidence": "20 of 21 removed records"
+   }
+  ],
+  "residual": {
+   "count": 20,
+   "expected_background": 24.344063955225558,
+   "p_value": 0.8420550027141296,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B037",
+  "removed_total": 14,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 1,
+    "share": 0.07142857142857142,
+    "ci_lo": 0.0,
+    "ci_hi": 0.21428571428571427,
+    "evidence": "1 of 14 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.07142857142857142,
+    "ci_lo": 0.0,
+    "ci_hi": 0.21428571428571427,
+    "evidence": "1 of 14 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 14 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 14 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 12,
+    "share": 0.8571428571428571,
+    "ci_lo": 0.6428571428571429,
+    "ci_hi": 1.0,
+    "evidence": "12 of 14 removed records"
+   }
+  ],
+  "residual": {
+   "count": 12,
+   "expected_background": 14.540904192053965,
+   "p_value": 0.7881461277277858,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B038",
+  "removed_total": 18,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 4,
+    "share": 0.2222222222222222,
+    "ci_lo": 0.05555555555555555,
+    "ci_hi": 0.3888888888888889,
+    "evidence": "4 of 18 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 2,
+    "share": 0.1111111111111111,
+    "ci_lo": 0.0,
+    "ci_hi": 0.2777777777777778,
+    "evidence": "2 of 18 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 18 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 18 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 12,
+    "share": 0.6666666666666666,
+    "ci_lo": 0.5,
+    "ci_hi": 0.8333333333333334,
+    "evidence": "12 of 18 removed records"
+   }
+  ],
+  "residual": {
+   "count": 12,
+   "expected_background": 22.63638745675628,
+   "p_value": 0.9952272771324135,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B039",
+  "removed_total": 49,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 49 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.02040816326530612,
+    "ci_lo": 0.0,
+    "ci_hi": 0.061224489795918366,
+    "evidence": "1 of 49 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 49 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 38,
+    "share": 0.7755102040816326,
+    "ci_lo": 0.673469387755102,
+    "ci_hi": 0.8775510204081632,
+    "evidence": "38 of 49 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 10,
+    "share": 0.20408163265306123,
+    "ci_lo": 0.12244897959183673,
+    "ci_hi": 0.30612244897959184,
+    "evidence": "10 of 49 removed records"
+   }
+  ],
+  "residual": {
+   "count": 10,
+   "expected_background": 16.936851587338417,
+   "p_value": 0.9750938733490752,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "likely_benign"
+ },
+ {
+  "booth_id": "B040",
+  "removed_total": 18,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 1,
+    "share": 0.05555555555555555,
+    "ci_lo": 0.0,
+    "ci_hi": 0.16666666666666666,
+    "evidence": "1 of 18 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 2,
+    "share": 0.1111111111111111,
+    "ci_lo": 0.0,
+    "ci_hi": 0.2222222222222222,
+    "evidence": "2 of 18 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 18 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 18 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 15,
+    "share": 0.8333333333333334,
+    "ci_lo": 0.6666666666666666,
+    "ci_hi": 0.9444444444444444,
+    "evidence": "15 of 18 removed records"
+   }
+  ],
+  "residual": {
+   "count": 15,
+   "expected_background": 14.439426229523914,
+   "p_value": 0.4769172348935202,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B041",
+  "removed_total": 14,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 4,
+    "share": 0.2857142857142857,
+    "ci_lo": 0.14285714285714285,
+    "ci_hi": 0.5,
+    "evidence": "4 of 14 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 14 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 14 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 14 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 10,
+    "share": 0.7142857142857143,
+    "ci_lo": 0.5,
+    "ci_hi": 0.8571428571428571,
+    "evidence": "10 of 14 removed records"
+   }
+  ],
+  "residual": {
+   "count": 10,
+   "expected_background": 12.43612598379749,
+   "p_value": 0.798832759736217,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B042",
+  "removed_total": 30,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 7,
+    "share": 0.23333333333333334,
+    "ci_lo": 0.1,
+    "ci_hi": 0.36666666666666664,
+    "evidence": "7 of 30 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 2,
+    "share": 0.06666666666666667,
+    "ci_lo": 0.0,
+    "ci_hi": 0.13499999999999848,
+    "evidence": "2 of 30 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 30 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 30 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 21,
+    "share": 0.7,
+    "ci_lo": 0.5666666666666667,
+    "ci_hi": 0.8333333333333334,
+    "evidence": "21 of 30 removed records"
+   }
+  ],
+  "residual": {
+   "count": 21,
+   "expected_background": 24.014703122549804,
+   "p_value": 0.7630987723168127,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B043",
+  "removed_total": 22,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 6,
+    "share": 0.2727272727272727,
+    "ci_lo": 0.13636363636363635,
+    "ci_hi": 0.4090909090909091,
+    "evidence": "6 of 22 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.045454545454545456,
+    "ci_lo": 0.0,
+    "ci_hi": 0.13636363636363635,
+    "evidence": "1 of 22 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 22 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 22 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 15,
+    "share": 0.6818181818181818,
+    "ci_lo": 0.5,
+    "ci_hi": 0.8181818181818182,
+    "evidence": "15 of 22 removed records"
+   }
+  ],
+  "residual": {
+   "count": 15,
+   "expected_background": 19.343304994227967,
+   "p_value": 0.8719464393851221,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B044",
+  "removed_total": 16,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 3,
+    "share": 0.1875,
+    "ci_lo": 0.0625,
+    "ci_hi": 0.375,
+    "evidence": "3 of 16 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 16 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 16 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 16 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 13,
+    "share": 0.8125,
+    "ci_lo": 0.625,
+    "ci_hi": 0.9375,
+    "evidence": "13 of 16 removed records"
+   }
+  ],
+  "residual": {
+   "count": 13,
+   "expected_background": 14.859881270288703,
+   "p_value": 0.725283310856351,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B045",
+  "removed_total": 21,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 21 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.047619047619047616,
+    "ci_lo": 0.0,
+    "ci_hi": 0.14285714285714285,
+    "evidence": "1 of 21 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 21 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 21 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 20,
+    "share": 0.9523809523809523,
+    "ci_lo": 0.8571428571428571,
+    "ci_hi": 1.0,
+    "evidence": "20 of 21 removed records"
+   }
+  ],
+  "residual": {
+   "count": 20,
+   "expected_background": 20.120173983411675,
+   "p_value": 0.5422870057212484,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B046",
+  "removed_total": 27,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 7,
+    "share": 0.25925925925925924,
+    "ci_lo": 0.1111111111111111,
+    "ci_hi": 0.4074074074074074,
+    "evidence": "7 of 27 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 3,
+    "share": 0.1111111111111111,
+    "ci_lo": 0.037037037037037035,
+    "ci_hi": 0.2222222222222222,
+    "evidence": "3 of 27 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 27 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 27 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 17,
+    "share": 0.6296296296296297,
+    "ci_lo": 0.48148148148148145,
+    "ci_hi": 0.7777777777777778,
+    "evidence": "17 of 27 removed records"
+   }
+  ],
+  "residual": {
+   "count": 17,
+   "expected_background": 24.622113835275847,
+   "p_value": 0.9588806097839361,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B047",
+  "removed_total": 412,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 10,
+    "share": 0.024271844660194174,
+    "ci_lo": 0.012135922330097087,
+    "ci_hi": 0.03640776699029126,
+    "evidence": "10 of 412 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.0024271844660194173,
+    "ci_lo": 0.0,
+    "ci_hi": 0.007281553398058253,
+    "evidence": "1 of 412 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 412 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 412 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 401,
+    "share": 0.9733009708737864,
+    "ci_lo": 0.9611650485436893,
+    "ci_hi": 0.9854368932038835,
+    "evidence": "401 of 412 removed records"
+   }
+  ],
+  "residual": {
+   "count": 401,
+   "expected_background": 25.00669666258537,
+   "p_value": 0.0,
+   "significant": true
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "unusual"
+ },
+ {
+  "booth_id": "B048",
+  "removed_total": 16,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 5,
+    "share": 0.3125,
+    "ci_lo": 0.125,
+    "ci_hi": 0.5,
+    "evidence": "5 of 16 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 16 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 16 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 16 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 11,
+    "share": 0.6875,
+    "ci_lo": 0.5,
+    "ci_hi": 0.875,
+    "evidence": "11 of 16 removed records"
+   }
+  ],
+  "residual": {
+   "count": 11,
+   "expected_background": 18.199014282375586,
+   "p_value": 0.9745949377006187,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B049",
+  "removed_total": 11,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 1,
+    "share": 0.09090909090909091,
+    "ci_lo": 0.0,
+    "ci_hi": 0.2727272727272727,
+    "evidence": "1 of 11 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.09090909090909091,
+    "ci_lo": 0.0,
+    "ci_hi": 0.2727272727272727,
+    "evidence": "1 of 11 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 11 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 11 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 9,
+    "share": 0.8181818181818182,
+    "ci_lo": 0.6363636363636364,
+    "ci_hi": 1.0,
+    "evidence": "9 of 11 removed records"
+   }
+  ],
+  "residual": {
+   "count": 9,
+   "expected_background": 13.587143159729147,
+   "p_value": 0.9280930523214872,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B050",
+  "removed_total": 20,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 3,
+    "share": 0.15,
+    "ci_lo": 0.05,
+    "ci_hi": 0.3,
+    "evidence": "3 of 20 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 2,
+    "share": 0.1,
+    "ci_lo": 0.0,
+    "ci_hi": 0.2,
+    "evidence": "2 of 20 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 20 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 20 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 15,
+    "share": 0.75,
+    "ci_lo": 0.55,
+    "ci_hi": 0.9,
+    "evidence": "15 of 20 removed records"
+   }
+  ],
+  "residual": {
+   "count": 15,
+   "expected_background": 21.8977807345417,
+   "p_value": 0.9533337095340721,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B051",
+  "removed_total": 19,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 19 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 19 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 19 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 19 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 19,
+    "share": 1.0,
+    "ci_lo": 1.0,
+    "ci_hi": 1.0,
+    "evidence": "19 of 19 removed records"
+   }
+  ],
+  "residual": {
+   "count": 19,
+   "expected_background": 18.60902318094661,
+   "p_value": 0.49565305386868286,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B052",
+  "removed_total": 17,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 3,
+    "share": 0.17647058823529413,
+    "ci_lo": 0.058823529411764705,
+    "ci_hi": 0.35294117647058826,
+    "evidence": "3 of 17 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 17 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 17 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 17 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 14,
+    "share": 0.8235294117647058,
+    "ci_lo": 0.6470588235294118,
+    "ci_hi": 0.9411764705882353,
+    "evidence": "14 of 17 removed records"
+   }
+  ],
+  "residual": {
+   "count": 14,
+   "expected_background": 18.57238469111868,
+   "p_value": 0.8889153671213792,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B053",
+  "removed_total": 20,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 1,
+    "share": 0.05,
+    "ci_lo": 0.0,
+    "ci_hi": 0.15,
+    "evidence": "1 of 20 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.05,
+    "ci_lo": 0.0,
+    "ci_hi": 0.15,
+    "evidence": "1 of 20 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 20 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 20 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 18,
+    "share": 0.9,
+    "ci_lo": 0.8,
+    "ci_hi": 1.0,
+    "evidence": "18 of 20 removed records"
+   }
+  ],
+  "residual": {
+   "count": 18,
+   "expected_background": 20.496819023848147,
+   "p_value": 0.7440274107345937,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B054",
+  "removed_total": 25,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 1,
+    "share": 0.04,
+    "ci_lo": 0.0,
+    "ci_hi": 0.12,
+    "evidence": "1 of 25 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.04,
+    "ci_lo": 0.0,
+    "ci_hi": 0.12,
+    "evidence": "1 of 25 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 25 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 25 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 23,
+    "share": 0.92,
+    "ci_lo": 0.84,
+    "ci_hi": 1.0,
+    "evidence": "23 of 25 removed records"
+   }
+  ],
+  "residual": {
+   "count": 23,
+   "expected_background": 16.562844273748542,
+   "p_value": 0.07348905192508018,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B055",
+  "removed_total": 22,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 2,
+    "share": 0.09090909090909091,
+    "ci_lo": 0.0,
+    "ci_hi": 0.18181818181818182,
+    "evidence": "2 of 22 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 3,
+    "share": 0.13636363636363635,
+    "ci_lo": 0.045454545454545456,
+    "ci_hi": 0.2727272727272727,
+    "evidence": "3 of 22 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 22 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 22 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 17,
+    "share": 0.7727272727272727,
+    "ci_lo": 0.6363636363636364,
+    "ci_hi": 0.9090909090909091,
+    "evidence": "17 of 22 removed records"
+   }
+  ],
+  "residual": {
+   "count": 17,
+   "expected_background": 18.488150902324772,
+   "p_value": 0.6709462842209397,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B056",
+  "removed_total": 13,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 13 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.07692307692307693,
+    "ci_lo": 0.0,
+    "ci_hi": 0.23076923076923078,
+    "evidence": "1 of 13 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 13 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 13 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 12,
+    "share": 0.9230769230769231,
+    "ci_lo": 0.7692307692307693,
+    "ci_hi": 1.0,
+    "evidence": "12 of 13 removed records"
+   }
+  ],
+  "residual": {
+   "count": 12,
+   "expected_background": 15.696392196426462,
+   "p_value": 0.862206021526733,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B057",
+  "removed_total": 19,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 2,
+    "share": 0.10526315789473684,
+    "ci_lo": 0.0,
+    "ci_hi": 0.2631578947368421,
+    "evidence": "2 of 19 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.05263157894736842,
+    "ci_lo": 0.0,
+    "ci_hi": 0.15789473684210525,
+    "evidence": "1 of 19 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 19 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 19 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 16,
+    "share": 0.8421052631578947,
+    "ci_lo": 0.6842105263157895,
+    "ci_hi": 0.9473684210526315,
+    "evidence": "16 of 19 removed records"
+   }
+  ],
+  "residual": {
+   "count": 16,
+   "expected_background": 16.273818844949428,
+   "p_value": 0.5625899967738168,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B058",
+  "removed_total": 17,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 3,
+    "share": 0.17647058823529413,
+    "ci_lo": 0.058823529411764705,
+    "ci_hi": 0.29411764705882354,
+    "evidence": "3 of 17 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 2,
+    "share": 0.11764705882352941,
+    "ci_lo": 0.0,
+    "ci_hi": 0.23529411764705882,
+    "evidence": "2 of 17 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 17 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 17 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 12,
+    "share": 0.7058823529411765,
+    "ci_lo": 0.5294117647058824,
+    "ci_hi": 0.8823529411764706,
+    "evidence": "12 of 17 removed records"
+   }
+  ],
+  "residual": {
+   "count": 12,
+   "expected_background": 16.748598673823764,
+   "p_value": 0.9103181206517394,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B059",
+  "removed_total": 8,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 2,
+    "share": 0.25,
+    "ci_lo": 0.0,
+    "ci_hi": 0.5,
+    "evidence": "2 of 8 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 8 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 8 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 8 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 6,
+    "share": 0.75,
+    "ci_lo": 0.5,
+    "ci_hi": 1.0,
+    "evidence": "6 of 8 removed records"
+   }
+  ],
+  "residual": {
+   "count": 6,
+   "expected_background": 11.702094159225314,
+   "p_value": 0.977428755180197,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B060",
+  "removed_total": 7,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 1,
+    "share": 0.14285714285714285,
+    "ci_lo": 0.0,
+    "ci_hi": 0.42857142857142855,
+    "evidence": "1 of 7 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 7 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 7 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 7 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 6,
+    "share": 0.8571428571428571,
+    "ci_lo": 0.5714285714285714,
+    "ci_hi": 1.0,
+    "evidence": "6 of 7 removed records"
+   }
+  ],
+  "residual": {
+   "count": 6,
+   "expected_background": 13.807184458381732,
+   "p_value": 0.9943955084544731,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B061",
+  "removed_total": 23,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 1,
+    "share": 0.043478260869565216,
+    "ci_lo": 0.0,
+    "ci_hi": 0.13043478260869565,
+    "evidence": "1 of 23 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 23 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 23 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 23 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 22,
+    "share": 0.9565217391304348,
+    "ci_lo": 0.8695652173913043,
+    "ci_hi": 1.0,
+    "evidence": "22 of 23 removed records"
+   }
+  ],
+  "residual": {
+   "count": 22,
+   "expected_background": 17.783982383331125,
+   "p_value": 0.18217296609288738,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B062",
+  "removed_total": 29,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 5,
+    "share": 0.1724137931034483,
+    "ci_lo": 0.06896551724137931,
+    "ci_hi": 0.27586206896551724,
+    "evidence": "5 of 29 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 2,
+    "share": 0.06896551724137931,
+    "ci_lo": 0.0,
+    "ci_hi": 0.1724137931034483,
+    "evidence": "2 of 29 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 29 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 29 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 22,
+    "share": 0.7586206896551724,
+    "ci_lo": 0.6206896551724138,
+    "ci_hi": 0.896551724137931,
+    "evidence": "22 of 29 removed records"
+   }
+  ],
+  "residual": {
+   "count": 22,
+   "expected_background": 27.05319200834527,
+   "p_value": 0.8635756147800818,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B063",
+  "removed_total": 154,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 54,
+    "share": 0.35064935064935066,
+    "ci_lo": 0.2857142857142857,
+    "ci_hi": 0.4155844155844156,
+    "evidence": "54 of 154 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.006493506493506494,
+    "ci_lo": 0.0,
+    "ci_hi": 0.01948051948051948,
+    "evidence": "1 of 154 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 86,
+    "share": 0.5584415584415584,
+    "ci_lo": 0.487012987012987,
+    "ci_hi": 0.6298701298701299,
+    "evidence": "86 of 154 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 154 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 13,
+    "share": 0.08441558441558442,
+    "ci_lo": 0.05194805194805195,
+    "ci_hi": 0.11688311688311688,
+    "evidence": "13 of 154 removed records"
+   }
+  ],
+  "residual": {
+   "count": 13,
+   "expected_background": 18.260554377486056,
+   "p_value": 0.9215677942349488,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B064",
+  "removed_total": 23,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 1,
+    "share": 0.043478260869565216,
+    "ci_lo": 0.0,
+    "ci_hi": 0.13043478260869565,
+    "evidence": "1 of 23 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 23 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 23 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 23 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 22,
+    "share": 0.9565217391304348,
+    "ci_lo": 0.8695652173913043,
+    "ci_hi": 1.0,
+    "evidence": "22 of 23 removed records"
+   }
+  ],
+  "residual": {
+   "count": 22,
+   "expected_background": 22.54688409279163,
+   "p_value": 0.576494144114176,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B065",
+  "removed_total": 13,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 2,
+    "share": 0.15384615384615385,
+    "ci_lo": 0.0,
+    "ci_hi": 0.3076923076923077,
+    "evidence": "2 of 13 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.07692307692307693,
+    "ci_lo": 0.0,
+    "ci_hi": 0.23076923076923078,
+    "evidence": "1 of 13 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 13 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 13 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 10,
+    "share": 0.7692307692307693,
+    "ci_lo": 0.5384615384615384,
+    "ci_hi": 0.9230769230769231,
+    "evidence": "10 of 13 removed records"
+   }
+  ],
+  "residual": {
+   "count": 10,
+   "expected_background": 14.414354480840988,
+   "p_value": 0.9130646097342852,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B066",
+  "removed_total": 16,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 2,
+    "share": 0.125,
+    "ci_lo": 0.0,
+    "ci_hi": 0.25,
+    "evidence": "2 of 16 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 16 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 16 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 16 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 14,
+    "share": 0.875,
+    "ci_lo": 0.75,
+    "ci_hi": 1.0,
+    "evidence": "14 of 16 removed records"
+   }
+  ],
+  "residual": {
+   "count": 14,
+   "expected_background": 18.070576981940548,
+   "p_value": 0.8658421082877844,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B067",
+  "removed_total": 21,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 21 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 4,
+    "share": 0.19047619047619047,
+    "ci_lo": 0.047619047619047616,
+    "ci_hi": 0.3333333333333333,
+    "evidence": "4 of 21 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 21 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 21 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 17,
+    "share": 0.8095238095238095,
+    "ci_lo": 0.6666666666666666,
+    "ci_hi": 0.9523809523809523,
+    "evidence": "17 of 21 removed records"
+   }
+  ],
+  "residual": {
+   "count": 17,
+   "expected_background": 25.872531031482232,
+   "p_value": 0.9758589875679835,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B068",
+  "removed_total": 13,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 3,
+    "share": 0.23076923076923078,
+    "ci_lo": 0.07692307692307693,
+    "ci_hi": 0.46153846153846156,
+    "evidence": "3 of 13 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 2,
+    "share": 0.15384615384615385,
+    "ci_lo": 0.0,
+    "ci_hi": 0.3076923076923077,
+    "evidence": "2 of 13 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 13 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 13 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 8,
+    "share": 0.6153846153846154,
+    "ci_lo": 0.38461538461538464,
+    "ci_hi": 0.8461538461538461,
+    "evidence": "8 of 13 removed records"
+   }
+  ],
+  "residual": {
+   "count": 8,
+   "expected_background": 18.35325190871573,
+   "p_value": 0.9980053704355604,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B069",
+  "removed_total": 22,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 2,
+    "share": 0.09090909090909091,
+    "ci_lo": 0.0,
+    "ci_hi": 0.18181818181818182,
+    "evidence": "2 of 22 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 22 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 22 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 22 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 20,
+    "share": 0.9090909090909091,
+    "ci_lo": 0.8181818181818182,
+    "ci_hi": 1.0,
+    "evidence": "20 of 22 removed records"
+   }
+  ],
+  "residual": {
+   "count": 20,
+   "expected_background": 23.51719861363518,
+   "p_value": 0.7983782268992484,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B070",
+  "removed_total": 47,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 1,
+    "share": 0.02127659574468085,
+    "ci_lo": 0.0,
+    "ci_hi": 0.06382978723404255,
+    "evidence": "1 of 47 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 47 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 47 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 36,
+    "share": 0.7659574468085106,
+    "ci_lo": 0.6595744680851063,
+    "ci_hi": 0.8723404255319149,
+    "evidence": "36 of 47 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 10,
+    "share": 0.2127659574468085,
+    "ci_lo": 0.1276595744680851,
+    "ci_hi": 0.3191489361702128,
+    "evidence": "10 of 47 removed records"
+   }
+  ],
+  "residual": {
+   "count": 10,
+   "expected_background": 17.41054984661939,
+   "p_value": 0.9807049740902914,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "likely_benign"
+ },
+ {
+  "booth_id": "B071",
+  "removed_total": 22,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 2,
+    "share": 0.09090909090909091,
+    "ci_lo": 0.0,
+    "ci_hi": 0.18181818181818182,
+    "evidence": "2 of 22 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.045454545454545456,
+    "ci_lo": 0.0,
+    "ci_hi": 0.13636363636363635,
+    "evidence": "1 of 22 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 22 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 22 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 19,
+    "share": 0.8636363636363636,
+    "ci_lo": 0.7272727272727273,
+    "ci_hi": 0.9545454545454546,
+    "evidence": "19 of 22 removed records"
+   }
+  ],
+  "residual": {
+   "count": 19,
+   "expected_background": 18.66320348341306,
+   "p_value": 0.5007903050890508,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B072",
+  "removed_total": 11,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 1,
+    "share": 0.09090909090909091,
+    "ci_lo": 0.0,
+    "ci_hi": 0.2727272727272727,
+    "evidence": "1 of 11 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 11 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 11 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 11 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 10,
+    "share": 0.9090909090909091,
+    "ci_lo": 0.7272727272727273,
+    "ci_hi": 1.0,
+    "evidence": "10 of 11 removed records"
+   }
+  ],
+  "residual": {
+   "count": 10,
+   "expected_background": 16.36357805579437,
+   "p_value": 0.9664412434630488,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B073",
+  "removed_total": 56,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 2,
+    "share": 0.03571428571428571,
+    "ci_lo": 0.0,
+    "ci_hi": 0.07142857142857142,
+    "evidence": "2 of 56 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.017857142857142856,
+    "ci_lo": 0.0,
+    "ci_hi": 0.05357142857142857,
+    "evidence": "1 of 56 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 56 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 41,
+    "share": 0.7321428571428571,
+    "ci_lo": 0.6428571428571429,
+    "ci_hi": 0.8214285714285714,
+    "evidence": "41 of 56 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 12,
+    "share": 0.21428571428571427,
+    "ci_lo": 0.125,
+    "ci_hi": 0.30357142857142855,
+    "evidence": "12 of 56 removed records"
+   }
+  ],
+  "residual": {
+   "count": 12,
+   "expected_background": 23.477746496587052,
+   "p_value": 0.9970498336806486,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "likely_benign"
+ },
+ {
+  "booth_id": "B074",
+  "removed_total": 12,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 3,
+    "share": 0.25,
+    "ci_lo": 0.08333333333333333,
+    "ci_hi": 0.4166666666666667,
+    "evidence": "3 of 12 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 12 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 12 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 12 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 9,
+    "share": 0.75,
+    "ci_lo": 0.5833333333333334,
+    "ci_hi": 0.9166666666666666,
+    "evidence": "9 of 12 removed records"
+   }
+  ],
+  "residual": {
+   "count": 9,
+   "expected_background": 22.329288819256607,
+   "p_value": 0.9996129309628116,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B075",
+  "removed_total": 23,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 2,
+    "share": 0.08695652173913043,
+    "ci_lo": 0.0,
+    "ci_hi": 0.17391304347826086,
+    "evidence": "2 of 23 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.043478260869565216,
+    "ci_lo": 0.0,
+    "ci_hi": 0.13043478260869565,
+    "evidence": "1 of 23 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 23 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 23 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 20,
+    "share": 0.8695652173913043,
+    "ci_lo": 0.7804347826086958,
+    "ci_hi": 1.0,
+    "evidence": "20 of 23 removed records"
+   }
+  ],
+  "residual": {
+   "count": 20,
+   "expected_background": 19.09708727179216,
+   "p_value": 0.4484009150868977,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B076",
+  "removed_total": 18,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 2,
+    "share": 0.1111111111111111,
+    "ci_lo": 0.0,
+    "ci_hi": 0.2222222222222222,
+    "evidence": "2 of 18 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 2,
+    "share": 0.1111111111111111,
+    "ci_lo": 0.0,
+    "ci_hi": 0.2222222222222222,
+    "evidence": "2 of 18 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 18 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 18 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 14,
+    "share": 0.7777777777777778,
+    "ci_lo": 0.6111111111111112,
+    "ci_hi": 0.9444444444444444,
+    "evidence": "14 of 18 removed records"
+   }
+  ],
+  "residual": {
+   "count": 14,
+   "expected_background": 18.655952898673362,
+   "p_value": 0.8924775614359008,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B077",
+  "removed_total": 12,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 12 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 12 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 12 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 12 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 12,
+    "share": 1.0,
+    "ci_lo": 1.0,
+    "ci_hi": 1.0,
+    "evidence": "12 of 12 removed records"
+   }
+  ],
+  "residual": {
+   "count": 12,
+   "expected_background": 12.016955161424056,
+   "p_value": 0.5425693365724222,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B078",
+  "removed_total": 21,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 2,
+    "share": 0.09523809523809523,
+    "ci_lo": 0.0,
+    "ci_hi": 0.19047619047619047,
+    "evidence": "2 of 21 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 2,
+    "share": 0.09523809523809523,
+    "ci_lo": 0.0,
+    "ci_hi": 0.19047619047619047,
+    "evidence": "2 of 21 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 21 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 21 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 17,
+    "share": 0.8095238095238095,
+    "ci_lo": 0.6666666666666666,
+    "ci_hi": 0.9523809523809523,
+    "evidence": "17 of 21 removed records"
+   }
+  ],
+  "residual": {
+   "count": 17,
+   "expected_background": 18.456017891133232,
+   "p_value": 0.6681640375485286,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B079",
+  "removed_total": 18,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 2,
+    "share": 0.1111111111111111,
+    "ci_lo": 0.0,
+    "ci_hi": 0.2222222222222222,
+    "evidence": "2 of 18 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.05555555555555555,
+    "ci_lo": 0.0,
+    "ci_hi": 0.16666666666666666,
+    "evidence": "1 of 18 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 18 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 18 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 15,
+    "share": 0.8333333333333334,
+    "ci_lo": 0.6666666666666666,
+    "ci_hi": 0.9444444444444444,
+    "evidence": "15 of 18 removed records"
+   }
+  ],
+  "residual": {
+   "count": 15,
+   "expected_background": 21.223358850562644,
+   "p_value": 0.9381439940280566,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B080",
+  "removed_total": 17,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 2,
+    "share": 0.11764705882352941,
+    "ci_lo": 0.0,
+    "ci_hi": 0.23529411764705882,
+    "evidence": "2 of 17 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.058823529411764705,
+    "ci_lo": 0.0,
+    "ci_hi": 0.11764705882352941,
+    "evidence": "1 of 17 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 17 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 17 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 14,
+    "share": 0.8235294117647058,
+    "ci_lo": 0.6470588235294118,
+    "ci_hi": 0.9411764705882353,
+    "evidence": "14 of 17 removed records"
+   }
+  ],
+  "residual": {
+   "count": 14,
+   "expected_background": 15.678370140484603,
+   "p_value": 0.7030446644003672,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B081",
+  "removed_total": 21,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 5,
+    "share": 0.23809523809523808,
+    "ci_lo": 0.09523809523809523,
+    "ci_hi": 0.38095238095238093,
+    "evidence": "5 of 21 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 3,
+    "share": 0.14285714285714285,
+    "ci_lo": 0.04523809523809537,
+    "ci_hi": 0.2857142857142857,
+    "evidence": "3 of 21 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 21 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 21 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 13,
+    "share": 0.6190476190476191,
+    "ci_lo": 0.42857142857142855,
+    "ci_hi": 0.8095238095238095,
+    "evidence": "13 of 21 removed records"
+   }
+  ],
+  "residual": {
+   "count": 13,
+   "expected_background": 20.842847250821517,
+   "p_value": 0.9756477811863312,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B082",
+  "removed_total": 13,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 2,
+    "share": 0.15384615384615385,
+    "ci_lo": 0.0,
+    "ci_hi": 0.3076923076923077,
+    "evidence": "2 of 13 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.07692307692307693,
+    "ci_lo": 0.0,
+    "ci_hi": 0.23076923076923078,
+    "evidence": "1 of 13 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 13 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 13 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 10,
+    "share": 0.7692307692307693,
+    "ci_lo": 0.5384615384615384,
+    "ci_hi": 0.9230769230769231,
+    "evidence": "10 of 13 removed records"
+   }
+  ],
+  "residual": {
+   "count": 10,
+   "expected_background": 12.09983942959472,
+   "p_value": 0.771292090112949,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B083",
+  "removed_total": 18,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 2,
+    "share": 0.1111111111111111,
+    "ci_lo": 0.0,
+    "ci_hi": 0.2222222222222222,
+    "evidence": "2 of 18 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 3,
+    "share": 0.16666666666666666,
+    "ci_lo": 0.05555555555555555,
+    "ci_hi": 0.3333333333333333,
+    "evidence": "3 of 18 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 18 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 18 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 13,
+    "share": 0.7222222222222222,
+    "ci_lo": 0.5,
+    "ci_hi": 0.8888888888888888,
+    "evidence": "13 of 18 removed records"
+   }
+  ],
+  "residual": {
+   "count": 13,
+   "expected_background": 19.542609323501782,
+   "p_value": 0.9551966735934811,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B084",
+  "removed_total": 17,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 3,
+    "share": 0.17647058823529413,
+    "ci_lo": 0.0,
+    "ci_hi": 0.35294117647058826,
+    "evidence": "3 of 17 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 2,
+    "share": 0.11764705882352941,
+    "ci_lo": 0.0,
+    "ci_hi": 0.23529411764705882,
+    "evidence": "2 of 17 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 17 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 17 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 12,
+    "share": 0.7058823529411765,
+    "ci_lo": 0.5294117647058824,
+    "ci_hi": 0.8823529411764706,
+    "evidence": "12 of 17 removed records"
+   }
+  ],
+  "residual": {
+   "count": 12,
+   "expected_background": 15.574463784900113,
+   "p_value": 0.8554611000586683,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B085",
+  "removed_total": 49,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 27,
+    "share": 0.5510204081632653,
+    "ci_lo": 0.42857142857142855,
+    "ci_hi": 0.673469387755102,
+    "evidence": "27 of 49 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 3,
+    "share": 0.061224489795918366,
+    "ci_lo": 0.02040816326530612,
+    "ci_hi": 0.12244897959183673,
+    "evidence": "3 of 49 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 49 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 49 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 19,
+    "share": 0.3877551020408163,
+    "ci_lo": 0.2857142857142857,
+    "ci_hi": 0.5102040816326531,
+    "evidence": "19 of 49 removed records"
+   }
+  ],
+  "residual": {
+   "count": 19,
+   "expected_background": 21.78693750256068,
+   "p_value": 0.758531762927221,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B086",
+  "removed_total": 12,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 1,
+    "share": 0.08333333333333333,
+    "ci_lo": 0.0,
+    "ci_hi": 0.25,
+    "evidence": "1 of 12 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.08333333333333333,
+    "ci_lo": 0.0,
+    "ci_hi": 0.25,
+    "evidence": "1 of 12 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 12 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 12 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 10,
+    "share": 0.8333333333333334,
+    "ci_lo": 0.6666666666666666,
+    "ci_hi": 1.0,
+    "evidence": "10 of 12 removed records"
+   }
+  ],
+  "residual": {
+   "count": 10,
+   "expected_background": 17.080487874616498,
+   "p_value": 0.9769475323744284,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B087",
+  "removed_total": 27,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 2,
+    "share": 0.07407407407407407,
+    "ci_lo": 0.0,
+    "ci_hi": 0.18518518518518517,
+    "evidence": "2 of 27 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 2,
+    "share": 0.07407407407407407,
+    "ci_lo": 0.0,
+    "ci_hi": 0.14814814814814814,
+    "evidence": "2 of 27 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 27 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 27 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 23,
+    "share": 0.8518518518518519,
+    "ci_lo": 0.7407407407407407,
+    "ci_hi": 0.9629629629629629,
+    "evidence": "23 of 27 removed records"
+   }
+  ],
+  "residual": {
+   "count": 23,
+   "expected_background": 24.31922604558134,
+   "p_value": 0.6362407873433596,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B088",
+  "removed_total": 23,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 4,
+    "share": 0.17391304347826086,
+    "ci_lo": 0.043478260869565216,
+    "ci_hi": 0.30434782608695654,
+    "evidence": "4 of 23 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 23 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 23 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 23 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 19,
+    "share": 0.8260869565217391,
+    "ci_lo": 0.6956521739130435,
+    "ci_hi": 0.9565217391304348,
+    "evidence": "19 of 23 removed records"
+   }
+  ],
+  "residual": {
+   "count": 19,
+   "expected_background": 21.406175120333227,
+   "p_value": 0.7324218515210319,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B089",
+  "removed_total": 27,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 7,
+    "share": 0.25925925925925924,
+    "ci_lo": 0.1111111111111111,
+    "ci_hi": 0.4074074074074074,
+    "evidence": "7 of 27 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.037037037037037035,
+    "ci_lo": 0.0,
+    "ci_hi": 0.1111111111111111,
+    "evidence": "1 of 27 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 27 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 27 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 19,
+    "share": 0.7037037037037037,
+    "ci_lo": 0.5555555555555556,
+    "ci_hi": 0.8518518518518519,
+    "evidence": "19 of 27 removed records"
+   }
+  ],
+  "residual": {
+   "count": 19,
+   "expected_background": 17.937509056673182,
+   "p_value": 0.43177918470468096,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B090",
+  "removed_total": 30,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 5,
+    "share": 0.16666666666666666,
+    "ci_lo": 0.06666666666666667,
+    "ci_hi": 0.3,
+    "evidence": "5 of 30 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.03333333333333333,
+    "ci_lo": 0.0,
+    "ci_hi": 0.1,
+    "evidence": "1 of 30 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 30 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 30 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 24,
+    "share": 0.8,
+    "ci_lo": 0.6666666666666666,
+    "ci_hi": 0.9333333333333333,
+    "evidence": "24 of 30 removed records"
+   }
+  ],
+  "residual": {
+   "count": 24,
+   "expected_background": 22.452533216976228,
+   "p_value": 0.39868120879655633,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B091",
+  "removed_total": 3,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 3 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 3 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 3 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 3 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 3,
+    "share": 1.0,
+    "ci_lo": 1.0,
+    "ci_hi": 1.0,
+    "evidence": "3 of 3 removed records"
+   }
+  ],
+  "residual": {
+   "count": 3,
+   "expected_background": 12.273937950406328,
+   "p_value": 0.9996515601732704,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B092",
+  "removed_total": 19,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 3,
+    "share": 0.15789473684210525,
+    "ci_lo": 0.05263157894736842,
+    "ci_hi": 0.3157894736842105,
+    "evidence": "3 of 19 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.05263157894736842,
+    "ci_lo": 0.0,
+    "ci_hi": 0.15789473684210525,
+    "evidence": "1 of 19 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 19 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 19 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 15,
+    "share": 0.7894736842105263,
+    "ci_lo": 0.631578947368421,
+    "ci_hi": 0.8947368421052632,
+    "evidence": "15 of 19 removed records"
+   }
+  ],
+  "residual": {
+   "count": 15,
+   "expected_background": 16.32928799064967,
+   "p_value": 0.6665869655161802,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B093",
+  "removed_total": 24,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 4,
+    "share": 0.16666666666666666,
+    "ci_lo": 0.041666666666666664,
+    "ci_hi": 0.2916666666666667,
+    "evidence": "4 of 24 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.041666666666666664,
+    "ci_lo": 0.0,
+    "ci_hi": 0.125,
+    "evidence": "1 of 24 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 24 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 24 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 19,
+    "share": 0.7916666666666666,
+    "ci_lo": 0.6666666666666666,
+    "ci_hi": 0.9166666666666666,
+    "evidence": "19 of 24 removed records"
+   }
+  ],
+  "residual": {
+   "count": 19,
+   "expected_background": 21.423513054137928,
+   "p_value": 0.7336360828982815,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B094",
+  "removed_total": 15,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 15 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.06666666666666667,
+    "ci_lo": 0.0,
+    "ci_hi": 0.2,
+    "evidence": "1 of 15 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 15 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 15 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 14,
+    "share": 0.9333333333333333,
+    "ci_lo": 0.8,
+    "ci_hi": 1.0,
+    "evidence": "14 of 15 removed records"
+   }
+  ],
+  "residual": {
+   "count": 14,
+   "expected_background": 14.199877798479953,
+   "p_value": 0.5590363167362111,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B095",
+  "removed_total": 16,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 3,
+    "share": 0.1875,
+    "ci_lo": 0.0625,
+    "ci_hi": 0.375,
+    "evidence": "3 of 16 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.0625,
+    "ci_lo": 0.0,
+    "ci_hi": 0.1875,
+    "evidence": "1 of 16 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 16 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 16 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 12,
+    "share": 0.75,
+    "ci_lo": 0.5625,
+    "ci_hi": 0.9375,
+    "evidence": "12 of 16 removed records"
+   }
+  ],
+  "residual": {
+   "count": 12,
+   "expected_background": 13.677955720371218,
+   "p_value": 0.7165054193523246,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B096",
+  "removed_total": 14,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 2,
+    "share": 0.14285714285714285,
+    "ci_lo": 0.0,
+    "ci_hi": 0.35714285714285715,
+    "evidence": "2 of 14 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 2,
+    "share": 0.14285714285714285,
+    "ci_lo": 0.0,
+    "ci_hi": 0.2857142857142857,
+    "evidence": "2 of 14 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 14 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 14 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 10,
+    "share": 0.7142857142857143,
+    "ci_lo": 0.5,
+    "ci_hi": 0.8571428571428571,
+    "evidence": "10 of 14 removed records"
+   }
+  ],
+  "residual": {
+   "count": 10,
+   "expected_background": 15.352705710837604,
+   "p_value": 0.9441919586182517,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B097",
+  "removed_total": 16,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 2,
+    "share": 0.125,
+    "ci_lo": 0.0,
+    "ci_hi": 0.25,
+    "evidence": "2 of 16 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.0625,
+    "ci_lo": 0.0,
+    "ci_hi": 0.1875,
+    "evidence": "1 of 16 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 16 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 16 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 13,
+    "share": 0.8125,
+    "ci_lo": 0.625,
+    "ci_hi": 0.9375,
+    "evidence": "13 of 16 removed records"
+   }
+  ],
+  "residual": {
+   "count": 13,
+   "expected_background": 18.27490870529503,
+   "p_value": 0.9220680669121885,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B098",
+  "removed_total": 28,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 3,
+    "share": 0.10714285714285714,
+    "ci_lo": 0.0,
+    "ci_hi": 0.21428571428571427,
+    "evidence": "3 of 28 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 1,
+    "share": 0.03571428571428571,
+    "ci_lo": 0.0,
+    "ci_hi": 0.10714285714285714,
+    "evidence": "1 of 28 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 28 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 28 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 24,
+    "share": 0.8571428571428571,
+    "ci_lo": 0.75,
+    "ci_hi": 0.9642857142857143,
+    "evidence": "24 of 28 removed records"
+   }
+  ],
+  "residual": {
+   "count": 24,
+   "expected_background": 26.66837269810662,
+   "p_value": 0.7280108180138147,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B099",
+  "removed_total": 29,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 8,
+    "share": 0.27586206896551724,
+    "ci_lo": 0.13793103448275862,
+    "ci_hi": 0.41379310344827586,
+    "evidence": "8 of 29 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 29 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 29 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 29 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 21,
+    "share": 0.7241379310344828,
+    "ci_lo": 0.5862068965517241,
+    "ci_hi": 0.8620689655172413,
+    "evidence": "21 of 29 removed records"
+   }
+  ],
+  "residual": {
+   "count": 21,
+   "expected_background": 23.21658859864569,
+   "p_value": 0.7097554348317121,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ },
+ {
+  "booth_id": "B100",
+  "removed_total": 14,
+  "stories": [
+   {
+    "code": "death_registered",
+    "label": "Matches a death-register entry",
+    "count": 3,
+    "share": 0.21428571428571427,
+    "ci_lo": 0.07142857142857142,
+    "ci_hi": 0.42857142857142855,
+    "evidence": "3 of 14 removed records matched using the death registered evidence"
+   },
+   {
+    "code": "duplicate_cleanup",
+    "label": "Duplicate cleaned up (another copy remains)",
+    "count": 2,
+    "share": 0.14285714285714285,
+    "ci_lo": 0.0,
+    "ci_hi": 0.28928571428571104,
+    "evidence": "2 of 14 removed records matched using the duplicate cleanup evidence"
+   },
+   {
+    "code": "boundary_change",
+    "label": "House moved to another booth",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 14 removed records matched using the boundary change evidence"
+   },
+   {
+    "code": "hostel_moveout",
+    "label": "Hostel move-out (academic year end)",
+    "count": 0,
+    "share": 0.0,
+    "ci_lo": 0.0,
+    "ci_hi": 0.0,
+    "evidence": "0 of 14 removed records matched using the hostel moveout evidence"
+   },
+   {
+    "code": "unexplained",
+    "label": "Unexplained by any available record",
+    "count": 9,
+    "share": 0.6428571428571429,
+    "ci_lo": 0.42857142857142855,
+    "ci_hi": 0.8571428571428571,
+    "evidence": "9 of 14 removed records"
+   }
+  ],
+  "residual": {
+   "count": 9,
+   "expected_background": 13.339329186613313,
+   "p_value": 0.9189102511520618,
+   "significant": false
+  },
+  "context_used": [
+   "death_register",
+   "duplicates",
+   "boundary_changes",
+   "hostel_list"
+  ],
+  "outcome": "mixed"
+ }
+]
