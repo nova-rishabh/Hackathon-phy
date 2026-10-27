@@ -14,7 +14,7 @@ The longer points:
 - **No ground truth to learn from.** Nobody has a labelled dataset of real wrongful deletions. A 2021 study of voter-file change monitoring (Royston et al., used with the Iowa Secretary of State) names this as the core difficulty, and found that statistical models comparing districts over short time spans worked best for surfacing anomalies. They also labelled each change's likely root cause, which is our "which story fits".
 - **Explainability is a legal need, not a nice-to-have.** A deletion notice must cite a reason a voter can contest. Our output is "412 removed vs about 25 expected; 10 match the death register; 401 have no record". A model score can't be appealed.
 - **We already use ML where it is the right tool:** Platt-calibrated confidence (logistic regression, fit on four training districts, 98 cases for removal spikes); fuzzy cross-script name matching; an LLM to split claims and phrase answers.
-- **It is big-data ready:** the engine is linear and per booth. India has about **99.1 crore electors** (ECI, 2025). At our measured **1.02M voters in 54 s on one core**, all of India is about **14.6 core-hours, or about 14 minutes on a 64-core machine**.
+- **It is big-data ready:** the engine is linear and per booth. ECI's official Lok Sabha 2024 state-wise table sums to **97.8 crore electors** (99.1 crore by 2025). At our measured **1.02M voters in 54 s on one core**, all of India is about **14.4 core-hours, or 13.5 minutes on 64 cores**. Per state, on one 16-core server: **Uttar Pradesh (15.4 crore) in 8.5 minutes**, Maharashtra 5.1, Bihar 4.3, West Bengal 4.2.
 - **Where ML goes next (roadmap):** with real data, learn the background removal rate per area (migration, deaths) instead of a fixed age model, and train a classifier on reviewed outcomes. The human-review log we now record is exactly that training data.
 
 ### "How do you handle crores of requests? What if everyone uses it?"
@@ -151,6 +151,7 @@ After it reports: we publish the scoreboard on Trust as "Blind test (planted by 
 ---
 
 ## Sources
+- ECI, General Elections 2024, statistical report 9, State-wise number of electors (`api/data/electors_2024_states.csv`; totals verified against the report's TOTAL row)
 - ECI electorate, 2025 (99.1 crore): [News Arena](https://www.newsarenaindia.com/nation/india-s-voter-count-reaches-99-1-crore/34469), [Deccan Herald](https://www.deccanherald.com/india/india-now-has-991-crore-voters-election-commission-3368788); 2024: [ECI Atlas 2024](https://www.eci.gov.in/EBooks/atlas-2024/files/basic-html/page71.html)
 - Royston et al., *Anomaly Detection and Automated Labeling for Voter Registration File Changes* (2021): [arXiv 2106.15285](https://arxiv.org/abs/2106.15285)
 - Anwar, Jain, Kettler, *Detecting anomalies in voter registration data* (2024): [Boise State](https://experts.boisestate.edu/en/publications/detecting-anomalies-in-voter-registration-data-2024-esra-issue/)
