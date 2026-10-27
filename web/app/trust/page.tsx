@@ -45,11 +45,21 @@ export default function Trust() {
         <Eyebrow className="mb-5">Scoreboard.</Eyebrow>
         {e ? (
           <>
-            <p className="mono text-[clamp(28px,5vw,56px)] leading-tight tracking-[-0.03em]">
-              found {e.found} / {e.planted_anomalies} <span className="text-ink-3">·</span> decoys cleared {e.decoys_cleared} / {e.planted_decoys} <span className="text-ink-3">·</span> missed {e.misses.length}
-            </p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {([
+                [`${e.found}/${e.planted_anomalies}`, "hidden anomalies found"],
+                [`${e.decoys_cleared}/${e.planted_decoys}`, "innocent decoys cleared"],
+                [String(e.misses.length), "missed"],
+                [pct(e.benign_fp_rate, 0), "decoys wrongly flagged"],
+              ] as const).map(([v, k]) => (
+                <div key={k} className="card px-5 py-4">
+                  <p className="mono text-[32px] leading-[40px] tracking-[-0.03em]">{v}</p>
+                  <p className="text-[13px] text-ink-2 mt-1">{k}</p>
+                </div>
+              ))}
+            </div>
             {e.misses.length > 0 && (
-              <ul className="card mt-6">
+              <ul className="card mt-3">
                 {e.misses.map((m) => (
                   <li key={m.plant_id} className="px-5 py-3 border-t border-line first:border-t-0 grid sm:grid-cols-[220px_1fr] gap-1">
                     <span className="mono text-[13px] text-ink-2">{m.plant_id} · {m.type}</span><span className="text-[15px]">{m.why}</span>
@@ -57,24 +67,21 @@ export default function Trust() {
                 ))}
               </ul>
             )}
-            <p className="mono text-[12px] text-ink-3 mt-4">benign false-positive rate {pct(e.benign_fp_rate, 1)}</p>
+            <p className="text-[13px] text-ink-2 mt-4 max-w-[70ch]">
+              We plant anomalies and innocent look-alikes (deaths, hostel move-outs, boundary moves) in a synthetic district. The engine never reads the answer key; only the scorer does.
+            </p>
           </>
         ) : <Empty what="Blind eval" />}
       </section>
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_1fr] mt-6">
+      <div className="grid gap-6 lg:grid-cols-[3fr_2fr] mt-6">
         <section className="panel">
-          <Eyebrow className="mb-5">Reliability. When we say 80%, are we right 80% of the time.</Eyebrow>
+          <Eyebrow className="mb-5">Reliability. When we say 90%, are we right 90% of the time.</Eyebrow>
           {e && e.reliability.length ? <Reliability bins={e.reliability} /> : <Empty what="Reliability" />}
         </section>
-        <section className="panel">
+        <section className="panel flex flex-col">
           <Eyebrow className="mb-5">Neutrality guard.</Eyebrow>
-          {guard.data ? (
-            <>
-              <p className="mono text-[64px] leading-[64px] tracking-[-0.04em]">{guard.data.checked}</p>
-              <p className="text-[15px] text-ink-2 mt-3">outbound texts checked · <span className="mono text-ink">{guard.data.blocked}</span> blocked · <span className="mono text-ink">{guard.data.rewritten}</span> rewritten</p>
-            </>
-          ) : <Empty what="Guard log" />}
+          {guard.data ? <Guard g={guard.data} /> : <Empty what="Guard log" />}
         </section>
       </div>
 
@@ -137,31 +144,68 @@ function benchLine(b: unknown) {
     ` · duplicate check compares ${big(s.pairs)} pairs, not ${big(s.naive)}`;
 }
 
+const BINS = [[0, 0.25], [0.25, 0.5], [0.5, 0.75], [0.75, 1]] as const;
+
+/** One row per confidence band: where we said we'd be (tick) against how often flags were real (bar). */
 function Reliability({ bins }: { bins: EvalResult["reliability"] }) {
-  const S = 260, P = 28, maxN = Math.max(...bins.map((b) => b.n), 1);
-  const x = (v: number) => P + v * (S - P * 2), y = (v: number) => S - P - v * (S - P * 2);
+  const pc = (v: number) => `${Math.round(v * 100)}%`;
   return (
-    <div className="card p-4">
-      <svg viewBox={`0 0 ${S} ${S}`} className="w-full max-w-[320px] mx-auto block" role="img" aria-label="Reliability: stated confidence against how often it was right">
-        <line x1={x(0)} y1={y(0)} x2={x(1)} y2={y(0)} stroke="var(--color-line)" />
-        <line x1={x(0)} y1={y(0)} x2={x(0)} y2={y(1)} stroke="var(--color-line)" />
-        <line x1={x(0)} y1={y(0)} x2={x(1)} y2={y(1)} stroke="var(--color-ink-3)" strokeDasharray="4 4" />
-        {[0, 0.5, 1].map((t) => (
-          <g key={t} fontFamily="var(--font-mono)" fontSize="10" fill="var(--color-ink-3)">
-            <text x={x(t)} y={S - 8} textAnchor="middle">{t * 100}%</text>
-            <text x={6} y={y(t) + 3}>{t * 100}%</text>
-          </g>
-        ))}
-        {bins.map((b, i) => (
-          <g key={i}>
-            <circle cx={x(b.mean_conf)} cy={y(b.frac_true)} r={3 + 7 * Math.sqrt(b.n / maxN)} fill="var(--color-ink)" />
-            <text x={x(b.mean_conf)} y={y(b.frac_true) - 14 - 7 * Math.sqrt(b.n / maxN) + (i % 2) * -12} textAnchor="middle"
-              fontFamily="var(--font-mono)" fontSize="9" fill="var(--color-ink-2)">{Math.round(b.frac_true * 100)}% · n {b.n}</text>
-          </g>
-        ))}
-      </svg>
-      <p className="mono text-[11px] text-ink-3 text-center mt-2">stated confidence → share that were real · dot size = n</p>
-      <p className="text-[13px] text-ink-2 mt-3">Dots below the dashed line mean we sound surer than we are. Every flag still goes to a person.</p>
+    <div className="card p-5">
+      <div className="grid grid-cols-[72px_1fr_88px] gap-x-4 text-[12px] mono text-ink-3 pb-3 border-b border-line">
+        <span>we said</span><span>share that were real</span><span className="text-right">flags</span>
+      </div>
+      {BINS.map(([lo, hi]) => {
+        const b = bins.find((x) => Math.abs(x.bin_lo - lo) < 1e-6);
+        return (
+          <div key={lo} className="grid grid-cols-[72px_1fr_88px] gap-x-4 items-center py-3 border-b border-line last:border-b-0">
+            <span className="mono text-[13px]">{lo * 100}–{hi * 100}%</span>
+            {b ? (
+              <div className="relative h-6 rounded-[6px] bg-panel" aria-label={`said ${pc(b.mean_conf)}, real ${pc(b.frac_true)}`}>
+                <div className="absolute inset-y-0 left-0 rounded-[6px] bg-ink" style={{ width: `max(${b.frac_true * 100}%, 2px)` }} />
+                <div className="absolute -top-1 -bottom-1 w-[2px] bg-ink-3" style={{ left: `calc(${b.mean_conf * 100}% - 1px)` }} />
+                <span className="absolute inset-y-0 flex items-center mono text-[12px]"
+                  style={b.frac_true > 0.7 ? { right: `calc(${100 - b.frac_true * 100}% + 8px)`, color: "var(--color-surface)" } : { left: `calc(${b.frac_true * 100}% + 8px)` }}>
+                  {pc(b.frac_true)}
+                </span>
+              </div>
+            ) : <span className="text-[13px] text-ink-3">no flags in this band</span>}
+            <span className="mono text-[13px] text-right">{b ? b.n.toLocaleString("en-IN") : "0"}</span>
+          </div>
+        );
+      })}
+      <p className="text-[13px] text-ink-2 mt-4">Bar: share of flags that matched a planted anomaly. Line: the confidence we stated. Bar ending near the line means the number can be taken at face value.</p>
     </div>
+  );
+}
+
+const GUARD_RULES = [
+  ["fraud or rigging words", "blocked"],
+  ["party names", "blocked"],
+  ["public-figure names", "blocked"],
+  ["institution names", "blocked"],
+  ["religion, caste or community", "never inferred, blocked"],
+] as const;
+
+function Guard({ g }: { g: GuardLog }) {
+  const surfaces = Object.entries(g.items.reduce<Record<string, number>>((a, i) => ({ ...a, [String(i.surface)]: (a[String(i.surface)] ?? 0) + 1 }), {}));
+  return (
+    <>
+      <div className="flex items-baseline gap-3">
+        <p className="mono text-[56px] leading-[56px] tracking-[-0.04em]">{g.checked}</p>
+        <p className="text-[15px] text-ink-2">outbound texts checked since start</p>
+      </div>
+      <p className="mono text-[13px] text-ink-2 mt-3">
+        <span className="text-ink">{g.blocked}</span> blocked · <span className="text-ink">{g.rewritten}</span> rewritten
+        {surfaces.length > 0 && <> · {surfaces.map(([k, n]) => `${k.replace(/_/g, " ")} ${n}`).join(" · ")}</>}
+      </p>
+      <ul className="card mt-5">
+        {GUARD_RULES.map(([what, act]) => (
+          <li key={what} className="flex justify-between gap-4 px-4 py-[10px] border-t border-line first:border-t-0 text-[14px]">
+            <span>{what}</span><span className="mono text-[12px] text-ink-2 pt-[2px] text-right">{act}</span>
+          </li>
+        ))}
+      </ul>
+      <p className="text-[13px] text-ink-2 mt-4">Every answer, chat reply and claim verdict passes this check before it leaves. If a model phrasing fails, a fixed template is sent instead.</p>
+    </>
   );
 }
