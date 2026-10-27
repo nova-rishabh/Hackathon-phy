@@ -60,19 +60,23 @@ async function onMessage(msg) {
   if (msg.key.fromMe || !jid || jid.endsWith("@g.us") || jid === "status@broadcast" || jid.endsWith("@newsletter")) return;
   const m = msg.message || {};
   const img = m.imageMessage;
+  const voice = m.audioMessage;
   const text = m.conversation || m.extendedTextMessage?.text || img?.caption || "";
-  let image_b64 = null;
-  if (img) {
-    try { image_b64 = (await downloadMediaMessage(msg, "buffer", {})).toString("base64"); }
-    catch (e) { log("image download failed:", e.message); }
+  let image_b64 = null, audio_b64 = null;
+  if (img || voice) {
+    try {
+      const b64 = (await downloadMediaMessage(msg, "buffer", {})).toString("base64");
+      if (img) image_b64 = b64; else audio_b64 = b64;
+    } catch (e) { log("media download failed:", e.message); }
   }
-  if (!text && !image_b64) return;
-  log("inbound", img ? "image" : "text");
+  if (!text && !image_b64 && !audio_b64) return;
+  log("inbound", img ? "image" : voice ? "voice" : "text");
   try {
-    await sock.sendPresenceUpdate("composing", jid);
-    const { replies } = await call("POST", "/wa/inbound", { from: jid.split("@")[0], text, image_b64 }, 120000);
+    await sock.sendPresenceUpdate(audio_b64 ? "recording" : "composing", jid);
+    const { replies } = await call("POST", "/wa/inbound", { from: jid.split("@")[0], text, image_b64, audio_b64 }, 120000);
     for (const r of replies) {
-      if (r.image_b64) await sock.sendMessage(jid, { image: Buffer.from(r.image_b64, "base64"), caption: r.text || undefined });
+      if (r.audio_b64) await sock.sendMessage(jid, { audio: Buffer.from(r.audio_b64, "base64"), mimetype: r.audio_mime, ptt: !!r.ptt });
+      else if (r.image_b64) await sock.sendMessage(jid, { image: Buffer.from(r.image_b64, "base64"), caption: r.text || undefined });
       else if (r.text) await sock.sendMessage(jid, { text: r.text });
     }
     log("replied", replies.length);

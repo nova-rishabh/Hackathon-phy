@@ -352,6 +352,7 @@ class Inbound(BaseModel):
     sender: str = Field("", alias="from")
     text: str = ""
     image_b64: str | None = None
+    audio_b64: str | None = None  # a WhatsApp voice note (OGG/Opus)
 
 
 @router.post("/wa/inbound")
@@ -370,9 +371,17 @@ async def wa_inbound(msg: Inbound, x_wa_secret: str | None = Header(None)):
             image = None
     async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://rollwatch",
                                  timeout=core.TIMEOUT) as client:
-        api = core.Api(base="http://rollwatch", client=client)
+        api = core.Api(base="http://rollwatch", client=client, channel="whatsapp")
         text = (msg.text or "").strip()
-        if image is not None:
+        audio = None
+        if msg.audio_b64:
+            try:
+                audio = base64.b64decode(msg.audio_b64)
+            except ValueError:
+                audio = None
+        if audio:
+            replies = await core.handle_voice(api, audio)
+        elif image is not None:
             replies = await core.handle_claim(api, text=core.strip_claim_prefix(text) or None, image=image)
         elif text:
             replies = await core.handle_text(api, text)
@@ -385,6 +394,10 @@ async def wa_inbound(msg: Inbound, x_wa_secret: str | None = Header(None)):
             out.append({"text": r.text})
         elif r.kind == "photo" and r.data:
             out.append({"text": "", "image_b64": base64.b64encode(r.data).decode("ascii")})
+        elif r.kind in ("voice", "audio") and r.data:
+            out.append({"text": "", "audio_b64": base64.b64encode(r.data).decode("ascii"),
+                        "audio_mime": "audio/ogg; codecs=opus" if r.kind == "voice" else "audio/mpeg",
+                        "ptt": r.kind == "voice"})
     return {"replies": out}
 
 

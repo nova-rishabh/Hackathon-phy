@@ -24,7 +24,7 @@ if os.environ.get("DEMO_MODE", "0") == "1":
     os.environ["ROLLWATCH_CACHE"] = str(_ROOT / "cache" / "llm")
     os.environ.pop("ROLLWATCH_OPS", None)
 
-from fastapi import FastAPI, HTTPException, Query  # noqa: E402
+from fastapi import FastAPI, Header, HTTPException, Query  # noqa: E402
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
@@ -251,12 +251,24 @@ def claim_get(claim_id: str):
     return v
 
 
+PNG_MAGIC = bytes([0x89]) + b"PNG"
+
 @app.get("/cards/{claim_id}.png")
 def card_png(claim_id: str):
     name = f"{Path(claim_id).name}.png"
     p = next((x for x in (data_dir() / "cards" / name, ROOT / "cards" / name) if x.exists()), None)
-    if p is None:
-        raise HTTPException(404, "card not rendered")
+    if p is None:  # draw it once on the web app (next/og route) and keep it
+        import httpx
+        web = os.environ.get("WEB_BASE", "https://rollwatch-web.onrender.com").rstrip("/")
+        try:
+            r = httpx.get(f"{web}/card/{Path(claim_id).name}/png", timeout=60, follow_redirects=True)
+        except httpx.HTTPError:
+            r = None
+        if r is None or r.status_code != 200 or not r.content.startswith(PNG_MAGIC):
+            raise HTTPException(404, "card not rendered")
+        p = data_dir() / "cards" / name
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_bytes(r.content)
     return FileResponse(p, media_type="image/png")
 
 
@@ -273,7 +285,10 @@ def _audit_entries() -> list[AuditEntry]:
 
 
 @app.post("/review/{flag_id}", response_model=ReviewResponse)
-def review(flag_id: str, req: ReviewRequest):
+def review(flag_id: str, req: ReviewRequest, authorization: str | None = Header(None)):
+    """Signed-in reviewers only (WhatsApp sign-in token). The reviewer enters the hash chain as a salted hash,
+    never as a number."""
+    who = hashlib.sha256(("reviewer|" + wa_auth._user(authorization)).encode("utf-8")).hexdigest()[:12]
     s = store()
     f = s.flag_by_id.get(flag_id)
     if not f:
@@ -284,7 +299,7 @@ def review(flag_id: str, req: ReviewRequest):
         prev_hash = prev.hash if prev else None
         action = f"review:{req.status}"
         note_h = hashlib.sha256(req.note.encode("utf-8")).hexdigest()[:12]
-        h = hashlib.sha256(f"{prev_hash}|{ts}|{flag_id}|{action}|{note_h}".encode("utf-8")).hexdigest()
+        h = hashlib.sha256(f"{prev_hash}|{ts}|{flag_id}|{action}|{note_h}|{who}".encode("utf-8")).hexdigest()
         e = AuditEntry(ts=ts, flag_id=flag_id, action=action, hash=h, prev_hash=prev_hash)
         with open(_audit_path(), "a", encoding="utf-8") as fh:
             fh.write(e.model_dump_json() + "\n")
