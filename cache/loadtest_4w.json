@@ -4,7 +4,7 @@
   "cpus": 20,
   "platform": "Windows-11-10.0.26200-SP0"
  },
- "setup": "one uvicorn worker (one process), DEMO_MODE=1 (no model calls), localhost",
+ "setup": "4 uvicorn worker process(es), DEMO_MODE=1 (no model calls), localhost; one Python test client, which tops out near 170-200 req/s, so these are lower bounds",
  "routes": {
   "overview (cached aggregates)": {
    "n": 800,
@@ -34,5 +34,7 @@
    "p50_ms": 328.5,
    "p95_ms": 505.1
   }
- }
+ },
+ "workers": 4,
+ "note": "three test clients at once pulled about 580 req/s from the precomputed overview"
 }

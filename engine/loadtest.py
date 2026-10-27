@@ -49,9 +49,11 @@ def main():
     ap.add_argument("--base", default="http://localhost:8020")
     ap.add_argument("--n", type=int, default=600)
     ap.add_argument("--c", type=int, default=50)
+    ap.add_argument("--workers", type=int, default=1, help="how many uvicorn worker processes the target runs (label only)")
     a = ap.parse_args()
     out = {"measured": True, "machine": {"cpus": os.cpu_count(), "platform": platform.platform()},
-           "setup": "one uvicorn worker (one process), DEMO_MODE=1 (no model calls), localhost", "routes": {}}
+           "workers": a.workers, "setup": f"{a.workers} uvicorn worker process(es), DEMO_MODE=1 (no model calls), "
+           "localhost; one Python test client, which tops out near 170-200 req/s, so these are lower bounds", "routes": {}}
     for name, (m, p, b) in ROUTES.items():
         out["routes"][name] = r = asyncio.run(hammer(a.base, m, p, b, a.n, a.c))
         print(f"{name:32s} {r['rps']:>8} req/s   p50 {r['p50_ms']} ms   p95 {r['p95_ms']} ms")

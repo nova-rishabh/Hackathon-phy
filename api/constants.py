@@ -169,6 +169,12 @@ list ka ki ke kya hain main hun
 # ------------------------------------------------------------------ ops / LLM (A1)
 # ASSUMPTION: per-token prices in INR, for the ops strip only. Update from the provider's price page.
 USD_INR = 84.0  # ASSUMPTION
+
+# National scale projection (Trust page). Electorate as reported by the Election Commission, 2025.
+ELECTORS_INDIA = 991_000_000
+ELECTORS_SOURCE = "ECI, 2025: 99.1 crore electors"
+# ASSUMPTION for request sizing: share of electors who check once during a revision window, its length, peak/average.
+SCALE_SHARE_CHECKING, SCALE_WINDOW_DAYS, SCALE_PEAK_FACTOR = 0.10, 30, 5
 PRICE_INR_PER_MTOK = {  # ASSUMPTION: USD list price per 1M tokens x USD_INR
     "claude-sonnet-5-5": {"in": 3.0 * USD_INR, "out": 15.0 * USD_INR},
     "claude-haiku-5-5": {"in": 1.0 * USD_INR, "out": 5.0 * USD_INR},

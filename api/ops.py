@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import contextvars
 import json
+import math
 import os
 import threading
 import time
@@ -86,6 +87,31 @@ def _norm_route(r: str) -> str:
     return r
 
 
+def _projection(bench: dict | None, loadtest: dict) -> dict | None:
+    """All-India numbers computed from what we measured. Audit: per-voter engine cost on one core times the
+    electorate, split across independent constituency runs. Requests: checks per second in a revision window,
+    against the measured full-citizen-answer rate on four processes."""
+    per_us = ((bench or {}).get("scale") or {}).get("per_voter_us_serial")
+    if not per_us:
+        return None
+    n = C.ELECTORS_INDIA
+    core_h = n * per_us / 1e6 / 3600
+    avg = n * C.SCALE_SHARE_CHECKING / (C.SCALE_WINDOW_DAYS * 86400)
+    peak = avg * C.SCALE_PEAK_FACTOR
+    rps4 = (((loadtest.get("4") or {}).get("routes") or {}).get("citizen answer") or {}).get("rps")
+    return {
+        "electors": n, "electors_source": C.ELECTORS_SOURCE, "per_voter_us": per_us,
+        "audit_core_hours": round(core_h, 1), "audit_minutes_on_64_cores": round(core_h * 60 / 64, 1),
+        "assumption": {"share_checking": C.SCALE_SHARE_CHECKING, "window_days": C.SCALE_WINDOW_DAYS,
+                       "peak_factor": C.SCALE_PEAK_FACTOR},
+        "checks_per_day": round(avg * 86400), "checks_per_s_avg": round(avg, 1), "checks_per_s_peak": round(peak, 1),
+        "citizen_answers_per_s_4proc": rps4,
+        "machines_at_peak": math.ceil(peak / rps4) if rps4 else None,
+        "note": "Audit assumes constituencies run as independent jobs; the machine count uses the laptop's measured "
+                "lower bound and ignores CDN and claim caching, which cut real load further.",
+    }
+
+
 def summary() -> dict:
     flush()
     rows = []
@@ -112,7 +138,17 @@ def summary() -> dict:
         bench = json.loads(bench_p.read_text(encoding="utf-8")) if bench_p.exists() else None
     except (OSError, json.JSONDecodeError):
         bench = None
+    loadtest = {}  # measured on the dev laptop (python -m engine.loadtest), one vs four worker processes
+    for w in (1, 4):
+        p = ROOT / "cache" / f"loadtest_{w}w.json"
+        try:
+            if p.exists():
+                loadtest[str(w)] = json.loads(p.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            pass
     return {
+        "loadtest": loadtest or None,
+        "projection": _projection(bench, loadtest),
         "requests": len(rows),
         "p50_ms": round(float(np.percentile(all_ms, 50)), 1) if all_ms else None,
         "p95_ms": round(float(np.percentile(all_ms, 95)), 1) if all_ms else None,
