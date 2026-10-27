@@ -1,25 +1,31 @@
-"""Roll v1 -> v2 diff (TRD 4)."""
+"""Roll v1 -> v2 diff (TRD 4). Hash join on voter_id, vectorised field compare: O(n)."""
 from __future__ import annotations
 
+import numpy as np
 import pandas as pd
+
+from .data import member
 
 COMPARE = ["ward_id", "booth_id", "house_no", "name_dev", "name_lat", "relation_type",
            "relation_name_dev", "relation_name_lat", "age", "gender"]
 
 
 def diff(v1: pd.DataFrame, v2: pd.DataFrame) -> dict:
-    """added (v2 only), deleted (v1 only), modified (in both, any field differs; a booth change counts)."""
-    ids1, ids2 = set(v1.voter_id), set(v2.voter_id)
-    added = v2[~v2.voter_id.isin(ids1)]
-    deleted = v1[~v1.voter_id.isin(ids2)]
-    both = v1[v1.voter_id.isin(ids2)].set_index("voter_id")[COMPARE].join(
-        v2.set_index("voter_id")[COMPARE], rsuffix="_2", how="inner")
-    changed = pd.Series(False, index=both.index)
-    fields: dict[str, list[str]] = {}
-    for c in COMPARE:
-        m = both[c].astype(str) != both[c + "_2"].astype(str)
-        changed |= m
-        for vid in both.index[m]:
-            fields.setdefault(vid, []).append(c)
-    modified = v2[v2.voter_id.isin(both.index[changed])]
-    return {"added": added, "deleted": deleted, "modified": modified, "changed_fields": fields}
+    """added (v2 only), deleted (v1 only), modified (in both, any field differs; a booth change counts).
+    Age is compared after the roll-wide age shift (the modal v2-v1 age difference, normally +1 for a roll one
+    year later), so ordinary ageing is not a modification."""
+    in2 = member(v1.voter_id, v2.voter_id)
+    in1 = member(v2.voter_id, v1.voter_id)
+    added, deleted = v2[~in1], v1[~in2]
+    both = v1.loc[in2, ["voter_id"] + COMPARE].merge(v2.loc[in1, ["voter_id"] + COMPARE], on="voter_id", suffixes=("", "_2"))
+    dage = both["age_2"].to_numpy(dtype=int) - both["age"].to_numpy(dtype=int)
+    shift = int(pd.Series(dage).mode().iloc[0]) if len(dage) else 0
+    cols = {c: both[c].to_numpy(dtype=object) != both[c + "_2"].to_numpy(dtype=object) for c in COMPARE if c != "age"}
+    cols["age"] = dage != shift
+    names = list(cols)
+    m = np.column_stack([cols[c] for c in names]) if names else np.zeros((len(both), 0), bool)
+    changed = m.any(axis=1)
+    vids = both.voter_id.to_numpy(dtype=object)[changed]
+    fields = {vid: [c for c, x in zip(names, row) if x] for vid, row in zip(vids, m[changed])}
+    modified = v2[member(v2.voter_id, vids)]
+    return {"added": added, "deleted": deleted, "modified": modified, "changed_fields": fields, "age_shift": shift}

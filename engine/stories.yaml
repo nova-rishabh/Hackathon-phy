@@ -1,0 +1,51 @@
+# "Which Story Fits?" (TRD 4.2, PRD S12). Config, not code.
+# Every removed record is attributed to the FIRST source below whose evidence matches; else "unexplained".
+# A new register plugs in by adding one entry here (no code change): pick a match kind, name the CSV.
+#
+# match kinds (engine/stories.py MATCHERS):
+#   name_in_house      table row with the same booth_id + house_no and a matching normalised name
+#                      (exact, or Jaro-Winkler >= name_sim); optional age_col with |age - record age| <= age_tol
+#   duplicate_survivor record is in a v1 duplicate cluster and another member survives in v2 (no table)
+#   house_range_moved  house_no within [house_from, house_to] of a row with from_booth = record booth,
+#                      and the record reappears in to_booth in v2
+#   house_listed       booth_id + house_no listed in the table and age within [age_min, age_max]
+#
+# `context` is the name used by the live toggle (POST /stories/{booth}, context_on=[...]).
+# `file` is looked up in <data>/, <data>/context/ and <data>/artifacts/context/. A missing file = empty table.
+
+unexplained:
+  code: unexplained
+  label: Unexplained by any available record
+
+sources:
+  - context: death_register
+    code: death_registered
+    label: Matches a death-register entry
+    file: death_register.csv
+    match: {kind: name_in_house, name_col: name_lat, age_col: age, age_tol: 2, name_sim: 0.93}
+
+  - context: duplicates
+    code: duplicate_cleanup
+    label: Duplicate cleaned up (another copy remains)
+    match: {kind: duplicate_survivor}
+
+  - context: boundary_changes
+    code: boundary_change
+    label: House moved to another booth
+    file: boundary_changes.csv
+    match: {kind: house_range_moved}
+
+  - context: hostel_list
+    code: hostel_moveout
+    label: Hostel move-out (academic year end)
+    file: hostel_list.csv
+    match: {kind: house_listed, age_min: 18, age_max: 25}
+
+  # S12 demo beat: uncomment to add a synthetic Form 7 objections log as a new evidence source.
+  # (Needs contracts StoryCode / context_used to accept the new code; until then the output is written
+  #  unvalidated for these two fields. Make a demo file with: python -m engine.demo_sources --booths B017)
+  # - context: objections_filed
+  #   code: objection_filed
+  #   label: Matches an objection (Form 7) filed before the revision
+  #   file: objections_filed.csv
+  #   match: {kind: name_in_house, name_col: name_lat, name_sim: 0.93}

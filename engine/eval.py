@@ -77,17 +77,72 @@ def evaluate(flags: list[Flag], key: list[Planting]) -> EvalResult:
                       reliability=rel, misses=misses)
 
 
+RULES = {
+    "deletion_spike": "removals in a booth exceed the age-adjusted background rate (one-sided binomial, Benjamini-Hochberg q < 0.05)",
+    "addition_spike": "additions in a booth exceed the background rate (one-sided binomial, Benjamini-Hochberg q < 0.05)",
+    "duplicate_cluster": "two or more records in one booth with matching name across scripts (score >= 0.88), same gender, age within 1",
+    "impossible_age": "elector age below 18 or above 110",
+    "oversized_household": "more than 15 electors at one house number",
+    "gender_ratio_swing": "female share of a booth moves by more than 8 percentage points between versions",
+    "relation_conflict": "the named relative's own record is in the same house and the pair is impossible (parent not older, or husband/wife gender mismatch)",
+}
+
+
+def rule_cards(flags: list[Flag], key: list[Planting], n_voters: int | None = None) -> dict:
+    """Per-rule error rates (PRD M10). A flag is 'raised' unless the engine itself judged it likely benign.
+    false_positive_rate = raised flags that match no planted anomaly / raised flags. Flags cleared as likely benign
+    are reported separately with how many of them sit on a planted innocent decoy."""
+    anomalies = [p for p in key if not p.is_benign]
+    decoys = [p for p in key if p.is_benign]
+    out = []
+    for t in sorted(set(RULES) | {f.type for f in flags}):
+        fs = [f for f in flags if f.type == t]
+        raised = [f for f in fs if not f.likely_benign]
+        cleared = [f for f in fs if f.likely_benign]
+        tp = [f for f in raised if any(matches(f, p) for p in anomalies)]
+        planted = [p for p in anomalies if flag_type_of(p) == t]
+        found = [p for p in planted if any(matches(f, p) and not f.likely_benign for f in flags)]
+        on_decoy = [f for f in cleared if any(matches(f, p) for p in decoys)]
+        fp = len(raised) - len(tp)
+        out.append({
+            "rule": t, "definition": RULES.get(t, ""), "flags_total": len(fs), "flags_raised": len(raised),
+            "flags_cleared_likely_benign": len(cleared), "cleared_on_planted_decoy": len(on_decoy),
+            "raised_matching_planting": len(tp), "raised_not_matching_planting": fp,
+            "false_positive_rate": round(fp / len(raised), 4) if raised else None,
+            "planted": len(planted), "planted_found": len(found),
+            "recall": round(len(found) / len(planted), 4) if planted else None,
+            "raised_per_10k_voters": round(10000 * len(raised) / n_voters, 2) if n_voters else None,
+        })
+    return {"measured_on": "synthetic district with a planted answer key", "n_voters_v2": n_voters,
+            "note": "A flag that matches no planting is counted as a false positive, including records the generator "
+                    "adds as realistic background (about 0.5% cross-script duplicates). Every flag still needs human review.",
+            "rules": out}
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--data")  # accepted for symmetry with engine.run; not needed
-    ap.add_argument("--flags", required=True)
+    ap.add_argument("--flags", default="artifacts/flags.json")
     ap.add_argument("--key", required=True)
-    ap.add_argument("--out", required=True)
+    ap.add_argument("--out", default="artifacts/eval.json")
+    ap.add_argument("--rules", help="per-rule error rates (PRD M10); default <out dir>/rules.json")
     a = ap.parse_args()
     flags = [Flag.model_validate(f) for f in json.loads(Path(a.flags).read_text(encoding="utf-8"))]
     res = evaluate(flags, load_key(a.key))
     Path(a.out).parent.mkdir(parents=True, exist_ok=True)
     Path(a.out).write_text(res.model_dump_json(indent=1), encoding="utf-8")
+    n_voters = None
+    try:
+        from .data import load
+        n_voters = len(load(a.data or Path(a.flags).parent).v2)
+    except Exception:
+        pass
+    cards = rule_cards(flags, load_key(a.key), n_voters)
+    rp = Path(a.rules) if a.rules else Path(a.out).parent / "rules.json"
+    rp.write_text(json.dumps(cards, ensure_ascii=False, indent=1), encoding="utf-8")
+    for r in cards["rules"]:
+        print(f"  {r['rule']:<20} raised={r['flags_raised']:<5} fp_rate={r['false_positive_rate']} "
+              f"found={r['planted_found']}/{r['planted']} cleared_benign={r['flags_cleared_likely_benign']}")
     print(f"found {res.found}/{res.planted_anomalies}, decoys cleared {res.decoys_cleared}/{res.planted_decoys}")
 
 

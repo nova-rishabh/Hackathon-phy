@@ -9,6 +9,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 
 CONTEXT_FILES = {"death": "death_register.csv", "hostel": "hostel_list.csv", "boundary": "boundary_changes.csv"}
@@ -23,6 +24,13 @@ class Data:
     death: pd.DataFrame
     hostel: pd.DataFrame
     boundary: pd.DataFrame
+
+
+def member(a, b) -> np.ndarray:
+    """Boolean mask: which values of `a` are in `b`. A hash lookup on object arrays: O(len(a) + len(b)).
+    (pandas' Arrow-string isin is ~20x slower at 1M rows.)"""
+    s = b if isinstance(b, (set, frozenset)) else set(b)
+    return np.fromiter((x in s for x in a), dtype=bool, count=len(a))
 
 
 def _find(dirs: list[Path], stem: str) -> Path | None:

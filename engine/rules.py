@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import pandas as pd
-from rapidfuzz.distance import JaroWinkler
 
 from .dupes import norm
 
@@ -39,29 +38,28 @@ def gender_ratio_swing(v1: pd.DataFrame, v2: pd.DataFrame, pts: float = 8.0, min
 
 
 def relation_conflict(v2: pd.DataFrame) -> list[dict]:
-    """Fires only when the named relative's own record is found in the same house AND the pair is inconsistent
-    (relative has the wrong gender for the relation, or is not older than a child)."""
+    """Fires only when the named relative's own record is found in the same house (exact normalised-name match,
+    exactly one candidate) AND the pair is impossible: a father/mother who is not older than the elector, or a
+    'husband' whose record is not male (or an elector listed with a husband who is not female).
+    A female relative under 'father' is NOT fired: the old form field read "father's/husband's name" and that
+    mislabel is a known innocent explanation. One flag per household, listing every conflicting pair."""
+    d = v2[["voter_id", "booth_id", "house_no", "name_lat", "relation_type", "relation_name_lat", "age", "gender"]].copy()
+    d["k"] = d.name_lat.map(norm)
+    d["rk"] = d.relation_name_lat.map(norm)
+    cnt = d.groupby(["booth_id", "house_no", "k"]).voter_id.transform("size")
+    rel = d[cnt == 1][["booth_id", "house_no", "k", "voter_id", "age", "gender"]].rename(
+        columns={"k": "rk", "voter_id": "o_id", "age": "o_age", "gender": "o_gender"})
+    m = d[d.relation_type != "other"].merge(rel, on=["booth_id", "house_no", "rk"], how="inner")
+    m = m[m.o_id != m.voter_id]
+    parent = m.relation_type.isin(["father", "mother"]) & (m.o_age <= m.age)
+    husb = (m.relation_type == "husband") & ((m.o_gender != "M") | (m.gender != "F"))
+    m = m.assign(why=None)
+    m.loc[parent, "why"] = "parent_not_older"
+    m.loc[husb, "why"] = "husband_gender_mismatch"
+    m = m[m.why.notna()]
     out = []
-    for (booth, house), grp in v2.groupby(["booth_id", "house_no"]):
-        if len(grp) < 2:
-            continue
-        rows = list(grp.itertuples())
-        normed = {r.voter_id: norm(r.name_lat) for r in rows}
-        for r in rows:
-            if r.relation_type == "other":
-                continue
-            rel = norm(r.relation_name_lat)
-            for o in rows:
-                if o.voter_id == r.voter_id or JaroWinkler.similarity(rel, normed[o.voter_id]) < 0.92:
-                    continue
-                why = None
-                if r.relation_type == "father" and (o.gender != "M" or o.age < r.age + 12):
-                    why = "father_not_male_or_not_older"
-                elif r.relation_type == "mother" and (o.gender != "F" or o.age < r.age + 12):
-                    why = "mother_not_female_or_not_older"
-                elif r.relation_type == "husband" and (o.gender != "M" or r.gender != "F"):
-                    why = "husband_gender_mismatch"
-                if why:
-                    out.append({"booth_id": booth, "house_no": house, "voter_ids": [r.voter_id, o.voter_id], "why": why})
-                break
+    for (booth, house), g in m.groupby(["booth_id", "house_no"], sort=True):
+        ids = sorted(set(g.voter_id) | set(g.o_id))
+        out.append({"booth_id": booth, "house_no": house, "voter_ids": ids, "pairs": len(g),
+                    "whys": sorted(set(g.why))})
     return out

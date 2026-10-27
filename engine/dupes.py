@@ -48,8 +48,10 @@ def pair_score(a, b) -> float:
     return 0.5 * name + 0.3 * rel + 0.2 * (1.0 if ma and ma == mb else 0.0)
 
 
-def find_clusters(df: pd.DataFrame) -> list[dict]:
-    """Clusters of >=2 records: {voter_ids, booth_id, house_no, score (weakest accepted link)}."""
+def find_clusters(df: pd.DataFrame, stats: dict | None = None) -> list[dict]:
+    """Clusters of >=2 records: {voter_ids, booth_id, house_no, score (weakest accepted link)}.
+    If `stats` is given it receives n, candidate_pairs (unique pairs inside blocks), scored_pairs (after the
+    age/gender gates), naive_pairs n(n-1)/2 and edges."""
     rows = {r.voter_id: r for r in df.itertuples()}
     blocks = defaultdict(list)
     for r in rows.values():
@@ -63,7 +65,7 @@ def find_clusters(df: pd.DataFrame) -> list[dict]:
             x = parent[x]
         return x
 
-    seen, edges = set(), {}
+    seen, edges, scored = set(), {}, 0
     for ids in blocks.values():
         for x, y in combinations(sorted(set(ids)), 2):
             if (x, y) in seen:
@@ -72,10 +74,17 @@ def find_clusters(df: pd.DataFrame) -> list[dict]:
             a, b = rows[x], rows[y]
             if a.gender != b.gender or abs(a.age - b.age) > 1:
                 continue
+            scored += 1
             s = pair_score(a, b)
             if s >= THRESHOLD:
                 edges[(x, y)] = s
                 parent[find(x)] = find(y)
+    if stats is not None:
+        n = len(rows)
+        stats.update(n=n, candidate_pairs=len(seen), scored_pairs=scored, naive_pairs=n * (n - 1) // 2, edges=len(edges))
+    edge_by_root = defaultdict(list)
+    for (x, _), s in edges.items():
+        edge_by_root[find(x)].append(s)
     groups = defaultdict(list)
     for v in rows:
         groups[find(v)].append(v)
@@ -84,7 +93,7 @@ def find_clusters(df: pd.DataFrame) -> list[dict]:
         if len(members) < 2:
             continue
         ms = sorted(members)
-        sc = [s for (x, y), s in edges.items() if x in ms]
+        sc = edge_by_root[find(ms[0])]
         first = rows[ms[0]]
         out.append({"voter_ids": ms, "booth_id": first.booth_id, "house_no": first.house_no, "score": float(min(sc))})
     return sorted(out, key=lambda c: c["voter_ids"])
