@@ -1,5 +1,7 @@
 # RollWatch: the overboard plan (PS1, AI for Electoral Roll Transparency)
 
+> **Superseded on 27 Oct 2026.** The scope was cut and re-centred after validation. Build from [PRD](PRD.md), [TRD](TRD.md) and [ACTION_PLAN](ACTION_PLAN.md). This file is kept as a history of the original plan.
+
 > Goal: be the obvious #1 in the room, not just the best electoral project. We ship **all 4 required modules** plus **6 extras that no other team will have**, and we make every rule in the problem statement visible on screen.
 >
 > Honest note: nothing can guarantee a win, because judging is human. This plan removes every controllable reason to lose.

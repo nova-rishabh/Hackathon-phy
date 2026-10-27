@@ -287,3 +287,51 @@ Directional only: different, mostly US hackathons, small samples for niche theme
 - Synthetic data only, and a fictional district.
 - Commit often. Git history proves the work was done during the 24h. Both humans must be able to explain every module.
 - Feature freeze at H17. After that, only reliability, the video and rehearsal.
+
+---
+
+<a id="session-2"></a>
+# Session Log #2: Validation and Locked Scope (27 Oct 2026, event day)
+
+> The clock had already started (under 3h in). PS1 is registered and locked, and the team expects PS1 to be crowded (6–10 teams). Six independent validators reviewed the plan against the official PDFs, the dataset and the web. **The scope in this section and in [PRD](PRD.md) / [TRD](TRD.md) / [ACTION_PLAN](ACTION_PLAN.md) replaces [ROLLWATCH_PLAN.md](ROLLWATCH_PLAN.md).**
+
+## What changed and why
+- **Scope cut by about 35%.** The old plan was about 68 human-hours against about 40 available.
+  - **Cut:** OCR/PDF, torch/embeddings, Ollama, isotonic calibration, review learning, alerts, voice claims, maps and IsolationForest.
+  - **Why:** the machine has no usable GPU, and Ollama and Tesseract aren't installed.
+- **New centrepiece: "Which Story Fits?"** Each removal is attributed to an innocent story or "unexplained", and the residual is tested. This answers PS1's "what innocent explanations exist" with numbers, which no other PS1 team is likely to have.
+- **New hero: forward → fact-check card.** A screenshot of a viral claim is split into sub-claims, run as fixed queries, and returned as a stamped share card in Telegram. The mirror claim gets identical treatment.
+- **Judges' red team:** the old plan scored about 32.5/50. The losses were Feasibility (no "from Monday" story) and Presentation (a feature tour and jargon). The fixes are one persona (Meena, Booth 47), a 4:00 demo, an adoption slide, and the bot tried *after* the pitch.
+- **Compliance fixes:**
+  - "Verified" applies only to measurable sub-claims. Intent and motive words → "cannot be proven".
+  - We never infer religion, caste or community.
+  - Names are masked in auditor views.
+  - Demo claims are only about Sampleabad.
+  - The guard applies to generated text, and procedural templates are allowlisted.
+  - The mirror flips direction, never the political side.
+
+## Corrections to session #1 numbers
+- **Dataset duplicates:** the reference dataset has 6,917 rows but only **5,278 unique projects**. The base win rate is 17.4%.
+- **Shifted columns:** `tech_stack` is shifted in 55% of rows, so the old tech-count figures (3.95 vs 3.26) were wrong. The repaired figures are 7.40 vs 6.11 (winners ahead in 53 of 58 hackathons).
+- **Election/voter:** 36.4% (12/33, 95% CI 22–53%). The lift comes mostly from events with matching prize tracks. In selective hackathons there was **no topic edge**, so choosing PS1 doesn't by itself win.
+- **What correlates with winning,** controlling for the hackathon: agents ×2.3, vision/OCR ×1.8, write-up length ×1.65 per SD, a "N%" number in the text ×1.5, and +12% odds per extra AI component. Chatbot-only projects come in at 0.75×. Multilingual, voice and "explainable" wording give no lift by themselves.
+- **Claimed-but-false statements:** "Commit history proves everything was built during the 24h" is false, because the planning docs and analysis scripts predate the event. Say "all product code was written during the event."
+
+## Facts verified on the web (27 Oct)
+- **SIR Phase 3:** announced 14 May 2026, covering 16 states + 3 UTs. Final rolls are due between 1 Oct and 23 Dec.
+- **Delhi draft (31 Aug):**
+  - 1,45,10,299 electors, of whom 47,56,722 were left out (32.78%).
+  - Shifted/absent 29.86%, dead 1.95%, duplicate 0.98%.
+  - Claims are open until 30 Oct and the final roll is due **4 Dec 2026** (PTI, 26 Sep). Recheck before the demo.
+- **Totals:** Phase 3 removed 6.15 crore at the draft stage (17.1%). ECI says about 13 crore were *marked* but not deleted.
+- **Deletion categories:** ECI uses ASDD (Absent, Shifted, Dead, Duplicate). Notices are a separate track (unmapped, or "logical discrepancy"). On 22 Sep the Supreme Court asked for "logical discrepancy" to be defined.
+- **Forms:** 6 (new / re-inclusion), 6A (overseas), 7 (objection / deletion; since 9 Oct capped at 10 per elector and 5 per month), 8 (shift / correction / EPIC). Form 6B is not reconfirmed. Plus the SIR Enumeration Form.
+- **Channels:** the ECINET app (launched 22 Jan 2026; it absorbed Voter Helpline), voters.eci.gov.in and the 1950 helpline. There are fake-BLO scam calls.
+- **Sarvam:** STT saaras:v4 and TTS bulbul both support Punjabi. The free credit is ₹100.
+
+## New doc map
+[PRD](PRD.md) · [TRD](TRD.md) · [Action plan](ACTION_PLAN.md) · [Design system](DESIGN_SYSTEM.md) (+ `design/tokens.css`, `design/glyphs.svg`) · [Demo & pitch](DEMO_AND_PITCH.md) · [Content video](CONTENT_VIDEO.md) · root `CLAUDE.md`.
+
+## Open
+- The submission format, deadline and demo slot length (ask the organisers).
+- Disclosing AI-tool use, and whether the partner commits under their own identity (see ACTION_PLAN §7).
