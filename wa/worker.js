@@ -69,11 +69,12 @@ async function onMessage(msg) {
       if (img) image_b64 = b64; else audio_b64 = b64;
     } catch (e) { log("media download failed:", e.message); }
   }
-  if (!text && !image_b64 && !audio_b64) return;
-  log("inbound", img ? "image" : voice ? "voice" : "text");
+  const unsupported = !text && !img && !voice && !!(m.stickerMessage || m.documentMessage || m.videoMessage || m.locationMessage || m.contactMessage);
+  if (!text && !image_b64 && !audio_b64 && !unsupported) return;
+  log("inbound", img ? "image" : voice ? "voice" : unsupported ? "unsupported" : "text");
   try {
     await sock.sendPresenceUpdate(audio_b64 ? "recording" : "composing", jid);
-    const { replies } = await call("POST", "/wa/inbound", { from: jid.split("@")[0], text, image_b64, audio_b64 }, 120000);
+    const { replies } = await call("POST", "/wa/inbound", { from: jid.split("@")[0], text, image_b64, audio_b64, unsupported }, 120000);
     for (const r of replies) {
       if (r.audio_b64) await sock.sendMessage(jid, { audio: Buffer.from(r.audio_b64, "base64"), mimetype: r.audio_mime, ptt: !!r.ptt });
       else if (r.image_b64) await sock.sendMessage(jid, { image: Buffer.from(r.image_b64, "base64"), caption: r.text || undefined });

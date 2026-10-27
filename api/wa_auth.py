@@ -353,6 +353,7 @@ class Inbound(BaseModel):
     text: str = ""
     image_b64: str | None = None
     audio_b64: str | None = None  # a WhatsApp voice note (OGG/Opus)
+    unsupported: bool = False  # a sticker, document, video, location or contact
 
 
 @router.post("/wa/inbound")
@@ -379,7 +380,9 @@ async def wa_inbound(msg: Inbound, x_wa_secret: str | None = Header(None)):
                 audio = base64.b64decode(msg.audio_b64)
             except ValueError:
                 audio = None
-        if audio:
+        if msg.unsupported and not (text or audio or image is not None):
+            replies = [core.Reply("text", with_footer(L["unsupported"]["hi"] + "\n\n" + L["unsupported"]["en"], "hi"))]
+        elif audio:
             replies = await core.handle_voice(api, audio)
         elif image is not None:
             replies = await core.handle_claim(api, text=core.strip_claim_prefix(text) or None, image=image)
