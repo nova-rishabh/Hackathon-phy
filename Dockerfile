@@ -11,6 +11,7 @@ COPY contracts/ contracts/
 COPY generator/ generator/
 COPY engine/ engine/
 COPY api/ api/
+COPY bot/ bot/
 COPY cache/ cache/
 COPY smoke_test.py .
 
