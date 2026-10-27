@@ -34,30 +34,15 @@ def engine_checks():
     st = a["stories"]
     for booth, want in EXPECTED["booth_outcomes"].items():
         check(f"2 booth {booth} outcome", st[booth].outcome == want, f"got {st[booth].outcome}")
-    from engine.stories import attribute  # noqa: F401  (attribution is exercised via per-record check below)
-    d = a["data"]
-    from engine.dupes import norm  # noqa: F401
-    got = per_record_story(a, d)
+    got = per_record_story(a, a["data"])
     for vid, want in EXPECTED["story_attribution"].items():
         check(f"2 story {vid}", got.get(vid) == want, f"got {got.get(vid)} want {want}")
 
 
 def per_record_story(a, d):
-    from engine import stories as S
-    from engine.stories import _int, norm
-    v2_booth = dict(zip(d.v2.voter_id, d.v2.booth_id))
-    ids2 = set(v2_booth)
-    cl = {m: c["voter_ids"] for c in a["clusters"]["v1"] for m in c["voter_ids"]}
-    death = {}
-    for r in d.death.itertuples():
-        death.setdefault((r.booth_id, str(r.house_no)), []).append((norm(r.name_lat), int(r.age)))
-    host = {(r.booth_id, str(r.house_no)) for r in d.hostel.itertuples()}
-    bnd = [(r.from_booth, r.to_booth, _int(r.house_from), _int(r.house_to)) for r in d.boundary.itertuples()]
-    out = {}
-    removed = d.v1[(~d.v1.voter_id.isin(ids2)) | (d.v1.voter_id.map(v2_booth).fillna("") != d.v1.booth_id)]
-    for r in removed.itertuples():
-        out[r.voter_id] = S.attribute(r, v2_booth, ids2, cl, death, host, bnd, set(S.ALL_CONTEXT))
-    return out
+    from engine.stories import attribute_records
+    tables = {"death_register": d.death, "hostel_list": d.hostel, "boundary_changes": d.boundary}
+    return attribute_records(d.v1, d.v2, tables, a["clusters"]["v1"])
 
 
 # PLACEHOLDER check 3: neutrality guard blocks 5 seeded bad strings (owner: guard session)
