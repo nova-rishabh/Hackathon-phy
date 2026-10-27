@@ -87,9 +87,9 @@ def check_bot_offline() -> None:
         r = await core.handle_claim(api, image=b"fakejpeg")
         assert base64.b64decode(seen["body"]["image_b64"]) == b"fakejpeg"
         assert r[0].text.rstrip().endswith(C.SCAM_LINE["hi"]) and r[1].data == _PNG
-        r = await core.handle_voice(api, b"OggS")  # no SARVAM_API_KEY -> graceful text
+        r = await core.handle_voice(api, b"OggS")  # no ELEVENLABS_API_KEY -> graceful text
         assert r[0].kind == "text" and C.SCAM_LINE["hi"] in r[0].text
-    if not os.environ.get("SARVAM_API_KEY"):
+    if not os.environ.get("ELEVENLABS_API_KEY"):
         asyncio.run(run())
     os.environ.pop("ROLLWATCH_DATA", None)
 

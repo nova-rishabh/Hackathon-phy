@@ -24,6 +24,8 @@ async def _send(msg: Message, replies: list[core.Reply]) -> None:
             await msg.reply_photo(photo=io.BytesIO(r.data))
         elif r.kind == "voice":
             await msg.reply_voice(voice=io.BytesIO(r.data))
+        elif r.kind == "audio":  # MP3 when ffmpeg is missing
+            await msg.reply_audio(audio=io.BytesIO(r.data), filename="rollwatch.mp3")
 
 
 async def _photo_bytes(msg: Message) -> bytes | None:
@@ -124,7 +126,7 @@ def main() -> None:
     token = os.environ.get("TELEGRAM_BOT_TOKEN")
     if not token:
         sys.exit("TELEGRAM_BOT_TOKEN is not set. Export it (from @BotFather) and run `python -m bot` again.")
-    if not os.environ.get("SARVAM_API_KEY"):
-        log.warning("SARVAM_API_KEY not set: voice notes get a text reply only (cached TTS still used).")
+    if not os.environ.get("ELEVENLABS_API_KEY"):
+        log.warning("ELEVENLABS_API_KEY not set: voice notes get a text reply only (cached TTS still used).")
     log.info("RollWatch bot polling; API_BASE=%s", core.API_BASE)
     build(token).run_polling(allowed_updates=Update.ALL_TYPES)

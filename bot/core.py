@@ -12,7 +12,7 @@ from pathlib import Path
 import httpx
 
 from api.normalize import has_devanagari, has_gurmukhi
-from bot import sarvam
+from bot import audio
 from bot.texts import L, VERDICT, with_footer
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -22,7 +22,7 @@ TIMEOUT = float(os.environ.get("BOT_API_TIMEOUT", "90"))
 
 @dataclass
 class Reply:
-    kind: str  # "text" | "photo" | "voice"
+    kind: str  # "text" | "photo" | "voice" | "audio"
     text: str = ""
     data: bytes = b""
 
@@ -168,12 +168,14 @@ async def handle_text(api: Api, text: str) -> list[Reply]:
 
 
 async def handle_voice(api: Api, ogg: bytes) -> list[Reply]:
-    """S3: OGG -> WAV 16k mono -> Sarvam STT (hi-IN) -> citizen flow -> Sarvam TTS voice note."""
+    """S3: Telegram OGG -> ElevenLabs STT (scribe_v1) -> citizen flow -> ElevenLabs TTS voice note.
+    Without ELEVENLABS_API_KEY: a text reply."""
     from api import constants as C
-    if not sarvam.key():
+    from api import voice
+    if not voice.available():
         return [Reply("text", with_footer(C.VOICE_SOON["hi"], "hi"))]
-    wav = sarvam.to_wav16k(ogg, ".ogg")
-    transcript = sarvam.stt(wav, "hi") if wav else None
+    heard = voice.stt(ogg, "audio/ogg")
+    transcript = (heard or {}).get("text")
     if not transcript:
         return [Reply("text", with_footer(C.NO_QUERY["hi"], "hi"))]
     replies = await handle_text(api, transcript)
@@ -181,7 +183,8 @@ async def handle_voice(api: Api, ogg: bytes) -> list[Reply]:
         body = replies[0].text
         replies[0].text = f"« {transcript} »\n\n{body}"
         speak = body.split(C.PORTAL_LINE["hi"])[0].strip()
-        voice = sarvam.tts_ogg(speak, lang_of(speak, "hi"))
-        if voice:
-            replies.append(Reply("voice", data=voice))
+        mp3 = voice.tts_mp3(speak, lang_of(speak, (heard or {}).get("lang", "hi")))
+        if mp3:
+            ogg_out = audio.to_ogg_opus(mp3)
+            replies.append(Reply("voice", data=ogg_out) if ogg_out else Reply("audio", data=mp3))
     return replies
