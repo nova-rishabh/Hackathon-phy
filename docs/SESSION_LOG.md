@@ -335,3 +335,15 @@ Directional only: different, mostly US hackathons, small samples for niche theme
 ## Open
 - The submission format, deadline and demo slot length (ask the organisers).
 - Disclosing AI-tool use, and whether the partner commits under their own identity (see ACTION_PLAN §7).
+
+
+<a id="session-3"></a>
+## Session Log #3 (27 Oct 2026): presentation round done, docs aligned for development
+
+- **Presentation round** to the organisers is done (slides + talk; no AI voice). The pitch HTML drafts were one-offs and are deleted.
+- **Design v2:** Rishabh rejected the v1 look (violet/brick, "looks AI") and all five v1 logo concepts. The new reference is butter.video. `docs/DESIGN_SYSTEM.md` and `design/tokens.css` are rewritten: near-white page, grey panels, Geist regular-weight two-tone headlines, and yellow/mint/magenta/periwinkle as small signal chips only. Light only stays. `brand-board.html` is deleted.
+- **Logo:** Rishabh designs it himself. `docs/BRAND.md` has the brief (split-bar mark recommended) and the asset list.
+- **Scope v3** (PRD): promoted M9 forward→card loop, M10 rule error rates and M11 ops strip. Added S9 share clip, S10 1M scale run and S11 group /check. Cut the review hash chain, print report and Punjabi voice. No generic map, KPI wall or free-chat bot.
+- **Judge lens:** Nishant Chahar (ex-Microsoft SDE, AlgoPrep co-founder, ShotoAI, EF; from a third-party profile, unverified). The TRD now has a §1.1 complexity/scale/cost table, and Claim Court is framed as "the agent plans, code decides".
+- **Demo numbers unified** (START_HERE §4). The PRD said "82% ±6" residual for B047; it's now 97% unexplained with 82% confidence. The claim text now includes "raaton-raat" so the "overnight" sub-claim exists.
+- **New hub:** `docs/START_HERE.md`. ACTION_PLAN rewritten as development plan v3 from D0.

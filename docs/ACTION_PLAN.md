@@ -1,112 +1,110 @@
-# RollWatch: Action Plan (ship in 21 hours)
+# RollWatch: Development Plan v3
 
-> **R0 = the moment you start H0 below** (about 3h after the event clock started). Write the real clock times in the right-hand column once you know the submission deadline.
-> Scope: [PRD](PRD.md) · how: [TRD](TRD.md) · look: [Design system](DESIGN_SYSTEM.md) · stage: [Demo & pitch](DEMO_AND_PITCH.md).
+> **D0 = the moment we start building after the presentation round** (27 Oct). Write the real clock times in the right-hand column once the submission deadline is confirmed.
+> What: [START_HERE](START_HERE.md) · scope: [PRD v3](PRD.md) · how: [TRD](TRD.md) · look: [Design system v2](DESIGN_SYSTEM.md) · brand: [BRAND](BRAND.md) · stage: [Demo & pitch](DEMO_AND_PITCH.md).
 > **Ship over polish, polish over tests.** Five smoke checks plus the demo run-through are the whole QA budget (TRD §9).
 
 ---
 
-## 0. People and sessions (4 Claude Code sessions at most)
+## 0. Where we start (already on `main`)
 
-| | Human A: Rishabh, "Engine" | Human B: partner, "Product" |
+| Done | Not done |
+|---|---|
+| `contracts/` (models, schemas, fixtures, API spec) | API server (`api/main.py`, `llm.py`, `claims.py`, `guard.py`) |
+| `generator/` (Sampleabad, churn, plantings, answer key, training district) | `demo_config.yaml` for the demo booths (B047/B012/B063/B030) |
+| `engine/` (diff, BH, stories, duplicates, rules, Platt, eval); smoke checks 1–2 pass | Engine run on the full district, the bench, rule error rates |
+| `web/` shell, booth grid, flags + drawer + story bar **on mocks**, v1 look | Web on the live API, v2 look, Claim Court / Ask / Trust / card pages |
+| `api/citizen.py` search + templated answers (hi/en/pa) | Telegram bot, share card, voice, demo mode |
+
+## 1. People and sessions (4 Claude Code sessions at most)
+
+| | Rishabh, "Engine" | Partner, "Product" |
 |---|---|---|
-| Session 1 | **A1** generator, then api + LLM + Claim Court | **B1** web (Next.js) |
-| Session 2 | **A2** engine (diff, stats, stories, duplicates, eval) | **B2** citizen chat backend, then bot, then voice |
-| Also owns | contracts, merges, pitch delivery, tech Q&A | blind planting config, content video, slides, design QA, impact Q&A |
+| Session 1 | **A1:** demo config, then API + LLM + Claim Court agent + guard + ops | **B1:** web v2 (all pages) |
+| Session 2 | **A2:** engine finish, eval, rule error rates, bench | **B2:** citizen chat, Telegram bot, share card/clip, voice |
+| Also owns | contracts, merges, logo, tech Q&A | blind planting config, content video, slides, design QA |
 
-- **Worktrees:** `git worktree add ../rw-a1 -b a1`, and likewise for `a2`, `b1` and `b2`.
-- **Merges:** merge into `main` at R5, R9.5 and R13. Never merge without a `next build` and one boot of the API.
-- **Code review:** each human spends 10 minutes per module reading what Claude wrote. Both must be able to explain any function on stage.
+Worktrees: `a1`, `a2`, `b1`, `b2` (already created at H0; `git worktree list` to check). Merge to `main` at the gates only, after `next build` passes and the API boots once.
 
-## 1. H0: the first 45 minutes (R0 → R0.75), in parallel
+## 2. D0: the first 45 minutes, in parallel
 
-**A (contracts first, before any session starts):**
-- [ ] `.gitignore`: `.venv/ node_modules/ .env cache/llm/ private/ cards/*.png` (unignore `cards` at the freeze)
-- [ ] `contracts/models.py`: RollRow, context tables, Flag, StoryResult, ClaimVerdict, citizen and API I/O, exactly as in TRD §3
-- [ ] `contracts/export.py` → `*.schema.json` → `web/lib/types.ts`
-- [ ] `contracts/api.md` (TRD §3.5)
-- [ ] `contracts/fixtures/`: a hand-made 20-row v1/v2 with 1 cross-script duplicate, 1 impossible age, 1 hostel move-out, 1 boundary move and 1 death
-- [ ] Root `CLAUDE.md` (already written, so just review it)
+**Rishabh:**
+- [ ] Commit the v3 docs on `main` (Rishabh's name only, no co-author line).
+- [ ] Verify Form 6 / 7 / 8, helpline 1950 and the ECINET app name on voters.eci.gov.in, then update `api/constants.py` and remove the `# VERIFY` marks.
+- [ ] Key smoke tests on **venue Wi-Fi and then the hotspot**:
+  - Claude tool-use JSON call
+  - Gemini call
+  - Sarvam STT on a 10 s Hindi note and TTS in `hi-IN`
+  - a Telegram echo bot
+- [ ] Start the logo ([BRAND.md](BRAND.md) §3). It's needed by the B1 polish pass at D13.
 
-**B (environment and keys):**
-- [ ] `uv venv --python 3.12 .venv`, then `uv pip install …` (TRD §2), then `uv pip freeze > requirements.lock`. **Do this now, while the Wi-Fi works.**
-- [ ] `web/`: `pnpm dlx create-next-app@15 . --ts --tailwind --app --no-src-dir`, then shadcn init. Paste `design/tokens.css` into `globals.css` and copy `design/glyphs.svg` into `web/public/`.
-- [ ] Download the four fonts (woff2) into `web/public/fonts/`.
-- [ ] Smoke-test the keys:
-  - [ ] Claude JSON call
-  - [ ] Gemini call
-  - [ ] Sarvam STT on a 10 s Hindi voice note, and TTS in `hi-IN` and `pa-IN`
-  - [ ] a Telegram echo bot on **venue Wi-Fi**, and again on the **hotspot**
-- [ ] Verify Form 6 / 7 / 8, the 1950 helpline and the ECINET app name on the official portal, and write them into `api/constants.py`
-- [ ] Write `private/planting_config.yaml`, about 24 anomalies plus 12 benign decoys. **Never show it to A.**
-- [ ] Record behind-the-scenes clip #1
+**Partner:**
+- [ ] Write `private/planting_config.yaml`: about 24 anomalies and 12 decoys that **look scary** (a hostel emptying, a boundary redraw, a mass death). **Never show it to Rishabh.**
+- [ ] Run the generator with it and commit only the roll and context files.
+- [ ] Behind-the-scenes clip #1.
 
-**R0.75:** create the 4 worktrees and paste the kickoff prompts (§4).
+**Sessions:** paste the kickoff prompts (§5) at D0.75.
 
-## 2. Timeline
+## 3. Timeline
 
-| R | A1 | A2 | B1 (web) | B2 (citizen/bot) | Clock |
+| D | A1 (api) | A2 (engine) | B1 (web) | B2 (citizen/bot) | Clock |
 |---|---|---|---|---|---|
-| 0–0.75 | H0 | H0 | H0 | H0 | |
-| 0.75–2.5 | Generator v0: 100 booths, households, Devanagari+Latin names, churn, context tables, `SEED=42` | Diff, rule checks, binomial + BH on fixtures | Shell, banner, nav, booth grid on fixture mocks | `/search` normaliser + `/citizen/ask` on fixtures (EN/HI/PA templates) | |
-| 2.5–5 | Planting from config, answer key, training district `SEED=7`. **B runs it with the private config.** | Story attribution (§4.2) + `stories.json`, then `flags.json` v0. **R4.5: export real mocks to web.** | Flags queue + flag card drawer + story bar | Web chat page wiring, status block, language tabs | |
-| **R5 gate** | Do the generator and flags v0 exist? If not, cut S8 and S5 now. | | | | |
-| 5–7.5 | API serving artifacts, `llm.py` (cache + guard + fallback), flag-card batch | Cross-script duplicates + clusters, `/stories/{booth}` toggle | Overview totals, story toggle UI, duplicate card | Telegram bot (long polling) on the same API | |
-| 7.5–9.5 | Claim Court: splitter + tool menu + verdict rule + hard rules | Platt calibration, `engine.eval`, `/eval`, `/rules` | Claim Court page + Trust page | Sarvam Hindi voice in/out (S3) | |
-| **9.5–10.5** | **CHECKPOINT:** merge everything, live API, `next build`, **B reveals the blind eval**. All 4 modules run end to end. Film it. | | | | |
-| 10.5–13 | Mirror test, then screenshot claims (S1) | Fix the 2 worst eval misses, then the notice explainer data (S4) | `/card/[id]` share card + Chrome render script, review buttons (S6) | Bot share-card reply (S2), notice explainer replies, Punjabi TTS | |
-| **R13 gate** | Merge. Anything not working end to end is cut, not fixed. | | | | |
-| 13–14 | `DEMO_MODE`, cache every scripted path, pre-render cards and TTS | Freeze artifacts | `/report` print page (S7), polish pass against the design system | Cached voice path | |
-| **R14** | **FEATURE FREEZE.** Commit `artifacts/`, `cache/` and `cards/`, then tag `demo-v1`. | | | | |
-| 14–16.5 | Bug bash, the Wi-Fi-unplugged run, a cold reboot run, README + limitations + model card | | Backup demo screen recording, slides | Content video edit | |
-| 16.5–19.5 | **Rehearse the 4:00 demo ×4 with a timer, plus a Q&A drill** (each human explains 3 random functions) | | | Final video export | |
-| 19.5–21 | Buffer, submission, laptop + phone charged, hotspot on | | | | |
+| 0.75–2.5 | `generator/demo_config.yaml` → the exact demo numbers in START_HERE §4; re-run; **export real `flags.json` / `stories.json` mocks to web** | Run on the full district, fix whatever breaks; smoke checks 3–5 placeholders → real | **v2 restyle:** Geist fonts, `tokens.css` v2, floating bar, two-tone headlines, chips. Remove the LATENT table in `lib/stories.ts` | Citizen chat page logic on fixtures; Hindi/Punjabi/English templates final | |
+| 2.5–5 | `api/main.py`: serve artifacts; `/overview`, `/flags`, `/stories/{booth}` toggle, `/search`, `/citizen/ask`; ops middleware | Rule false-positive rates per rule from the eval (M10) → `rules.json`; `engine.run --bench` → `bench.json` | Audit page on the live API: booth grid, drawer, **context controls** with the residual tween | Telegram bot skeleton (long polling) calling `/citizen/ask` | |
+| **D5 gate** | Does the web show real flags from the API? If not, B1 stays on exported mocks and A1 fixes the API first. | | | | |
+| 5–7.5 | `llm.py` (Claude tool use, temp 0, disk cache, Gemini + template fallback); **Claim Court agent** with the typed tool menu, hard rules and deterministic verdict | Platt calibration check; duplicates on the full district; pair-count numbers for the bench | Claim Court page: claim → sub-claim rows with chips and query chips; mirror cards | Vision read of forward screenshots → `/claims/check`; bot returns text verdicts | |
+| 7.5–9.5 | `guard.py` + lexicon (EN/HI/PA) + `/guard/log`; mirror; `/ops` | Help A1: precomputed aggregates for the claim tools (O(1) lookups) | `/card/[id]` share card (1080×1350) + Chrome render script; Ask page | **Bot sends the share card PNG** (M9); `/check` in groups (S11) if easy | |
+| **9.5–10.5** | **CHECKPOINT:** merge everything; live API; `next build`; **the partner reveals the blind eval**. All four modules plus M9–M11 run end to end. Film the reveal. | | | | |
+| 10.5–13 | Fix the 2 worst eval misses with A2; cache every scripted LLM path | Scale run (S10) at 1M; realism chart data (S8) | Trust page: scoreboard, reliability, rule table, guard count, **ops strip** | Sarvam Hindi voice in/out (S3); share clip (S9) with A1's ffmpeg command | |
+| **D13 gate** | Merge. Anything not working end to end is **cut, not fixed**. Logo goes in now. | | | | |
+| 13–14 | `DEMO_MODE=1`; pre-render cards, clips and TTS for the script | Freeze artifacts | Polish pass against the design system v2; logo, favicon, OG image | Cached voice path; bot avatar | |
+| **D14** | **FEATURE FREEZE.** Commit `artifacts/`, `cache/` and `cards/`, then tag `demo-v1`. | | | | |
+| 14–16.5 | Wi-Fi-unplugged run; cold-reboot run; README with limitations, complexity table and AI-use disclosure | | Backup screen recording; slides (v2 style) | Content video edit | |
+| 16.5–19.5 | **Rehearse the 4:00 demo ×4 with a timer**, plus a Q&A drill (each of us explains 3 random functions and their complexity) | | | Final video export | |
+| 19.5–21 | Buffer, submission, laptop and phone charged, hotspot on | | | | |
 
-## 3. Cut order (cut from the top at any gate where you're late)
-1. Screenshot claims (S1). Keep text.
-2. Punjabi voice. Keep Punjabi text.
-3. Print report (S7).
-4. Review buttons (S6). Mention the audit-hash idea on a slide instead.
-5. The notice explainer and rule cards (S4, S5). Keep one rule card as a static example.
-6. The live mirror run. Show one precomputed mirror pair instead.
-7. Telegram voice.
-8. The Telegram bot entirely. Use the web citizen chat only and show the share card PNG on screen.
+## 4. Cut order (cut from the top at any gate where we're late)
+1. S11 group `/check`
+2. S10 scale run (keep the 50k bench numbers)
+3. S9 share clip (keep the PNG card)
+4. S3 voice (keep text)
+5. S8 realism chart
+6. The live mirror run (show one precomputed pair)
+7. The Telegram bot (web Claim Court + web chat, and show the card PNG on screen)
 
 **Never cut:**
-- the diff, BH test and cross-script duplicates
-- **Which Story Fits?** with the toggle
-- flag cards with the template fallback
-- text Claim Court with its hard rules
-- the Trust panel (blind eval)
+- Which Story Fits? with the live context controls
+- Claim Court with query chips and the hard rules
+- M9 card output (on the web at least)
+- M10 rule error rates
+- the blind-eval Trust page with the ops strip
 - the Neutrality Guard log
 - the web citizen chat in HI/EN/PA
 - `DEMO_MODE`
 
-**Already cut, don't revive:** OCR/PDF, torch/embeddings, Ollama, isotonic calibration, review learning, alerts, voice claims, maps, IsolationForest (unless everything else is done).
+**Already cut, don't revive:**
+- OCR/PDF rolls, torch/embeddings, Ollama, isotonic calibration, review-queue learning, alerts
+- voice claims, maps, IsolationForest
+- review buttons + hash chain, the print report, Punjabi voice
+- a generic dashboard or free-chat bot
 
-## 4. Kickoff prompts (paste one per session at R0.75)
+## 5. Kickoff prompts (paste one per session at D0.75)
 
-Every session reads `CLAUDE.md` and `docs/TRD.md` first. Each prompt ends with: *"Plan in 5 bullets, wait for OK, then build. Only touch your folder. Add at most the smoke check named for you in TRD §9."*
+Every session reads `CLAUDE.md`, `docs/START_HERE.md` and `docs/TRD.md` first. Each prompt ends with: *"Plan in 5 bullets, wait for OK, then build. Only touch your folder. Add at most the smoke check named for you in TRD §9. Commit small and often."*
 
-- **A1, generator:** "Build `generator/` per TRD §3.1 and §4.6. Create a fictional district Sampleabad with 10 wards, 100 booths and about 50k voters. Each household needs Devanagari and Latin names (with realistic Latin spelling variants), relation names, an age pyramid shaped like Census C-13, and gender. Churn from v1 to v2 covers age-specific deaths (shape of SRS 2022, about 6.8 per 1,000 overall), shifting, and new 18-year-olds. Write the context tables: death register, hostel list and boundary changes. Plantings are read **only** from a YAML path given on the CLI, and the answer key is written to the path given. Also write a training district with random auto-plantings using `--seed 7`. Output parquet and CSV files to `artifacts/`."
-- **A2, engine:** "Build `engine/` per TRD §4. It covers the diff, binomial + BH for deletion and addition spikes, the 'Which Story Fits?' attribution with a bootstrap CI and residual test, cross-script duplicates (normaliser + rapidfuzz + metaphone, union-find), rule checks, Platt calibration on the training district, and `engine.eval` against an answer-key path. Output `flags.json`, `stories.json` and `eval.json` matching `contracts/`. The engine must never import or read anything under `private/`."
-- **A1 (after the generator), API:** "Build `api/` (FastAPI, :8000) per TRD §3.5, §5, §6, §7 and §8. Serve the artifacts from memory. In `llm.py`, use Claude via tool use at temperature 0, with a disk cache keyed by sha256, a Gemini fallback and a template fallback. Build the Neutrality Guard with `guard_lexicon.yaml` and a log. Build Claim Court with a fixed tool menu, the hard rules in code, a deterministic verdict and the mirror. Put verified procedural text in `constants.py`. `DEMO_MODE=1` serves only artifacts and the cache."
-- **B1, web:** "Build `web/` (Next 15, client components only, fetching `http://localhost:8000`) strictly to `docs/DESIGN_SYSTEM.md`. That means light only, our tokens and glyphs, no lucide/heroicons, no gradients and no dark mode. Pages: Overview (booth grid), Flags (queue + drawer with the 4-line card and story bar with toggles), Claim Court (sub-claim stamps, query chips, mirror columns), Citizen (chat), Trust (eval + reliability + guard log), `/card/[id]` (1080×1350 share card) and `/report` (print CSS). Use `web/lib/types.ts` and the mocks in `web/mocks/` until the checkpoint."
-- **B2, citizen and bot:** "Build the citizen flow in `api/citizen.py` (coordinate with A1; you own only this file plus `bot/`) per TRD §7: script-tolerant search, status and reason category, and template next steps in hi, en and pa. Then build `bot/` with python-telegram-bot long polling as a thin client of `/citizen/ask` and `/claims/check`. It replies with text, sends the share card PNG for claims, and handles Sarvam voice in and out (ffmpeg OGG→WAV). Always end with the official portal line and the BLO-scam line."
+- **A1:** "First, add `generator/demo_config.yaml` so the demo booths match START_HERE §4 exactly (B047 unusual, B012 hostel benign, B063 boundary toggle, B030 mirror), re-run the generator and export the real `flags.json` / `stories.json` into `web/mocks/`. Then build `api/` per TRD §1.1, §3.5, §5, §6 and §8: FastAPI on :8000 serving artifacts from memory, an ops middleware to `artifacts/ops.jsonl` and `/ops`, `llm.py` (Claude tool use at temperature 0, sha256 disk cache, Gemini then template fallback), a Claim Court tool-use agent over the fixed typed tool menu with the hard rules in code and a deterministic verdict, the mirror, `guard.py` with the EN/HI/PA lexicon and its log, and `DEMO_MODE=1`."
+- **A2:** "Finish `engine/` per TRD §1.1 and §4. Run it on the full district and fix what breaks. Add per-rule false-positive rates from the eval (`rules.json`, PRD M10), `python -m engine.run --bench` writing the stage times and duplicate pair counts to `bench.json`, the scale run at 1M voters (S10), and the precomputed aggregates the claim tools need for O(1) lookups. Never read anything under `private/`."
+- **B1:** "Restyle and finish `web/` to **docs/DESIGN_SYSTEM.md v2** (butter.video-inspired): Geist fonts self-hosted, `design/tokens.css` v2 in `globals.css`, a floating grey bar with Audit · Check · Ask · Trust, two-tone regular-weight headlines with an inline object, mono eyebrows and signal chips. Light only, no lucide/heroicons/emoji, no gradients except the hatch. Pages: Audit (booth grid, drawer with the 4-line card, story bar and context controls), Check (Claim Court with query chips and the mirror), Ask (citizen chat), Trust (scoreboard, reliability, rule table, guard count, ops strip), `/card/[id]` (1080×1350). Switch from mocks to `http://localhost:8000` as soon as A1's endpoints exist; delete the LATENT table."
+- **B2:** "Finish the citizen flow in `api/citizen.py` (you own only that file plus `bot/`) per TRD §7. Then build `bot/` with python-telegram-bot long polling as a thin client of `/citizen/ask` and `/claims/check`. It accepts forward screenshots, replies with the share-card PNG (PRD M9), supports `/check` on a replied-to message in groups if time allows (S11), and handles Sarvam Hindi voice in and out (ffmpeg OGG→WAV). Always end with the official portal line and the BLO-scam line."
 
-## 5. Partner checklist (outside code)
-- [ ] The blind planting config at H0. Include **decoys that look scary**, such as a hostel emptying and a boundary redraw.
-- [ ] Behind-the-scenes clips at R0, R3, R6, the checkpoint (the eval reveal), late night and the freeze ([content video plan](CONTENT_VIDEO.md)).
-- [ ] 6 slides by R15 ([demo & pitch §4](DEMO_AND_PITCH.md#4-slides-6)).
-- [ ] Persona cards for judges to try after the pitch, printed or on a phone: 3 synthetic voters, each with a QR code to the web chat.
-- [ ] Optional: a printed booth QR poster as a table prop.
+## 6. Partner checklist (outside code)
+- [ ] The blind planting config at D0, with scary-looking decoys.
+- [ ] Behind-the-scenes clips at D0, D3, D6, **the checkpoint reveal**, late night and the freeze ([content video](CONTENT_VIDEO.md)).
+- [ ] Final slides in the v2 style by D15: one headline and one visual per slide, no script.
+- [ ] Persona cards (Meena B047, Ravi B012, Harpreet B063) with a QR code to the web chat.
 
-## 6. Things to ask the organisers early (a mentor or the rulebook contact)
-1. The submission format and deadline, and the length of the demo slot.
-2. Whether AI coding assistants are allowed. Disclose it either way.
-3. Whether a backup screen recording is acceptable if the venue network fails.
-4. Whether real *aggregate* public figures may appear in the pitch. They never appear in the product.
-
-## 7. Open decisions for Rishabh
-- [ ] Disclose AI-tool use in the README and pitch? (Recommended.)
-- [ ] Should the partner commit under their own git identity? (Recommended, because it proves both members contributed.)
+## 7. Open items
+- [ ] Submission format, deadline and demo slot length: ask the organiser.
+- [ ] Disclose AI-tool use in the README and pitch. (Recommended.)
+- [ ] Partner commits under their own git identity. (Recommended: it proves both of us built it.)
+- [ ] The logo and the final palette check, once Rishabh's logo is in.

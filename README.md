@@ -4,13 +4,16 @@ X AI Tech Ideathon, 27–28 Oct 2026, 24 hours. Problem: **PS1, AI for Electoral
 
 **RollWatch tells you which story a voter-roll change actually fits, how sure it is, and sends the answer back to where the rumour came from. It works in Hindi, English and Punjabi, and it takes no side.** All data is synthetic, from a fictional district called Sampleabad.
 
+**Start with [`docs/START_HERE.md`](docs/START_HERE.md)**: what we're building, the edge over other teams, the demo numbers and the decisions made.
+
 ## Build docs
 | Doc | What's in it |
 |---|---|
 | [`docs/PRD.md`](docs/PRD.md) | Users, scope (MUST / SHOULD / CUT), acceptance, adoption story |
 | [`docs/TRD.md`](docs/TRD.md) | Architecture, data contracts, API, algorithms, guard, smoke checks |
-| [`docs/ACTION_PLAN.md`](docs/ACTION_PLAN.md) | H0 checklist, hour-by-hour timeline, cut order, kickoff prompts |
-| [`docs/DESIGN_SYSTEM.md`](docs/DESIGN_SYSTEM.md) | Colours, type, components, glyphs, copy rules ([tokens](design/tokens.css), [glyphs](design/glyphs.svg)) |
+| [`docs/ACTION_PLAN.md`](docs/ACTION_PLAN.md) | Development plan v3: D0 checklist, hour-by-hour timeline, gates, cut order, kickoff prompts |
+| [`docs/DESIGN_SYSTEM.md`](docs/DESIGN_SYSTEM.md) | v2, butter.video-inspired: colours, type, components, glyphs, copy rules ([tokens](design/tokens.css), [glyphs](design/glyphs.svg)) |
+| [`docs/BRAND.md`](docs/BRAND.md) | Logo brief, taglines, brand asset list with sizes |
 | [`docs/DEMO_AND_PITCH.md`](docs/DEMO_AND_PITCH.md) | 4:00 demo script, Q&A answers, slide outline |
 | [`docs/CONTENT_VIDEO.md`](docs/CONTENT_VIDEO.md) | 60 s reel storyboard and shot list |
 | [`CLAUDE.md`](CLAUDE.md) | Rules for every Claude Code session |

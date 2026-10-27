@@ -29,6 +29,25 @@ cards/      share-card PNGs rendered by headless Chrome from web /card/[id]
   4. citizen answer phrasing (live, cached, template fallback)
   5. guard rewrite
 
+### 1.1 Engineering depth: complexity, scale and cost (v3, judge-facing)
+
+Every algorithm has a stated complexity and a measured number. Both go on the Trust page (M11) and in the README. Measure them, don't estimate.
+
+| Step | Approach | Complexity | Show on stage |
+|---|---|---|---|
+| Roll diff | hash join on `voter_id` (pandas merge) | O(n) | time for 50k and for 1M |
+| Booth tests | binomial per booth + Benjamini-Hochberg | O(m log m), m = 100 booths | q-values in the flag card |
+| Cross-script duplicates | **blocking** on (booth, house) and (booth, relation prefix) → score pairs inside blocks → **union-find** | O(Σ bᵢ²) instead of O(n²); union-find ≈ O(α(n)) per merge | "pairs scored: 0.4M instead of 1.25B" (use the real count) |
+| Story attribution | dictionary lookups per removed record, in a fixed order | O(r) per booth | instant toggle |
+| Bootstrap CI | 500 resamples, vectorised with numpy | O(B·r) | "500 resamples in < 50 ms" |
+| Claim tools | precomputed aggregates per booth/ward, O(1) lookups | O(1) per sub-claim | the query chip |
+
+**Scale run (S10).** `python -m generator --households-scale 20 --seed 11` gives about 1M voters. `python -m engine.run --bench` prints the wall time per stage and the pair counts to `artifacts/bench.json`. If the generator is too slow at 1M, scale by cloning the 100 booths with new IDs: that's still a fair test of the engine.
+
+**Request log → ops strip (M11).** A FastAPI middleware appends `{route, ms, llm_tokens_in, llm_tokens_out, model, cache_hit}` to `artifacts/ops.jsonl`. `/ops` returns p50, p95, ₹ per claim check (tokens × the current per-token price in `constants.py`) and the cache hit rate.
+
+**Claim Court is a tool-use agent with a typed tool menu.** Claude plans which of the ~9 tools to call and with which parameters, and it may call several. **Code executes every tool and code computes the verdict.** "The agent plans, code decides": that's the one-line answer to "isn't this a GPT wrapper?"
+
 ## 2. Environment
 
 | Item | Choice |
@@ -36,7 +55,7 @@ cards/      share-card PNGs rendered by headless Chrome from web /card/[id]
 | Python | `uv venv --python 3.12 .venv` (3.12.13 is already in uv). **Never use the system 3.14.** |
 | Python packages | `numpy<2.3 pandas pyarrow scipy statsmodels scikit-learn rapidfuzz jellyfish indic-transliteration fastapi uvicorn pydantic>=2 python-telegram-bot>=21 httpx anthropic google-genai python-dotenv qrcode pillow`. **No torch.** Run `uv pip freeze > requirements.lock` at H0. |
 | Node | Node 24 + **pnpm** only. Next 15, Tailwind v4, shadcn (restyled per the [design system](DESIGN_SYSTEM.md)). |
-| Fonts | Self-hosted in `web/public/fonts`: Plus Jakarta Sans, JetBrains Mono, Noto Sans Devanagari, Noto Sans Gurmukhi. **Not `next/font/google`**, because it fetches at build time. |
+| Fonts | Self-hosted in `web/public/fonts`: Geist, Geist Mono (from the `geist` npm package or Vercel's GitHub release), Noto Sans Devanagari, Noto Sans Gurmukhi. **Not `next/font/google`**, because it fetches at build time. |
 | Encoding | `PYTHONUTF8=1` in `.env`. Pass `encoding="utf-8"` to every `open()` and `ensure_ascii=False` to every `json.dump`. |
 | Ports | API 8000, web 3000. Each worktree adds 10 to both. |
 | `.env` | `ANTHROPIC_API_KEY, GEMINI_API_KEY, SARVAM_API_KEY, TELEGRAM_BOT_TOKEN, PYTHONUTF8=1, DEMO_MODE=0, SEED=42` |
@@ -200,9 +219,12 @@ GET  /report                     data for the print page
 7. **Mirror.** Flip the direction (deleted ↔ added, booth A ↔ the paired booth), re-run, and compare the verdict structure. Never label anything by political side.
 8. **Phrase** each verdict (LLM, cached), run it through the guard, and render the card.
 
-**Share card (S2).** Web route `/card/[claim_id]`, 1080×1350. Render it with headless Chrome:
+**Share card (M9).** Web route `/card/[claim_id]`, 1080×1350. The bot replies with the PNG into the same chat, and with S11 into the same group. Render it with headless Chrome:
 `chrome --headless=new --screenshot=cards/{id}.png --window-size=1080,1350 http://localhost:3000/card/{id}`.
 Chrome shapes Devanagari correctly; Pillow and satori don't. Precompute cards for every scripted claim.
+
+**Share clip (S9).** Render 4 states of `/card/[id]?step=0..3` (claim only → +verified → +disputed → +cannot be proven) with headless Chrome, then
+`ffmpeg -framerate 1/2 -i cards/{id}_%d.png -vf "fps=30,format=yuv420p,pad=1080:1920:0:285:color=F9F9F9" cards/{id}.mp4`. Add Sarvam TTS audio if S3 is done.
 
 ## 6. Neutrality Guard
 Layers, applied to every **generated** string. Fixed procedural templates in `api/constants.py`, such as official portal names, are exempt and allowlisted.

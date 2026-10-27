@@ -8,7 +8,7 @@
 
 | Time | Beat | On screen | Say |
 |---|---|---|---|
-| 0:00–0:12 | **Hook** | A synthetic forward on a phone (mirrored): *"Booth 47 mein 400 naam kaat diye, sab ek community ke!"* | "Crores of names changed in this year's roll revisions. Forwards like this spread in hours, and nobody can check them. Watch." |
+| 0:00–0:12 | **Hook** | A synthetic forward on a phone (mirrored): *"Booth 47 mein raaton-raat 400 naam kaat diye, sab ek community ke!"* | "Crores of names changed in this year's roll revisions. Forwards like this spread in hours, and nobody can check them. Watch." |
 | 0:12–0:45 | **Hero: forward → fact-check card** | Forward the screenshot to the RollWatch bot. About 15 s later a card comes back: **VERIFIED** "about 400 names left Booth 47" · **DISPUTED** "cut overnight" · **CANNOT BE PROVEN** "one community". 76%. | "It read the forward, split it into three checkable pieces and ran a real query for each. The part about a community? We never guess religion or caste from names, so it says cannot be proven, and tells you why." |
 | 0:45–1:00 | **Mirror** | The opposite forward ("ghost voters added in Booth 30") with the same structure side by side. `IDENTICAL TREATMENT ✓` | "Same tools, same tolerance, same treatment, whichever side the claim comes from." |
 | 1:00–2:05 | **Which story fits?** | Click Booth 47: the story bar is 97% unexplained, against ~60 expected removals. **NEEDS HUMAN REVIEW**. Click Booth 12: 380 left, 81% fits a hostel move-out. **LIKELY BENIGN**. Then Booth 63: toggle the boundary-change log on and watch the unexplained share fall from 64% to 8%. | "To a rumour, these two booths look the same. Only one is actually unusual. And you can see *why* we think so: switch a source on or off and the answer moves." |
@@ -39,6 +39,9 @@ Hand judges a persona card (*Ravi Verma, Booth 12*, *Harpreet Kaur, Booth 63*, *
 | How does real data get in? | Accredited observers and newsrooms run it locally on rolls they already obtain legally, and the outputs are booth-level aggregates. We never scrape. |
 | The LLM splits a claim wrong? | Every sub-claim shows the exact query it ran, so a human sees it. If a claim doesn't map to data we have, the answer is "cannot be proven", never a guess. |
 | Who uses it, and who pays? | Data desks and election-watch NGOs during revision windows. It would be an open-source core, hosted for NGOs on civic-tech grants, with the citizen bot free. |
+| What does one check cost, and how fast is it? | Show the ops strip: p50 latency, ₹ per claim check and the cache hit rate, measured from our own request log. |
+| How does it scale to a real state? | The scale run: 1M voters in N seconds. Duplicate blocking scores only a fraction of the n² pairs, and union-find merges them in near-linear time. |
+| Isn't this just a GPT wrapper? | No. The agent only plans which typed tool to call. Code runs every query and computes every verdict, and you can see the query behind each line. |
 | Did Claude Code write this? | We used AI coding assistants heavily and say so. The design, the statistics and the review are ours, and either of us can explain any function. |
 
 ## 4. Slides (6)
@@ -49,4 +52,4 @@ Hand judges a persona card (*Ravi Verma, Booth 12*, *Harpreet Kaur, Booth 63*, *
 5. **From Monday.** Users, how data gets in, what is never shown, the first 100 users, sustainability.
 6. **Limitations + ask.** Synthetic data, recalibration needed on real data, not affiliated with any official body. Thank-you.
 
-Slides use the design system too: the paper background, Plus Jakarta Sans and the stamps. No stock photos and no gradient title slides.
+Slides use [design system v2](DESIGN_SYSTEM.md) (butter.video style): a near-white page, grey panels, big regular-weight two-tone Geist headlines and yellow signal chips. No stock photos, no gradient title slides, no script read aloud: each slide carries one headline and one visual, and we talk over it.

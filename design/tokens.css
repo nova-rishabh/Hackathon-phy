@@ -1,62 +1,73 @@
-/* RollWatch design tokens: Tailwind v4. Paste into web/app/globals.css after `@import "tailwindcss";`.
-   Light theme only. Source of truth: docs/DESIGN_SYSTEM.md */
+/* RollWatch design tokens v2 (butter.video-inspired). Tailwind v4: paste into web/app/globals.css after `@import "tailwindcss";`.
+   Light only. Source of truth: docs/DESIGN_SYSTEM.md. Fonts are self-hosted in web/public/fonts/. */
 
-@font-face { font-family: "Plus Jakarta Sans"; src: url("/fonts/PlusJakartaSans-Variable.woff2") format("woff2"); font-weight: 200 800; font-display: swap; }
-@font-face { font-family: "JetBrains Mono"; src: url("/fonts/JetBrainsMono-Variable.woff2") format("woff2"); font-weight: 100 800; font-display: swap; }
+@font-face { font-family: "Geist"; src: url("/fonts/Geist-Variable.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: "Geist Mono"; src: url("/fonts/GeistMono-Variable.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
 @font-face { font-family: "Noto Sans Devanagari"; src: url("/fonts/NotoSansDevanagari-Variable.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
 @font-face { font-family: "Noto Sans Gurmukhi"; src: url("/fonts/NotoSansGurmukhi-Variable.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
 
 @theme {
-  --font-sans: "Plus Jakarta Sans", "Noto Sans Devanagari", "Noto Sans Gurmukhi", sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-sans: "Geist", "Noto Sans Devanagari", "Noto Sans Gurmukhi", sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
 
-  --color-paper: #F7F4EE;
+  /* Base: near-white page, grey panels, near-black ink */
+  --color-page: #F9F9F9;
+  --color-panel: #EDEDED;
+  --color-panel-2: #E3E3E3;
   --color-surface: #FFFFFF;
-  --color-sunk: #EFEBE3;
-  --color-rule: #DDD7CB;
-  --color-rule-strong: #BDB5A6;
-  --color-ink: #1D1C1A;
-  --color-ink-2: #4A4741;
-  --color-ink-3: #77726A;
+  --color-line: #DCDCDC;
+  --color-ink: #0F0F0F;
+  --color-ink-2: #5C5C5C;          /* secondary text, >= 4.5:1 on page */
+  --color-ink-3: #9A9A9A;          /* the "grey half" of two-tone headlines (large text only) */
+  --color-button: #1E1E1E;
 
-  --color-voter-ink: #4C2A85;
-  --color-voter-ink-soft: #EEE8F6;
-  --color-voter-ink-deep: #36195F;
+  /* Signals: used only as small fills (chips, one bar segment), never as page colour */
+  --color-signal: #F6D84D;         /* butter yellow: unusual / needs human review / unexplained */
+  --color-verified: #1CC691;       /* mint fill, ink text */
+  --color-disputed: #D61F69;       /* magenta fill, white text */
+  --color-benign: #B8C7FF;         /* periwinkle fill, ink text */
+  --color-unprovable: #EDEDED;     /* panel fill, dashed ink-3 border */
 
-  --color-unusual: #A3402B;
-  --color-unusual-soft: #F6E5DF;
-  --color-benign: #2E5E78;
-  --color-benign-soft: #E3EDF2;
-  --color-verified: #1F6A50;
-  --color-verified-soft: #E2F0EA;
-  --color-unprovable: #56606D;
-  --color-unprovable-soft: #E8EBEF;
+  /* Story bar: greys, with the leftover in signal yellow */
+  --color-story-death: #2E2E2E;
+  --color-story-dupes: #5C5C5C;
+  --color-story-boundary: #8C8C8C;
+  --color-story-hostel: #BDBDBD;
+  --color-story-unexplained: #F6D84D;
 
-  --color-story-death: #6B5B45;
-  --color-story-hostel: #2E5E78;
-  --color-story-boundary: #7A6A9E;
-  --color-story-dupes: #8A8270;
-  --color-story-unexplained: #A3402B;
-
-  --radius-sm: 2px;
-  --radius-stamp: 3px;
-  --radius: 4px;
+  --radius-chip: 6px;
+  --radius-button: 8px;
+  --radius-card: 16px;
+  --radius-panel: 28px;
 }
 
 :root { color-scheme: light; }
-html, body { background: var(--color-paper); color: var(--color-ink); font-family: var(--font-sans); font-size: 15px; line-height: 23px; }
+html, body { background: var(--color-page); color: var(--color-ink); font-family: var(--font-sans); font-size: 16px; line-height: 1.5; }
 .num, code, kbd { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
-[lang="hi"], [lang="pa"] { line-height: 1.6; font-size: 1.0667em; }
-:focus-visible { outline: 2px solid var(--color-voter-ink); outline-offset: 2px; }
+[lang="hi"], [lang="pa"] { line-height: 1.6; font-size: 1.0625em; }
+:focus-visible { outline: 2px solid var(--color-ink); outline-offset: 2px; }
 
-.overline { font-size: 11px; line-height: 14px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--color-ink-2); }
+/* Display: big, regular weight, tight. Wrap the second half in .dim for the two-tone headline. */
+.display { font-weight: 400; letter-spacing: -0.035em; line-height: 1.02; }
+.dim { color: var(--color-ink-3); }
 
-.stamp { display: inline-block; border: 2px solid currentColor; border-radius: var(--radius-stamp); padding: 2px 8px;
-  font: 700 12px/16px var(--font-sans); letter-spacing: .1em; text-transform: uppercase; transform: rotate(-1.5deg); background: transparent; }
-.stamp--verified { color: var(--color-verified); }
-.stamp--disputed { color: var(--color-unusual); }
-.stamp--unprovable { color: var(--color-unprovable); }
-.stamp--review { color: var(--color-voter-ink); }
-.stamp--benign { color: var(--color-benign); }
+/* Eyebrow: small mono, sentence case, ends with a period. e.g. "Which story fits." */
+.eyebrow { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.02em; color: var(--color-ink-3); }
 
-.tile--mixed { background: repeating-linear-gradient(135deg, var(--color-unusual-soft) 0 4px, var(--color-surface) 4px 8px); }
+.panel { background: var(--color-panel); border-radius: var(--radius-panel); }
+
+.btn { display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: var(--radius-button);
+  background: var(--color-button); color: #FAFAFA; font-size: 15px; }
+.btn--quiet { background: var(--color-panel); color: var(--color-ink); }
+
+/* Verdict chip */
+.chip { display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 10px; border-radius: var(--radius-chip);
+  font: 500 12px/1 var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; }
+.chip--review, .chip--unusual { background: var(--color-signal); color: var(--color-ink); }
+.chip--verified { background: var(--color-verified); color: var(--color-ink); }
+.chip--disputed { background: var(--color-disputed); color: #FFFFFF; }
+.chip--benign { background: var(--color-benign); color: var(--color-ink); }
+.chip--unprovable { background: var(--color-unprovable); color: var(--color-ink-2); border: 1px dashed var(--color-ink-3); }
+
+/* The one allowed pattern: hatching on the unexplained segment and on "mixed" booths */
+.hatch { background: repeating-linear-gradient(135deg, var(--color-signal) 0 5px, var(--color-ink) 5px 6.5px); }

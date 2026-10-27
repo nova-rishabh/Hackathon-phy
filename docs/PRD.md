@@ -1,8 +1,8 @@
 # RollWatch: Product Requirements (PRD)
 
 > Team Nova (IDEAS-175) · X AI Tech Ideathon · PS1, AI for Electoral Roll Transparency
-> Status: **locked scope, v2** (27 Oct 2026, after a six-reviewer validation pass). This replaces the scope in [`ROLLWATCH_PLAN.md`](ROLLWATCH_PLAN.md).
-> Companion docs: [TRD](TRD.md) · [Action plan](ACTION_PLAN.md) · [Design system](DESIGN_SYSTEM.md) · [Demo & pitch](DEMO_AND_PITCH.md) · [Content video](CONTENT_VIDEO.md)
+> Status: **locked scope, v3** (27 Oct 2026, dev start). v3 cuts generic features, promotes the share loop, rule error rates and the ops numbers, and tunes the build to the judge (see [START_HERE §3](START_HERE.md#3-who-were-building-for-the-judge)). It replaces v2 and [`ROLLWATCH_PLAN.md`](ROLLWATCH_PLAN.md).
+> Companion docs: [Start here](START_HERE.md) · [TRD](TRD.md) · [Action plan](ACTION_PLAN.md) · [Design system](DESIGN_SYSTEM.md) · [Demo & pitch](DEMO_AND_PITCH.md) · [Content video](CONTENT_VIDEO.md)
 
 ---
 
@@ -90,16 +90,28 @@ Use these real numbers only in the pitch and the video, with sources ([research 
 
 **M8. Demo mode.** Frozen artifacts plus a cached LLM path, so the whole scripted demo runs with Wi-Fi unplugged.
 
+**M9. Forward in, card out** (promoted from S1 + S2; the demo opens with it)
+- A forward screenshot (Telegram bot, or dropped onto the web Claim Court) goes through a vision read → Claim Court → a 1080×1350 share card in Hindi and English with a QR code.
+- The card goes back into the chat the rumour came from. **This is the distribution loop**: every check is a forwardable artifact.
+- **Fallback:** a pasted text claim on the web, and the pre-rendered card.
+
+**M10. Rule cards with published error rates** (promoted from S5, absorbs S4)
+- For every rule check: what it tests, **how often it fires on innocent synthetic records** (from the eval), the innocent explanations, and the document that resolves it.
+- This answers the real "logical discrepancy" gap: official flags have no published false-positive rate.
+
+**M11. Ops strip** (new, cheap)
+- On the Trust page: p50/p95 latency per surface, LLM cost per claim check in ₹, cache hit rate, and the engine run time on the full district.
+- Computed from the API's own request log. Founders and engineers ask "what does one check cost?"; we answer before they ask.
+
 ### 5.2 SHOULD (after the checkpoint, before the freeze)
 
-- **S1. Screenshot claims.** The bot or web accepts a forward image; vision extracts the text, then Claim Court runs.
-- **S2. Telegram bot with a share card.** The same brain as the web chat. A claim returns a forwardable Hindi/English **fact-check card** image with a QR code to the reasoning.
-- **S3. Hindi voice in and out** (Sarvam). Punjabi voice out if there's time.
-- **S4. Notice explainer.** "I got a notice / logical discrepancy" brings up the rule checks such a notice may come from, how often each fires on benign records (from our own synthetic eval), the document that resolves it, and the right form.
-- **S5. Rule cards page.** Each rule check is listed with what it tests, its false-positive rate on benign synthetic records, and its innocent explanations.
-- **S6. Review buttons.** Benign / escalate, with an append-only audit log (hash chain).
-- **S7. Print report.** A `/report` page saved to PDF from Chrome.
-- **S8. Realism chart.** Sampleabad's age pyramid and death rate next to published aggregate figures (Census C-13 shape, SRS 2022 death rate of 6.8 per 1,000).
+- **S3. Hindi voice in and out** (Sarvam) on the bot and web chat.
+- **S8. Realism chart.** Sampleabad's age pyramid and death rate next to published aggregate figures (Census C-13 shape, SRS 2022 death rate of 6.8 per 1,000). It lives on the Trust page.
+- **S9. Share clip.** An 8–12 s vertical MP4 of the share card with the verdict chips appearing one by one, plus an optional Hindi TTS voice line. Built from headless-Chrome frames and ffmpeg, no new library. A video travels further than an image on WhatsApp.
+- **S10. Scale run.** Generate a 1M-voter district (about 20× the demo) and show the engine's wall-clock time and the duplicate-blocking pair count against the naive n² on the Trust page. Proves the algorithms, not just the demo.
+- **S11. Telegram claim-check from a group.** Add the bot to a group, and `/check` on a replied-to forward returns the card into that group.
+
+**Removed in v3 (generic or low-value):** S1 and S2 (now M9), S4 notice explainer (absorbed into M10), S5 (now M10), **S6 review buttons + hash chain, S7 print report, Punjabi voice**. Punjabi text stays.
 
 ### 5.3 CUT (do not build before the freeze)
 
@@ -113,6 +125,7 @@ Use these real numbers only in the pitch and the video, with sources ([research 
 - voice claims
 - maps (deck.gl / Leaflet)
 - WhatsApp integration (pitch roadmap only)
+- a generic map, a generic KPI dashboard, a free-chat "ask anything" bot: every team will have one, and they add nothing to our edge
 
 ## 6. Key user stories and acceptance criteria
 
@@ -121,14 +134,14 @@ Acceptance is checked by **one manual run-through of the demo script**, not by a
 | # | Story | Done when |
 |---|---|---|
 | U1 | Meena types "meena kumaari booth 47" | She gets मीना कुमारी, Booth 47, "not in the new list, reason category: shifted", next steps, and the confidence. The same works in Punjabi. |
-| U2 | An auditor opens Booth 47 | The card reads: lost 412, expected ~60, stories checked, unexplained residual 82% ±6, "Unusual, needs human review". |
+| U2 | An auditor opens Booth 47 | The card reads: lost 412, expected ~60, stories checked, unexplained 400 (97%) ±3, confidence 82%, "Unusual, needs human review". |
 | U3 | The auditor opens Booth 12 | The card reads: lost 380, fits hostel move-out (81%), "Likely benign". |
 | U4 | The auditor toggles the boundary-change log on Booth 63 | The residual drops visibly and the label changes. |
 | U5 | The auditor opens a duplicate cluster | Three spellings across two scripts, masked names, "flagged for review, never removed". |
-| U6 | Someone pastes "Booth 47 mein 400 naam kaat diye, sab ek community ke!" | Verified: "about 400 left Booth 47". Disputed: "cut overnight". Cannot be proven: "one community" (we never infer community). Each sub-claim shows its query. |
+| U6 | Someone pastes "Booth 47 mein raaton-raat 400 naam kaat diye, sab ek community ke!" | Verified: "about 400 left Booth 47". Disputed: "cut overnight". Cannot be proven: "one community" (we never infer community). Each sub-claim shows its query. |
 | U7 | A mirror claim ("ghost voters added in Booth 30") | An identical verdict structure, side by side, with "identical treatment ✓". |
 | U8 | The trust panel | "Hidden by teammate: N anomalies + M decoys. Found X, cleared Y decoys, missed Z: here's why." |
-| U9 | (S2) Forward a screenshot to the bot | A card image comes back within about 15 s, and its percentages match the dashboard exactly. |
+| U9 | (M9) Forward a screenshot to the bot | A card image comes back within about 15 s, and its percentages match the dashboard exactly. |
 
 ## 7. Success metrics (what we show on stage)
 
@@ -136,6 +149,8 @@ Acceptance is checked by **one manual run-through of the demo script**, not by a
 - **Zero** neutrality violations across all generated outputs, shown as a log count.
 - **Demo:** 4:00 with the network off, run five times in a row without a failure.
 - **Bot reply** under 15 s for a cached path and under 30 s live.
+- **Cost per claim check** shown in ₹ (M11), with the cache hit rate.
+- **Engine run** on the full district in under 10 s, and on the 1M-voter scale run (S10) with the time on screen.
 
 ## 8. Adoption story (the "from Monday" slide; PS1 doesn't require it, but it wins Feasibility & Impact)
 

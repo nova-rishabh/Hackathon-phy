@@ -1,196 +1,163 @@
-# RollWatch: Design System
+# RollWatch: Design System v2
 
-> Look and feel: **a well-kept public ledger.** Warm paper, black ink, one violet taken from the indelible ink mark on a voter's finger, and rubber-stamp verdicts. Civic and calm. It should read like something a newsroom would trust, not an AI demo.
-> Files to copy: [`design/tokens.css`](../design/tokens.css) (Tailwind v4 theme) · [`design/glyphs.svg`](../design/glyphs.svg) (custom glyph sprite).
+> **Reference: [butter.video](https://butter.video)** (screenshot PDF shared by Rishabh, 27 Oct). It replaces the v1 "public ledger" look (warm paper, violet and brick), which Rishabh rejected as AI-looking.
+> **Feel: engineered calm.** A near-white page, soft grey panels, very large regular-weight type, and two-tone headlines. Colour appears only as small signal chips. It should feel like a precise instrument, not a civic-tech template.
+> Files: [`design/tokens.css`](../design/tokens.css) (Tailwind v4) · [`design/glyphs.svg`](../design/glyphs.svg) · brand and logo brief: [`BRAND.md`](BRAND.md).
 
 ---
 
-## 1. Hard rules (these are what keep it from looking AI-generated)
+## 1. What we take from butter.video, and what we change
 
-1. **Light theme only.** No dark mode, no dark hero sections, no black dashboards.
-2. **No gradients, glows, glass, blur or drop shadows** beyond a 1px hairline. Flat fills and rules only.
-3. **No stock icon set.** Don't use lucide, heroicons, emoji, sparkles ✨, robots, brains or "magic" wands. Use the custom glyphs in §6, or a plain text label. Most UI needs no icon.
-4. **No party-coded imagery.** Avoid saffron (#FF9933 range), avoid tricolour combinations, and **never** use a lotus, hand, broom, bicycle, elephant, clock, arrow or other election-symbol shapes, even by accident.
-5. **Fonts:** Plus Jakarta Sans and JetBrains Mono, plus Noto Sans Devanagari and Gurmukhi for Indic scripts. **Never Inter, Space Grotesk, Poppins or the system default.**
-6. **Corners at 4px** (cards), 2px for inputs and 3px for stamps. No pill-shaped everything, and no `rounded-2xl`.
-7. **Density over air.** Use the layout of a newspaper data page: hairline rules, tight tables, numbers aligned right in mono. Avoid big empty hero cards.
-8. **Copy never says "AI-powered", "smart", "magic", "revolutionary", "seamless" or "unlock".** It says what happened, with numbers.
+| Butter does | RollWatch does |
+|---|---|
+| Near-white page `#F9F9F9`, grey panels `#EDEDED` with big radii | The same. Panels at 28px radius hold every product module. |
+| Huge grotesk headlines at **regular weight**, tight tracking | Geist 400, −0.035em. Display at 56–96px. **Never bold headlines.** |
+| Two-tone sentences: black words, then grey words | Every page title: `412 names left Booth 47.` <span>in grey:</span> `We expected about 60.` |
+| Small objects inside a sentence (a dial, a slider, a 3D chip) | **A live object inside the headline:** a verdict chip, a mini story bar or a booth tile sits inline in the sentence. |
+| Mono eyebrows in grey ("Infinitely customizable.") | Mono eyebrows in sentence case with a period: `Which story fits.` `Claim court.` `Blind test.` |
+| Control panels with dials, sliders and segmented options | **Context controls** for "Which Story Fits?": each evidence source is a segmented on/off control, and the residual updates live. |
+| A big option list where the inactive items are grey ("Remix / Describe / Code") | The three verdicts and the three surfaces (Audit / Check / Ask) use this pattern. |
+| Black 8px-radius buttons | The same: `#1E1E1E`, 40px tall. |
+| Dark product panels | **We stay light** (team rule: no dark UI). Product panels are `#EDEDED`, and cards inside are white. |
+| Vivid 3D objects as hero art | At most **one** tactile object per page, on marketing surfaces only (the share card, the video end card). Never in the app. |
 
-## 2. Colour
+## 2. Hard rules
 
-All colours are flat. Text contrast is at least 4.5:1 on its own background.
+1. **Light only.** No dark mode, no dark sections, no dark product panels.
+2. **No gradients, glows, glass or shadows.** The only pattern is the yellow/black **hatch** on "unexplained" and "mixed".
+3. **No stock icons.** No lucide, heroicons, emoji, sparkles, robots or brains. Use our glyphs (§7) or a word. Most UI needs neither.
+4. **Colour is a signal, never decoration.** The page is greyscale. The five signal colours appear only as chips, one story-bar segment or one booth-tile fill. **No colour ever fills a large area**, so nothing reads as a party colour. Never use saffron, tricolour combinations or election-symbol shapes.
+5. **Fonts:** Geist and Geist Mono, plus Noto Sans Devanagari and Gurmukhi. **Not** Inter, Space Grotesk, Poppins, Plus Jakarta (v1) or the system default.
+6. **Copy never says** "AI-powered", "smart", "magic", "revolutionary", "seamless" or "unlock". It states what happened, with numbers.
+
+## 3. Colour
 
 ### Base
 | Token | Hex | Use |
 |---|---|---|
-| `paper` | `#F7F4EE` | App background (warm roll-paper) |
-| `surface` | `#FFFFFF` | Cards, tables, drawers |
-| `sunk` | `#EFEBE3` | Table header rows, code/query blocks, inactive tiles |
-| `rule` | `#DDD7CB` | Hairlines, borders (1px) |
-| `rule-strong` | `#BDB5A6` | Focus outline base, dividers between sections |
-| `ink` | `#1D1C1A` | Primary text |
-| `ink-2` | `#4A4741` | Secondary text |
-| `ink-3` | `#77726A` | Captions, axis labels (large text only) |
+| `page` | `#F9F9F9` | Background |
+| `panel` | `#EDEDED` | Module panels, quiet buttons, unprovable chip |
+| `panel-2` | `#E3E3E3` | Hover on panel, inactive segment |
+| `surface` | `#FFFFFF` | Cards inside panels, inputs, tables |
+| `line` | `#DCDCDC` | Hairlines |
+| `ink` | `#0F0F0F` | Text |
+| `ink-2` | `#5C5C5C` | Secondary text (body sizes) |
+| `ink-3` | `#9A9A9A` | The grey half of headlines, eyebrows (large or mono-label only) |
+| `button` | `#1E1E1E` | Primary buttons |
 
-### Brand
-| Token | Hex | Use |
-|---|---|---|
-| `voter-ink` | `#4C2A85` | Brand accent: wordmark mark, primary buttons, links, focus ring, selected nav |
-| `voter-ink-soft` | `#EEE8F6` | Banner strip, selected row, hover |
-| `voter-ink-deep` | `#36195F` | Button pressed |
-
-### Meaning (every one also carries a text label; colour is never the only signal)
-| Token | Hex | Soft | Meaning |
+### Signals (small fills only; each always has a text label)
+| Token | Hex | Text on it | Means |
 |---|---|---|---|
-| `unusual` | `#A3402B` (brick) | `#F6E5DF` | Flag outcome "Unusual, needs human review"; claim verdict **Disputed** |
-| `benign` | `#2E5E78` (steel blue) | `#E3EDF2` | Outcome "Likely benign" |
-| `verified` | `#1F6A50` (deep teal) | `#E2F0EA` | Claim verdict **Verified** |
-| `unprovable` | `#56606D` (slate) | `#E8EBEF` | Claim verdict **Cannot be proven**; "unexplained" story share |
-| `mixed` | brick on paper, hatched | | Outcome "Mixed" (see the booth grid) |
+| `signal` | `#F6D84D` butter yellow | ink | **Unusual · needs human review**, the unexplained share, the selected booth |
+| `verified` | `#1CC691` mint | ink | Claim **Verified** |
+| `disputed` | `#D61F69` magenta | white | Claim **Disputed** |
+| `benign` | `#B8C7FF` periwinkle | ink | **Likely benign** |
+| `unprovable` | `#EDEDED` + dashed `ink-3` border | ink-2 | Claim **Cannot be proven** |
 
-### Story colours (stacked bars in "Which Story Fits?")
-| Story | Hex |
-|---|---|
-| Death registered | `#6B5B45` (umber) |
-| Hostel move-out | `#2E5E78` (steel) |
-| Boundary change | `#7A6A9E` (lilac grey) |
-| Duplicate clean-up | `#8A8270` (stone) |
-| **Unexplained** | `#A3402B` (brick), always the last segment |
+### Story bar
+Innocent stories are **greys**, from dark to light: death `#2E2E2E`, duplicate `#5C5C5C`, boundary `#8C8C8C`, hostel `#BDBDBD`. **Unexplained is always last, in hatched yellow.** The eye goes straight to the part that matters.
 
-## 3. Type
+## 4. Type
 
-| Role | Font | Size/line | Weight | Notes |
+| Role | Font | Size / line | Weight | Notes |
 |---|---|---|---|---|
-| Display (page title) | Plus Jakarta Sans | 32/38 | 700 | tracking −0.015em, max 1 per page |
-| H2 section | Plus Jakarta Sans | 20/26 | 700 | |
-| H3 card title | Plus Jakarta Sans | 16/22 | 600 | |
-| Body | Plus Jakarta Sans | 15/23 | 400 | max 68ch |
-| Small / caption | Plus Jakarta Sans | 13/18 | 500 | `ink-2` |
-| Label (overline) | Plus Jakarta Sans | 11/14 | 700 | UPPERCASE, tracking 0.08em, `ink-2` |
-| **Numbers, IDs, queries** | JetBrains Mono | 14/20 | 500 | `font-variant-numeric: tabular-nums`. Every number on screen uses this. |
-| Big stat | JetBrains Mono | 44/48 | 600 | e.g. `412` deleted |
-| Hindi text | Noto Sans Devanagari | +1px vs Latin, line-height 1.6 | 400/600 | |
-| Punjabi text | Noto Sans Gurmukhi | +1px, line-height 1.6 | 400/600 | |
+| Hero display | Geist | 88/90 | 400 | −0.035em, two-tone, max 1 per page |
+| Page title | Geist | 48/52 | 400 | two-tone |
+| Section title | Geist | 28/32 | 400 | |
+| Card title | Geist | 18/24 | 500 | |
+| Body | Geist | 16/24 | 400 | max 64ch |
+| Eyebrow | Geist Mono | 13/16 | 400 | `ink-3`, sentence case with a period |
+| **Every number, ID and query** | Geist Mono | 14/20 | 400–500 | tabular-nums |
+| Big stat | Geist Mono | 64/64 | 400 | e.g. `412` |
+| Hindi / Punjabi | Noto Sans Devanagari / Gurmukhi | +1px, line-height 1.6 | 400/500 | `lang` attribute set |
 
-Font stack: `"Plus Jakarta Sans", "Noto Sans Devanagari", "Noto Sans Gurmukhi", sans-serif`. Mono: `"JetBrains Mono", ui-monospace, monospace`.
+## 5. Layout
 
-## 4. Space and layout
+- **Space scale:** 4, 8, 12, 16, 24, 32, 48, 72, 120. Generous vertical air between modules (72–120px), tight inside cards.
+- **App shell:**
+  - top bar: a floating grey pill (`panel`, 12px radius) with the wordmark at the left and the three surfaces as text tabs: **Audit · Check · Ask**, plus **Trust** at the right
+  - no left rail
+  - content max 1240px
+- **Banner** (always visible, mono 12px, `ink-3`, under the bar): `synthetic data · sampleabad is fictional · flags are patterns for human review, not findings`
+- **Mobile:** single column, 16px gutters, the bar collapses to the wordmark + a "Menu" text button.
 
-- **Space scale (4px base):** 4, 8, 12, 16, 24, 32, 48. Nothing in between.
-- **App shell:** top bar 56px (wordmark at the left, environment strip at the right), a left rail 200px wide with **text-only** nav, and content capped at 1200px wide.
-- **Nav labels:** Overview · Flags · Which story fits? · Claim Court · Citizen · Trust · Report.
-- **Banner strip** (always visible, under the top bar): 32px tall, `voter-ink-soft` background, mono 12px text:
-  `SYNTHETIC DATA · SAMPLEABAD IS FICTIONAL · FLAGS ARE PATTERNS FOR HUMAN REVIEW, NOT FINDINGS`
-- **Grid:** 12 columns with 24px gutters. Flag drawers open from the right, 480px wide.
-- **Mobile** (judges on phones for the citizen chat): a single column with 16px gutters, and the rail collapses into a top text menu.
+## 6. Components
 
-## 5. Components
+### 6.1 Headline with an inline object (the signature)
+`<h1 class="display">412 names left <BoothTile 47/> Booth 47. <span class="dim">We expected about 60.</span></h1>`
+The inline object is a real component at text height: a booth tile, a chip, or a 120px mini story bar. Use it on every page title.
 
-### 5.1 Verdict stamp (the signature element)
-A rubber-stamp label, not a pill.
-```
-border: 2px solid currentColor; border-radius: 3px; padding: 2px 8px;
-font: 700 12px/16px "Plus Jakarta Sans"; letter-spacing: .1em; text-transform: uppercase;
-transform: rotate(-1.5deg); background: transparent;
-```
-- Variants: `VERIFIED` (verified) · `DISPUTED` (unusual) · `CANNOT BE PROVEN` (unprovable) · `NEEDS HUMAN REVIEW` (voter-ink) · `LIKELY BENIGN` (benign).
-- On the share card, scale the stamp to 28px text and add a hairline inner border (double-rule stamp).
+### 6.2 Verdict chip
+Mono 12px, uppercase, 26px tall, 6px radius, filled with its signal colour (§3). `NEEDS HUMAN REVIEW` uses the yellow. On the share card the chips scale to 40px tall.
 
-### 5.2 Flag card (four lines, always this order)
-```
-┌ BOOTH 47 · DELETION SPIKE                       [NEEDS HUMAN REVIEW] ┐
-│ WHAT WE FOUND         412 names left between v1 and v2.              │
-│ WHY IT'S UNUSUAL      For this age mix we'd expect about 60 (q < 0.001)│
-│ INNOCENT EXPLANATIONS Deaths 9 · Hostel 0 · Boundary 0 · Duplicates 3 │
-│ HOW SURE              82% (high) · based on 140 test plantings        │
-└──────────────────────────────────────────────────────────────────────┘
-```
-- The left column holds overline labels, 160px wide. The right column holds body text, with every number in mono.
-- A 4px left border in the outcome colour.
-- The footer hairline shows `flag a3f91c02e4b1` in mono `ink-3`, followed by "View query".
+### 6.3 Flag card (four lines, always in this order)
+A white card (16px radius) inside a grey panel. The left column holds mono eyebrows (`what we found.` `why it's unusual.` `innocent explanations checked.` `how sure.`), and the right column holds the text with mono numbers. The chip sits top-right. The footer is `flag a3f91c02 · view query` in mono `ink-3`.
 
-### 5.3 Story bar ("Which Story Fits?")
-- One horizontal stacked bar, 100% wide and 20px tall, in the story colours. Unexplained is always last and in brick.
-- Below it, a mono legend row: `Death 9 (2%) · Hostel 0 · Boundary 0 · Dupes 3 (1%) · Unexplained 400 (97%) ±3`.
-- CI whiskers are thin `ink` lines on each segment end.
-- Toggles for the context sources are text checkboxes ("☐ Use boundary-change log"), styled as square 14px boxes with a `voter-ink` check. The residual number animates over 300ms when a toggle changes, using a plain linear tween with no bounce.
+### 6.4 "Which Story Fits?" panel (hero 1)
+- **Left:** a two-tone headline, the story bar (full width, 28px tall, 6px radius) and the mono legend `death 9 · dupes 3 · boundary 0 · hostel 0 · unexplained 400 (97%) ±3`.
+- **Right:** **context controls**, a butter-style control stack. One row per evidence source (death register, duplicate clusters, boundary log, hostel list). Each row has a mono label and a 2-option segmented control `on | off`. Below them, a `residual` readout in 64px mono that tweens over 300ms when a control changes, and the outcome chip.
 
-### 5.4 Booth grid (Overview)
-- 10 × 10 tiles, 64px square, 4px gap. Each tile shows the booth number top-left in mono 12px and the deletion % bottom-right in mono 13px.
+### 6.5 Booth grid (Audit overview)
+- **Tiles:** 10 × 10, 56px square, 10px radius, 6px gap. Each tile shows the booth number top-left and the deletion % bottom-right, both in mono.
 - **Fills:**
-  - neutral → `surface` with a `rule` border
-  - unusual → `unusual-soft` fill with a 2px `unusual` border
-  - likely benign → `benign-soft` fill
-  - **mixed → diagonal hatching** (`repeating-linear-gradient(135deg, unusual-soft 0 4px, surface 4px 8px)`); this is the one allowed "gradient", and it is a pattern, not a glow
-- **Hover:** the outline becomes `voter-ink` and a tooltip card appears. **Click** opens the flag drawer.
-- A legend sits under the grid, each entry a text label with a swatch.
+  - neutral: white
+  - unusual: yellow
+  - likely benign: periwinkle
+  - mixed: hatch
+- **Interaction:** the selected tile gets a 2px ink ring, and clicking a tile opens the flag drawer (a right sheet, white, 28px radius on its left corners).
 
-### 5.5 Claim Court
-- **Input:** a textarea with a 2px `rule` border; focus turns it `voter-ink`. The button reads "Check this claim".
-- **Output:**
-  - the normalised claim in italic `ink-2`
-  - then one row per sub-claim: `[stamp] sub-claim text` and a mono "query" chip on the right (`count deleted where booth = B047 → 412`)
-  - an evidence mini-chart that expands under the row
-- **Mirror:** two columns with a 1px dashed `rule-strong` axis between them and the mirror glyph at the top. Under the columns, a line reads `IDENTICAL TREATMENT ✓ 3 sub-claims · same tools · same tolerance`.
+### 6.6 Claim Court (hero 2)
+- **Input:** a big white textarea in a grey panel, with "or drop a screenshot" as a mono hint. The button reads **Check this claim**.
+- **Output:** the claim in large two-tone type. Below it, one row per sub-claim: the chip, the sub-claim text, and a mono query on the right (`count removed where booth = B047 → 412`).
+- **Mirror:** two white cards side by side on one panel, joined by the mono line `identical treatment · same tools · same tolerance`.
 
-### 5.6 Citizen chat
-- Bubbles are rectangles with 4px corners. User bubbles use `voter-ink-soft`; RollWatch bubbles use `surface` with a `rule` border. No avatars and no bot face.
-- **Status answer block:** the name in its own script at 20px, then the booth (mono), then the status stamp, the reason category, a numbered "Next steps" list, a "How sure" line and the official portal line.
-- **Language switcher:** three text tabs, `हिंदी · English · ਪੰਜਾਬੀ`, each in its own script.
-- **Voice reply:** the waveform glyph followed by "Play reply (0:12)".
+### 6.7 Citizen chat (Ask)
+- **Bubbles:** white bubbles with a 16px radius. The user's bubbles are `panel` grey. No avatars.
+- **Status block:** the name in its own script at 28px, the booth in mono, the chip, the reason, numbered next steps, how sure, and the official portal line.
+- **Language tabs:** `हिंदी · English · ਪੰਜਾਬੀ`, butter-style big option text (active in ink, inactive in grey).
 
-### 5.7 Share card (1080×1350 PNG for Telegram)
-- `paper` background, a 48px margin and a hairline frame.
-- **Top:** the wordmark plus "Fact check · synthetic demo district".
-- **Middle:** the claim in quotes at 40px, then three stamped rows (Verified / Disputed / Cannot be proven), each with one line of evidence in mono.
-- **Bottom:** "How sure: 76% · Patterns for human review, not findings", a QR code to `/claims/{id}` and "Treated the same as its mirror claim ✓".
-- Hindi and English versions; render with headless Chrome.
+### 6.8 Trust page
+- **Scoreboard:** a big mono scoreboard, `found 21 / 24 · decoys cleared 11 / 12 · missed 3`, with each miss explained in one line.
+- **Below it:**
+  - reliability dots
+  - the rule table with false-positive rates
+  - the guard log count
+  - an **ops strip:** p50 latency, cost per check in ₹, cache hit rate
 
-### 5.8 Tables
-- The header row sits on `sunk`, with the 11px uppercase label style.
-- Rows are 40px tall with hairline separators and no zebra stripes.
-- Numbers are right-aligned in mono.
-- Names are **masked** in auditor views: `मी*** कु*** · M*** K***`.
+### 6.9 Share card (1080×1350) and share clip
+- The `page` background with one grey panel.
+- The claim in 56px two-tone type, then the three verdict rows with 40px chips, then `how sure 76% · patterns for human review, not findings` and a QR code.
+- This is the one place a tactile 3D object (the logo object) may appear.
+- The clip version animates the chips in one by one (see the [PRD](PRD.md) S-list).
 
-### 5.9 Buttons
-- **Primary:** `voter-ink` background with `#fff` text, a 4px radius, 36px tall, 600 14px text.
-- **Secondary:** `surface` background with a 1px `rule-strong` border and `ink` text.
-- **Quiet:** text in `voter-ink` with an underline on hover.
-- **Focus:** a 2px `voter-ink` outline with a 2px offset. No shadows.
+### 6.10 Buttons and inputs
+- **Primary:** `button` fill, white text, 8px radius, 40px tall.
+- **Quiet:** `panel` fill.
+- **Inputs:** white, 1px `line`, 12px radius; on focus the border turns ink.
+- No shadows.
 
-### 5.10 Charts (Recharts, restyled)
-- No grid lines, only a baseline in `rule-strong`. Ticks are mono 11px in `ink-3`. Bars are flat, with no rounded tops.
-- The reliability chart has a dashed diagonal "perfect" line in `rule-strong`, dots in `voter-ink` sized by n, and the n written next to each dot.
-- Animations are off, except the story residual tween.
+### 6.11 Charts
+- No grid. The baseline is `line`, and ticks are mono 12px in `ink-3`.
+- Bars are flat with 4px radius.
+- The reliability chart has a dashed diagonal and ink dots sized by n.
 
-## 6. Custom glyphs (in `design/glyphs.svg`)
+## 7. Glyphs (`design/glyphs.svg`)
 
-All glyphs are drawn on a 24px grid with a 1.5px stroke, square caps and `currentColor`. They are **ours**: use them sparingly, with a text label next to every glyph.
+A 24px grid with a 1.5px stroke, `currentColor` and a text label next to each glyph. Use them sparingly.
+- **Glyphs:** `rw-spike` (deletion spike), `rw-twins` (duplicates), `rw-crowd` (oversized household), `rw-age` (impossible age), `rw-mirror` (mirror), `rw-tally` (eval), `rw-wave` (voice), `rw-script` (language) and `rw-stamp` (empty state).
+- **`rw-mark` is retired.** Rishabh is designing the logo ([BRAND.md](BRAND.md)).
+- The file is a **sprite**: opened directly it looks blank, because its symbols render only when a page references them with `<use href="/glyphs.svg#rw-spike"/>`.
 
-| id | Drawing | Used for |
-|---|---|---|
-| `rw-mark` | a fingertip outline with a short vertical ink stroke in `voter-ink` | Logo mark, favicon |
-| `rw-spike` | a baseline with five short bars and one tall bar | Deletion/addition spike type |
-| `rw-twins` | two offset name-slip rectangles sharing one line | Duplicate cluster type |
-| `rw-crowd` | a door frame filled with a 4×4 dot grid | Oversized household |
-| `rw-age` | the text "110+" inside a thin box | Impossible age |
-| `rw-mirror` | two half-columns with a dashed vertical axis | Mirror test |
-| `rw-tally` | four vertical strokes crossed by a diagonal | Counts / eval |
-| `rw-wave` | five vertical bars of varying height | Voice reply |
-| `rw-script` | the three letters "अ ਅ A" | Language switcher |
-| `rw-stamp` | a rotated rectangle with a double border | Empty-state illustration |
+## 8. Copy
 
-## 7. Voice and copy
+- **Numbers first, then meaning, two-tone:** "412 names left. *We expected about 60.*"
+- **Second person for citizens:** "Your name is in the new list."
+- **Every result ends with** how sure we are and what a human should check.
+- **Forbidden:** fraud, rigged, scam (except the BLO-scam warning), ghost voters (only inside a quoted claim), party, person and institution names, and "AI-powered".
+- **Empty states are sentences:** "No flags in this ward. That's normal for most wards."
 
-- **Numbers first, then meaning.** "412 names left. We'd expect about 60."
-- **Second person for citizens and plain verbs:** "Your name is in the new list." / "Your name is not in the new list. The likely reason is: shifted."
-- Every result ends with **how sure we are** and **what a human should check**.
-- **Forbidden in UI copy:** fraud, rigged, scam (except in the BLO scam warning), ghost voters (allowed only inside quoted user claims), "AI-powered", "smart", "magic", party, person and institution names.
-- **Allowed procedural text** (template-only): "official voter portal", "Form 6 / 7 / 8", "helpline 1950", "your Booth Level Officer (BLO)".
-- **Empty states** are honest sentences, not illustrations: "No flags in this ward. That's normal for most wards."
-
-## 8. Accessibility (no extra build time if followed from the start)
-- Every colour meaning also has a text label or stamp.
-- Visible focus rings, and keyboard access to the grid tiles (`button` elements).
-- `lang="hi"` / `lang="pa"` on Indic text nodes so screen readers switch voice.
-- Minimum tap target 40px in the citizen chat.
+## 9. Accessibility
+- Every signal colour also has a text label.
+- Yellow, mint and periwinkle carry ink text; magenta carries white text (≥ 4.5:1).
+- Keyboard access to booth tiles and segmented controls.
+- `lang="hi"` / `lang="pa"` on Indic text. Tap targets ≥ 40px.
