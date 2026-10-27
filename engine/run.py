@@ -20,16 +20,16 @@ from pathlib import Path
 from contracts.models import Flag, Metrics, Scope, StoryResult
 
 from . import rules
-from .confidence import Calibrator, band_of, feature
+from .confidence import TRAIN_WITH_BENIGN, Calibrator, band_of, feature
 from .data import load
 from .diff import diff
 from .dupes import find_clusters
 from .stats import band_rates, booth_tests
 from .stories import compute_stories, load_tables
 
-# Flag types the training key cannot label: background duplicates and relation conflicts exist in every
-# district but are not plantings, so a Platt fit would learn "unplanted" rather than "not a real anomaly".
-NO_CALIBRATION = {"duplicate_cluster", "relation_conflict"}
+# Flag types the training key cannot label. Background duplicates and relation-conflict side effects are now
+# labelled through <key>.background.json (generator), so every type is calibrated.
+NO_CALIBRATION: set[str] = set()
 
 
 @contextmanager
@@ -118,8 +118,12 @@ def raw_flags(a: dict) -> list[dict]:
             out.append(dict(type="deletion_spike", scope=Scope(level="booth", booth_id=booth, voter_ids=deleted_by_booth.get(booth, [])),
                             metrics=Metrics(observed=float(r.del_obs), expected=float(r.del_exp), n=int(r.n_v1),
                                             p_value=float(r.del_p), q_value=float(r.del_q)),
-                            reasons=["DEL_RATE_GT_EXPECTED_BH05"], stories=st, q=float(r.del_q),
-                            benign=bool(st and st.outcome == "likely_benign")))
+                            # Confidence reads the leftover after the innocent stories, not the raw spike: a spike the
+                            # evidence fully explains is not evidence of anything. Cleared unless that leftover is
+                            # itself significant ("mixed" booths with a background-level leftover are cleared too).
+                            reasons=["DEL_RATE_GT_EXPECTED_BH05"], stories=st,
+                            q=float(st.residual.p_value) if st else float(r.del_q),
+                            benign=bool(st and st.outcome != "unusual")))
         if r.add_q < 0.05 and r.add_obs > 0:
             out.append(dict(type="addition_spike", scope=Scope(level="booth", booth_id=booth, voter_ids=added_by_booth.get(booth, [])),
                             metrics=Metrics(observed=float(r.add_obs), expected=float(r.add_exp), n=int(r.n_v2),
@@ -175,17 +179,18 @@ def build_flags(raw: list[dict], cal: Calibrator) -> list[Flag]:
 def train_calibrator(train_dir, key_path, workers: int = 1) -> Calibrator:
     """Platt per type on the training district. Flags already judged likely_benign are left out (their confidence
     is scaled separately), and NO_CALIBRATION types keep the documented heuristic."""
-    from .eval import load_key, matches  # key read only via explicit CLI path
+    from .eval import load_background, load_key, matches, on_background  # key read only via explicit CLI path
     key = [p for p in load_key(key_path) if not p.is_benign]
+    bg = load_background(key_path)
     raw = raw_flags(analyse(train_dir, workers=workers))
     samples: dict = {}
     for r in raw:
-        if r["type"] in NO_CALIBRATION or r.get("benign"):
+        if r["type"] in NO_CALIBRATION or (r.get("benign") and r["type"] not in TRAIN_WITH_BENIGN):
             continue
         f = build_flags([r], Calibrator())[0]
         xs, ys = samples.setdefault(r["type"], ([], []))
         xs.append(feature(r["type"], r.get("q"), r.get("score")))
-        ys.append(int(any(matches(f, p) for p in key)))
+        ys.append(int(any(matches(f, p) for p in key) or on_background(f, bg)))
     return Calibrator().fit(samples)
 
 
