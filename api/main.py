@@ -29,7 +29,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
-from api import citizen, claims, guard as guard_mod, keys, llm, ops, voice
+from api import citizen, claims, guard as guard_mod, keys, llm, ops, voice, wa_auth
 from api.store import ROOT, data_dir, store
 from contracts.models import (AuditEntry, ClaimCheckRequest, ClaimVerdict, EngineRunResult, Flag, FlagList,
                               GuardLog, Health, Overview, Review, ReviewRequest, ReviewResponse, RuleCard,
@@ -39,9 +39,10 @@ app = FastAPI(title="RollWatch API", version="1.0")
 app.middleware("http")(ops.middleware)  # logs route + timings only, never headers
 app.middleware("http")(keys.middleware)  # BYOK: X-Gemini-Key / X-ElevenLabs-Key -> contextvar (never stored)
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"],
-                   allow_headers=["*", "Content-Type", "X-Gemini-Key", "X-ElevenLabs-Key"])
+                   allow_headers=["*", "Authorization", "Content-Type", "X-Gemini-Key", "X-ElevenLabs-Key"])
 app.include_router(citizen.router)  # GET /search, POST /citizen/ask (owned by B2)
 app.include_router(voice.router)  # POST /voice/tts, POST /voice/stt (ElevenLabs)
+app.include_router(wa_auth.router)  # WhatsApp sign-in code, /me account data, /wa/* worker bridge
 
 _lock = threading.Lock()
 _claims: dict[str, ClaimVerdict] = {}

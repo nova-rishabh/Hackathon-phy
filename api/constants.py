@@ -235,3 +235,8 @@ RULE_CONTEXT = {
     "relation_conflict": (["A typing error in the relative's name or age", "Two people with the same name in one house"],
                           "A Form 8 correction after the family confirms the relation."),
 }
+
+# WhatsApp sign-in code (sent by the wa/ worker). Plain text, no emoji.
+WA_OTP_TEXT = {
+    "en": "Your RollWatch code is {code}. It expires in 5 minutes. Never share it with anyone, including a BLO.",
+}
