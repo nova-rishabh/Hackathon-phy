@@ -7,7 +7,6 @@ Never logged: codes, tokens, full phone numbers, secrets (ops.jsonl records the 
 """
 from __future__ import annotations
 
-import asyncio
 import base64
 import hashlib
 import hmac
@@ -17,14 +16,13 @@ import os
 import re
 import secrets
 import time
-from collections import deque
 
 import httpx
 from fastapi import APIRouter, Header, HTTPException, Request
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
-from api import constants as C
+from api import constants as C, shared
 
 log = logging.getLogger("rollwatch.wa")
 router = APIRouter()
@@ -70,16 +68,9 @@ def mask(e164: str) -> str:
     return f"+{cc} ••••• {d[-5:]}"
 
 
-# ------------------------------------------------------------------ rate limits (in memory)
-_hits: dict[str, deque] = {}
-
-
-def _limit(key: str, n: int, window: int, now: float) -> int:
-    """0 when allowed (and recorded by the caller), else seconds to wait."""
-    q = _hits.setdefault(key, deque())
-    while q and now - q[0] >= window:
-        q.popleft()
-    return int(window - (now - q[0])) + 1 if len(q) >= n else 0
+# ------------------------------------------------------------------ shared state (memory, or Redis with REDIS_URL)
+def S():
+    return shared.state()
 
 
 def _client_ip(request: Request) -> str:
@@ -88,28 +79,12 @@ def _client_ip(request: Request) -> str:
 
 
 # ------------------------------------------------------------------ worker state + outbox
-_worker = {"state": "offline", "seen": 0.0, "number": None}
-_outbox: list[dict] = []
-_outbox_evt: asyncio.Event | None = None
+async def _worker_online() -> bool:
+    return time.time() - (await S().worker())["seen"] < HEARTBEAT_TTL
 
 
-def _evt() -> asyncio.Event:
-    global _outbox_evt
-    if _outbox_evt is None:
-        _outbox_evt = asyncio.Event()
-    return _outbox_evt
-
-
-def _worker_online() -> bool:
-    return time.time() - _worker["seen"] < HEARTBEAT_TTL
-
-
-def _beat(state: str | None = None, number: str | None = None):
-    _worker["seen"] = time.time()
-    if state:
-        _worker["state"] = state
-    if number is not None:
-        _worker["number"] = number
+async def _beat(state: str | None = None, number: str | None = None):
+    await S().beat(state, number)
 
 
 def _check_worker(secret: str | None):
@@ -121,7 +96,6 @@ def _check_worker(secret: str | None):
 
 
 # ------------------------------------------------------------------ codes + tokens
-_pending: dict[str, dict] = {}  # mobile -> {"h", "exp", "left"}
 
 
 def _code_hash(mobile: str, code: str) -> str:
@@ -177,36 +151,37 @@ async def wa_start(req: StartReq, request: Request):
         raise HTTPException(422, "enter a valid mobile number")
     now = time.time()
     keys = [(f"n60:{m}", 1, 60), (f"nh:{m}", 5, 3600), (f"ip:{_client_ip(request)}", 30, 900)]
-    wait = max(_limit(k, n, w, now) for k, n, w in keys)
+    wait = max([await S().wait_for(k, n, w, now) for k, n, w in keys])
     if wait:
         return _err(429, error="rate_limited", retry_in=wait)
-    if not _worker_online():
+    if not await _worker_online():
         return _err(503, error="sender_offline")
-    for k, _, _ in keys:
-        _hits[k].append(now)
+    for k, _, w in keys:
+        await S().hit(k, now, w)
     code = f"{secrets.randbelow(10 ** 6):06d}"
-    _pending[m] = {"h": _code_hash(m, code), "exp": now + CODE_TTL, "left": MAX_ATTEMPTS}
-    _outbox.append({"id": secrets.token_hex(8), "to": m, "text": C.WA_OTP_TEXT["en"].format(code=code)})
-    _evt().set()
+    await S().otp_set(m, {"h": _code_hash(m, code), "exp": now + CODE_TTL, "left": MAX_ATTEMPTS}, CODE_TTL)
+    await S().put({"id": secrets.token_hex(8), "to": m, "text": C.WA_OTP_TEXT["en"].format(code=code)})
     return {"sent": True, "to": mask(m), "expires_in": CODE_TTL}
 
 
 @router.post("/auth/wa/verify")
 async def wa_verify(req: VerifyReq):
     m = normalize(req.mobile)
-    p = _pending.get(m or "")
+    p = await S().otp_get(m) if m else None
     if not p:
         return _err(410, error="expired")
     if time.time() > p["exp"] or p["left"] <= 0:
-        _pending.pop(m, None)
+        await S().otp_del(m)
         return _err(410, error="expired")
     code = re.sub(r"\D", "", req.code or "")
     if not hmac.compare_digest(_code_hash(m, code), p["h"]):
         p["left"] -= 1
         if p["left"] <= 0:
-            _pending.pop(m, None)
+            await S().otp_del(m)
+        else:
+            await S().otp_set(m, p, max(1, int(p["exp"] - time.time())))
         return _err(401, error="wrong_code", attempts_left=max(p["left"], 0))
-    _pending.pop(m, None)
+    await S().otp_del(m)
     return {"token": make_token(m), "user": {"mobile_masked": mask(m)}}
 
 
@@ -331,9 +306,8 @@ def booth_status(booth_id: str) -> str | None:
                                           unexplained=round((un.share if un else 0) * 100), label=label)
 
 
-def _queue(to: str, text: str):
-    _outbox.append({"id": secrets.token_hex(8), "to": to, "text": text})
-    _evt().set()
+async def _queue(to: str, text: str):
+    await S().put({"id": secrets.token_hex(8), "to": to, "text": text})
 
 
 @router.post("/me/booths")
@@ -341,8 +315,8 @@ async def me_booths_add(body: BoothIn, authorization: str | None = Header(None))
     phone = _user(authorization)
     await _do(account().put("wa_watched_booths", phone, "booth_id", body.model_dump()))
     status = booth_status(body.booth_id)
-    if status and _worker_online():  # confirm on WhatsApp with the booth's state right now
-        _queue(phone, C.WA_WATCH_TEXT["en"].format(b=int(body.booth_id[1:]), status=status))
+    if status and await _worker_online():  # confirm on WhatsApp with the booth's state right now
+        await _queue(phone, C.WA_WATCH_TEXT["en"].format(b=int(body.booth_id[1:]), status=status))
     return {"ok": True}
 
 
@@ -356,7 +330,7 @@ async def wa_alerts(x_wa_secret: str | None = Header(None)):
     for r in rows:
         status = booth_status(r["booth_id"])
         if status:
-            _queue(r["phone"], C.WA_ALERT_TEXT["en"].format(status=status, link=f"{web}/"))
+            await _queue(r["phone"], C.WA_ALERT_TEXT["en"].format(status=status, link=f"{web}/"))
             sent += 1
     return {"queued": sent}
 
@@ -371,15 +345,9 @@ async def me_booths_del(booth_id: str, authorization: str | None = Header(None))
 @router.get("/wa/outbox")
 async def wa_outbox(wait: float = 20, x_wa_secret: str | None = Header(None)):
     _check_worker(x_wa_secret)
-    _beat()
-    if not _outbox:
-        _evt().clear()
-        try:
-            await asyncio.wait_for(_evt().wait(), timeout=max(0.0, min(wait, 30.0)))
-        except asyncio.TimeoutError:
-            pass
-        _beat()
-    msgs, _outbox[:] = list(_outbox), []
+    await _beat()
+    msgs = await S().take(max(0.0, min(wait, 30.0)))
+    await _beat()
     return {"messages": msgs}
 
 
@@ -391,7 +359,7 @@ class Heartbeat(BaseModel):
 @router.post("/wa/heartbeat")
 async def wa_heartbeat(hb: Heartbeat, x_wa_secret: str | None = Header(None)):
     _check_worker(x_wa_secret)
-    _beat(hb.state, mask(n) if (n := normalize(hb.number or "")) else None)
+    await _beat(hb.state, mask(n) if (n := normalize(hb.number or "")) else None)
     return {"ok": True}
 
 
@@ -408,7 +376,7 @@ class Inbound(BaseModel):
 async def wa_inbound(msg: Inbound, x_wa_secret: str | None = Header(None)):
     """Same logic as the Telegram bot (bot/core.py), calling this app in-process."""
     _check_worker(x_wa_secret)
-    _beat()
+    await _beat()
     from api.main import app  # late import: api.main includes this router
     from bot import core
     from bot.texts import L, with_footer
@@ -454,7 +422,8 @@ async def wa_inbound(msg: Inbound, x_wa_secret: str | None = Header(None)):
 
 @router.get("/wa/status")
 async def wa_status():
-    seen = _worker["seen"]
-    return {"state": _worker["state"] if _worker_online() else "offline",
+    w = await S().worker()
+    seen = w["seen"]
+    return {"state": w["state"] if time.time() - seen < HEARTBEAT_TTL else "offline",
             "last_seen_s": int(time.time() - seen) if seen else None,
-            "number": _worker["number"], "store": account().kind}
+            "number": w["number"], "store": account().kind, "shared_state": S().kind}
