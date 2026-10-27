@@ -23,6 +23,10 @@ services:
         sync: false
       - key: REDIS_URL  # optional: shared WhatsApp state so several workers/instances can run (api/shared.py)
         sync: false
+      - key: RAZORPAY_KEY_ID  # pricing page subscriptions (api/billing.py); test keys first
+        sync: false
+      - key: RAZORPAY_KEY_SECRET
+        sync: false
 
   - type: web
     name: rollwatch-web

@@ -367,3 +367,27 @@ WA_WATCH_TEXT = {
 WA_ALERT_TEXT = {
     "en": "RollWatch: a new audit ran.\n{status}\nSee why: {link}\nPatterns for human review, not findings.",
 }
+
+# ------------------------------------------------------------------ pricing (Pricing page; Razorpay subscriptions)
+# ASSUMPTION: list prices in INR per month, set by the team. Citizens never pay. Python computes every total.
+PRICING = {
+    "platform": {"label": "Platform: audit dashboard, Trust page, open API", "inr": 4999},
+    "constituency": {"label": "Constituency audited on every roll revision", "inr": 1500, "unit": "per constituency"},
+    "whatsapp": {"label": "WhatsApp bot on your own number", "inr": 2999},
+    "language": {"label": "Extra language (beyond Hindi, English, Punjabi)", "inr": 1000, "unit": "per language"},
+    "reviewer": {"label": "Human-review seat", "inr": 499, "unit": "per seat"},
+    "voice": {"label": "Voice replies", "inr": 0.6, "unit": "per reply"},
+    "onprem": {"label": "Run on your own servers (private deployment, support)", "inr": 25000},
+}
+PRICING_LIMITS = {"constituencies": (1, 543), "languages": (0, 19), "reviewers": (0, 200), "voice_replies": (0, 1_000_000)}
+PRICING_DISCOUNTS = {"annual_months_free": 2, "nonprofit_off": 0.5}  # newsrooms, NGOs, researchers
+PRICING_PRESETS = {
+    "newsroom": {"label": "Newsroom data desk", "constituencies": 5, "whatsapp": True, "languages": 0, "reviewers": 3,
+                 "voice_replies": 2000, "onprem": False, "nonprofit": True},
+    "watch": {"label": "Election-watch group", "constituencies": 20, "whatsapp": True, "languages": 2, "reviewers": 10,
+              "voice_replies": 20000, "onprem": False, "nonprofit": True},
+    "office": {"label": "Election office (check drafts before publishing)", "constituencies": 50, "whatsapp": True,
+               "languages": 4, "reviewers": 25, "voice_replies": 100000, "onprem": True, "nonprofit": False},
+}
+PRICING_FREE = ["Name lookup on web, WhatsApp and Telegram", "Claim checks with share image",
+                "Which documents a notice asks for", "Hindi, English and Punjabi, with voice"]
