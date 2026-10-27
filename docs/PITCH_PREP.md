@@ -153,7 +153,9 @@ DESIGN (strict)
 
 **Product and money**
 - *Who uses it?* First, data desks and election-watch NGOs during revision windows. Then citizens, through the bots.
-- *Who pays?* An open-source core, a hosted version for NGOs on civic-tech grants, and a free citizen bot. Bring-your-own-key means heavy users carry their own model cost.
+- *Who pays?* Citizens never do. Organisations build a monthly plan on the Pricing page: platform plus constituencies audited, their own WhatsApp number, extra languages, reviewer seats, voice replies, or running it on their own servers. Newsrooms and NGOs get 50% off; yearly billing gets two months free. Example: a newsroom desk is about ₹9,000 a month, an election office about ₹1.8 lakh. Paid through Razorpay subscriptions, verified server-side. The core stays open source, and heavy users can bring their own AI key.
+- *Can it be abused or drained?* Endpoints that cost money (voice, claim splitting, payments) or CPU (audit, story recompute) have per-client rate limits; uploads are size-capped; WhatsApp is limited per number; the engine rerun is operator-only. Limits are generous because judges on one Wi-Fi share an IP.
+- *How does a shared link look?* Every page previews with a proper card in WhatsApp, Telegram and X, and a shared claim previews as its own verdict card (Disputed, Verified, Cannot be proven), so the answer travels with the link.
 - *Cost and speed?* About ₹0 per check today (free tier, cache). Engine routes answer in about a millisecond. Live numbers are on the Trust page ops strip. The first request after the server sleeps is slow, which is a free-hosting cold start.
 - *Why would a voter trust you over the official app?* We don't replace it. The official app says *whether* you're listed; we say *why* you changed and *what to do*, in voice and Punjabi, and we hand off to the official portal and the 1950 helpline.
 

@@ -117,6 +117,14 @@ After it reports: we publish the scoreboard on Trust as "Blind test (planted by 
 - [x] **Trust:** "At national scale" (13.6 min on 64 cores; 191 checks/s peak; 2 machines) and "Why statistics, not a black box".
 - [x] **Realism anchors** (public polling-station metadata, counts only, no names): a real assembly constituency has about 200–260 booths and about 1.7 lakh electors (about 870 per booth; Punjab, West Bengal, Karnataka). Sampleabad (100 booths, 51k) is a scaled-down constituency, and the 1M run is about six constituencies.
 
+### Done on 28 Oct (afternoon)
+- [x] Blind test published (9 of 9, 6 of 6) and leading the Trust page.
+- [x] Pricing page with a custom subscription builder; Razorpay test keys verified on the server.
+- [x] Documents checker (web, WhatsApp, Telegram) from the BLO's SIR sheet.
+- [x] Home: story toggles instant (were up to 3.5 s); How it works cards no longer stretch; page loader and a "waking the server" note.
+- [x] Security review and fixes: per-client limits, size caps, strict card ids, operator-only engine rerun, per-number WhatsApp limit, trusted client IP.
+- [x] Link previews: site card, and each shared claim previews as its own verdict card.
+
 ### Product (in order)
 1. ~~Blind test~~ **Done:** 9 of 9 found, 6 of 6 decoys cleared, 0 missed; published on Trust and at `/eval/blind`.
 2. **Website animation pass** (§4). Owner: Claude.

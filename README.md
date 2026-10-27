@@ -85,6 +85,15 @@ Measured on the synthetic district with a planted answer key (`python -m engine.
 - The generator also adds realistic background noise (about 0.5% cross-script duplicates). It writes these to `<key>.background.json`, so a correct catch of one isn't counted as an error.
 - Confidence curves are fit on four synthetic training districts (98 removal-spike flags); real lists would need recalibration.
 
+## Who pays
+- **Citizens never pay:** name lookup on the web, WhatsApp and Telegram, claim checks with the share image, the documents guide, three languages with voice.
+- **Organisations build a plan** on `/pricing`: platform, constituencies audited, their own WhatsApp number, extra languages, reviewer seats, voice replies, or a private deployment. Newsrooms and NGOs get 50% off, and yearly billing gets two months free. Prices are quoted by the API (`api/billing.py`, list prices in `api/constants.py`), and payment is a Razorpay subscription created server-side for exactly that plan, with its signature verified server-side.
+
+## Safety of the service
+- Per-client rate limits on the endpoints that cost money or CPU, input size caps, strict ids, the engine rerun operator-only, and a per-number limit on WhatsApp (`api/limits.py`). Counts live in Redis when `REDIS_URL` is set.
+- Sign-in codes are hashed and rate-limited; tokens are HMAC-signed; worker and payment secrets are compared in constant time; secrets live only in the environment.
+- Shared links preview with a proper card, and a shared claim previews as its own verdict card.
+
 ## Run it
 ```
 uv venv --python 3.12 .venv && .venv\Scripts\activate && uv pip install -r requirements.lock
