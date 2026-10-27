@@ -12,7 +12,7 @@ export default function Shell({ children }: { children: React.ReactNode }) {
   const [menu, setMenu] = useState(false);
   const { user } = useSession();
   const acct: readonly [string, string] = user ? ["/account", "Account"] : ["/login", "Sign in"];
-  const RIGHT = [["/trust", "Trust"], ["/settings", "Keys"], acct] as const;
+  const RIGHT = [["/pricing", "Pricing"], ["/trust", "Trust"], ["/settings", "Keys"], acct] as const;
   if (path.startsWith("/card")) return <>{children}</>;
   const active = (h: string) => (h === "/" ? path === "/" : path.startsWith(h));
   const tab = (h: string, l: string) => (
