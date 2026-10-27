@@ -12,12 +12,13 @@ import numpy as np
 
 from api import constants as C
 
+ROOT = Path(__file__).resolve().parent.parent
 _req: contextvars.ContextVar[dict | None] = contextvars.ContextVar("rw_req", default=None)
 _lock = threading.Lock()
 
 
 def ops_path() -> Path:
-    return Path(os.environ.get("ROLLWATCH_OPS", Path(os.environ.get("ROLLWATCH_DATA", "artifacts")) / "ops.jsonl"))
+    return Path(os.environ.get("ROLLWATCH_OPS", Path(os.environ.get("ROLLWATCH_DATA", ROOT / "artifacts")) / "ops.jsonl"))
 
 
 def record_llm(model: str, tokens_in: int, tokens_out: int, cache_hit: bool):
@@ -88,11 +89,22 @@ def summary() -> dict:
     claims = [r for r in rows if r["route"] == "/claims/check"]
     costs = [_cost_inr(r.get("model"), r.get("llm_tokens_in", 0), r.get("llm_tokens_out", 0)) for r in claims]
     llm_rows = [r for r in rows if r.get("cache_hit") is not None]
+    all_ms = [float(r["ms"]) for r in rows]
+    inr = round(float(np.mean(costs)), 4) if costs else 0.0
+    bench_p = Path(os.environ.get("ROLLWATCH_DATA", ROOT / "artifacts")) / "bench.json"
+    try:
+        bench = json.loads(bench_p.read_text(encoding="utf-8")) if bench_p.exists() else None
+    except (OSError, json.JSONDecodeError):
+        bench = None
     return {
         "requests": len(rows),
+        "p50_ms": round(float(np.percentile(all_ms, 50)), 1) if all_ms else None,
+        "p95_ms": round(float(np.percentile(all_ms, 95)), 1) if all_ms else None,
+        "inr_per_check": inr,
+        "bench": bench,
         "routes": routes,
         "claim_checks": len(claims),
-        "inr_per_claim_check": round(float(np.mean(costs)), 4) if costs else 0.0,
+        "inr_per_claim_check": inr,
         "cache_hit_rate": round(sum(1 for r in llm_rows if r["cache_hit"]) / len(llm_rows), 3) if llm_rows else None,
         "llm_requests": len(llm_rows),
         "price_note": "Per-token prices are ASSUMPTIONS in api/constants.py (PRICE_INR_PER_MTOK, USD_INR).",
