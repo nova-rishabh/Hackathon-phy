@@ -24,7 +24,7 @@ export default function Shell({ children }: { children: React.ReactNode }) {
         <header className="mx-auto max-w-[1240px] bg-panel rounded-[12px] h-14 px-2 sm:px-3 flex items-center justify-between">
           <Link href="/" className="px-2 flex items-center" aria-label="RollWatch home">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo-word.png" alt="RollWatch" className="h-12 w-auto -my-1" />
+            <img src="/logo-word.png" alt="RollWatch" className="h-9 w-auto" />
           </Link>
           <nav aria-label="Main" className="hidden sm:flex items-center gap-1">
             {TABS.map(([h, l]) => tab(h, l))}
