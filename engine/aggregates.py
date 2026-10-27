@@ -203,7 +203,7 @@ def compare_booths(agg, booth_a=None, booth_b=None, metric="deletion_rate", **_)
     a, b = agg["booths"].get(str(booth_a)), agg["booths"].get(str(booth_b))
     if a is None or b is None or metric not in METRICS or a.get(metric) is None or b.get(metric) is None:
         return None, f"compare {metric} of booth {booth_a} and booth {booth_b}: not available", []
-    return float(a[metric] - b[metric]), f"{metric} of booth {booth_a} minus booth {booth_b}", [
+    return round(float(a[metric] - b[metric]), 3), f"{metric} of booth {booth_a} minus booth {booth_b}", [
         {"label": str(booth_a), "value": float(a[metric])}, {"label": str(booth_b), "value": float(b[metric])}]
 
 
