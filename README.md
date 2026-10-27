@@ -62,7 +62,7 @@ The core is fixed and measured. Everything that changes over time is a swappable
 Measured on the synthetic district with a planted answer key (`python -m engine.eval`), and shown live on `/trust`:
 - Found **6 of 6** planted anomalies. Cleared **7 of 7** innocent decoys (deaths, hostel move-outs, a boundary move). A removal spike is cleared only when what's left after the innocent stories is no higher than background. A decoy that shares a booth with a real anomaly counts as cleared only if its records are matched to the innocent story.
 - False-positive rate per raised flag: duplicates 9.8%, relation conflicts 11%, removal spikes 0% (1 raised, 8 cleared as likely benign), addition spikes 50% (2 raised), impossible age / oversized household / gender swing 0%.
-- Confidence is a Platt curve per rule, fit on a separate training district. When we say about 93%, the flags are right 90% of the time. For removal spikes the input is the leftover after innocent stories, not the raw spike.
+- Confidence is a Platt curve per rule, fit on four separate training districts (seeds 7–10). When we say about 93%, the flags are right 90% of the time. For removal spikes the input is the leftover after innocent stories, not the raw spike.
 - **The official "logical discrepancy" checks** reported for the 2025–26 revision are run and published, never raised as flags (`engine/official.py`). On our district:
 
   | Check | Trips | Innocent |
@@ -77,7 +77,7 @@ Measured on the synthetic district with a planted answer key (`python -m engine.
 
   These are synthetic rates: they depend on the innocent churn the generator models (marriages, spelling fixes, typos, large families). The point stands: none of these checks can tell a marriage from an anomaly. Sibling gaps under 9 months can't be checked from a roll, because it carries ages in years, not birth dates.
 - The generator also adds realistic background noise (about 0.5% cross-script duplicates). It writes these to `<key>.background.json`, so a correct catch of one isn't counted as an error.
-- Still open: a blind test whose answer key we never see. The removal-spike curve rests on only 20 training flags, so its confidence is shown with that n.
+- Still open: a blind test whose answer key we never see. Confidence curves are fit on four synthetic training districts (98 removal-spike flags); real lists would need recalibration.
 
 ## Run it
 ```

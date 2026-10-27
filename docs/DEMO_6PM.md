@@ -23,7 +23,7 @@
 
 ## Say honestly if asked
 - Data is fully synthetic (Sampleabad is fictional). No real voter data, by design.
-- Still to do by the final: the teammate's blind test (hidden anomalies we never saw), the Telegram bot live, more training districts for the confidence curves (removal spikes rest on 20 flags). Decoys: 7 of 7 cleared.
+- Still to do by the final: the teammate's blind test (hidden anomalies we never saw), the Telegram bot live, confidence curves now fit on four training districts (98 removal-spike flags). Decoys: 7 of 7 cleared.
 
 ## Likely questions
 - **"Is this just a Gemini wrapper?"** No. Gemini never produces a number. The engine (diff, binomial tests with Benjamini-Hochberg, cross-script duplicate blocking, story attribution, bootstrap) is plain Python and runs with the model switched off.

@@ -109,7 +109,7 @@ DESIGN (strict)
 
 **Honest limits:**
 - The blind test (a teammate's hidden plantings) is still to run.
-- The removal-spike confidence curve rests on 20 training flags.
+- Confidence curves rest on four synthetic training districts (98 removal-spike flags); real lists need recalibration.
 - Real rolls are per-part PDFs; PDF ingestion is roadmap.
 - Free hosting sleeps after 15 minutes, so the first load takes about a minute. Open the site before you go on.
 
