@@ -14,7 +14,10 @@ from pathlib import Path
 
 import os
 
+from dotenv import load_dotenv
+
 _ROOT = Path(__file__).resolve().parent.parent
+load_dotenv(_ROOT / ".env")  # keys stay out of git (.gitignore); real env vars win
 if os.environ.get("DEMO_MODE", "0") == "1":
     # Demo mode: data only from artifacts/, LLM only from cache/llm/ (cache miss -> template). No overrides.
     os.environ["ROLLWATCH_DATA"] = str(_ROOT / "artifacts")
