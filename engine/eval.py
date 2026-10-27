@@ -21,6 +21,18 @@ def load_key(path) -> list[Planting]:
     return [Planting.model_validate(p) for p in raw]
 
 
+def load_background(key_path) -> list[dict]:
+    """<key>.background.json: real-looking truths the generator adds that are not plantings (e.g. cross-script
+    duplicates). A flag on one is a correct catch, so it is not counted as a false positive."""
+    p = Path(key_path)
+    p = p.with_name(p.stem + ".background.json")
+    return json.loads(p.read_text(encoding="utf-8")) if p.exists() else []
+
+
+def on_background(f: Flag, background: list[dict]) -> bool:
+    return any(f.type == b["type"] and set(f.scope.voter_ids) & set(b["voter_ids"]) for b in background)
+
+
 def flag_type_of(p: Planting) -> str:
     return KIND_TO_FLAG.get(p.type, p.type)
 
@@ -31,7 +43,7 @@ def matches(f: Flag, p: Planting) -> bool:
     return f.scope.booth_id == p.booth_id or bool(set(f.scope.voter_ids) & set(p.voter_ids))
 
 
-def evaluate(flags: list[Flag], key: list[Planting]) -> EvalResult:
+def evaluate(flags: list[Flag], key: list[Planting], background: list[dict] | None = None) -> EvalResult:
     anomalies = [p for p in key if not p.is_benign]
     decoys = [p for p in key if p.is_benign]
     found, misses = 0, []
@@ -55,7 +67,7 @@ def evaluate(flags: list[Flag], key: list[Planting]) -> EvalResult:
     fp = {}
     true_flags = []
     for f in flags:
-        is_true = any(matches(f, p) for p in anomalies)
+        is_true = any(matches(f, p) for p in anomalies) or on_background(f, background or [])
         true_flags.append(is_true)
         if not is_true:
             fp[f.type] = fp.get(f.type, 0) + 1
@@ -88,7 +100,7 @@ RULES = {
 }
 
 
-def rule_cards(flags: list[Flag], key: list[Planting], n_voters: int | None = None) -> dict:
+def rule_cards(flags: list[Flag], key: list[Planting], n_voters: int | None = None, background: list[dict] | None = None) -> dict:
     """Per-rule error rates (PRD M10). A flag is 'raised' unless the engine itself judged it likely benign.
     false_positive_rate = raised flags that match no planted anomaly / raised flags. Flags cleared as likely benign
     are reported separately with how many of them sit on a planted innocent decoy."""
@@ -99,7 +111,7 @@ def rule_cards(flags: list[Flag], key: list[Planting], n_voters: int | None = No
         fs = [f for f in flags if f.type == t]
         raised = [f for f in fs if not f.likely_benign]
         cleared = [f for f in fs if f.likely_benign]
-        tp = [f for f in raised if any(matches(f, p) for p in anomalies)]
+        tp = [f for f in raised if any(matches(f, p) for p in anomalies) or on_background(f, background or [])]
         planted = [p for p in anomalies if flag_type_of(p) == t]
         found = [p for p in planted if any(matches(f, p) and not f.likely_benign for f in flags)]
         on_decoy = [f for f in cleared if any(matches(f, p) for p in decoys)]
@@ -114,8 +126,8 @@ def rule_cards(flags: list[Flag], key: list[Planting], n_voters: int | None = No
             "raised_per_10k_voters": round(10000 * len(raised) / n_voters, 2) if n_voters else None,
         })
     return {"measured_on": "synthetic district with a planted answer key", "n_voters_v2": n_voters,
-            "note": "A flag that matches no planting is counted as a false positive, including records the generator "
-                    "adds as realistic background (about 0.5% cross-script duplicates). Every flag still needs human review.",
+            "note": "A flag that matches no planting and no background truth (the generator's ~0.5% realistic "
+                    "cross-script duplicates) is counted as a false positive. Every flag still needs human review.",
             "rules": out}
 
 
@@ -128,7 +140,8 @@ def main():
     ap.add_argument("--rules", help="per-rule error rates (PRD M10); default <out dir>/rules.json")
     a = ap.parse_args()
     flags = [Flag.model_validate(f) for f in json.loads(Path(a.flags).read_text(encoding="utf-8"))]
-    res = evaluate(flags, load_key(a.key))
+    bg = load_background(a.key)
+    res = evaluate(flags, load_key(a.key), bg)
     Path(a.out).parent.mkdir(parents=True, exist_ok=True)
     Path(a.out).write_text(res.model_dump_json(indent=1), encoding="utf-8")
     n_voters = None
@@ -137,7 +150,7 @@ def main():
         n_voters = len(load(a.data or Path(a.flags).parent).v2)
     except Exception:
         pass
-    cards = rule_cards(flags, load_key(a.key), n_voters)
+    cards = rule_cards(flags, load_key(a.key), n_voters, bg)
     rp = Path(a.rules) if a.rules else Path(a.out).parent / "rules.json"
     rp.write_text(json.dumps(cards, ensure_ascii=False, indent=1), encoding="utf-8")
     for r in cards["rules"]:
