@@ -69,6 +69,7 @@ class Store:
         # booth in v1 too, so "booth 47" also finds entries that moved out of 47
         self.cand["booth_v1"] = self.cand.voter_id.map(self.r1["booth_id"]).fillna("")
         self.cand["age_i"] = pd.to_numeric(self.cand["age"], errors="coerce")
+        self.age_shift = _age_shift(self.v1, self.v2)
         self._nk = self.cand.nk.tolist()
         self._nkd = self.cand.nk_dev.tolist()
         self._rk = self.cand.rk.tolist()
@@ -117,6 +118,20 @@ def _build_attributor(s: Store):
     return f
 
 
+def _age_shift(v1: pd.DataFrame, v2: pd.DataFrame) -> int:
+    """Roll-wide ageing (modal v2-v1 age difference, normally +1), same rule as engine/diff.py age_shift."""
+    try:
+        from engine.diff import diff  # reuse the engine's field when it provides one
+        sh = diff(v1, v2).get("age_shift")
+        if sh is not None:
+            return int(sh)
+    except Exception:
+        pass
+    both = v1[["voter_id", "age"]].merge(v2[["voter_id", "age"]], on="voter_id", suffixes=("", "_2"))
+    d = (pd.to_numeric(both["age_2"], errors="coerce") - pd.to_numeric(both["age"], errors="coerce")).dropna()
+    return int(d.mode().iloc[0]) if len(d) else 0
+
+
 @lru_cache(maxsize=4)
 def _store(d: str) -> Store:
     return Store(Path(d))
@@ -139,7 +154,13 @@ def status_of(s: Store, vid: str) -> str:
     if vid not in s.r1.index:
         return "present"
     a, b = s.r1.loc[vid], s.r2.loc[vid]
-    return "modified" if any(str(a[f]) != str(b[f]) for f in _FIELDS) else "present"
+    if any(str(a[f]) != str(b[f]) for f in _FIELDS if f != "age"):
+        return "modified"
+    try:
+        aged = int(float(b["age"])) - int(float(a["age"])) != s.age_shift
+    except (TypeError, ValueError):
+        aged = str(a["age"]) != str(b["age"])
+    return "modified" if aged else "present"
 
 
 def reason_of(s: Store, vid: str, status: str) -> str:
@@ -323,6 +344,11 @@ def _shown_name(match: SearchMatch, lang: str) -> str:
     return f"{match.name_lat} / {match.name_dev}" if match.name_dev else match.name_lat
 
 
+def _review_line(lang: str) -> str:
+    """The human-review sentence, taken from the constants' "sure" template (its last sentence)."""
+    return re.split(r"(?<=[.।])\s+", C.LABELS["sure"][lang].strip())[-1]
+
+
 def _transcribe(audio_b64: str) -> str:
     """Web audio path (S3). Needs SARVAM_API_KEY; returns '' when unavailable."""
     if not os.environ.get("SARVAM_API_KEY"):
@@ -343,12 +369,13 @@ def ask(req: CitizenAsk) -> CitizenAnswer:
         if not text:
             lang = req.lang or "hi"
             return _answer(lang, "not_found", "none", [], 0.0, None,
-                           [C.VOICE_SOON[lang], C.PORTAL_LINE[lang], C.SCAM_LINE[lang]])
+                           [C.VOICE_SOON[lang], _review_line(lang), C.PORTAL_LINE[lang], C.SCAM_LINE[lang]])
     lang = detect_lang(text, req.lang)
     footer = [C.PORTAL_LINE[lang], C.SCAM_LINE[lang]]
     name, _, _, _ = parse_query(text)
     if not normalize(name):
-        return _answer(lang, "not_found", "none", [], 0.0, None, [C.NO_QUERY[lang]] + footer, transcript)
+        return _answer(lang, "not_found", "none", [], 0.0, None,
+                       [C.NO_QUERY[lang], _review_line(lang)] + footer, transcript)
     res = search(text, limit=1)
     best = res.matches[0] if res.matches else None
     if not best or best.score < MATCH_MIN:
@@ -368,6 +395,7 @@ def ask(req: CitizenAsk) -> CitizenAnswer:
     else:
         lines.append(C.STATUS_LINE["not_found"][lang])
         lines.append(C.LABELS["sure_none"][lang])
+        lines.append(_review_line(lang))
     lines.append(C.LABELS["next"][lang])
     lines += [f"{i}. {t}" for i, t in enumerate(steps, 1)]
     if status != "present":
