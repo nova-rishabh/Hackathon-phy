@@ -111,6 +111,12 @@ After it reports: we publish the scoreboard on Trust as "Blind test (planted by 
 - [x] API keys rotated.
 - [x] Load test and pre-built cached responses (this document, §1).
 
+### Done on 28 Oct (after the checkpoint)
+- [x] **Documents guide from the BLO's SIR sheet.** For anyone off the list or with changed details, the answer says which documents a notice would ask for, from their age on the qualifying date (before 1 Jul 1987: self; 1987–2004: self + one parent; after 2 Dec 2004: self + both parents). Near a cutoff it shows both cases.
+- [x] **Real-data adapter** `engine/adapters/inrolls.py`: parsed roll CSVs (the in-rolls open parser's columns) to our schema. A synthetic round trip gives identical demo results (412 / 401 unexplained; 79% hostel; mixed 63).
+- [x] **Trust:** "At national scale" (13.6 min on 64 cores; 191 checks/s peak; 2 machines) and "Why statistics, not a black box".
+- [x] **Realism anchors** (public polling-station metadata, counts only, no names): a real assembly constituency has about 200–260 booths and about 1.7 lakh electors (about 870 per booth; Punjab, West Bengal, Karnataka). Sampleabad (100 booths, 51k) is a scaled-down constituency, and the 1M run is about six constituencies.
+
 ### Product (in order)
 1. **Blind test** (§2). Owner: agent + Rishabh. Then publish on Trust.
 2. **Website animation pass** (§4). Owner: Claude.
@@ -148,4 +154,6 @@ After it reports: we publish the scoreboard on Trust as "Blind test (planted by 
 - ECI electorate, 2025 (99.1 crore): [News Arena](https://www.newsarenaindia.com/nation/india-s-voter-count-reaches-99-1-crore/34469), [Deccan Herald](https://www.deccanherald.com/india/india-now-has-991-crore-voters-election-commission-3368788); 2024: [ECI Atlas 2024](https://www.eci.gov.in/EBooks/atlas-2024/files/basic-html/page71.html)
 - Royston et al., *Anomaly Detection and Automated Labeling for Voter Registration File Changes* (2021): [arXiv 2106.15285](https://arxiv.org/abs/2106.15285)
 - Anwar, Jain, Kettler, *Detecting anomalies in voter registration data* (2024): [Boise State](https://experts.boisestate.edu/en/publications/detecting-anomalies-in-voter-registration-data-2024-esra-issue/)
+- Polling-station metadata and roll parser (aggregates only, no personal data used): Sood and Dhingra, *Indian Electoral Rolls PDF Corpus*, [Harvard Dataverse](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/OG47IV); [in-rolls/electoral_rolls_parse_searchable](https://github.com/in-rolls/electoral_rolls_parse_searchable)
+- SIR documents: the Information Sheet for Enumeration Form (handed out by BLOs)
 - Logical-discrepancy criteria: [The News Minute](https://www.thenewsminute.com/karnataka/karnataka-sir-age-gaps-name-mismatches-among-criteria-as-20-lakh-voters-face-notices), [Internet Freedom Foundation](https://internetfreedom.in/analysis-and-explainer-on-how-the-sir-excluded-voters-at-scale/)
