@@ -37,3 +37,6 @@ Every survivor ages +1 in v2. The real blind config lives in `private/` and is n
 Next to the answer key the generator writes the realistic background it adds that is not a planting: about 0.5% cross-script duplicates, plus the relation conflicts a gender-swing planting causes as a side effect. `engine.eval` reads it if present, so a correct catch of one counts as correct, not as a false positive. It never counts toward "found N of M".
 
 Families are always possible: after all random draws (so the seed-42 district is unchanged), `fix_families` lists a member under 18 years younger than the head as the head's sibling, and gives no two people in one family the same given name.
+
+## Innocent churn between rolls
+`innocent_churn` (chosen by a hash of the voter id, not the RNG, so the district is otherwise unchanged): about 3% of unmarried women aged 18–30 marry between rolls (relative becomes the husband), 0.3% of relative names get a spelling fix, and 0.1% of ages carry a one-year typo. These are what the official discrepancy checks (`engine/official.py`) trip on innocently.

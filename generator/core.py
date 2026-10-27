@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import datetime as dt
 import json
 import math
@@ -129,6 +130,28 @@ class Gen:
                     x["name_dev"], x["name_lat"], x["canon"] = f"{gv[0]} {hh['sn'][0]}", f"{gv[1]} {hh['sn'][1]}", f"{gv[1]} {hh['sn'][1]}"
             if gv:
                 hh["given"].append(gv)
+
+    def innocent_churn(self):
+        """Ordinary changes between two rolls that official discrepancy checks trip on. Chosen by a hash of the voter
+        id, not the RNG, so the rest of the district is unchanged. Records used by a planting are left alone.
+        ~3% of unmarried women aged 18-30 marry (relative becomes the husband); 0.3% of relative names get a spelling
+        fix; 0.1% of ages carry a one-year typo."""
+        def h(vid, salt):
+            return int(hashlib.md5(f"{salt}|{vid}".encode()).hexdigest()[:8], 16) % 10000
+
+        def respell(s):
+            return s.replace("ee", "i", 1) if "ee" in s else s.replace("i", "ee", 1) if "i" in s else s.replace("a", "aa", 1)
+        for q in self.v2:
+            if q.get("used") or q.get("tag") == "new":
+                continue
+            vid = q["vid"]
+            if q["gender"] == "F" and q["rel_type"] == "father" and 18 <= q["age"] <= 30 and h(vid, "marry") < 300:
+                gv, sn = MALE[h(vid, "groom") % len(MALE)], SURNAME[h(vid, "sn") % len(SURNAME)]
+                q["rel_type"], q["rel_dev"], q["rel_lat"], q["rel_canon"] = "husband", f"{gv[0]} {sn[0]}", f"{gv[1]} {sn[1]}", f"{gv[1]} {sn[1]}"
+            elif h(vid, "respell") < 30:
+                q["rel_lat"] = respell(q["rel_lat"])
+            if h(vid, "agetypo") < 10:
+                q["age"] += 1
 
     # ------------------------------------------------------------ records
     def mk(self, b, house, gender, age, sn, gv, rel_type, rel_dev, rel_lat, hh, variant_p=0.10) -> dict:
@@ -549,6 +572,7 @@ def run(plantings, seed, out: Path, key_path: Path, personas: list[dict] | None 
     g.churn()
     g.build_v2()
     g.fix_families()
+    g.innocent_churn()
     d1, d2 = g.rows(g.v1, "v1"), g.rows(g.v2, "v2")
     if personas:
         apply_personas(g, d1, d2, personas)
