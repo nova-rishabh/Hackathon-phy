@@ -54,19 +54,23 @@ export default function StoryPanel({ base }: { base: StoryResult }) {
   const un = res.stories.find((s) => s.code === "unexplained");
   const shown = useTween((un ? un.share : 0) * 100);
 
+  // Move the bar the moment a source is toggled (local recompute from the engine's own counts), then swap in the
+  // engine's exact answer when it arrives. Only the latest toggle's answer is applied, so fast clicks never stack.
+  const req = useRef(0);
   const set = async (c: Ctx, val: boolean) => {
     if (on.includes(c) === val) return;
     const next = val ? [...on, c] : on.filter((x) => x !== c);
+    const id = ++req.current;
     setOn(next);
+    setRes(recompute(base, next));
     setBusy(true);
     try {
-      setRes(await postJson<StoryResult>(`/stories/${base.booth_id}`, { context_on: next }, 4000));
-      setOffline(false);
+      const r = await postJson<StoryResult>(`/stories/${base.booth_id}`, { context_on: next }, 8000);
+      if (id === req.current) { setRes(r); setOffline(false); }
     } catch {
-      setRes(recompute(base, next));
-      setOffline(true);
+      if (id === req.current) setOffline(true);
     }
-    setBusy(false);
+    if (id === req.current) setBusy(false);
   };
 
   const p = res.residual.p_value;
@@ -100,8 +104,8 @@ export default function StoryPanel({ base }: { base: StoryResult }) {
               <div key={c.id} className="flex items-center justify-between gap-3">
                 <span className="mono text-[13px]">{c.label}</span>
                 <span className="seg" role="group" aria-label={c.label}>
-                  <button aria-pressed={on.includes(c.id)} disabled={busy} onClick={() => set(c.id, true)}>on</button>
-                  <button aria-pressed={!on.includes(c.id)} disabled={busy} onClick={() => set(c.id, false)}>off</button>
+                  <button aria-pressed={on.includes(c.id)} onClick={() => set(c.id, true)}>on</button>
+                  <button aria-pressed={!on.includes(c.id)} onClick={() => set(c.id, false)}>off</button>
                 </span>
               </div>
             ))}
@@ -117,6 +121,7 @@ export default function StoryPanel({ base }: { base: StoryResult }) {
             <div className="mt-4"><Chip kind={res.outcome} /></div>
             <p className="text-[13px] leading-5 text-ink-2 mt-3">{meaning(res)}</p>
             {offline && <p className="mono text-[11px] text-ink-3 mt-3">offline estimate · api not reachable</p>}
+            {busy && !offline && <p className="mono text-[11px] text-ink-3 mt-3" aria-live="polite">estimate · engine confirming</p>}
           </div>
         </div>
       </div>
