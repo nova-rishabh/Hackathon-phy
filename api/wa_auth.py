@@ -362,7 +362,13 @@ class Heartbeat(BaseModel):
 @router.post("/wa/heartbeat")
 async def wa_heartbeat(hb: Heartbeat, x_wa_secret: str | None = Header(None)):
     _check_worker(x_wa_secret)
-    await _beat(hb.state, mask(n) if (n := normalize(hb.number or "")) else None)
+    masked_no = mask(n) if (n := normalize(hb.number or "")) else None
+    await _beat(hb.state, masked_no)
+    try:
+        from api import monitoring
+        monitoring.record_heartbeat("whatsapp", hb.state, {"number": masked_no})
+    except Exception:
+        pass
     return {"ok": True}
 
 

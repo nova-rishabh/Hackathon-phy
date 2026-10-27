@@ -31,7 +31,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, Response
 from pydantic import BaseModel
 
-from api import billing, citizen, limits, claims, guard as guard_mod, keys, llm, ops, voice, wa_auth
+from api import billing, citizen, limits, claims, guard as guard_mod, keys, llm, monitoring, ops, voice, wa_auth
 from api.store import ROOT, data_dir, store
 from contracts.models import (AuditEntry, ClaimCheckRequest, ClaimVerdict, EngineRunResult, Flag, FlagList,
                               GuardLog, Health, Overview, Review, ReviewRequest, ReviewResponse, RuleCard,
@@ -73,6 +73,23 @@ def health():
     return Health(ok=True, demo_mode=demo_mode(),
                   versions={"roll": roll_v, "engine": str(len(store().flags)) + " flags",
                             "cache": str(llm.cache_count())})
+
+
+@app.get("/health/ready")
+def health_ready():
+    """Readiness probe: checks whether data files and flags are loaded."""
+    try:
+        s = store()
+        has_flags = len(s.flags) > 0
+        return {"ready": True, "flags_count": len(s.flags), "booths_count": len(s.overview().booths)}
+    except Exception as e:
+        raise HTTPException(503, f"Service not ready: {e}")
+
+
+@app.get("/health/live")
+def health_live():
+    """Liveness probe: verifies process is alive and responsive."""
+    return {"live": True, "timestamp": time.time()}
 
 
 @app.get("/keys/status")
@@ -367,6 +384,37 @@ def guard_log():
 @app.get("/ops")
 def ops_summary():
     return ops.summary()
+
+
+@app.get("/ops/monitoring")
+async def ops_monitoring():
+    return await monitoring.get_system_monitoring(probe_remote_web=False)
+
+
+@app.get("/ops/monitoring/probe")
+async def ops_monitoring_probe():
+    return await monitoring.get_system_monitoring(probe_remote_web=True)
+
+
+@app.post("/ops/monitoring/heartbeat")
+def ops_monitoring_heartbeat(hb: monitoring.HeartbeatPayload):
+    monitoring.record_heartbeat(hb.component, hb.state, hb.details)
+    return {"ok": True, "component": hb.component}
+
+
+@app.post("/ops/monitoring/error")
+def ops_monitoring_error(err: monitoring.ErrorPayload):
+    monitoring.record_error(err.component, err.message, err.level, err.details)
+    return {"ok": True, "recorded": True}
+
+
+@app.get("/ops/monitoring/errors")
+def ops_monitoring_errors(component: str | None = None):
+    with monitoring._LOCK:
+        errors = list(monitoring._RECENT_ERRORS)
+    if component:
+        errors = [e for e in errors if e.get("component") == component.lower()]
+    return {"errors": errors, "counters": dict(monitoring._ERROR_COUNTERS)}
 
 
 @app.get("/report")

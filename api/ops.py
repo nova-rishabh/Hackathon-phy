@@ -45,11 +45,27 @@ async def middleware(request, call_next):
            "cache_hit": None, "llm_calls": 0, "cache_hits": 0}
     tok = _req.set(rec)
     t0 = time.perf_counter()
+    status_code = 500
     try:
-        return await call_next(request)
+        response = await call_next(request)
+        status_code = response.status_code
+        return response
+    except Exception as exc:
+        try:
+            from api import monitoring
+            monitoring.record_error("api", f"Unhandled error in {route}: {exc}", details={"route": route})
+        except Exception:
+            pass
+        raise
     finally:
-        rec["ms"] = round((time.perf_counter() - t0) * 1000, 2)
+        dur_ms = round((time.perf_counter() - t0) * 1000, 2)
+        rec["ms"] = dur_ms
         _req.reset(tok)
+        try:
+            from api import monitoring
+            monitoring.record_request(status_code, dur_ms)
+        except Exception:
+            pass
         if rec["llm_calls"]:
             rec["cache_hit"] = rec["cache_hits"] == rec["llm_calls"]
         if route not in ("/ops", "/favicon.ico"):

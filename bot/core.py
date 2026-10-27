@@ -108,6 +108,21 @@ class Api:
                 continue
         return None
 
+    async def heartbeat(self, state: str = "healthy", details: dict | None = None) -> bool:
+        try:
+            r = await self.client.post("/ops/monitoring/heartbeat", json={"component": "telegram", "state": state, "details": details or {}})
+            return r.status_code == 200
+        except Exception:
+            return False
+
+    async def report_error(self, message: str, details: dict | None = None) -> bool:
+        try:
+            r = await self.client.post("/ops/monitoring/error", json={"component": "telegram", "message": message, "level": "error", "details": details or {}})
+            return r.status_code == 200
+        except Exception:
+            return False
+
+
 
 def guard_ok(text: str, strict: bool = False) -> bool:
     """Outbound check through api/guard.py (in-process). Without the guard module, non-strict text

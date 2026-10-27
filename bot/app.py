@@ -105,8 +105,19 @@ async def on_voice(update: Update, ctx: ContextTypes.DEFAULT_TYPE) -> None:
 
 async def on_error(update: object, ctx: ContextTypes.DEFAULT_TYPE) -> None:
     log.exception("handler error", exc_info=ctx.error)
+    try:
+        await _api(ctx).report_error(str(ctx.error), {"update_type": type(update).__name__})
+    except Exception:
+        pass
     if isinstance(update, Update) and update.effective_message:
         await update.effective_message.reply_text(with_footer(L["api_down"]["en"], "en"))
+
+
+async def _periodic_heartbeat(ctx: ContextTypes.DEFAULT_TYPE) -> None:
+    try:
+        await _api(ctx).heartbeat(state="healthy", details={"polling": True})
+    except Exception:
+        pass
 
 
 def build(token: str) -> Application:
@@ -117,6 +128,8 @@ def build(token: str) -> Application:
     app.add_handler(MessageHandler(filters.VOICE | filters.AUDIO, on_voice))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, on_text))
     app.add_error_handler(on_error)
+    if app.job_queue is not None:
+        app.job_queue.run_repeating(_periodic_heartbeat, interval=30, first=5)
     return app
 
 
