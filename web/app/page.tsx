@@ -98,6 +98,17 @@ export default function Audit() {
         </Reveal>
       </section>
 
+      <section className="mt-20 sm:mt-28">
+        <Reveal><Eyebrow className="mb-5">Watch it in 33 seconds.</Eyebrow></Reveal>
+        <Reveal delay={100}>
+          <div className="panel p-3 sm:p-3">
+            <video className="w-full rounded-[20px] block bg-surface" src="/rollwatch-film.mp4" poster="/film-poster.jpg"
+              controls playsInline preload="metadata" />
+          </div>
+          <p className="mono text-[12px] text-ink-3 mt-3">every number in the film is real engine output on the synthetic district · original score</p>
+        </Reveal>
+      </section>
+
       <section id="example" className="mt-20 sm:mt-28 scroll-mt-28">
         <Reveal><Eyebrow className="mb-5">A live example. Sampleabad, roll v1 to v2.</Eyebrow></Reveal>
         {booth && (
