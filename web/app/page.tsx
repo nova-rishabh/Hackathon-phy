@@ -118,7 +118,11 @@ export default function Audit() {
                   )}
                   <a href="/ask" className="card p-4 group-row block">
                     <p className="text-[17px]">Ask on the web <span className="dim">→</span></p>
-                    <p className="mono text-[12px] text-ink-3 mt-1">Hindi · English · Punjabi · voice</p>
+                    <p className="mono text-[12px] text-ink-3 mt-1">Hindi · English · Punjabi · voice · which documents</p>
+                  </a>
+                  <a href="/run" className="card p-4 group-row block">
+                    <p className="text-[17px]">Run it on your own list <span className="dim">→</span></p>
+                    <p className="mono text-[12px] text-ink-3 mt-1">two roll CSVs, or the 10-booth sample</p>
                   </a>
                 </div>
                 <p className="mono text-[12px] text-ink-3 mt-auto pt-4">try one of these fictional voters</p>

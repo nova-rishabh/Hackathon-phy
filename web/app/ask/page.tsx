@@ -1,7 +1,7 @@
 "use client";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { postJson, postBlob, ApiError, boothNo } from "@/lib/api";
+import { postJson, postBlob, getJson, ApiError, boothNo } from "@/lib/api";
 import { citizenMock } from "@/lib/mocks";
 import type { CitizenAnswer } from "@/lib/types";
 import Chip from "@/components/Chip";
@@ -118,7 +118,53 @@ export default function Ask() {
           </p>
         )}
       </section>
+
+      <Documents lang={lang} />
     </div>
+  );
+}
+
+type Docs = { bracket: string | null; lines: string[]; other: string[]; list: string; source: string };
+const DOCS_UI: Record<Lang, { eyebrow: string; title: string; dim: string; label: string; all: string }> = {
+  hi: { eyebrow: "दस्तावेज़।", title: "नोटिस आए तो कौन-से दस्तावेज़?", dim: "अपनी जन्म-तिथि डालें।", label: "जन्म-तिथि", all: "सभी स्थितियाँ देखें" },
+  en: { eyebrow: "Documents.", title: "Got a notice? Which documents.", dim: "Enter your date of birth.", label: "Date of birth", all: "Show every case" },
+  pa: { eyebrow: "ਦਸਤਾਵੇਜ਼।", title: "ਨੋਟਿਸ ਆਵੇ ਤਾਂ ਕਿਹੜੇ ਦਸਤਾਵੇਜ਼?", dim: "ਆਪਣੀ ਜਨਮ-ਤਾਰੀਖ਼ ਪਾਓ।", label: "ਜਨਮ-ਤਾਰੀਖ਼", all: "ਸਾਰੀਆਂ ਸਥਿਤੀਆਂ ਵੇਖੋ" },
+};
+
+/** From the BLO's SIR information sheet: the API decides the bracket from the date of birth. */
+function Documents({ lang }: { lang: Lang }) {
+  const [dob, setDob] = useState("");
+  const [d, setD] = useState<Docs | null>(null);
+  const ui = DOCS_UI[lang];
+  const shown = useRef(false);
+  useEffect(() => { if (shown.current) load(dob); }, [lang]); // eslint-disable-line react-hooks/exhaustive-deps
+  const load = async (v: string) => {
+    shown.current = true;
+    const q = new URLSearchParams({ lang, ...(v ? { dob: v } : {}) });
+    const r = await getJson<Docs>(`/documents?${q}`);
+    setD(r.data);
+  };
+  return (
+    <section id="documents" className="panel mt-6 scroll-mt-24">
+      <Eyebrow className="mb-4">{ui.eyebrow}</Eyebrow>
+      <Display size="section" as="h2" dim={ui.dim}>{ui.title}</Display>
+      <div className="flex flex-wrap items-center gap-3 mt-6">
+        <label className="flex items-center gap-3">
+          <span className="text-[15px] text-ink-2" lang={lang}>{ui.label}</span>
+          <input type="date" className="input" style={{ width: 220, padding: "10px 14px" }} value={dob} min="1900-01-01" max="2010-12-31"
+            onChange={(e) => { setDob(e.target.value); if (e.target.value) load(e.target.value); }} />
+        </label>
+        <button className="btn btn--quiet" onClick={() => { setDob(""); load(""); }} lang={lang}>{ui.all}</button>
+      </div>
+      {d && (
+        <div className="card p-5 mt-5 stagger" lang={lang}>
+          {d.lines.map((l, i) => <p key={i} className={i === 0 ? "text-[15px] text-ink-2" : "text-[18px] leading-7 tracking-[-0.01em] mt-2"}>{l}</p>)}
+          <p className="text-[14px] leading-6 text-ink-2 mt-4">{d.list}</p>
+          <ul className="mt-3 grid gap-1">{d.other.map((o) => <li key={o} className="text-[14px] text-ink-2">{o}</li>)}</ul>
+          <p className="mono text-[12px] text-ink-3 mt-4">{d.source}</p>
+        </div>
+      )}
+    </section>
   );
 }
 
