@@ -1,23 +1,85 @@
-# RollWatch · Team Nova (IDEAS-175)
+# RollWatch
 
-X AI Tech Ideathon, 27–28 Oct 2026, 24 hours. Problem: **PS1, AI for Electoral Roll Transparency**.
+**Every change to a voter roll, explained. And every rumour about it, checked.**
 
-**RollWatch tells you which story a voter-roll change actually fits, how sure it is, and sends the answer back to where the rumour came from. It works in Hindi, English and Punjabi, and it takes no side.** All data is synthetic, from a fictional district called Sampleabad.
+RollWatch compares two versions of a voter roll and tells you which story each removal fits: a registered death, a duplicate cleanup, a boundary change, a hostel move-out, or *unexplained*. It checks viral claims against the same numbers, and it tells a citizen their own status and the form to file, in Hindi, English or Punjabi, with voice. Every output carries its reasoning and a confidence score, and says it needs human review.
 
-**Start with [`docs/START_HERE.md`](docs/START_HERE.md)**: what we're building, the edge over other teams, the demo numbers and the decisions made.
+All data is synthetic. Sampleabad is a fictional district: 100 booths, about 51,000 voters. No real voter data is used, and the system never infers religion, caste or community.
 
-## Build docs
-| Doc | What's in it |
+Team Nova (IDEAS-175) · X AI Tech Ideathon, 27–28 Oct 2026 · PS1, AI for Electoral Roll Transparency.
+
+| | |
 |---|---|
-| [`docs/PRD.md`](docs/PRD.md) | Users, scope (MUST / SHOULD / CUT), acceptance, adoption story |
-| [`docs/TRD.md`](docs/TRD.md) | Architecture, data contracts, API, algorithms, guard, smoke checks |
-| [`docs/ACTION_PLAN.md`](docs/ACTION_PLAN.md) | Development plan v3: D0 checklist, hour-by-hour timeline, gates, cut order, kickoff prompts |
-| [`docs/DESIGN_SYSTEM.md`](docs/DESIGN_SYSTEM.md) | v2, butter.video-inspired: colours, type, components, glyphs, copy rules ([tokens](design/tokens.css), [glyphs](design/glyphs.svg)) |
-| [`docs/BRAND.md`](docs/BRAND.md) | Logo brief, taglines, brand asset list with sizes |
-| [`docs/DEMO_AND_PITCH.md`](docs/DEMO_AND_PITCH.md) | 4:00 demo script, Q&A answers, slide outline |
-| [`docs/CONTENT_VIDEO.md`](docs/CONTENT_VIDEO.md) | 60 s reel storyboard and shot list |
-| [`CLAUDE.md`](CLAUDE.md) | Rules for every Claude Code session |
+| Web | https://rollwatch-web.onrender.com (free plan: the first load after 15 idle minutes takes about a minute) |
+| API | https://rollwatch-api.onrender.com · `GET /overview`, `POST /audit`, `POST /claims/check`, `GET /eval` |
+| Chat | Telegram [@Rollwatch_bot](https://t.me/Rollwatch_bot) · WhatsApp sign-in and chat through the same bot core |
 
-Background: [`docs/SESSION_LOG.md`](docs/SESSION_LOG.md) (decision history and validation), [`docs/IDEATHON_STRATEGY.md`](docs/IDEATHON_STRATEGY.md) (problem ranking). [`docs/ROLLWATCH_PLAN.md`](docs/ROLLWATCH_PLAN.md) is superseded.
+## What it does, with the demo numbers
 
-The planning docs and the analysis scripts in `docs/analysis/` were written before the event. All product code is written during the event.
+All numbers below come from the engine, seed 42.
+
+- **Which story fits?** Booth 47 lost 412 names against about 25 expected, and 97% of them fit no innocent story, so it gets **needs human review**. Booth 12 looks just as big to a rumour, but 79% of its removals fit a hostel move-out, so it's **likely benign**. In Booth 63, 64% of removals are unexplained. Switch on the boundary log and that drops to 8%.
+- **Claim court.** *"Booth 47 mein 600 naam kaat diye, sabse zyada, aur sab ek community ke!"* is split into three sub-claims. "600" is **disputed** (computed 412, 46% off). "Most removals" is **verified** (rank 1 of 100). "Community" **cannot be proven**, because we never infer it from names. The opposite claim is checked with the same tools and the same tolerance.
+- **Citizen lookup.** Search a name in any script, even misspelled. You get your status, the likely reason, Form 6 or Form 7, the 1950 helpline, and a reminder that a BLO never asks for an OTP or money. Hindi answers can be read aloud.
+
+## The three questions
+
+### 1. How does it scale?
+- **Compute.** Every test is per booth and booths are independent, so a state is just more booths. Measured on one laptop core: **1,020,720 voters in 54 s**. Duplicate search compares **9.9 million candidate pairs instead of 521 billion**. The numbers are in `cache/bench.json`, with the machine recorded.
+- **Adoption.** No install. Answers go back as a share card into the chat the rumour came from (web, Telegram, WhatsApp), and each card brings the next user. Bring-your-own-key headers (`X-Gemini-Key`, `X-ElevenLabs-Key`) mean cost never blocks a newsroom or a volunteer group.
+- **Scope.** The method fits any public list that gets "cleaned", like ration cards, pensions or scholarships. Story rules are config (`engine/stories.yaml`), not code.
+
+| Step | Method | Complexity | Measured (1.02M voters, one core) |
+|---|---|---|---|
+| Roll diff | hash join on voter id | O(n) | part of 54 s total |
+| Booth tests | one-sided binomial + Benjamini-Hochberg | O(m log m), m booths | 2,000 booths |
+| Cross-script duplicates | blocking by booth/house and relation, score inside blocks, union-find | O(Σ bᵢ²) instead of O(n²) | 9.9M candidate pairs instead of 521B |
+| Story attribution | fixed-order lookups per removed record | O(r) per booth | instant toggle in the UI |
+| Bootstrap interval | 500 resamples, vectorised | O(B·r) | 2 ms for Booth 47 |
+| Claim tools | precomputed booth/ward aggregates | O(1) per sub-claim | the query is shown on every row |
+
+### 2. Why can't the government do this alone?
+A self-audit can't settle a rumour about the auditor. When the body that revised the list says the rumour is false, a sceptical voter has no reason to believe it. So the same open engine has two ways in:
+- **Inside:** an election office runs `POST /audit` on a draft roll before publishing. Booths whose removals no evidence explains get a second look before names are deleted.
+- **Outside:** newsrooms, observers and citizens run the same code for claim checks and lookups. The arithmetic is the same on both sides, so they can't disagree about it.
+
+If an office adopts it, that's the success case. The independent copy still has a job.
+
+### 3. Why is it future-proof?
+The core is fixed and measured. Everything that changes over time is a swappable part.
+
+| What will change | How RollWatch absorbs it |
+|---|---|
+| Data source (PDF rolls today, APIs tomorrow) | An open input schema (`contracts/models.py`, `RollRow`) plus adapters. The engine doesn't change. |
+| Process and evidence (new forms, new revision drives) | Story rules and evidence sources in `engine/stories.yaml`. Forms and helplines in `api/constants.py`. |
+| AI models | The model only splits claims and phrases text. Every number comes from Python. The model sits behind one client with a template fallback, so swapping it changes wording, never a verdict. We swapped both the model and the voice in an afternoon. |
+| Languages and channels | Per-language templates. Web, Telegram and WhatsApp are thin clients over one bot core (`bot/core.py`). |
+| Trust over time | Every change is re-measured by the blind eval and published on the Trust page. |
+
+## What we publish about our own errors
+Measured on the synthetic district with a planted answer key (`python -m engine.eval`), and shown live on `/trust`:
+- Found **6 of 6** planted anomalies. Cleared **3 of 7** innocent decoys. The other 4 are still flagged, so they go to a person.
+- False-positive rate per rule: duplicates 9.8%, relation conflicts 11%, impossible age / oversized household / gender swing 0%, booth spikes 50–67% (2–3 flags each, the rest cleared as likely benign).
+- The generator also adds realistic background noise (about 0.5% cross-script duplicates). It writes these to `<key>.background.json`, so a correct catch of one isn't counted as an error.
+- Still open: a blind test whose answer key we never see, and better-calibrated confidence (too few training plantings today).
+
+## Run it
+```
+uv venv --python 3.12 .venv && .venv\Scripts\activate && uv pip install -r requirements.lock
+set PYTHONUTF8=1
+python -m generator --auto-plant 60 --seed 7 --out artifacts
+python -m generator --config generator/demo_config.yaml --key artifacts/answer_key.json --seed 42 --out artifacts
+python -m engine.run --data artifacts --out artifacts --train-data artifacts/training --train-key artifacts/training/answer_key.json
+python -m engine.eval --key artifacts/answer_key.json
+uvicorn api.main:app --port 8000
+cd web && pnpm install && pnpm dev
+python smoke_test.py
+```
+`DEMO_MODE=1` serves only precomputed artifacts and cached model answers, with no network. Keys go in `.env` (see `render.yaml` for the variable names) and are never committed.
+
+## AI use, disclosed
+- **In the product:** Gemini splits a forwarded claim into sub-claims, reads screenshots and phrases text. It never produces a number that is shown, and with the model off, template fallbacks give the same verdicts. ElevenLabs reads Hindi answers aloud and transcribes voice. All outbound text passes a neutrality guard (`api/guard.py`): no party, person or institution names, and no fraud or rigging words.
+- **In the build:** the team used Claude Code as a coding assistant. The statistics, thresholds, evaluation design and every decision were reviewed by the team, and the smoke checks (`smoke_test.py`, `python -m bot.smoke_checks`) gate every deploy.
+
+## Docs
+[`docs/START_HERE.md`](docs/START_HERE.md) (start here) · [`docs/PRD.md`](docs/PRD.md) · [`docs/TRD.md`](docs/TRD.md) · [`docs/DESIGN_SYSTEM.md`](docs/DESIGN_SYSTEM.md) · [`docs/DEMO_6PM.md`](docs/DEMO_6PM.md) · [`docs/SESSION_LOG.md`](docs/SESSION_LOG.md)
