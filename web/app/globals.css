@@ -179,7 +179,34 @@ button { cursor: pointer; font: inherit; color: inherit; background: none; borde
 .flaglist { max-height: 420px; overflow-y: auto; width: 100%; }
 @media (min-width: 1024px) { .flaglist { max-height: none; height: 100%; } }
 
+/* Spring-like curve: a fast start and a tiny overshoot at most (design rule: no bounce). */
+:root { --spring: cubic-bezier(.22,1,.36,1); --spring-over: cubic-bezier(.3,1.25,.5,1); }
+
+/* Every page hero rises in out of a short blur. */
+.h-hero { animation: heroIn 800ms var(--spring) both; }
+@keyframes heroIn { from { opacity: 0; transform: translateY(18px); filter: blur(8px); } to { opacity: 1; transform: none; filter: none; } }
+
+/* Rows that arrive together come in one after another; their chips slam in a beat later. */
+.stagger > * { animation: rowIn 600ms var(--spring) both; animation-delay: calc(var(--i, 0) * 90ms); }
+.stagger > :nth-child(1) { --i: 0; } .stagger > :nth-child(2) { --i: 1; } .stagger > :nth-child(3) { --i: 2; }
+.stagger > :nth-child(4) { --i: 3; } .stagger > :nth-child(5) { --i: 4; } .stagger > :nth-child(6) { --i: 5; }
+.stagger > :nth-child(7) { --i: 6; } .stagger > :nth-child(n+8) { --i: 7; }
+@keyframes rowIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+.stagger .chip { animation: slam 520ms var(--spring-over) both; animation-delay: calc(var(--i, 0) * 90ms + 180ms); }
+@keyframes slam { from { opacity: 0; transform: scale(1.6); } 40% { opacity: 1; } to { opacity: 1; transform: none; } }
+
+/* Bars grow from the left; story-bar segments fill one after another, the unexplained part last. */
+.sbar > div { transform-origin: left center; animation: barIn 900ms var(--spring) both; }
+.sbar > div:nth-child(2) { animation-delay: 80ms; } .sbar > div:nth-child(3) { animation-delay: 160ms; }
+.sbar > div:nth-child(4) { animation-delay: 240ms; } .sbar > div:nth-child(5) { animation-delay: 360ms; }
+.grow { transform-origin: left center; animation: barIn 1100ms var(--spring) both; }
+.grow-in-view { transform-origin: left center; transform: scaleX(0); transition: transform 1100ms var(--spring); }
+.in .grow-in-view, .grow-in-view.in { transform: none; }
+@keyframes barIn { from { transform: scaleX(0); } to { transform: none; } }
+
 @media (prefers-reduced-motion: reduce) {
   .reveal, .words > span, .grid10 .tile { opacity: 1; transform: none; animation: none; transition: none; }
   .eyering-spin, .eyering-blink, .marquee-track, .tile--unusual.ping::after { animation: none; }
+  .h-hero, .stagger > *, .stagger .chip, .sbar > div, .grow { animation: none; }
+  .grow-in-view { transform: none; transition: none; }
 }

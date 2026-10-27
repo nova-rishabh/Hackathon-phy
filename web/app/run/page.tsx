@@ -99,7 +99,7 @@ export default function Run() {
             <div className="panel">
               <Eyebrow className="mb-5">Booths with unusual removals.</Eyebrow>
               {booths.length ? (
-                <ul className="grid gap-3">
+                <ul className="grid gap-3 stagger">
                   {booths.map((s) => (
                     <li key={s.booth_id} className="card p-5">
                       <div className="flex items-center justify-between gap-3 mb-3">
@@ -115,7 +115,7 @@ export default function Run() {
             </div>
             <div className="panel">
               <Eyebrow className="mb-5">All patterns, by rule.</Eyebrow>
-              <ul className="card">
+              <ul className="card stagger">
                 {Object.entries(res.by_type).sort((a, b) => b[1] - a[1]).map(([t, n]) => (
                   <li key={t} className="flex justify-between px-4 py-3 border-t border-line first:border-t-0 text-[15px]">
                     <span>{TYPE[t] ?? t.replace(/_/g, " ")}</span><span className="mono">{fmt(n)}</span>

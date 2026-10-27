@@ -15,21 +15,36 @@ export function Reveal({ children, delay = 0, className = "" }: { children: Reac
   return <div ref={ref} className={`reveal ${inView ? "in" : ""} ${className}`} style={{ transitionDelay: `${delay}ms` }}>{children}</div>;
 }
 
-/** Counts from 0 to `to` (a number the engine computed) over `ms`. */
-export function CountUp({ to, ms = 1200 }: { to: number; ms?: number }) {
+/** Critically damped spring step response: settles with no overshoot (closed form, as in the film). */
+const settle = (t: number, f = 1.1) => { const w = 2 * Math.PI * f; return t <= 0 ? 0 : 1 - Math.exp(-w * t) * (1 + w * t); };
+
+/** Counts from 0 to `to` (a number the engine computed) once it scrolls into view, settling on a spring. */
+export function CountUp({ to, decimals = 0, suffix = "" }: { to: number; decimals?: number; suffix?: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
   const [v, setV] = useState(0);
   useEffect(() => {
-    let raf = 0;
-    const t0 = performance.now();
-    const step = (t: number) => {
-      const k = Math.min(1, (t - t0) / ms);
-      setV(Math.round(to * (1 - Math.pow(1 - k, 3))));
-      if (k < 1) raf = requestAnimationFrame(step);
-    };
-    raf = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(raf);
-  }, [to, ms]);
-  return <>{v.toLocaleString("en-IN")}</>;
+    const el = ref.current;
+    if (!el) return;
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) { setV(to); return; }
+    let raf = 0, started = false;
+    const fallback = setTimeout(() => { if (!started) setV(to); }, 4000); // never leave a 0 on screen
+    const io = new IntersectionObserver(([e]) => {
+      if (!e.isIntersecting) return;
+      io.disconnect();
+      started = true;
+      const t0 = performance.now();
+      const step = (t: number) => {
+        const k = settle((t - t0) / 1000);
+        setV(k > 0.999 ? to : to * k);
+        if (k <= 0.999) raf = requestAnimationFrame(step);
+      };
+      raf = requestAnimationFrame(step);
+    }, { threshold: 0.3 });
+    io.observe(el);
+    return () => { io.disconnect(); cancelAnimationFrame(raf); clearTimeout(fallback); };
+  }, [to]);
+  const shown = decimals ? v.toFixed(decimals) : Math.round(v).toLocaleString("en-IN");
+  return <span ref={ref}>{shown}{suffix}</span>;
 }
 
 /** The RollWatch mark, live: the ring of text turns, the pupil follows the pointer, and the eye blinks. */

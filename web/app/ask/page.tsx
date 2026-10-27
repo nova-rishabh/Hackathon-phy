@@ -160,7 +160,7 @@ function Status({ a, mocked, onVoiceErr }: { a: CitizenAnswer; mocked: boolean; 
   const m = a.match;
   const scriptLang = a.lang === "en" ? "en" : "hi";
   return (
-    <div className="bubble bubble--rw" style={{ maxWidth: 720 }}>
+    <div className="bubble bubble--rw stagger" style={{ maxWidth: 720 }}>
       {m && (
         <div className="flex flex-wrap items-baseline justify-between gap-3">
           <p className="text-[28px] leading-9 tracking-[-0.02em]" lang={scriptLang}>{a.lang === "en" ? m.name_lat : m.name_dev}</p>

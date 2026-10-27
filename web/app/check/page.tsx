@@ -78,7 +78,7 @@ export default function Check() {
           <Display size="page" as="h2" dim={res.normalized_claim !== res.input.text ? res.normalized_claim : undefined}>
             “{res.input.text}”
           </Display>
-          <ul className="panel mt-10 grid gap-3" style={{ padding: 12 }}>
+          <ul className="panel mt-10 grid gap-3 stagger" style={{ padding: 12 }}>
             {subs.map((s) => (
               <li key={s.id} className="card p-5 grid gap-3 md:grid-cols-[180px_1fr_minmax(0,320px)] md:items-start">
                 <span><Chip kind={s.verdict} /></span>

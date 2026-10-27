@@ -4,6 +4,7 @@ import { benchSummary, big } from "@/lib/bench";
 import type { EvalResult, RuleCard, GuardLog } from "@/lib/types";
 import Glyph from "@/components/Glyph";
 import { Display, Eyebrow } from "@/components/Display";
+import { CountUp } from "@/components/Motion";
 
 // /ops is not in contracts/api.md yet, so read it loosely.
 type Ops = Record<string, unknown>;
@@ -46,12 +47,12 @@ export default function Trust() {
         <Eyebrow className="mb-5">Scoreboard.</Eyebrow>
         {e ? (
           <>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 stagger">
               {([
-                [`${e.found}/${e.planted_anomalies}`, "hidden anomalies found"],
-                [`${e.decoys_cleared}/${e.planted_decoys}`, "innocent decoys cleared"],
-                [String(e.misses.length), "missed"],
-                [pct(e.benign_fp_rate, 0), "decoys wrongly flagged"],
+                [<CountUp key="f" to={e.found} suffix={`/${e.planted_anomalies}`} />, "hidden anomalies found"],
+                [<CountUp key="d" to={e.decoys_cleared} suffix={`/${e.planted_decoys}`} />, "innocent decoys cleared"],
+                [<CountUp key="m" to={e.misses.length} />, "missed"],
+                [<CountUp key="w" to={Math.round(e.benign_fp_rate * 100)} suffix="%" />, "decoys wrongly flagged"],
               ] as const).map(([v, k]) => (
                 <div key={k} className="card px-5 py-4">
                   <p className="mono text-[32px] leading-[40px] tracking-[-0.03em]">{v}</p>
@@ -92,7 +93,7 @@ export default function Trust() {
           <div className="card overflow-x-auto">
             <table className="tbl min-w-[560px]">
               <thead><tr><th>rule</th><th>what it checks</th><th className="r">fires on benign</th><th>resolves with</th></tr></thead>
-              <tbody>
+              <tbody className="stagger">
                 {rules.data.map((r) => (
                   <tr key={r.rule_id}>
                     <td className="mono text-[13px]">{r.rule_id}</td>
@@ -119,7 +120,7 @@ export default function Trust() {
         <Eyebrow className="mb-5">Ops.</Eyebrow>
         {o ? (
           <>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 stagger">
               {opsCells.map(([k, v]) => (
                 <div key={k} className="card p-5">
                   <p className="eyebrow">{k}.</p>
@@ -170,7 +171,7 @@ function Reliability({ bins }: { bins: EvalResult["reliability"] }) {
             <span className="mono text-[13px]">{lo * 100}–{hi * 100}%</span>
             {b ? (
               <div className="relative h-6 rounded-[6px] bg-panel" aria-label={`said ${pc(b.mean_conf)}, real ${pc(b.frac_true)}`}>
-                <div className="absolute inset-y-0 left-0 rounded-[6px] bg-ink" style={{ width: `max(${b.frac_true * 100}%, 2px)` }} />
+                <div className="absolute inset-y-0 left-0 rounded-[6px] bg-ink grow" style={{ width: `max(${b.frac_true * 100}%, 2px)` }} />
                 <div className="absolute -top-1 -bottom-1 w-[2px] bg-ink-3" style={{ left: `calc(${b.mean_conf * 100}% - 1px)` }} />
                 <span className="absolute inset-y-0 flex items-center mono text-[12px]"
                   style={b.frac_true > 0.7 ? { right: `calc(${100 - b.frac_true * 100}% + 8px)`, color: "var(--color-surface)" } : { left: `calc(${b.frac_true * 100}% + 8px)` }}>
@@ -207,7 +208,7 @@ function Guard({ g }: { g: GuardLog }) {
         <span className="text-ink">{g.blocked}</span> blocked · <span className="text-ink">{g.rewritten}</span> rewritten
         {surfaces.length > 0 && <> · {surfaces.map(([k, n]) => `${k.replace(/_/g, " ")} ${n}`).join(" · ")}</>}
       </p>
-      <ul className="card mt-5">
+      <ul className="card mt-5 stagger">
         {GUARD_RULES.map(([what, act]) => (
           <li key={what} className="flex justify-between gap-4 px-4 py-[10px] border-t border-line first:border-t-0 text-[14px]">
             <span>{what}</span><span className="mono text-[12px] text-ink-2 pt-[2px] text-right">{act}</span>
