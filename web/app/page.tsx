@@ -95,7 +95,7 @@ export default function Audit() {
             </div>
           </div>
           <div className="min-w-0 flex flex-col">
-            <Reveal><Eyebrow className="mb-5">Watch it in 33 seconds.</Eyebrow></Reveal>
+            <Reveal><Eyebrow className="mb-5">Watch it in 48 seconds.</Eyebrow></Reveal>
             <Reveal delay={150}>
               <div className="panel !p-3">
                 <video className="w-full rounded-[20px] block bg-surface" src="/rollwatch-film.mp4" poster="/film-poster.jpg"

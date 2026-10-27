@@ -1,4 +1,5 @@
 """Render film.html: `sheet` = stills at given times; `full` = every frame piped to ffmpeg."""
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -6,13 +7,14 @@ from pathlib import Path
 from playwright.sync_api import sync_playwright
 
 HERE = Path(__file__).resolve().parent
-DUR, FPS = 33.0, 60
+FILM = os.environ.get("FILM", "film.html")
+DUR, FPS = float(os.environ.get("DUR", "33")), 60
 
 
 def page_ctx(p):
     b = p.chromium.launch(channel="chrome", args=["--allow-file-access-from-files", "--disable-web-security"])
     pg = b.new_page(viewport={"width": 1920, "height": 1080}, device_scale_factor=1)
-    pg.goto((HERE / "film.html").as_uri())
+    pg.goto((HERE / FILM).as_uri())
     pg.wait_for_function("document.fonts.ready.then(() => true)")
     pg.wait_for_timeout(400)
     return b, pg
