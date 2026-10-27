@@ -6,6 +6,8 @@ import pandas as pd
 from scipy.stats import binom, binomtest
 from statsmodels.stats.multitest import multipletests
 
+from .data import member
+
 BANDS = [(0, 24), (25, 34), (35, 44), (45, 59), (60, 74), (75, 200)]
 
 
@@ -41,7 +43,7 @@ def band_rates(v1: pd.DataFrame, v2: pd.DataFrame) -> np.ndarray:
     """District background removal rate per age band. Stand-in for the generator's churn model
     (age-specific mortality shape plus a migration rate), estimated from the district itself. Booths whose
     raw test is extreme (p<0.01) are excluded and rates refit, so a spike does not inflate its own background."""
-    d = v1.assign(b=band_idx(v1.age), gone=~v1.voter_id.isin(set(v2.voter_id)))
+    d = v1.assign(b=band_idx(v1.age), gone=~member(v1.voter_id, v2.voter_id))
 
     def rates(frame):
         g = frame.groupby("b").gone.agg(["sum", "size"]).reindex(range(len(BANDS))).fillna(0)
@@ -62,11 +64,10 @@ def band_rates(v1: pd.DataFrame, v2: pd.DataFrame) -> np.ndarray:
 def booth_tests(v1: pd.DataFrame, v2: pd.DataFrame, rates: np.ndarray) -> pd.DataFrame:
     """One row per booth: deletions (id absent from v2) and additions (id absent from v1),
     each with observed/expected/p/q (binomtest greater + Benjamini-Hochberg across booths)."""
-    ids1, ids2 = set(v1.voter_id), set(v2.voter_id)
-    d1 = v1.assign(gone=~v1.voter_id.isin(ids2))
+    d1 = v1.assign(gone=~member(v1.voter_id, v2.voter_id))
     d1["p"] = rates[band_idx(d1.age)]
     g = d1.groupby("booth_id").agg(n_v1=("voter_id", "size"), del_obs=("gone", "sum"), del_exp=("p", "sum"))
-    d2 = v2.assign(new=~v2.voter_id.isin(ids1))
+    d2 = v2.assign(new=~member(v2.voter_id, v1.voter_id))
     g2 = d2.groupby("booth_id").agg(n_v2=("voter_id", "size"), add_obs=("new", "sum"))
     g = g.join(g2, how="outer").fillna(0)
     g["add_exp"] = g.n_v2 * (g.add_obs.sum() / max(g.n_v2.sum(), 1))
