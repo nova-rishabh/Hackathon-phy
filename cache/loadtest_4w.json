@@ -1,0 +1,38 @@
+{
+ "measured": true,
+ "machine": {
+  "cpus": 20,
+  "platform": "Windows-11-10.0.26200-SP0"
+ },
+ "setup": "one uvicorn worker (one process), DEMO_MODE=1 (no model calls), localhost",
+ "routes": {
+  "overview (cached aggregates)": {
+   "n": 800,
+   "concurrency": 80,
+   "rps": 242.1,
+   "p50_ms": 303.8,
+   "p95_ms": 403.2
+  },
+  "name search": {
+   "n": 800,
+   "concurrency": 80,
+   "rps": 202.2,
+   "p50_ms": 360.5,
+   "p95_ms": 564.0
+  },
+  "citizen answer": {
+   "n": 800,
+   "concurrency": 80,
+   "rps": 163.0,
+   "p50_ms": 440.8,
+   "p95_ms": 703.9
+  },
+  "claim check (cached split)": {
+   "n": 800,
+   "concurrency": 80,
+   "rps": 211.3,
+   "p50_ms": 328.5,
+   "p95_ms": 505.1
+  }
+ }
+}
