@@ -31,7 +31,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, Response
 from pydantic import BaseModel
 
-from api import billing, citizen, limits, claims, guard as guard_mod, jobs, keys, llm, monitoring, ops, voice, wa_auth
+from api import billing, citizen, limits, claims, guard as guard_mod, jobs, keys, llm, monitoring, ops, reports, voice, wa_auth
 from api.store import ROOT, data_dir, store
 from contracts.models import (AuditEntry, ClaimCheckRequest, ClaimVerdict, EngineRunResult, Flag, FlagList,
                               GuardLog, Health, Overview, Review, ReviewRequest, ReviewResponse, RuleCard,
@@ -47,6 +47,7 @@ app.include_router(voice.router)  # POST /voice/tts, POST /voice/stt (ElevenLabs
 app.include_router(wa_auth.router)  # WhatsApp sign-in code, /me account data, /wa/* worker bridge
 app.include_router(billing.router)  # pricing quotes and Razorpay custom subscriptions
 app.include_router(jobs.router)  # asynchronous constituency-level audit jobs
+app.include_router(reports.router)  # exportable reports, reviewer workflow, quality & provenance
 
 _lock = threading.Lock()
 _claims: dict[str, ClaimVerdict] = {}
