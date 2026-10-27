@@ -15,7 +15,7 @@
 | 2:05–2:25 | **Duplicates** | A cluster card: सुनीता शर्मा / Suneeta Sarma / Sunita Sharma, with masked names, same relation, same house. | "Same person, three spellings, two scripts. It's flagged for review, never removed." |
 | 2:25–3:00 | **Citizen** | Web chat: type "meena kumaari booth 47" and it finds मीना कुमारी. Status: *not in the new list · likely reason: shifted*. Next steps, how sure, official portal. Tap play for the reply in Punjabi. | "Typo, wrong script, still found. It tells her why, what to do before the deadline, and always sends her to the official portal." |
 | 3:00–3:35 | **Trust** | Trust page: "Hidden by teammate: 24 anomalies + 12 decoys. Found 21. Cleared 11 decoys. Missed 3. Here's why." Reliability chart with n. Guard log: `0 violations shipped`. | "We didn't grade our own homework. My teammate hid anomalies and innocent look-alikes that I never saw." |
-| 3:35–4:00 | **Monday + close** | The adoption slide | "Newsrooms and election-watch groups can run it locally from Monday. Auditable. Explainable. Accessible. On no one's side." |
+| 3:35–4:00 | **Two ways in + close** | The Trust page bench line (1M voters in N s), then the "two ways in" slide (inside: `POST /audit` before publishing · outside: the same engine for newsrooms and citizens) | "An election office can run this before it publishes, and should. But a rumour is always about the people who run the system, so the same engine also has to be in everyone else's hands. Auditable. Explainable. Accessible. On no one's side." |
 
 **Fallbacks:**
 - **Telegram down:** run the same forward through the web Claim Court and show the pre-rendered card.
@@ -38,6 +38,8 @@ Hand judges a persona card (*Ravi Verma, Booth 12*, *Harpreet Kaur, Booth 63*, *
 | A flag card goes viral as "AI proves deletions"? | Every card and every share image says "pattern for human review, not a finding", shows the innocent explanations, and never shows individual names in public views. |
 | How does real data get in? | Accredited observers and newsrooms run it locally on rolls they already obtain legally, and the outputs are booth-level aggregates. We never scrape. |
 | The LLM splits a claim wrong? | Every sub-claim shows the exact query it ran, so a human sees it. If a claim doesn't map to data we have, the answer is "cannot be proven", never a guess. |
+| Can't the government just do this, or build it in? | They should, and `POST /audit` is built for exactly that: run it on the draft before publishing. But a self-audit can't settle a rumour about the auditor, so the same open engine also has to be in independent hands. |
+| Is it scalable? | Every test is per booth and linear, so a state is just more booths in parallel. Here's 1M voters in N seconds. Adoption scales through cards inside chat apps, with no install. And the story rules are config, so the same method covers ration-card or pension lists. |
 | Who uses it, and who pays? | Data desks and election-watch NGOs during revision windows. It would be an open-source core, hosted for NGOs on civic-tech grants, with the citizen bot free. |
 | What does one check cost, and how fast is it? | Show the ops strip: p50 latency, ₹ per claim check and the cache hit rate, measured from our own request log. |
 | How does it scale to a real state? | The scale run: 1M voters in N seconds. Duplicate blocking scores only a fraction of the n² pairs, and union-find merges them in near-linear time. |
@@ -49,7 +51,7 @@ Hand judges a persona card (*Ravi Verma, Booth 12*, *Harpreet Kaur, Booth 63*, *
 2. **The problem in numbers.** The real SIR aggregates, with sources and neutral wording. "Flags with no published false-positive rate."
 3. **How it works.** One diagram: roll v1/v2 → engine (numbers) → stories + confidence → words (LLM) → guard → web, bot and card.
 4. **Why trust it.** The blind eval, the mirror test, the guard log, and "never infers protected attributes".
-5. **From Monday.** Users, how data gets in, what is never shown, the first 100 users, sustainability.
+5. **Two ways in, and scale.** Inside: election offices run it before publishing. Outside: newsrooms, observers and citizens. Then the three scale axes with their numbers (compute, adoption, scope), the first 100 users and sustainability.
 6. **Limitations + ask.** Synthetic data, recalibration needed on real data, not affiliated with any official body. Thank-you.
 
 Slides use [design system v2](DESIGN_SYSTEM.md) (butter.video style): a near-white page, grey panels, big regular-weight two-tone Geist headlines and yellow signal chips. No stock photos, no gradient title slides, no script read aloud: each slide carries one headline and one visual, and we talk over it.

@@ -55,7 +55,7 @@ Worktrees: `a1`, `a2`, `b1`, `b2` (already created at H0; `git worktree list` to
 | 5–7.5 | `llm.py` (Claude tool use, temp 0, disk cache, Gemini + template fallback); **Claim Court agent** with the typed tool menu, hard rules and deterministic verdict | Platt calibration check; duplicates on the full district; pair-count numbers for the bench | Claim Court page: claim → sub-claim rows with chips and query chips; mirror cards | Vision read of forward screenshots → `/claims/check`; bot returns text verdicts | |
 | 7.5–9.5 | `guard.py` + lexicon (EN/HI/PA) + `/guard/log`; mirror; `/ops` | Help A1: precomputed aggregates for the claim tools (O(1) lookups) | `/card/[id]` share card (1080×1350) + Chrome render script; Ask page | **Bot sends the share card PNG** (M9); `/check` in groups (S11) if easy | |
 | **9.5–10.5** | **CHECKPOINT:** merge everything; live API; `next build`; **the partner reveals the blind eval**. All four modules plus M9–M11 run end to end. Film the reveal. | | | | |
-| 10.5–13 | Fix the 2 worst eval misses with A2; cache every scripted LLM path | Scale run (S10) at 1M; realism chart data (S8) | Trust page: scoreboard, reliability, rule table, guard count, **ops strip** | Sarvam Hindi voice in/out (S3); share clip (S9) with A1's ffmpeg command | |
+| 10.5–13 | Fix the 2 worst eval misses with A2; **`POST /audit` + Dockerfile + compose (M12)**; cache every scripted LLM path | Scale run (S10) at 1M with per-ward parallel speed-up; **`stories.yaml` (S12)** + a synthetic "objections filed" evidence table; realism chart data (S8) | Trust page: scoreboard, reliability, rule table, guard count, **ops strip** | Sarvam Hindi voice in/out (S3); share clip (S9) with A1's ffmpeg command | |
 | **D13 gate** | Merge. Anything not working end to end is **cut, not fixed**. Logo goes in now. | | | | |
 | 13–14 | `DEMO_MODE=1`; pre-render cards, clips and TTS for the script | Freeze artifacts | Polish pass against the design system v2; logo, favicon, OG image | Cached voice path; bot avatar | |
 | **D14** | **FEATURE FREEZE.** Commit `artifacts/`, `cache/` and `cards/`, then tag `demo-v1`. | | | | |
@@ -65,12 +65,14 @@ Worktrees: `a1`, `a2`, `b1`, `b2` (already created at H0; `git worktree list` to
 
 ## 4. Cut order (cut from the top at any gate where we're late)
 1. S11 group `/check`
-2. S10 scale run (keep the 50k bench numbers)
+2. The live S12 YAML edit on stage (keep `stories.yaml`, show the file instead)
 3. S9 share clip (keep the PNG card)
 4. S3 voice (keep text)
 5. S8 realism chart
 6. The live mirror run (show one precomputed pair)
 7. The Telegram bot (web Claim Court + web chat, and show the card PNG on screen)
+
+**Now never cut either** (the judges' feedback): M12 `POST /audit`, plus at least the 50k bench numbers. The S10 1M run is cut only as a last resort, because it answers "not scalable" directly.
 
 **Never cut:**
 - Which Story Fits? with the live context controls

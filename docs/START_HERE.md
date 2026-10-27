@@ -27,6 +27,28 @@ PS1 lists four modules, and every team will build all four. **The modules are ta
 
 **What we keep thin (generic):** the dashboard chrome, the plain name search and the chat UI. They deliver the edge; they aren't the edge. No map, no KPI wall, no free-chat bot.
 
+## 2a. Judges' feedback from the presentation round: "not scalable" / "can't the government just do this?"
+
+The score isn't out yet. This was the main criticism, so **every surface now answers it**: the pitch, the Q&A, the build and one demo beat.
+
+**1. "Can't the government do it themselves?" Yes, and they should integrate it. But they can't be the only ones running it.**
+- **A self-audit settles nothing.** When the body that revised the list says the rumour about it is false, a sceptical voter has no reason to believe it. Trust needs an **independent** check that anyone can re-run, the way company accounts need an outside auditor.
+- **The government has the data, not the explanation layer.** Official software already raises "logical discrepancy" flags with no published thresholds or error rates, and the Supreme Court asked on 22 Sep for the term to be defined. RollWatch's rule error rates and "which story fits" are exactly what's missing.
+- **So there are two ways in, from the same open-source engine:**
+  - **Inside:** an election office runs `POST /audit` on a draft before publishing it. Booths whose removals no evidence explains get a second look *before* names are deleted. That means fewer wrongful deletions and fewer claims to process.
+  - **Outside:** newsrooms, observers and citizens use the same engine for claim checks and status lookups. Same code, same numbers, so the two sides can't disagree about the arithmetic.
+- **If they adopt it, we win.** Being integrated is the success case. The independent public layer still has a job, because a rumour is always about the people who run the system.
+
+**2. "It's not scalable." It scales on three axes, and we show each one with a number.**
+
+| Axis | How | Proof we build |
+|---|---|---|
+| **Compute** | Every test is per booth, and booths are independent. Each step is linear or near-linear (TRD §1.1), so a state is just more booths, run in parallel per constituency. | S10 scale run: 1M voters timed, plus parallel speed-up per ward. Then extrapolate honestly to Delhi's 1.45 crore. |
+| **Adoption** | No install. Answers arrive as **cards inside the chat app the rumour came from**, so each check is a shareable artifact that brings the next user. One deployment serves every state, in three languages already. | M9 forward→card, S11 group `/check` |
+| **Scope** | The method isn't voter-specific. Any public list that gets "cleaned" (ration cards, pensions, scholarship beneficiaries) has the same question: *which removals are explained, and which aren't?* Story rules are **config**, so a new register or a new evidence source is a YAML file, not new code. | S12: `engine/stories.yaml`, and the demo adds an evidence source live |
+
+**What we don't claim:** real-roll ingestion. Real rolls are published as per-part PDFs, so PDF ingestion is roadmap. We show the open input schema and the adapter interface instead.
+
 ## 3. Who we're building for: the judge
 
 **Nishant Chahar.** These details are from a third-party profile and are not independently verified, so confirm anything we quote:

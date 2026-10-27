@@ -110,6 +110,12 @@ Use these real numbers only in the pitch and the video, with sources ([research 
 - **S9. Share clip.** An 8–12 s vertical MP4 of the share card with the verdict chips appearing one by one, plus an optional Hindi TTS voice line. Built from headless-Chrome frames and ffmpeg, no new library. A video travels further than an image on WhatsApp.
 - **S10. Scale run.** Generate a 1M-voter district (about 20× the demo) and show the engine's wall-clock time and the duplicate-blocking pair count against the naive n² on the Trust page. Proves the algorithms, not just the demo.
 - **S11. Telegram claim-check from a group.** Add the bot to a group, and `/check` on a replied-to forward returns the card into that group.
+- **S12. Config-driven stories.** Move the story order and match keys from `engine/stories.py` into `engine/stories.yaml`. **Demo beat:** add a new evidence source (e.g. "objections filed", a synthetic Form 7 log) by editing YAML and re-running, and the residual drops. This proves "a new register or office plugs in without code" (judges' scalability question).
+
+**M12. Integration endpoint** (new, small; answers "can't the government integrate it?")
+- `POST /audit` takes two roll files in the **open input schema** (`contracts/` RollRow, CSV or parquet) plus optional evidence tables, and returns flags, stories and rule hits as JSON.
+- Add `Dockerfile` + `docker-compose.yml` (api + web) so an office or newsroom runs it offline in one command.
+- Document both in the README under "Run it on your own rolls".
 
 **Removed in v3 (generic or low-value):** S1 and S2 (now M9), S4 notice explainer (absorbed into M10), S5 (now M10), **S6 review buttons + hash chain, S7 print report, Punjabi voice**. Punjabi text stays.
 
@@ -152,11 +158,17 @@ Acceptance is checked by **one manual run-through of the demo script**, not by a
 - **Cost per claim check** shown in ₹ (M11), with the cache hit rate.
 - **Engine run** on the full district in under 10 s, and on the 1M-voter scale run (S10) with the time on screen.
 
-## 8. Adoption story (the "from Monday" slide; PS1 doesn't require it, but it wins Feasibility & Impact)
+## 8. Adoption and scale (the "two ways in" slide; this answers the judges' presentation-round feedback)
 
-- **Wedge:** data-journalism desks and election-watch NGOs during revision windows. They run RollWatch locally on rolls they already obtain legally, and the outputs are booth-level aggregates.
-- **First 100 users:** journalism schools and civic-tech groups in Delhi NCR, plus the citizen bot as a free public layer.
-- **Sustainability:** an open-source core, hosted for NGOs on civic-tech grants.
+- **Inside (integration):** election offices run the open-source engine as a pre-publication check (`POST /audit`, M12). Booths with unexplained removals get a second look before deletion. Rule error rates are published.
+- **Outside (independent layer):** data desks, election-watch groups and citizens use the same engine for claim checks and lookups. A self-audit can't settle a rumour about the auditor, so this layer exists even when the inside one does.
+- **Wedge:** data-journalism desks and observer groups during revision windows. They run it locally on rolls they already obtain legally, and outputs are booth-level aggregates.
+- **First 100 users:** journalism schools and civic-tech groups in Delhi NCR, plus the free citizen bot. Every card shared into a group is the next user's entry point.
+- **Scale:**
+  - **compute:** per booth, linear, parallel per constituency (S10)
+  - **adoption:** chat cards, no install, 3 languages
+  - **scope:** config-driven stories reach other public registers such as ration cards and pensions (S12)
+- **Sustainability:** an open-source core, hosted for NGOs on civic-tech grants, with paid integration support for offices.
 - **Never:** scraping, individual-level public outputs, inferring protected attributes.
 
 ## 9. Risks and answers (product level)
