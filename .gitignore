@@ -14,3 +14,6 @@ private/
 # Generated caches (committed at feature freeze via git add -f)
 cache/llm/
 cards/*.png
+
+# Generated data (committed at feature freeze via git add -f)
+artifacts/
