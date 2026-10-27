@@ -93,6 +93,7 @@ export default function Check() {
           <p className="mono text-[13px] text-ink-2 mt-4">
             how sure {Math.round(res.confidence * 100)}% · patterns for human review, not findings ·{" "}
             <Link className="underline underline-offset-2 hover:text-ink" href={`/card/${encodeURIComponent(res.claim_id)}`}>open share card</Link>
+            {!mocked && <> · <a className="underline underline-offset-2 hover:text-ink" href={`/card/${encodeURIComponent(res.claim_id)}/png`} download={`rollwatch-${res.claim_id}.png`}>save as image</a></>}
           </p>
           {!mocked && <div className="mt-4"><SaveCheck claimId={res.claim_id} claimText={res.input.text || String(res.normalized_claim ?? "")} overall={res.overall} /></div>}
 
