@@ -116,23 +116,21 @@ RULES = {
 }
 
 
-OFFICIAL_GAP_RULE = ("official_parent_age_gap",
-                     "parent under 14 or over 40 years older than the elector (an official discrepancy check; measured here, "
-                     "never raised as a flag)")
-
-
-def official_gap_card(gaps: list[dict], anomalies: list[Planting]) -> dict:
-    """How often the official parent-child gap check fires on records that hide no planted anomaly."""
+def official_cards(checks: dict, anomalies: list[Planting]) -> list[dict]:
+    """How often each official discrepancy check fires on records that hide no planted anomaly."""
     ids = set().union(*(set(p.voter_ids) for p in anomalies)) if anomalies else set()
-    hit = [g for g in gaps if set(g["voter_ids"]) & ids]
-    n = len(gaps)
-    return {"rule": OFFICIAL_GAP_RULE[0], "definition": OFFICIAL_GAP_RULE[1], "flags_total": n, "flags_raised": 0,
-            "households_tripped": n, "on_planted_anomaly": len(hit),
-            "false_positive_rate": round((n - len(hit)) / n, 4) if n else None}
+    out = []
+    for cid, c in checks.items():
+        n = len(c["items"])
+        hit = sum(bool(set(i["voter_ids"]) & ids) for i in c["items"])
+        out.append({"rule": cid, "definition": f"{c['definition']} · official check, measured, never raised · trips {n:,}",
+                    "flags_total": n, "flags_raised": 0, "on_planted_anomaly": hit,
+                    "false_positive_rate": round((n - hit) / n, 4) if n else None})
+    return out
 
 
 def rule_cards(flags: list[Flag], key: list[Planting], n_voters: int | None = None, background: list[dict] | None = None,
-               gaps: list[dict] | None = None) -> dict:
+               official: dict | None = None) -> dict:
     """Per-rule error rates (PRD M10). A flag is 'raised' unless the engine itself judged it likely benign.
     false_positive_rate = raised flags that match no planted anomaly / raised flags. Flags cleared as likely benign
     are reported separately with how many of them sit on a planted innocent decoy."""
@@ -157,8 +155,8 @@ def rule_cards(flags: list[Flag], key: list[Planting], n_voters: int | None = No
             "recall": round(len(found) / len(planted), 4) if planted else None,
             "raised_per_10k_voters": round(10000 * len(raised) / n_voters, 2) if n_voters else None,
         })
-    if gaps is not None:
-        out.append(official_gap_card(gaps, anomalies))
+    if official:
+        out += official_cards(official, anomalies)
     return {"measured_on": "synthetic district with a planted answer key", "n_voters_v2": n_voters,
             "note": "A flag that matches no planting and no background truth (the generator's ~0.5% realistic "
                     "cross-script duplicates) is counted as a false positive. Every flag still needs human review.",
@@ -184,9 +182,9 @@ def main():
         n_voters = len(load(a.data or Path(a.flags).parent).v2)
     except Exception:
         pass
-    gp = Path(a.flags).parent / "parent_gaps.json"
-    gaps = json.loads(gp.read_text(encoding="utf-8")) if gp.exists() else None
-    cards = rule_cards(flags, load_key(a.key), n_voters, bg, gaps)
+    op = Path(a.flags).parent / "official_checks.json"
+    off = json.loads(op.read_text(encoding="utf-8")) if op.exists() else None
+    cards = rule_cards(flags, load_key(a.key), n_voters, bg, off)
     rp = Path(a.rules) if a.rules else Path(a.out).parent / "rules.json"
     rp.write_text(json.dumps(cards, ensure_ascii=False, indent=1), encoding="utf-8")
     for r in cards["rules"]:
