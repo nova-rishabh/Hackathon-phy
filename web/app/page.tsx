@@ -78,7 +78,7 @@ export default function Audit() {
         <Reveal delay={150} className="hidden lg:block"><EyeRing size={340} /></Reveal>
       </section>
 
-      <section className="mt-16 sm:mt-24">
+      <section>
         <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] items-stretch">
           <div className="min-w-0 flex flex-col">
             <Reveal><Eyebrow className="mb-5">How it works.</Eyebrow></Reveal>
@@ -134,7 +134,7 @@ export default function Audit() {
         </Reveal>
       </section>
 
-      <section id="example" className="mt-20 sm:mt-28 scroll-mt-28">
+      <section id="example" className="mt-16 scroll-mt-28">
         <Reveal><Eyebrow className="mb-5">A live example. Sampleabad, roll v1 to v2.</Eyebrow></Reveal>
         {booth && (
           <Reveal>
@@ -155,7 +155,7 @@ export default function Audit() {
         </Reveal>
       </section>
 
-      <div className="mt-16 sm:mt-20 -mx-4">
+      <div className="mt-16 -mx-4">
         <Marquee items={[
           `${fmt(t.v1)} voters compared`,
           `${fmt(t.deleted)} removals, each given a story or marked unexplained`,
@@ -167,7 +167,7 @@ export default function Audit() {
         ]} />
       </div>
 
-      <section id="grid" className="panel mt-16 sm:mt-20 scroll-mt-28">
+      <section id="grid" className="panel mt-16 scroll-mt-28">
         <div className="mb-8 max-w-[72ch]">
           <Eyebrow className="mb-3">Every booth, at a glance.</Eyebrow>
           <h2 className="h-section">Each square is one polling booth. <span className="dim">The number is the share of its voters removed between the two lists.</span></h2>
@@ -245,7 +245,7 @@ const WHY = [
 
 function Why({ bench }: { bench: ReturnType<typeof benchSummary> }) {
   return (
-    <section className="mt-24 sm:mt-32">
+    <section className="mt-16">
       <Reveal>
         <Eyebrow className="mb-5">Why this exists.</Eyebrow>
         <Display size="page" as="h2" dim="Three questions, each answered with something you can check.">
