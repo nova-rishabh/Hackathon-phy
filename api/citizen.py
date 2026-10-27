@@ -319,7 +319,8 @@ def phrase_with_llm(text: str, lang: str) -> tuple[str, GuardResult]:
     try:
         llm = importlib.import_module("api.llm")
         guard = importlib.import_module("api.guard")
-        new = llm.phrase(text, lang=lang, surface="citizen")
+        # The template is already complete; a voter should not wait on a rephrase, so cap it at 5 s.
+        new = llm.phrase(text, lang=lang, surface="citizen", timeout_ms=5000)
         if not new or sorted(re.findall(r"\d+", new)) != sorted(re.findall(r"\d+", text)):
             return text, ok
         g = guard.check(new, surface="citizen")
@@ -339,8 +340,23 @@ def _answer(lang, status, reason, steps, conf, match, lines, transcript=None):
                          confidence=round(float(max(0.0, min(conf, 1.0))), 3), guard=guard)
 
 
+_GUR_CONS = "ਕਖਗਘਙਚਛਜਝਞਟਠਡਢਣਤਥਦਧਨਪਫਬਭਮਯਰਲਵਸ਼ਸਹੜ"
+
+
+@lru_cache(maxsize=4096)
+def gurmukhi(dev: str) -> str:
+    """Devanagari name -> Gurmukhi, with two spelling rules plain transliteration misses: no virama except the
+    subjoined ਰ/ਵ/ਹ (ਪ੍ਰੀਤ), and tippi (ੰ) instead of bindi after a consonant or a short vowel (ਸਿੰਹ)."""
+    from indic_transliteration import sanscript
+    g = sanscript.transliterate(dev, sanscript.DEVANAGARI, sanscript.GURMUKHI)
+    g = re.sub("੍(?![ਰਵਹ])", "", g)
+    return re.sub(f"(?<=[{_GUR_CONS}ਿੁੂ])ਂ", "ੰ", g)
+
+
 def _shown_name(match: SearchMatch, lang: str) -> str:
-    if lang in ("hi", "pa"):
+    if lang == "pa" and match.name_dev:
+        return gurmukhi(match.name_dev)
+    if lang == "hi":
         return match.name_dev or match.name_lat
     return f"{match.name_lat} / {match.name_dev}" if match.name_dev else match.name_lat
 

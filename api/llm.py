@@ -71,13 +71,13 @@ def _mime(raw: bytes) -> str:
     return "image/png"
 
 
-def _gemini(system, user, tool, image_b64):
+def _gemini(system, user, tool, image_b64, timeout_ms: int = TIMEOUT_MS):
     """Gemini (google-genai), JSON out, temperature 0. One attempt, short timeout: the free tier is
     rate-limited, so a 429 or any error goes straight to the caller's template."""
     from google import genai
     from google.genai import types
     client = genai.Client(api_key=keys.get("gemini"),
-                          http_options=types.HttpOptions(timeout=TIMEOUT_MS,
+                          http_options=types.HttpOptions(timeout=timeout_ms,
                                                          retry_options=types.HttpRetryOptions(attempts=1)))
     parts = [types.Part.from_text(text=user + "\nReturn only JSON matching this schema: "
                                   + json.dumps(tool["input_schema"], ensure_ascii=False))]
@@ -96,7 +96,8 @@ def _gemini(system, user, tool, image_b64):
             getattr(um, "prompt_token_count", 0) or 0, getattr(um, "candidates_token_count", 0) or 0)
 
 
-def call(model: str, system: str, user: str, tool: dict, image_b64: str | None = None) -> dict | None:
+def call(model: str, system: str, user: str, tool: dict, image_b64: str | None = None,
+         timeout_ms: int | None = None) -> dict | None:
     """Return the tool input dict, or None (caller falls back to its template/rule path)."""
     model = C.MODEL_GEMINI  # Gemini is the only live model
     payload = {"user": user, "tool": tool, "img": hashlib.sha256((image_b64 or "").encode()).hexdigest()}
@@ -108,7 +109,7 @@ def call(model: str, system: str, user: str, tool: dict, image_b64: str | None =
     if demo_mode() or not available():
         return None
     try:
-        out, tin, tout = _gemini(system, user, tool, image_b64)
+        out, tin, tout = _gemini(system, user, tool, image_b64, timeout_ms or TIMEOUT_MS)
     except Exception:  # 429 / quota, network, bad key, bad JSON: template fallback
         return None
     if out is None:
@@ -125,10 +126,11 @@ PHRASE_TOOL = {
 }
 
 
-def phrase(text: str, lang: str, instruction: str = "Rewrite this in plain, calm language.", **_kw) -> str | None:
+def phrase(text: str, lang: str, instruction: str = "Rewrite this in plain, calm language.",
+           timeout_ms: int | None = None, **_kw) -> str | None:
     sys_p = (f"{instruction} Language: {lang}. Keep every number exactly. Never name parties, people, "
              "institutions, religions, castes or communities. Never use words implying fraud or intent.")
-    out = call(C.MODEL_PHRASE, sys_p, text, PHRASE_TOOL)
+    out = call(C.MODEL_PHRASE, sys_p, text, PHRASE_TOOL, timeout_ms=timeout_ms)
     return out.get("text") if isinstance(out, dict) and isinstance(out.get("text"), str) else None
 
 
