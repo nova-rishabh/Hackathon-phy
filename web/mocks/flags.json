@@ -1,0 +1,607 @@
+{
+ "items": [
+  {
+   "flag_id": "a3f91c02e4b1",
+   "type": "deletion_spike",
+   "scope": {
+    "level": "booth",
+    "booth_id": "B047",
+    "house_no": null,
+    "voter_ids": []
+   },
+   "metrics": {
+    "observed": 412,
+    "expected": 60.0,
+    "n": 500,
+    "p_value": 1e-09,
+    "q_value": 0.0004,
+    "unit": "records"
+   },
+   "reason_codes": [
+    "deletion_spike"
+   ],
+   "stories": {
+    "booth_id": "B047",
+    "removed_total": 412,
+    "stories": [
+     {
+      "code": "death_registered",
+      "label": "Death registered",
+      "count": 9,
+      "share": 0.0218,
+      "ci_lo": 0,
+      "ci_hi": 0.046,
+      "evidence": "Matched to death register"
+     },
+     {
+      "code": "duplicate_cleanup",
+      "label": "Duplicate clean-up",
+      "count": 3,
+      "share": 0.0073,
+      "ci_lo": 0,
+      "ci_hi": 0.0255,
+      "evidence": "Same person kept at another entry"
+     },
+     {
+      "code": "unexplained",
+      "label": "Unexplained",
+      "count": 400,
+      "share": 0.9709,
+      "ci_lo": 0.9446,
+      "ci_hi": 0.9971,
+      "evidence": "No matching record in any source"
+     }
+    ],
+    "residual": {
+     "count": 400,
+     "expected_background": 60.0,
+     "p_value": 1e-09,
+     "significant": true
+    },
+    "context_used": [
+     "death_register",
+     "hostel_list",
+     "boundary_changes",
+     "duplicates"
+    ],
+    "outcome": "unusual"
+   },
+   "confidence": 0.82,
+   "confidence_band": "high",
+   "confidence_n": 140,
+   "likely_benign": false,
+   "needs_human_review": true,
+   "card": {
+    "found": "412 names left Booth 47 between v1 and v2.",
+    "why_unusual": "For this age mix we'd expect about 60 (q < 0.001).",
+    "innocent_explanations": [
+     "Deaths 9",
+     "Hostel 0",
+     "Boundary 0",
+     "Duplicates 3"
+    ],
+    "confidence_text": "82% (high) based on 140 test plantings",
+    "lang": "en",
+    "source": "template"
+   },
+   "guard": {
+    "passed": true,
+    "blocked_terms": [],
+    "rewritten": false
+   },
+   "review": {
+    "status": "open",
+    "ts": null,
+    "hash": null
+   }
+  },
+  {
+   "flag_id": "b7c20d91f3a8",
+   "type": "deletion_spike",
+   "scope": {
+    "level": "booth",
+    "booth_id": "B012",
+    "house_no": null,
+    "voter_ids": []
+   },
+   "metrics": {
+    "observed": 380,
+    "expected": 52.0,
+    "n": 1000,
+    "p_value": 0.41,
+    "q_value": 0.41,
+    "unit": "records"
+   },
+   "reason_codes": [
+    "deletion_spike"
+   ],
+   "stories": {
+    "booth_id": "B012",
+    "removed_total": 380,
+    "stories": [
+     {
+      "code": "death_registered",
+      "label": "Death registered",
+      "count": 14,
+      "share": 0.0368,
+      "ci_lo": 0.0079,
+      "ci_hi": 0.0658,
+      "evidence": "Matched to death register"
+     },
+     {
+      "code": "hostel_moveout",
+      "label": "Hostel move-out",
+      "count": 308,
+      "share": 0.8105,
+      "ci_lo": 0.7611,
+      "ci_hi": 0.8599,
+      "evidence": "Matched to hostel list"
+     },
+     {
+      "code": "duplicate_cleanup",
+      "label": "Duplicate clean-up",
+      "count": 4,
+      "share": 0.0105,
+      "ci_lo": 0,
+      "ci_hi": 0.0308,
+      "evidence": "Same person kept at another entry"
+     },
+     {
+      "code": "unexplained",
+      "label": "Unexplained",
+      "count": 54,
+      "share": 0.1421,
+      "ci_lo": 0.097,
+      "ci_hi": 0.1872,
+      "evidence": "No matching record in any source"
+     }
+    ],
+    "residual": {
+     "count": 54,
+     "expected_background": 20.0,
+     "p_value": 0.41,
+     "significant": false
+    },
+    "context_used": [
+     "death_register",
+     "hostel_list",
+     "boundary_changes",
+     "duplicates"
+    ],
+    "outcome": "likely_benign"
+   },
+   "confidence": 0.77,
+   "confidence_band": "high",
+   "confidence_n": 140,
+   "likely_benign": true,
+   "needs_human_review": true,
+   "card": {
+    "found": "380 names left Booth 12 between v1 and v2.",
+    "why_unusual": "This is well above the usual rate, but most of it matches a known source.",
+    "innocent_explanations": [
+     "Deaths 14",
+     "Hostel 308",
+     "Boundary 0",
+     "Duplicates 4"
+    ],
+    "confidence_text": "77% (high) based on 140 test plantings",
+    "lang": "en",
+    "source": "template"
+   },
+   "guard": {
+    "passed": true,
+    "blocked_terms": [],
+    "rewritten": false
+   },
+   "review": {
+    "status": "open",
+    "ts": null,
+    "hash": null
+   }
+  },
+  {
+   "flag_id": "c18e5530aa72",
+   "type": "deletion_spike",
+   "scope": {
+    "level": "booth",
+    "booth_id": "B063",
+    "house_no": null,
+    "voter_ids": []
+   },
+   "metrics": {
+    "observed": 150,
+    "expected": 31.0,
+    "n": 500,
+    "p_value": 0.002,
+    "q_value": 0.004,
+    "unit": "records"
+   },
+   "reason_codes": [
+    "deletion_spike"
+   ],
+   "stories": {
+    "booth_id": "B063",
+    "removed_total": 150,
+    "stories": [
+     {
+      "code": "death_registered",
+      "label": "Death registered",
+      "count": 12,
+      "share": 0.08,
+      "ci_lo": 0.0266,
+      "ci_hi": 0.1334,
+      "evidence": "Matched to death register"
+     },
+     {
+      "code": "hostel_moveout",
+      "label": "Hostel move-out",
+      "count": 0,
+      "share": 0.0,
+      "ci_lo": 0,
+      "ci_hi": 0.01,
+      "evidence": "Matched to hostel list"
+     },
+     {
+      "code": "boundary_change",
+      "label": "Boundary change",
+      "count": 0,
+      "share": 0.0,
+      "ci_lo": 0,
+      "ci_hi": 0.01,
+      "evidence": "House in a re-drawn booth range"
+     },
+     {
+      "code": "duplicate_cleanup",
+      "label": "Duplicate clean-up",
+      "count": 42,
+      "share": 0.28,
+      "ci_lo": 0.1981,
+      "ci_hi": 0.3619,
+      "evidence": "Same person kept at another entry"
+     },
+     {
+      "code": "unexplained",
+      "label": "Unexplained",
+      "count": 96,
+      "share": 0.64,
+      "ci_lo": 0.5532,
+      "ci_hi": 0.7268,
+      "evidence": "No matching record in any source"
+     }
+    ],
+    "residual": {
+     "count": 96,
+     "expected_background": 20.0,
+     "p_value": 0.002,
+     "significant": true
+    },
+    "context_used": [
+     "death_register",
+     "hostel_list",
+     "duplicates"
+    ],
+    "outcome": "mixed"
+   },
+   "confidence": 0.64,
+   "confidence_band": "medium",
+   "confidence_n": 96,
+   "likely_benign": false,
+   "needs_human_review": true,
+   "card": {
+    "found": "150 names left Booth 63 between v1 and v2.",
+    "why_unusual": "For this age mix we'd expect about 31 (q = 0.004).",
+    "innocent_explanations": [
+     "Deaths 12",
+     "Hostel 0",
+     "Boundary 0 (log off)",
+     "Duplicates 42"
+    ],
+    "confidence_text": "64% (medium) based on 96 test plantings",
+    "lang": "en",
+    "source": "template"
+   },
+   "guard": {
+    "passed": true,
+    "blocked_terms": [],
+    "rewritten": false
+   },
+   "review": {
+    "status": "open",
+    "ts": null,
+    "hash": null
+   }
+  },
+  {
+   "flag_id": "d4412be9c0f5",
+   "type": "deletion_spike",
+   "scope": {
+    "level": "booth",
+    "booth_id": "B022",
+    "house_no": null,
+    "voter_ids": []
+   },
+   "metrics": {
+    "observed": 98,
+    "expected": 30.0,
+    "n": 500,
+    "p_value": 3e-05,
+    "q_value": 0.0009,
+    "unit": "records"
+   },
+   "reason_codes": [
+    "deletion_spike"
+   ],
+   "stories": {
+    "booth_id": "B022",
+    "removed_total": 98,
+    "stories": [
+     {
+      "code": "death_registered",
+      "label": "Death registered",
+      "count": 11,
+      "share": 0.1122,
+      "ci_lo": 0.0397,
+      "ci_hi": 0.1847,
+      "evidence": "Matched to death register"
+     },
+     {
+      "code": "duplicate_cleanup",
+      "label": "Duplicate clean-up",
+      "count": 3,
+      "share": 0.0306,
+      "ci_lo": 0,
+      "ci_hi": 0.0747,
+      "evidence": "Same person kept at another entry"
+     },
+     {
+      "code": "unexplained",
+      "label": "Unexplained",
+      "count": 84,
+      "share": 0.8571,
+      "ci_lo": 0.7779,
+      "ci_hi": 0.9364,
+      "evidence": "No matching record in any source"
+     }
+    ],
+    "residual": {
+     "count": 84,
+     "expected_background": 20.0,
+     "p_value": 3e-05,
+     "significant": true
+    },
+    "context_used": [
+     "death_register",
+     "hostel_list",
+     "boundary_changes",
+     "duplicates"
+    ],
+    "outcome": "unusual"
+   },
+   "confidence": 0.71,
+   "confidence_band": "medium",
+   "confidence_n": 120,
+   "likely_benign": false,
+   "needs_human_review": true,
+   "card": {
+    "found": "98 names left Booth 22 between v1 and v2.",
+    "why_unusual": "For this age mix we'd expect about 30 (q < 0.001).",
+    "innocent_explanations": [
+     "Deaths 11",
+     "Hostel 0",
+     "Boundary 0",
+     "Duplicates 3"
+    ],
+    "confidence_text": "71% (medium) based on 120 test plantings",
+    "lang": "en",
+    "source": "template"
+   },
+   "guard": {
+    "passed": true,
+    "blocked_terms": [],
+    "rewritten": false
+   },
+   "review": {
+    "status": "open",
+    "ts": null,
+    "hash": null
+   }
+  },
+  {
+   "flag_id": "e905a7d1b266",
+   "type": "duplicate_cluster",
+   "scope": {
+    "level": "household",
+    "booth_id": "B018",
+    "house_no": "14",
+    "voter_ids": [
+     "V018-0141",
+     "V018-0142",
+     "V018-0377"
+    ]
+   },
+   "metrics": {
+    "observed": 3,
+    "expected": 1,
+    "n": 3,
+    "p_value": null,
+    "q_value": null,
+    "unit": "records"
+   },
+   "reason_codes": [
+    "cross_script_match"
+   ],
+   "stories": null,
+   "confidence": 0.69,
+   "confidence_band": "medium",
+   "confidence_n": 88,
+   "likely_benign": false,
+   "needs_human_review": true,
+   "card": {
+    "found": "3 entries in Booth 18 look like one person in two scripts.",
+    "why_unusual": "Same relation, same house, names differ only in spelling and script.",
+    "innocent_explanations": [
+     "Spelling variants",
+     "Transliteration"
+    ],
+    "confidence_text": "69% (medium) based on 88 test plantings",
+    "lang": "en",
+    "source": "template"
+   },
+   "guard": {
+    "passed": true,
+    "blocked_terms": [],
+    "rewritten": false
+   },
+   "review": {
+    "status": "open",
+    "ts": null,
+    "hash": null
+   }
+  },
+  {
+   "flag_id": "f06b3c7a1d99",
+   "type": "oversized_household",
+   "scope": {
+    "level": "household",
+    "booth_id": "B071",
+    "house_no": "22",
+    "voter_ids": []
+   },
+   "metrics": {
+    "observed": 19,
+    "expected": 6.0,
+    "n": 1,
+    "p_value": null,
+    "q_value": 0.03,
+    "unit": "records"
+   },
+   "reason_codes": [
+    "household_size"
+   ],
+   "stories": null,
+   "confidence": 0.52,
+   "confidence_band": "medium",
+   "confidence_n": 60,
+   "likely_benign": false,
+   "needs_human_review": true,
+   "card": {
+    "found": "House 22 in Booth 71 lists 19 voters.",
+    "why_unusual": "Most houses here list 6 or fewer.",
+    "innocent_explanations": [
+     "Large joint family",
+     "Shared address"
+    ],
+    "confidence_text": "52% (medium) based on 60 test plantings",
+    "lang": "en",
+    "source": "template"
+   },
+   "guard": {
+    "passed": true,
+    "blocked_terms": [],
+    "rewritten": false
+   },
+   "review": {
+    "status": "open",
+    "ts": null,
+    "hash": null
+   }
+  },
+  {
+   "flag_id": "0a7d9e41c3b0",
+   "type": "impossible_age",
+   "scope": {
+    "level": "booth",
+    "booth_id": "B055",
+    "house_no": null,
+    "voter_ids": []
+   },
+   "metrics": {
+    "observed": 4,
+    "expected": 0,
+    "n": 4,
+    "p_value": null,
+    "q_value": null,
+    "unit": "records"
+   },
+   "reason_codes": [
+    "age_range"
+   ],
+   "stories": null,
+   "confidence": 0.88,
+   "confidence_band": "high",
+   "confidence_n": 75,
+   "likely_benign": false,
+   "needs_human_review": true,
+   "card": {
+    "found": "4 entries in Booth 55 show an age of 110 or more.",
+    "why_unusual": "The age field is above the plausible range.",
+    "innocent_explanations": [
+     "Data entry error",
+     "Date of birth typed wrongly"
+    ],
+    "confidence_text": "88% (high) based on 75 test plantings",
+    "lang": "en",
+    "source": "template"
+   },
+   "guard": {
+    "passed": true,
+    "blocked_terms": [],
+    "rewritten": false
+   },
+   "review": {
+    "status": "open",
+    "ts": null,
+    "hash": null
+   }
+  },
+  {
+   "flag_id": "1b8e0f52d4c1",
+   "type": "addition_spike",
+   "scope": {
+    "level": "booth",
+    "booth_id": "B034",
+    "house_no": null,
+    "voter_ids": []
+   },
+   "metrics": {
+    "observed": 160,
+    "expected": 24.0,
+    "n": 500,
+    "p_value": 0.0002,
+    "q_value": 0.002,
+    "unit": "records"
+   },
+   "reason_codes": [
+    "addition_spike"
+   ],
+   "stories": null,
+   "confidence": 0.58,
+   "confidence_band": "medium",
+   "confidence_n": 64,
+   "likely_benign": true,
+   "needs_human_review": true,
+   "card": {
+    "found": "160 names were added to Booth 34 between v1 and v2.",
+    "why_unusual": "For this age mix we'd expect about 24 (q = 0.002).",
+    "innocent_explanations": [
+     "New hostel intake",
+     "Boundary change"
+    ],
+    "confidence_text": "58% (medium) based on 64 test plantings",
+    "lang": "en",
+    "source": "template"
+   },
+   "guard": {
+    "passed": true,
+    "blocked_terms": [],
+    "rewritten": false
+   },
+   "review": {
+    "status": "open",
+    "ts": null,
+    "hash": null
+   }
+  }
+ ],
+ "total": 8
+}
