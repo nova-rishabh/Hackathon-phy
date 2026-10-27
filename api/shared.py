@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import logging
 import os
 import time
 from collections import deque
@@ -83,7 +84,8 @@ class Redis:
 
     def __init__(self, url: str):
         import redis.asyncio as aioredis
-        self.r = aioredis.from_url(url, decode_responses=True)
+        # connect fast or fail over; reads may wait out the 30 s long poll (BLPOP), so allow a little more
+        self.r = aioredis.from_url(url, decode_responses=True, socket_connect_timeout=4, socket_timeout=40)
 
     async def put(self, msg: dict):
         await self.r.rpush(P + "outbox", json.dumps(msg, ensure_ascii=False))
@@ -132,12 +134,36 @@ class Redis:
         return {"state": w.get("state", "offline"), "seen": float(w.get("seen", 0) or 0), "number": w.get("number")}
 
 
-_state: Memory | Redis | None = None
+class Failover:
+    """Redis when it answers; on the first error, log it and carry on in memory, so a bad REDIS_URL or an outage
+    never takes the WhatsApp bridge down. `kind` says which one is in use."""
+
+    def __init__(self, url: str):
+        self.redis, self.mem, self.down = Redis(url), Memory(), False
+
+    @property
+    def kind(self) -> str:
+        return "memory (redis unreachable)" if self.down else "redis"
+
+    def __getattr__(self, name):
+        async def call(*a, **k):
+            if not self.down:
+                try:
+                    return await getattr(self.redis, name)(*a, **k)
+                except Exception as e:  # connection, auth, TLS or URL errors
+                    self.down = True
+                    log.warning("Redis unreachable (%s); falling back to in-memory state", type(e).__name__)
+            return await getattr(self.mem, name)(*a, **k)
+        return call
 
 
-def state() -> Memory | Redis:
+log = logging.getLogger("rollwatch.shared")
+_state: Memory | Failover | None = None
+
+
+def state() -> Memory | Failover:
     global _state
     if _state is None:
-        url = os.environ.get("REDIS_URL")
-        _state = Redis(url) if url else Memory()
+        url = (os.environ.get("REDIS_URL") or "").strip()
+        _state = Failover(url) if url else Memory()
     return _state
