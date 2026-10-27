@@ -1,0 +1,4 @@
+# unrs-resolver's install script only speeds up eslint's import resolver; the app build doesn't need it.
+allowBuilds:
+  unrs-resolver: false
+  sharp: true
