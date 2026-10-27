@@ -97,7 +97,9 @@ def analyse(data_dir=None, timings: dict | None = None, workers: int = 1, data=N
     c1, c2, rc, s1, s2 = _local_stages(d, workers, timings)
     with _stage(timings, "stories"):
         stories = compute_stories(d.v1, d.v2, d.death, d.hostel, d.boundary, c1, rates, tables=tables)
-    return {"data": d, "rates": rates, "diff": df, "tests": tests, "clusters": {"v1": c1, "v2": c2},
+    with _stage(timings, "official_parent_gaps"):
+        gaps = rules.parent_age_gaps(d.v2)
+    return {"parent_gaps": gaps, "data": d, "rates": rates, "diff": df, "tests": tests, "clusters": {"v1": c1, "v2": c2},
             "relation_conflicts": rc, "pair_stats": {"v1": s1, "v2": s2}, "stories": stories}
 
 
@@ -198,6 +200,7 @@ def write_outputs(an: dict, flags: list[Flag], out: Path):
     from .aggregates import build_aggregates
     out.mkdir(parents=True, exist_ok=True)
     (out / "flags.json").write_text(json.dumps([f.model_dump(mode="json") for f in flags], ensure_ascii=False, indent=1), encoding="utf-8")
+    (out / "parent_gaps.json").write_text(json.dumps(an.get("parent_gaps", []), ensure_ascii=False), encoding="utf-8")
     st = [s.model_dump(mode="json", warnings=False) for s in an["stories"].values()]
     try:
         for s in st:

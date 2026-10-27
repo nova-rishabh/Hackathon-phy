@@ -37,7 +37,26 @@ def gender_ratio_swing(v1: pd.DataFrame, v2: pd.DataFrame, pts: float = 8.0, min
     return out
 
 
+# Parent-child age gaps the official "logical discrepancy" checks are reported to use. We publish how often
+# they fire on innocent records (Trust page) instead of treating them as findings.
+PARENT_GAP_MIN, PARENT_GAP_MAX = 14, 40
+
+
+IMPOSSIBLE = {"parent_not_older", "husband_gender_mismatch"}
+OFFICIAL_GAPS = {"parent_gap_under_14", "parent_gap_over_40"}
+
+
 def relation_conflict(v2: pd.DataFrame) -> list[dict]:
+    return _relation_pairs(v2, IMPOSSIBLE)
+
+
+def parent_age_gaps(v2: pd.DataFrame) -> list[dict]:
+    """The official parent-child gap check (under 14 or over 40 years). Measured and published, never raised as a
+    flag: a grandparent named as the relative or an age written wrongly at enrolment trips it innocently."""
+    return _relation_pairs(v2, OFFICIAL_GAPS)
+
+
+def _relation_pairs(v2: pd.DataFrame, keep: set[str]) -> list[dict]:
     """Fires only when the named relative's own record is found in the same house (exact normalised-name match,
     exactly one candidate) AND the pair is impossible: a father/mother who is not older than the elector, or a
     'husband' whose record is not male (or an elector listed with a husband who is not female).
@@ -51,12 +70,18 @@ def relation_conflict(v2: pd.DataFrame) -> list[dict]:
         columns={"k": "rk", "voter_id": "o_id", "age": "o_age", "gender": "o_gender"})
     m = d[d.relation_type != "other"].merge(rel, on=["booth_id", "house_no", "rk"], how="inner")
     m = m[m.o_id != m.voter_id]
-    parent = m.relation_type.isin(["father", "mother"]) & (m.o_age <= m.age)
+    is_parent = m.relation_type.isin(["father", "mother"])
+    parent = is_parent & (m.o_age <= m.age)
+    gap = m.o_age - m.age
+    young = is_parent & (gap > 0) & (gap < PARENT_GAP_MIN)
+    old = is_parent & (gap > PARENT_GAP_MAX)
     husb = (m.relation_type == "husband") & ((m.o_gender != "M") | (m.gender != "F"))
     m = m.assign(why=None)
     m.loc[parent, "why"] = "parent_not_older"
     m.loc[husb, "why"] = "husband_gender_mismatch"
-    m = m[m.why.notna()]
+    m.loc[young, "why"] = "parent_gap_under_14"
+    m.loc[old, "why"] = "parent_gap_over_40"
+    m = m[m.why.isin(keep)]
     out = []
     for (booth, house), g in m.groupby(["booth_id", "house_no"], sort=True):
         ids = sorted(set(g.voter_id) | set(g.o_id))

@@ -100,6 +100,18 @@ class Gen:
                     if x:
                         x["rel_dev"], x["rel_lat"], x["rel_canon"] = hh["father_dev"], hh["father_lat"], hh["father_lat"]
         news = [q for q in self.v2 if q.get("tag") == "new" and "given" in q["hh"]]
+        # A newcomer more than 40 years younger than the head is a grandchild: list a son of the right age as the parent.
+        house_men = defaultdict(list)
+        for q in self.v2:
+            if q["gender"] == "M":
+                house_men[(q["b"], q["house"])].append(q)
+        for r in news:
+            hh = r["hh"]
+            if hh["head_age"] + 1 - r["age"] > 40 and r["rel_lat"] == hh["head_lat"]:
+                dad = next((q for q in house_men[(r["b"], r["house"])] if q is not hh["head"] and q.get("tag") != "new"
+                            and 20 <= q["age"] - r["age"] <= 40), None)
+                if dad:
+                    r["rel_dev"], r["rel_lat"], r["rel_canon"] = dad["name_dev"], dad["name_lat"], dad["canon"]
         for r in [x for x in self.v1 if x.get("child")] + news:
             new = r.get("tag") == "new"  # a v2 newcomer exists only in v2 and is free to rename
             hh, q = r["hh"], (r if new else v2.get(r["vid"]))

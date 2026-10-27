@@ -215,6 +215,9 @@ STOPWORDS |= set("boot age umar umr saal sal years old naam: hello hi namaste".s
 # ------------------------------------------------------------------ rule cards (Trust page, M10)
 # Per rule: (innocent explanations, what resolves it). Rates come from engine/eval.py -> rules.json.
 RULE_CONTEXT = {
+    "official_parent_age_gap": (["A grandparent or guardian named as the relative", "An age written wrongly at enrolment",
+                                 "A late child or a young step-parent"],
+                                "Ask the family; a Form 8 correction fixes the relation or the age."),
     "deletion_spike": (["Deaths recorded in the death register", "A hostel or institution emptying",
                         "A boundary redraw moving records out", "Duplicate cleanup"],
                        "Match the removals against death, hostel and boundary records; then the BLO's field check."),
