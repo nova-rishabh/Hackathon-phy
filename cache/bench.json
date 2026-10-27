@@ -1,0 +1,193 @@
+{
+ "measured": true,
+ "machine": {
+  "cpus": 20,
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.12.13"
+ },
+ "complexity": {
+  "diff": "O(n) hash join",
+  "booth_tests": "O(m log m), m booths",
+  "duplicates": "O(sum b_i^2) inside blocks, union-find merges",
+  "stories": "O(r) lookups per booth",
+  "bootstrap": "O(B r), vectorised",
+  "claim_tools": "O(1) lookups in aggregates.json"
+ },
+ "bootstrap": {
+  "booth_id": "B047",
+  "removed_records": 412,
+  "resamples": 500,
+  "ms_best_of_5": 1.98
+ },
+ "runs": [
+  {
+   "label": "district",
+   "n_v1": 51036,
+   "n_v2": 49675,
+   "booths": 100,
+   "wards": 10,
+   "workers": 1,
+   "total_ms": 2479.5,
+   "stages_ms": {
+    "load": 2.5,
+    "background_rates": 75.5,
+    "diff": 206.9,
+    "booth_tests": 116.3,
+    "duplicates_v1": 811.3,
+    "duplicates_v2": 653.0,
+    "rule_relation_conflict": 143.3,
+    "stories": 234.8,
+    "flags": 235.6
+   },
+   "duplicate_pairs": {
+    "v1": {
+     "n": 51036,
+     "candidate_pairs": 492692,
+     "scored_pairs": 26004,
+     "naive_pairs": 1302311130,
+     "edges": 373,
+     "reduction_x": 2643.3
+    },
+    "v2": {
+     "n": 49675,
+     "candidate_pairs": 415884,
+     "scored_pairs": 14732,
+     "naive_pairs": 1233777975,
+     "edges": 261,
+     "reduction_x": 2966.6
+    }
+   },
+   "flags": 1614,
+   "duplicate_clusters_v2": 256
+  },
+  {
+   "label": "district",
+   "n_v1": 51036,
+   "n_v2": 49675,
+   "booths": 100,
+   "wards": 10,
+   "workers": 16,
+   "total_ms": 8009.5,
+   "stages_ms": {
+    "load": 2.7,
+    "background_rates": 66.6,
+    "diff": 195.2,
+    "booth_tests": 116.3,
+    "parallel_local_stages": 7039.5,
+    "stories": 237.4,
+    "flags": 301.1
+   },
+   "duplicate_pairs": {
+    "v1": {
+     "n": 51036,
+     "candidate_pairs": 492692,
+     "scored_pairs": 26004,
+     "naive_pairs": 1302311130,
+     "edges": 373,
+     "reduction_x": 2643.3
+    },
+    "v2": {
+     "n": 49675,
+     "candidate_pairs": 415884,
+     "scored_pairs": 14732,
+     "naive_pairs": 1233777975,
+     "edges": 261,
+     "reduction_x": 2966.6
+    }
+   },
+   "flags": 1614,
+   "duplicate_clusters_v2": 256
+  },
+  {
+   "label": "clone_x20",
+   "n_v1": 1020720,
+   "n_v2": 993500,
+   "booths": 2000,
+   "wards": 200,
+   "workers": 1,
+   "total_ms": 53930.7,
+   "stages_ms": {
+    "load": 0.0,
+    "background_rates": 1454.8,
+    "diff": 4475.8,
+    "booth_tests": 2440.1,
+    "duplicates_v1": 16997.6,
+    "duplicates_v2": 15346.2,
+    "rule_relation_conflict": 2722.7,
+    "stories": 5180.5,
+    "flags": 5313.0
+   },
+   "duplicate_pairs": {
+    "v1": {
+     "n": 1020720,
+     "candidate_pairs": 9853840,
+     "scored_pairs": 520080,
+     "naive_pairs": 520934148840,
+     "edges": 7460,
+     "reduction_x": 52866.1
+    },
+    "v2": {
+     "n": 993500,
+     "candidate_pairs": 8317680,
+     "scored_pairs": 294640,
+     "naive_pairs": 493520628250,
+     "edges": 5220,
+     "reduction_x": 59333.9
+    }
+   },
+   "flags": 32280,
+   "duplicate_clusters_v2": 5120
+  },
+  {
+   "label": "clone_x20",
+   "n_v1": 1020720,
+   "n_v2": 993500,
+   "booths": 2000,
+   "wards": 200,
+   "workers": 16,
+   "total_ms": 37098.4,
+   "stages_ms": {
+    "load": 0.0,
+    "background_rates": 1424.1,
+    "diff": 4437.6,
+    "booth_tests": 2457.8,
+    "parallel_local_stages": 16602.1,
+    "stories": 5251.2,
+    "flags": 5645.4
+   },
+   "duplicate_pairs": {
+    "v1": {
+     "n": 1020720,
+     "candidate_pairs": 9853840,
+     "scored_pairs": 520080,
+     "naive_pairs": 520934148840,
+     "edges": 7460,
+     "reduction_x": 52866.1
+    },
+    "v2": {
+     "n": 993500,
+     "candidate_pairs": 8317680,
+     "scored_pairs": 294640,
+     "naive_pairs": 493520628250,
+     "edges": 5220,
+     "reduction_x": 59333.9
+    }
+   },
+   "flags": 32280,
+   "duplicate_clusters_v2": 5120
+  }
+ ],
+ "scale": {
+  "factor": 20,
+  "n_v1": 1020720,
+  "serial_s": 53.9,
+  "parallel_s": 37.1,
+  "workers": 16,
+  "speedup_total": 1.45,
+  "speedup_local_stages": 2.11,
+  "per_voter_us_serial": 52.84,
+  "per_voter_us_district": 48.58,
+  "process_overhead_ms_est": 6939.0,
+  "note": "Only the booth-local stages (duplicates, relation rule) run per ward in parallel; the rest is serial. process_overhead_ms_est is the fixed cost of starting worker processes and importing the engine (large on Windows), estimated from the district run. Rolls are held in memory, so 'load' excludes disk reads."
+ }
+}

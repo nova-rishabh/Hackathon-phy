@@ -1,0 +1,8 @@
+{
+ "model": "gemini-3.5-flash",
+ "tokens_in": 90,
+ "tokens_out": 17,
+ "output": {
+  "text": "All voter record deletions pertained to a single demographic group."
+ }
+}

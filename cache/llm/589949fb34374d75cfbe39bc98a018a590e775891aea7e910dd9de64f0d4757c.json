@@ -1,0 +1,32 @@
+{
+ "model": "gemini-3.5-flash",
+ "tokens_in": 365,
+ "tokens_out": 142,
+ "output": {
+  "sub_claims": [
+   {
+    "text": "600 names were deleted in Booth 47.",
+    "tool": "deletion_count",
+    "params": {
+     "booth_id": "B047"
+    },
+    "claimed_value": 600
+   },
+   {
+    "text": "Booth 47 had the highest number of deletions among all booths.",
+    "tool": "compare_booths",
+    "params": {
+     "booth_id": "B047",
+     "metric": "deleted"
+    },
+    "claimed_value": 1
+   },
+   {
+    "text": "All deleted voters belonged to a specific community.",
+    "tool": "unanswerable",
+    "params": {},
+    "claimed_value": null
+   }
+  ]
+ }
+}

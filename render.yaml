@@ -1,0 +1,32 @@
+# Render Blueprint: API (Docker) + web (Next.js). Secrets are entered in the Render dashboard (sync: false), never here.
+services:
+  - type: web
+    name: rollwatch-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: ELEVENLABS_API_KEY
+        sync: false
+      - key: DEMO_MODE
+        value: "0"
+
+  - type: web
+    name: rollwatch-web
+    runtime: node
+    plan: free
+    rootDir: web
+    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm build
+    startCommand: pnpm start -p $PORT
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NEXT_PUBLIC_API_BASE
+        value: https://rollwatch-api.onrender.com
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        sync: false
+      - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+        sync: false

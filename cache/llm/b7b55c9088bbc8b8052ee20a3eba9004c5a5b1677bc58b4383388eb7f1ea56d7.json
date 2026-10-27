@@ -1,0 +1,8 @@
+{
+ "model": "gemini-3.5-flash",
+ "tokens_in": 96,
+ "tokens_out": 20,
+ "output": {
+  "text": "Entries corresponding to non-existent individuals were recorded in Booth 30."
+ }
+}

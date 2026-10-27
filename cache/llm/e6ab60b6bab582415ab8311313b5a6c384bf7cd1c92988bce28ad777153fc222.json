@@ -1,0 +1,8 @@
+{
+ "model": "gemini-3.5-flash",
+ "tokens_in": 94,
+ "tokens_out": 18,
+ "output": {
+  "text": "Voter numbers in Booth 30 were higher than expected."
+ }
+}
