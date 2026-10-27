@@ -66,6 +66,11 @@ class Api:
         r.raise_for_status()
         return r.json()
 
+    async def documents(self, dob: str | None, lang: str) -> dict:
+        r = await self.client.get("/documents", params={"lang": lang, **({"dob": dob} if dob else {})})
+        r.raise_for_status()
+        return r.json()
+
     async def claim(self, text: str | None = None, image: bytes | None = None) -> dict:
         body = {"mirror": True}
         if text:
@@ -158,11 +163,36 @@ _GREETING = re.compile(r"^\W*(hi+|hello|hey|hii+|namaste|namaskar|helo|start|hel
                        r"नमस्ते|नमस्कार|हाय|हेलो|ਸਤ ਸ੍ਰੀ ਅਕਾਲ|ਹੈਲੋ|/start|/help)\W*$", re.I)
 
 
+# "documents" / "दस्तावेज़" (optionally with a date of birth): which documents a notice would ask for.
+_DOCS = re.compile(r"(documents?|docs|kagaz|kaagaz|dastavez|दस्तावेज़?|दस्तावेज|कागज़?|कागज|ਦਸਤਾਵੇਜ਼|ਦਸਤਾਵੇਜ|ਕਾਗਜ਼)", re.I)
+_DATE = re.compile(r"\b(\d{1,2})[./-](\d{1,2})[./-](\d{4})\b|\b(\d{4})-(\d{2})-(\d{2})\b")
+
+
+def _dob(text: str) -> str | None:
+    m = _DATE.search(text or "")
+    if not m:
+        return None
+    d, mo, y = (m.group(1), m.group(2), m.group(3)) if m.group(3) else (m.group(6), m.group(5), m.group(4))
+    return f"{int(y):04d}-{int(mo):02d}-{int(d):02d}"
+
+
+async def handle_documents(api: Api, text: str) -> list[Reply]:
+    lang = lang_of(text)
+    try:
+        d = await api.documents(_dob(text), lang)
+    except Exception:
+        return [Reply("text", with_footer(L["api_down"][lang], lang))]
+    body = "\n".join(d["lines"]) + "\n\n" + d["list"] + "\n" + "\n".join(d["other"])
+    return [Reply("text", with_footer(body, lang))]
+
+
 async def handle_text(api: Api, text: str) -> list[Reply]:
     text = (text or "").strip()
     if not text or _GREETING.match(text):
         lang = lang_of(text) if text else "en"
         return [Reply("text", with_footer(L["start"][lang], lang))]
+    if _DOCS.search(text) and len(text) < 60:
+        return await handle_documents(api, text)
     if looks_like_claim(text):
         return await handle_claim(api, text=strip_claim_prefix(text) or text)
     lang = lang_of(text)
