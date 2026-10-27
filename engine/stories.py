@@ -12,13 +12,12 @@ import numpy as np
 import pandas as pd
 import yaml
 from rapidfuzz.distance import JaroWinkler
-from scipy.stats import binomtest
 from statsmodels.stats.multitest import multipletests
 
 from contracts.models import Residual, Story, StoryResult
 
 from .dupes import norm
-from .stats import band
+from .stats import band_idx, p_greater
 
 CONFIG_PATH = Path(__file__).with_name("stories.yaml")
 CONTRACT_CODES = {"death_registered", "hostel_moveout", "boundary_change", "duplicate_cleanup", "unexplained"}
@@ -181,7 +180,7 @@ def compute_stories(v1: pd.DataFrame, v2: pd.DataFrame, death: pd.DataFrame | No
     rem = pd.DataFrame({"voter_id": list(attr), "k": [ci[c] for c in attr.values()]})
     rem["booth_id"] = rem.voter_id.map(dict(zip(v1.voter_id, v1.booth_id)))
     n_by_booth = v1.groupby("booth_id").size()
-    exp_by_booth = v1.assign(p=v1.age.map(band).map(lambda i: rates[i])).groupby("booth_id").p.sum()
+    exp_by_booth = v1.assign(p=rates[band_idx(v1.age)]).groupby("booth_id").p.sum()
     rng = np.random.default_rng(seed)
     K = len(code_list)
 
@@ -195,7 +194,7 @@ def compute_stories(v1: pd.DataFrame, v2: pd.DataFrame, death: pd.DataFrame | No
         counts = np.bincount(arr, minlength=K)
         nb, ex = int(n_by_booth[booth]), float(exp_by_booth[booth])
         un = int(counts[ci[un_code]])
-        p = float(binomtest(un, nb, min(max(ex / nb, 1e-9), 1 - 1e-9), alternative="greater").pvalue)
+        p = float(p_greater(un, nb, ex / nb))  # == binomtest(..., alternative="greater")
         per[booth] = (n, counts, lo, hi, un, ex, p)
 
     booths = list(per)
