@@ -6,7 +6,7 @@
 
 | Time | Shot | Audio / caption |
 |---|---|---|
-| 0:00–0:05 | **Hook.** A phone buzzes with the synthetic forward "Booth 47 mein raaton-raat 400 naam kaat diye!" (fictional district visible). | VO: "Is your name still on the voter roll? And would you know if a forward like this is true?" |
+| 0:00–0:05 | **Hook.** A phone buzzes with the synthetic forward "Booth 47 mein 600 naam kaat diye!" (fictional district visible). | VO: "Is your name still on the voter roll? And would you know if a forward like this is true?" |
 | 0:05–0:15 | BTS: laptops at night, the whiteboard with the booth grid sketch, a chai cup. A timelapse of the commit log. | VO: "Twenty-four hours. Two of us. One question: can anyone check this in ten seconds?" |
 | 0:15–0:35 | **Demo:** the screenshot is forwarded to the bot and the fact-check card comes back with its three stamps. Then a booth flips from "needs review" to "likely benign" when a source is toggled. | VO: "RollWatch checks each piece of the claim against the data, tells you which story fits, and how sure it is." |
 | 0:35–0:45 | Demo: Meena's chat in Hindi, then the reply played in Punjabi. | Captions in the language on screen. |

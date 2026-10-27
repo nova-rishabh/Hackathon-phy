@@ -144,7 +144,7 @@ Acceptance is checked by **one manual run-through of the demo script**, not by a
 | U3 | The auditor opens Booth 12 | The card reads: lost 380, fits hostel move-out (81%), "Likely benign". |
 | U4 | The auditor toggles the boundary-change log on Booth 63 | The residual drops visibly and the label changes. |
 | U5 | The auditor opens a duplicate cluster | Three spellings across two scripts, masked names, "flagged for review, never removed". |
-| U6 | Someone pastes "Booth 47 mein raaton-raat 400 naam kaat diye, sab ek community ke!" | Verified: "about 400 left Booth 47". Disputed: "cut overnight". Cannot be proven: "one community" (we never infer community). Each sub-claim shows its query. |
+| U6 | Someone pastes "Booth 47 mein 600 naam kaat diye, sabse zyada, aur sab ek community ke!" | Verified: "most removals of any booth" (compare_booths). Disputed: "600 names" (deletion_count = 412, outside 15%). Cannot be proven: "one community" (we never infer community). Each sub-claim shows its query. |
 | U7 | A mirror claim ("ghost voters added in Booth 30") | An identical verdict structure, side by side, with "identical treatment ✓". |
 | U8 | The trust panel | "Hidden by teammate: N anomalies + M decoys. Found X, cleared Y decoys, missed Z: here's why." |
 | U9 | (M9) Forward a screenshot to the bot | A card image comes back within about 15 s, and its percentages match the dashboard exactly. |
