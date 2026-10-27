@@ -35,7 +35,7 @@ def available() -> bool:
 
 
 def _cache_path(text: str, lang: str) -> Path:
-    h = hashlib.sha256(f"{C.ELEVEN_TTS_MODEL}|{C.ELEVEN_VOICE_ID}|{lang}|{text}".encode("utf-8")).hexdigest()
+    h = hashlib.sha256(f"{C.ELEVEN_TTS_MODEL}|{C.ELEVEN_VOICE_ID}|{sorted(C.ELEVEN_VOICE_SETTINGS.items())}|{lang}|{text}".encode("utf-8")).hexdigest()
     return TTS_CACHE / f"{h}.mp3"
 
 
@@ -59,7 +59,8 @@ def tts_mp3(text: str, lang: str = "hi", guarded: bool = False) -> bytes | None:
         r = httpx.post(f"{BASE}/text-to-speech/{C.ELEVEN_VOICE_ID}",
                        params={"output_format": "mp3_44100_128"},
                        headers={"xi-api-key": k, "accept": "audio/mpeg"},
-                       json={"text": text, "model_id": C.ELEVEN_TTS_MODEL}, timeout=TIMEOUT)
+                       json={"text": text, "model_id": C.ELEVEN_TTS_MODEL, "voice_settings": C.ELEVEN_VOICE_SETTINGS},
+                       timeout=TIMEOUT)
         r.raise_for_status()
         audio = r.content
     except Exception:

@@ -25,6 +25,7 @@ class Reply:
     kind: str  # "text" | "photo" | "voice" | "audio"
     text: str = ""
     data: bytes = b""
+    answer: dict | None = None  # the citizen answer behind a text reply (for the spoken version)
 
 
 def lang_of(text: str | None, default: str = "en") -> str:
@@ -172,7 +173,31 @@ async def handle_text(api: Api, text: str) -> list[Reply]:
     body = a.get("answer_text", "")
     if not (a.get("guard") or {}).get("passed", True):  # templated text is guard-exempt (TRD 6)
         body = L["api_down"][a.get("lang", lang)]
-    return [Reply("text", with_footer(body, a.get("lang", lang)))]
+    return [Reply("text", with_footer(body, a.get("lang", lang)), answer=a)]
+
+
+def spoken_reply(a: dict, lang: str) -> str:
+    """What a helpful person would say: status, reason, the one thing to do, helpline, scam line.
+    Built only from fixed templates (api/constants.SPOKEN) plus the citizen's own name and booth."""
+    from api import constants as C
+    S = C.SPOKEN
+    lang = "en" if lang == "en" else "hi"  # Punjabi is spoken in Hindi: the voice model has no Punjabi
+    status, reason, m = a.get("status"), a.get("reason_category"), a.get("match") or {}
+    if status == "not_found" or not m:
+        return " ".join([S["hello"][lang], S["not_found"][lang]])
+    name = (m.get("name_dev") if lang == "hi" else m.get("name_lat")) or m.get("name_lat") or ""
+    booth = int(str(m.get("booth_id", "B0"))[1:] or 0)
+    parts = [S["hello"][lang], S[status][lang].format(name=name, booth=booth)]
+    if status != "present" and reason in S["reason"]:
+        parts.append(S["reason"][reason][lang].format(booth=booth))
+    if status == "not_in_new_list":
+        parts.append(S["do_not_in_list"][lang])
+    elif status == "modified":
+        parts.append(S["do_modified"][lang])
+    if status != "present":
+        parts.append(S["helpline"][lang])
+    parts.append(S["scam"][lang])
+    return " ".join(parts)
 
 
 async def handle_voice(api: Api, ogg: bytes) -> list[Reply]:
@@ -190,8 +215,13 @@ async def handle_voice(api: Api, ogg: bytes) -> list[Reply]:
     if replies and replies[0].kind == "text":
         body = replies[0].text
         replies[0].text = f"« {transcript} »\n\n{body}"
-        speak = body.split(C.PORTAL_LINE["hi"])[0].strip()
-        mp3 = voice.tts_mp3(speak, lang_of(speak, (heard or {}).get("lang", "hi")))
+        a = replies[0].answer
+        if a:  # a name lookup: speak it like a person, from fixed templates (guard-exempt, TRD 6)
+            lang = "en" if a.get("lang") == "en" else "hi"
+            mp3 = voice.tts_mp3(spoken_reply(a, lang), lang, guarded=True)
+        else:  # a claim or a fallback: read the (guarded) written text
+            speak = body.split(C.PORTAL_LINE["hi"])[0].strip()
+            mp3 = voice.tts_mp3(speak, lang_of(speak, (heard or {}).get("lang", "hi")))
         if mp3:
             ogg_out = audio.to_ogg_opus(mp3)
             replies.append(Reply("voice", data=ogg_out) if ogg_out else Reply("audio", data=mp3))

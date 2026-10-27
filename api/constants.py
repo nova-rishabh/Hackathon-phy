@@ -182,7 +182,39 @@ MODEL_PHRASE = MODEL_GEMINI
 # ------------------------------------------------------------------ voice (ElevenLabs)
 ELEVEN_TTS_MODEL = "eleven_multilingual_v2"
 ELEVEN_STT_MODEL = "scribe_v1"
-ELEVEN_VOICE_ID = "JBFqnCBsd6RMkjVDRZzb"  # stock multilingual voice
+ELEVEN_VOICE_ID = "diwmCoikrXSjiTKbIHz9"  # "Devi", a native Hindi conversational voice (ElevenLabs library)
+ELEVEN_VOICE_SETTINGS = {"stability": 0.45, "similarity_boost": 0.8, "style": 0.25, "use_speaker_boost": True}
+
+# Spoken replies (voice notes): what a helpful person would say, not the written card read aloud.
+# Filled with the citizen's own name and booth only; numbers are words where a reader would stumble.
+SPOKEN = {
+    "hello": {"hi": "नमस्ते।", "en": "Hello."},
+    "not_in_new_list": {"hi": "{name} जी, इस बार की वोटर लिस्ट में आपका नाम नहीं है।",
+                        "en": "{name}, your name is not on this year's voter list."},
+    "modified": {"hi": "{name} जी, आपका नाम नई लिस्ट में है, लेकिन कुछ जानकारी बदली है।",
+                 "en": "{name}, your name is on the new list, but some details have changed."},
+    "present": {"hi": "{name} जी, अच्छी खबर है। आपका नाम नई लिस्ट में है, बूथ {booth} में।",
+                "en": "{name}, good news. Your name is on the new list, in booth {booth}."},
+    "not_found": {"hi": "माफ़ कीजिए, इस नाम से कोई मिलती-जुलती एंट्री नहीं मिली। अपना पूरा नाम और बूथ नंबर, जैसा वोटर पर्ची पर लिखा है, एक बार फिर बोलिए।",
+                  "en": "Sorry, I couldn't find a close match for that name. Please say your full name and booth number again, the way they are printed on your voter slip."},
+    "reason": {
+        "unexplained": {"hi": "और रिकॉर्ड से इसकी वजह पता नहीं चलती।", "en": "And the records don't show why."},
+        "shifted": {"hi": "रिकॉर्ड में लगता है कि आप इस पते से कहीं और चले गए हैं।",
+                    "en": "The records suggest you moved away from this address."},
+        "death_registered": {"hi": "रिकॉर्ड में इस नाम पर एक मृत्यु दर्ज है। अगर यह गलत है, तो इसे ठीक करवाया जा सकता है।",
+                             "en": "A death is registered against this name. If that's wrong, it can be corrected."},
+        "duplicate_cleanup": {"hi": "आपका नाम लिस्ट में दो बार था, और एक एंट्री हटाई गई है। देख लीजिए कि बची हुई एंट्री सही है।",
+                              "en": "Your name was listed twice, and one entry was removed. Check that the remaining one is right."},
+        "boundary_change": {"hi": "बूथ की सीमा बदलने से अब आपका नाम बूथ {booth} में है।",
+                            "en": "Because the booth boundary changed, you're now listed in booth {booth}."},
+    },
+    "do_not_in_list": {"hi": "घबराइए मत। अपने बीएलओ से मिलिए और नाम दोबारा जुड़वाने के लिए फ़ॉर्म छह भरिए।",
+                       "en": "Don't worry. Meet your BLO and fill Form 6 to get your name added back."},
+    "do_modified": {"hi": "अगर कुछ गलत लगे, तो फ़ॉर्म आठ भरकर ठीक करवाइए।",
+                    "en": "If anything looks wrong, fill Form 8 to correct it."},
+    "helpline": {"hi": "कोई सवाल हो, तो उन्नीस सौ पचास पर फ़ोन कीजिए।", "en": "If you have questions, call nineteen fifty."},
+    "scam": {"hi": "और हाँ, बीएलओ कभी ओटीपी या पैसे नहीं माँगता।", "en": "And remember, a BLO never asks for an OTP or money."},
+}
 ELEVEN_LANG = {"hi": "hin", "en": "eng", "pa": "pan"}
 TTS_MAX_CHARS = 1400
 
