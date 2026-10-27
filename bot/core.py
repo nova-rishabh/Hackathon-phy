@@ -99,16 +99,31 @@ class Api:
         return None
 
 
+def guard_ok(text: str, strict: bool = False) -> bool:
+    """Outbound check through api/guard.py (in-process). Without the guard module, non-strict text
+    (already guarded by the API) passes and strict text (raw user input echoed back) is dropped."""
+    try:
+        from api import guard
+    except Exception:
+        return not strict
+    try:
+        g = guard.check(text, surface="bot")
+        return bool(g.passed if hasattr(g, "passed") else dict(g).get("passed"))
+    except Exception:
+        return False
+
+
 def format_verdict(v: dict, lang: str) -> str:
     lines = [L["claim_head"][lang]]
     claim = (v.get("normalized_claim") or (v.get("input") or {}).get("text") or "").strip()
-    if claim:
+    if claim and guard_ok(claim, strict=True):
         lines.append(f"“{claim}”")
     lines.append("")
     for sc in v.get("sub_claims", []):
         label = VERDICT.get(sc.get("verdict"), {}).get(lang, sc.get("verdict", ""))
-        lines.append(f"• {label}: {sc.get('text', '')}")
-        if sc.get("reason"):
+        txt = sc.get("text", "")
+        lines.append(f"• {label}: {txt}" if txt and guard_ok(txt) else f"• {label}")
+        if sc.get("reason") and guard_ok(sc["reason"]):
             lines.append(f"  {sc['reason']}")
     overall = VERDICT.get(v.get("overall"), {}).get(lang, v.get("overall", ""))
     lines += ["", L["overall"][lang].format(v=overall, pct=round(100 * float(v.get("confidence", 0))))]
@@ -146,7 +161,10 @@ async def handle_text(api: Api, text: str) -> list[Reply]:
         a = await api.ask(text)
     except Exception:
         return [Reply("text", with_footer(L["api_down"][lang], lang))]
-    return [Reply("text", with_footer(a.get("answer_text", ""), a.get("lang", lang)))]
+    body = a.get("answer_text", "")
+    if not (a.get("guard") or {}).get("passed", True):  # templated text is guard-exempt (TRD 6)
+        body = L["api_down"][a.get("lang", lang)]
+    return [Reply("text", with_footer(body, a.get("lang", lang)))]
 
 
 async def handle_voice(api: Api, ogg: bytes) -> list[Reply]:
