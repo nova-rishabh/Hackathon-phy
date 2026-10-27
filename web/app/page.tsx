@@ -51,7 +51,7 @@ export default function Audit() {
 
   return (
     <div>
-      <section className="grid gap-8 lg:grid-cols-[1fr_auto] items-center">
+      <section className="hero grid gap-8 lg:grid-cols-[1fr_auto] items-center">
         <div className="min-w-0">
           <p className="eyebrow mb-5 words">
             {"Voter roll transparency.".split(" ").map((w, i) => <span key={i} style={{ animationDelay: `${i * 60}ms` }}>{w}&nbsp;</span>)}
@@ -78,34 +78,36 @@ export default function Audit() {
         <Reveal delay={150} className="hidden lg:block"><EyeRing size={340} /></Reveal>
       </section>
 
-      <section className="mt-20 sm:mt-28">
-        <Reveal><Eyebrow className="mb-5">How it works.</Eyebrow></Reveal>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {STEPS.map(([n, title, body], i) => (
-            <Reveal key={n} delay={i * 100}>
-              <article className="panel h-full">
-                <p className="mono text-[13px] text-ink-3">{n}</p>
-                <h3 className="h-section mt-6">{title}</h3>
-                <p className="text-ink-2 text-[15px] mt-3">{body}</p>
-              </article>
+      <section className="mt-16 sm:mt-24">
+        <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] items-stretch">
+          <div className="min-w-0">
+            <Reveal><Eyebrow className="mb-5">How it works.</Eyebrow></Reveal>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {STEPS.map(([n, title, body], i) => (
+                <Reveal key={n} delay={i * 100} className="h-full">
+                  <article className="panel h-full !p-6">
+                    <p className="mono text-[13px] text-ink-3">{n}</p>
+                    <h3 className="text-[21px] leading-[26px] tracking-[-0.02em] mt-4">{title}</h3>
+                    <p className="text-ink-2 text-[14px] leading-[21px] mt-2">{body}</p>
+                  </article>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+          <div className="min-w-0 flex flex-col">
+            <Reveal><Eyebrow className="mb-5">Watch it in 33 seconds.</Eyebrow></Reveal>
+            <Reveal delay={150} className="flex-1 flex">
+              <div className="panel !p-3 flex-1 flex items-center">
+                <video className="w-full rounded-[20px] block bg-surface" src="/rollwatch-film.mp4" poster="/film-poster.jpg"
+                  controls playsInline preload="metadata" />
+              </div>
             </Reveal>
-          ))}
+          </div>
         </div>
         <Reveal delay={200}>
           <p className="mono text-[12px] text-ink-3 mt-4">
             every number is computed in plain Python · the AI only splits sentences and words replies · every output says &ldquo;needs human review&rdquo; · no real voter data: Sampleabad is a fictional district
           </p>
-        </Reveal>
-      </section>
-
-      <section className="mt-20 sm:mt-28">
-        <Reveal><Eyebrow className="mb-5">Watch it in 33 seconds.</Eyebrow></Reveal>
-        <Reveal delay={100}>
-          <div className="panel p-3 sm:p-3">
-            <video className="w-full rounded-[20px] block bg-surface" src="/rollwatch-film.mp4" poster="/film-poster.jpg"
-              controls playsInline preload="metadata" />
-          </div>
-          <p className="mono text-[12px] text-ink-3 mt-3">every number in the film is real engine output on the synthetic district · original score</p>
         </Reveal>
       </section>
 

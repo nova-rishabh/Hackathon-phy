@@ -140,6 +140,13 @@ button { cursor: pointer; font: inherit; color: inherit; background: none; borde
 .tbl td { padding: 12px; border-top: 1px solid var(--color-line); font-size: 14px; vertical-align: top; }
 .tbl .r { text-align: right; }
 
+/* Hero fits one screen: below the sticky bar + banner (about 170px), never taller than the viewport. */
+.hero { max-height: calc(100svh - 170px); min-height: min(640px, calc(100svh - 170px)); }
+.hero .h-hero { font-size: clamp(36px, min(7vw, 9.2svh), 88px); }
+.hero p.text-\[18px\] { font-size: clamp(15px, 2.1svh, 18px); line-height: 1.55; }
+@media (max-width: 1023px) { .hero { max-height: none; min-height: 0; } }
+.hero .eyering { width: min(340px, 44svh); height: auto; }
+
 /* ---------- motion (butter-style: slow, calm, purposeful) ---------- */
 :root { --color-brand: #AA875F; } /* the logo's brown: logo and the hero mark only */
 .reveal { opacity: 0; transform: translateY(24px); transition: opacity 700ms ease, transform 700ms cubic-bezier(.2,.7,.2,1); }

@@ -41,7 +41,50 @@ export default function Shell({ children }: { children: React.ReactNode }) {
           synthetic data · sampleabad is fictional · flags are patterns for human review, not findings
         </p>
       </div>
-      <main className="mx-auto max-w-[1240px] px-4 pb-32 pt-6 sm:pt-12">{children}</main>
+      <main className="mx-auto max-w-[1240px] px-4 pb-24 pt-6 sm:pt-12">{children}</main>
+      <Footer />
     </div>
+  );
+}
+
+const API_DOCS = (process.env.NEXT_PUBLIC_API_BASE || "http://localhost:8000") + "/docs";
+const COLS: [string, [string, string][]][] = [
+  ["Product", [["/", "Audit"], ["/check", "Check a claim"], ["/ask", "Ask about a name"], ["/trust", "Trust and error rates"]]],
+  ["Use it", [["/login", "Sign in"], ["/settings", "Bring your own keys"], ["https://t.me/Rollwatch_bot", "Telegram bot"], [API_DOCS, "Open API"]]],
+  ["Project", [["https://github.com/nova-rishabh/Hackathon-phy", "Source code"], ["/trust", "What we miss"], ["https://voters.eci.gov.in", "Official voter portal"]]],
+];
+
+function Footer() {
+  return (
+    <footer className="px-4 pb-6">
+      <div className="mx-auto max-w-[1240px] bg-panel rounded-[28px] p-8 sm:p-12">
+        <div className="grid gap-10 lg:grid-cols-[1.3fr_1fr_1fr_1fr]">
+          <div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo-word.png" alt="RollWatch" className="h-16 w-auto -ml-1" />
+            <p className="text-[24px] leading-[30px] tracking-[-0.03em] mt-5 max-w-[22ch]">
+              Auditable. Explainable. Accessible. <span className="text-ink-3">On no one&apos;s side.</span>
+            </p>
+          </div>
+          {COLS.map(([title, links]) => (
+            <nav key={title} aria-label={title}>
+              <p className="eyebrow mb-4">{title}.</p>
+              <ul className="space-y-2.5">
+                {links.map(([h, l]) => (
+                  <li key={l}>
+                    <a href={h} {...(h.startsWith("http") ? { target: "_blank", rel: "noreferrer" } : {})}
+                      className="text-[15px] text-ink-2 hover:text-ink">{l}</a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          ))}
+        </div>
+        <div className="border-t border-line mt-10 pt-6 flex flex-col gap-2 sm:flex-row sm:justify-between">
+          <p className="mono text-[12px] text-ink-3">synthetic data · Sampleabad is a fictional district · flags are patterns for human review, not findings</p>
+          <p className="mono text-[12px] text-ink-3">not an official service · check your name at voters.eci.gov.in or call 1950</p>
+        </div>
+      </div>
+    </footer>
   );
 }
