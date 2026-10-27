@@ -46,3 +46,37 @@ export function WatchBooth({ boothId }: { boothId: string }) {
     </button>
   );
 }
+
+/** "Mark reviewed": a signed-in person records what they found. Written to a hash-chained audit log. */
+export function ReviewFlag({ flagId, current }: { flagId: string; current?: { status: string; hash: string } | null }) {
+  const { user } = useSession();
+  const [note, setNote] = useState("");
+  const [done, setDone] = useState<{ status: string; hash: string } | null>(current ?? null);
+  const [state, setState] = useState<"idle" | "busy" | "error">("idle");
+  useEffect(() => { setDone(current ?? null); setNote(""); setState("idle"); }, [flagId, current]);
+  const send = async (status: "benign" | "escalated") => {
+    setState("busy");
+    const r = await authFetch<{ review: { status: string; hash: string } }>(`/review/${encodeURIComponent(flagId)}`,
+      { method: "POST", body: JSON.stringify({ status, note }) });
+    if (ok(r.status) && r.body) { setDone(r.body.review); setState("idle"); } else setState("error");
+  };
+  if (done)
+    return (
+      <p className="text-[14px] text-ink-2">
+        Reviewed: <span className="text-ink">{done.status === "benign" ? "looks innocent" : "needs a field check"}</span>
+        <span className="mono text-[12px] text-ink-3"> · audit hash {done.hash.slice(0, 10)}</span>
+      </p>
+    );
+  if (!user)
+    return <p className="text-[14px] text-ink-2"><Link href="/login" className="underline underline-offset-2 hover:text-ink">Sign in</Link> to record a review of this flag.</p>;
+  return (
+    <div className="grid gap-3">
+      <input className="input" value={note} maxLength={280} onChange={(e) => setNote(e.target.value)} placeholder="What did you check? (optional, never shown publicly)" />
+      <div className="flex flex-wrap gap-2">
+        <button className="btn btn--quiet" disabled={state === "busy"} onClick={() => send("benign")}>Looks innocent</button>
+        <button className="btn" disabled={state === "busy"} onClick={() => send("escalated")}>Needs a field check</button>
+      </div>
+      {state === "error" && <p className="text-[13px] text-ink-2">Could not record it. Sign in again and retry.</p>}
+    </div>
+  );
+}

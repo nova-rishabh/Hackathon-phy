@@ -5,6 +5,7 @@ import { fmt, boothNo } from "@/lib/api";
 import Chip from "./Chip";
 import Glyph from "./Glyph";
 import { StoryBar, meaning } from "./StoryPanel";
+import { ReviewFlag } from "./AccountActions";
 
 const TYPE_LABEL: Record<string, string> = {
   deletion_spike: "Deletion spike", addition_spike: "Addition spike", duplicate_cluster: "Duplicate cluster",
@@ -67,6 +68,10 @@ export default function FlagDrawer({ flag, onClose }: { flag: Flag | null; onClo
             )}
           </div>
         </div>
+        <section className="mt-8">
+          <p className="eyebrow mb-3">Human review.</p>
+          <ReviewFlag flagId={flag.flag_id} current={flag.review?.hash ? { status: String(flag.review.status), hash: String(flag.review.hash) } : null} />
+        </section>
         {flag.type === "duplicate_cluster" && (
           <section className="mt-8">
             <p className="eyebrow mb-3">Three spellings, two scripts. Names masked.</p>

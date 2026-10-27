@@ -19,6 +19,7 @@ export default function Trust() {
   const rules = useApi<RuleCard[]>("/rules");
   const guard = useApi<GuardLog>("/guard/log");
   const ops = useApi<Ops>("/ops");
+  const audit = useApi<{ ts: string; flag_id: string; action: string; hash: string }[]>("/audit/log");
   const e = ev.data;
   const o = ops.data;
   const bench = o?.bench as unknown;
@@ -104,6 +105,14 @@ export default function Trust() {
             </table>
           </div>
         ) : <Empty what="Rule error rates" />}
+        <p className="text-[13px] text-ink-2 mt-4 max-w-[75ch]">
+          <span className="mono">official_parent_age_gap</span> is the parent-child age check reported in official discrepancy lists (gap under 14 or over 40 years). We measure it and never raise it as a flag: a grandparent named as the relative trips it innocently.
+        </p>
+        <p className="mono text-[12px] text-ink-3 mt-3">
+          human reviews recorded {audit.data?.length ?? 0}
+          {audit.data && audit.data.length > 0 && <> · last {audit.data[audit.data.length - 1].action.replace("review:", "")} · chain head {audit.data[audit.data.length - 1].hash.slice(0, 10)}</>}
+          {" "}· each review is hash-chained to the one before, so an edit breaks the chain
+        </p>
       </section>
 
       <section className="panel mt-6">
