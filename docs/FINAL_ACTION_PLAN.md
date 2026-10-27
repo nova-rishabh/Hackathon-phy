@@ -18,7 +18,7 @@ The longer points:
 - **Where ML goes next (roadmap):** with real data, learn the background removal rate per area (migration, deaths) instead of a fixed age model, and train a classifier on reviewed outcomes. The human-review log we now record is exactly that training data.
 
 ### "How do you handle crores of requests? What if everyone uses it?"
-**Short answer:** "Most answers never touch the engine. The audit is precomputed once per roll, viral claims repeat and are cached, and a name lookup is an index search. We measured one laptop: with four processes it serves about 580 cached requests a second and 160 full citizen answers a second, and it scales by adding processes or machines."
+**Short answer:** "If one in ten voters checks during a revision, that's about 190 checks a second at peak. We measured one laptop answering 163 a second on four processes, so two machines cover India's peak, and most answers never touch the engine: the audit is precomputed once per roll, viral claims are cached, and a name lookup is an index search."
 
 Measured (`python -m engine.loadtest`, results in `cache/loadtest_1w.json`, `cache/loadtest_4w.json`; offline mode, localhost, laptop):
 
@@ -31,7 +31,7 @@ Measured (`python -m engine.loadtest`, results in `cache/loadtest_1w.json`, `cac
 
 The 4-process figures are **lower bounds**: our single test client saturates at about 170–200 req/s; three clients together pulled about 580 req/s from the same server.
 
-**Sizing for a revision window:** if 10% of 99 crore electors check once in 30 days, that's about 3.3 crore checks a day, or **about 385 per second on average**, and about 2,000 per second at a 5× peak. That's roughly a dozen 4-core machines at our measured lower bound, and far fewer with a CDN in front, because:
+**Sizing for a revision window** (computed by the API at `/ops` → `projection`): if 10% of 99.1 crore electors check once in 30 days, that's about **33 lakh checks a day**, or **about 38 per second on average** and **about 190 per second at a 5× peak**. Our laptop measured 163 full answers a second on four processes (a lower bound), so **two such machines cover the peak**, before any CDN or claim caching, because:
 - **The audit is computed once per roll**, not per request (static JSON, now served as pre-built bytes with cache headers so a CDN can answer it).
 - **Viral claims repeat.** The same forward gets the same cached verdict, and the model is never called twice for it.
 - **The model is only used for phrasing**, with a 5 s cap and a template fallback. Under load we can switch phrasing off and answers stay correct.
