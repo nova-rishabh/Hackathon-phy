@@ -347,7 +347,8 @@
         "channel": {
           "enum": [
             "web",
-            "telegram"
+            "telegram",
+            "whatsapp"
           ],
           "title": "Channel",
           "type": "string"

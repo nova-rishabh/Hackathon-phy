@@ -56,12 +56,12 @@ def strip_claim_prefix(text: str) -> str:
 
 
 class Api:
-    def __init__(self, base: str = API_BASE, client: httpx.AsyncClient | None = None):
-        self.base = base
+    def __init__(self, base: str = API_BASE, client: httpx.AsyncClient | None = None, channel: str = "telegram"):
+        self.base, self.channel = base, channel
         self.client = client or httpx.AsyncClient(base_url=base, timeout=TIMEOUT)
 
     async def ask(self, text: str, lang: str | None = None) -> dict:
-        r = await self.client.post("/citizen/ask", json={"text": text, "lang": lang, "channel": "telegram"})
+        r = await self.client.post("/citizen/ask", json={"text": text, "lang": lang, "channel": self.channel})
         r.raise_for_status()
         return r.json()
 

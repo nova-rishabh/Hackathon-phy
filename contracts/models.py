@@ -332,7 +332,7 @@ class CitizenAsk(BaseModel):
     text: str | None = None
     audio_b64: str | None = None
     lang: Lang | None = None
-    channel: Literal["web", "telegram"]
+    channel: Literal["web", "telegram", "whatsapp"]
 
 
 class CitizenAnswer(BaseModel):
