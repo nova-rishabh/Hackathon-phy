@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { keyHeaders } from "./keys";
+import { authHeaders } from "./auth";
 
 export const API = process.env.NEXT_PUBLIC_API_BASE || "http://localhost:8000";
 
@@ -8,7 +9,7 @@ async function call<T>(path: string, init?: RequestInit, ms = 4000): Promise<T> 
   const ctl = new AbortController();
   const t = setTimeout(() => ctl.abort(), ms);
   try {
-    const r = await fetch(API + path, { ...init, headers: { ...keyHeaders(), ...(init?.headers as Record<string, string> | undefined) }, signal: ctl.signal });
+    const r = await fetch(API + path, { ...init, headers: { ...keyHeaders(), ...authHeaders(), ...(init?.headers as Record<string, string> | undefined) }, signal: ctl.signal });
     if (!r.ok) throw new ApiError(r.status);
     return (await r.json()) as T;
   } finally {
@@ -26,7 +27,7 @@ export async function postBlob(path: string, body: unknown, ms = 30000): Promise
   const t = setTimeout(() => ctl.abort(), ms);
   try {
     const r = await fetch(API + path, {
-      method: "POST", headers: { ...keyHeaders(), "Content-Type": "application/json" }, body: JSON.stringify(body), signal: ctl.signal,
+      method: "POST", headers: { ...keyHeaders(), ...authHeaders(), "Content-Type": "application/json" }, body: JSON.stringify(body), signal: ctl.signal,
     });
     if (!r.ok) throw new ApiError(r.status);
     return await r.blob();

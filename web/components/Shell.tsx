@@ -2,15 +2,15 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { supabase, useSession } from "@/lib/supabase";
+import { useSession } from "@/lib/auth";
 
 const TABS = [["/", "Audit"], ["/check", "Check"], ["/ask", "Ask"]] as const;
 
 export default function Shell({ children }: { children: React.ReactNode }) {
   const path = usePathname();
   const [menu, setMenu] = useState(false);
-  const { session } = useSession();
-  const acct: readonly [string, string] = supabase && session ? ["/account", "Account"] : ["/login", "Sign in"];
+  const { user } = useSession();
+  const acct: readonly [string, string] = user ? ["/account", "Account"] : ["/login", "Sign in"];
   const RIGHT = [["/trust", "Trust"], ["/settings", "Keys"], acct] as const;
   if (path.startsWith("/card")) return <>{children}</>;
   const active = (h: string) => (h === "/" ? path === "/" : path.startsWith(h));
@@ -48,9 +48,10 @@ export default function Shell({ children }: { children: React.ReactNode }) {
 }
 
 const API_DOCS = (process.env.NEXT_PUBLIC_API_BASE || "http://localhost:8000") + "/docs";
+const WA = process.env.NEXT_PUBLIC_WA_NUMBER;
 const COLS: [string, [string, string][]][] = [
   ["Product", [["/", "Audit"], ["/check", "Check a claim"], ["/ask", "Ask about a name"], ["/trust", "Trust and error rates"]]],
-  ["Use it", [["/login", "Sign in"], ["/settings", "Bring your own keys"], ["https://t.me/Rollwatch_bot", "Telegram bot"], [API_DOCS, "Open API"]]],
+  ["Use it", [["/login", "Sign in"], ["/settings", "Bring your own keys"], ["https://t.me/Rollwatch_bot", "Telegram bot"], ...(WA ? [[`https://wa.me/${WA}`, "WhatsApp bot"] as [string, string]] : []), [API_DOCS, "Open API"]]],
   ["Project", [["https://github.com/nova-rishabh/Hackathon-phy", "Source code"], ["/trust", "What we miss"], ["https://voters.eci.gov.in", "Official voter portal"]]],
 ];
 

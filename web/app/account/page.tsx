@@ -2,50 +2,56 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { supabase, useSession, signOut, type SavedCheck, type WatchedBooth } from "@/lib/supabase";
+import { authFetch, useSession, type SavedCheck, type WatchedBooth } from "@/lib/auth";
 import { boothNo } from "@/lib/api";
 import Chip from "@/components/Chip";
 import { Display, Eyebrow } from "@/components/Display";
 
 export default function Account() {
-  const { session, ready } = useSession();
+  const { user, loading, signOut } = useSession();
   const router = useRouter();
   const [checks, setChecks] = useState<SavedCheck[] | null>(null);
   const [booths, setBooths] = useState<WatchedBooth[] | null>(null);
   const [err, setErr] = useState("");
 
   useEffect(() => {
-    if (!supabase || !session) return;
-    supabase.from("saved_checks").select("id, claim_id, claim_text, overall, created_at").order("created_at", { ascending: false })
-      .then(({ data, error }) => { if (error) setErr(error.message); setChecks((data as SavedCheck[]) ?? []); });
-    supabase.from("watched_booths").select("booth_id, created_at").order("booth_id")
-      .then(({ data, error }) => { if (error) setErr(error.message); setBooths((data as WatchedBooth[]) ?? []); });
-  }, [session]);
+    if (!user) return;
+    authFetch<SavedCheck[]>("/me/checks").then((r) => {
+      if (r.status !== 200) setErr("saved checks did not load");
+      const list = Array.isArray(r.body) ? r.body : [];
+      setChecks([...list].sort((x, y) => y.created_at.localeCompare(x.created_at)));
+    });
+    authFetch<WatchedBooth[]>("/me/booths").then((r) => {
+      if (r.status !== 200) setErr("watched booths did not load");
+      const list = Array.isArray(r.body) ? r.body : [];
+      setBooths([...list].sort((x, y) => boothNo(x.booth_id) - boothNo(y.booth_id)));
+    });
+  }, [user]);
 
   const unwatch = async (id: string) => {
-    if (!supabase) return;
-    const { error } = await supabase.from("watched_booths").delete().eq("booth_id", id);
-    if (error) setErr(error.message); else setBooths((b) => (b ?? []).filter((x) => x.booth_id !== id));
+    const r = await authFetch(`/me/booths/${encodeURIComponent(id)}`, { method: "DELETE" });
+    if (r.status < 200 || r.status >= 300) setErr("that booth could not be removed");
+    else setBooths((b) => (b ?? []).filter((x) => x.booth_id !== id));
   };
 
-  if (!supabase || (ready && !session))
+  if (loading) return <p className="mono text-[13px] text-ink-3">loading…</p>;
+  if (!user)
     return (
       <div>
         <Eyebrow className="mb-5">Account.</Eyebrow>
-        <Display size="hero" dim={supabase ? "Sign in to see your saved checks." : "Accounts not configured yet."}>Your account.</Display>
+        <Display size="hero" dim="Sign in to see your saved checks.">Your account.</Display>
         <p className="mt-10"><Link href="/login" className="btn">Sign in</Link></p>
       </div>
     );
-  if (!session) return <p className="mono text-[13px] text-ink-3">loading…</p>;
 
   return (
     <div>
       <Eyebrow className="mb-5">Account.</Eyebrow>
-      <Display size="page" dim={session.user.email ?? ""}>Your account.</Display>
+      <Display size="page" dim={user.mobile_masked}>Your account.</Display>
       <div className="mt-8">
-        <button className="btn btn--quiet" onClick={async () => { await signOut(); router.push("/"); }}>Sign out</button>
+        <button className="btn btn--quiet" onClick={() => { signOut(); router.push("/"); }}>Sign out</button>
       </div>
-      {err && <p className="text-[14px] text-ink-2 mt-4">Could not load everything: {err}</p>}
+      {err && <p className="text-[14px] text-ink-2 mt-4">Could not load everything: {err}. Try again in a moment.</p>}
 
       <section className="mt-20">
         <Display size="section" as="h2" dim={checks ? `${checks.length} saved.` : undefined}>Your saved checks.</Display>
@@ -55,7 +61,7 @@ export default function Account() {
             : (
               <ul className="grid gap-3">
                 {checks.map((c) => (
-                  <li key={c.id} className="card p-5 grid gap-3 md:grid-cols-[180px_1fr_auto] md:items-center">
+                  <li key={c.claim_id} className="card p-5 grid gap-3 md:grid-cols-[180px_1fr_auto] md:items-center">
                     <span><Chip kind={c.overall} /></span>
                     <span className="text-[17px] leading-6 tracking-[-0.01em]">“{c.claim_text}”</span>
                     <span className="mono text-[12px] text-ink-2">
