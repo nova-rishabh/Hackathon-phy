@@ -2,25 +2,29 @@ import type { StoryResult } from "./types";
 
 export type Ctx = "death_register" | "hostel_list" | "boundary_changes" | "duplicates";
 export const CTX: { id: Ctx; label: string; code: string }[] = [
-  { id: "death_register", label: "Use death register", code: "death_registered" },
-  { id: "hostel_list", label: "Use hostel list", code: "hostel_moveout" },
-  { id: "boundary_changes", label: "Use boundary-change log", code: "boundary_change" },
-  { id: "duplicates", label: "Use duplicate clean-up", code: "duplicate_cleanup" },
+  { id: "death_register", label: "death register", code: "death_registered" },
+  { id: "duplicates", label: "duplicate clusters", code: "duplicate_cleanup" },
+  { id: "boundary_changes", label: "boundary log", code: "boundary_change" },
+  { id: "hostel_list", label: "hostel list", code: "hostel_moveout" },
 ];
-// Mock only: counts that a context source would explain if switched on (taken from "unexplained").
-const LATENT: Record<string, Partial<Record<Ctx, number>>> = { B063: { boundary_changes: 84 } };
+export const STORY_ORDER = ["death_registered", "duplicate_cleanup", "boundary_change", "hostel_moveout", "unexplained"];
+export const STORY_SHORT: Record<string, string> = {
+  death_registered: "death", duplicate_cleanup: "dupes", boundary_change: "boundary", hostel_moveout: "hostel", unexplained: "unexplained",
+};
 
+/**
+ * Offline fallback only (the API's POST /stories/{booth} is the real computation).
+ * Starts from the base result the engine produced and moves every story whose source is
+ * switched off into "unexplained". It never invents counts a source did not already explain.
+ */
 export function recompute(base: StoryResult, on: Ctx[]): StoryResult {
   const total = base.removed_total;
-  const used = new Set<string>(base.context_used);
-  const latent = LATENT[base.booth_id] || {};
-  const counts: Record<string, number> = {};
+  const off = new Set(CTX.filter((c) => !on.includes(c.id)).map((c) => c.code));
   let un = 0;
-  for (const s of base.stories) { if (s.code === "unexplained") un = s.count; else counts[s.code] = s.count; }
-  for (const c of CTX) {
-    const isOn = on.includes(c.id);
-    if (!isOn && used.has(c.id)) { un += counts[c.code] || 0; counts[c.code] = 0; }
-    if (isOn && !used.has(c.id) && latent[c.id]) { const k = Math.min(latent[c.id]!, un); counts[c.code] = (counts[c.code] || 0) + k; un -= k; }
+  const counts: Record<string, number> = {};
+  for (const s of base.stories) {
+    if (s.code === "unexplained" || off.has(s.code)) un += s.count;
+    else counts[s.code] = s.count;
   }
   const stories = base.stories.map((s) => {
     const k = s.code === "unexplained" ? un : counts[s.code] ?? 0;
@@ -30,6 +34,8 @@ export function recompute(base: StoryResult, on: Ctx[]): StoryResult {
   });
   const sh = total ? un / total : 0;
   const outcome = sh > 0.5 ? "unusual" : sh < 0.25 ? "likely_benign" : "mixed";
-  return { ...base, stories, context_used: on, outcome,
-    residual: { ...base.residual, count: un, significant: sh > 0.5 } };
+  return {
+    ...base, stories, context_used: on, outcome,
+    residual: { ...base.residual, count: un, significant: un > 2 * base.residual.expected_background },
+  } as StoryResult;
 }

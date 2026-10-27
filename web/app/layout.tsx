@@ -3,8 +3,8 @@ import "./globals.css";
 import Shell from "@/components/Shell";
 
 export const metadata: Metadata = {
-  title: "RollWatch",
-  description: "Voter roll changes, made auditable and explainable. Synthetic demo district.",
+  title: "rollwatch",
+  description: "Voter roll changes and the claims about them, checked with the working shown. Synthetic demo district.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -1,39 +1,40 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import Glyph from "./Glyph";
+import { useState } from "react";
 
-const NAV = [
-  ["/", "Overview"], ["/flags", "Flags"], ["/stories", "Which story fits?"], ["/claims", "Claim Court"],
-  ["/citizen", "Citizen"], ["/trust", "Trust"], ["/report", "Report"],
-];
+const TABS = [["/", "Audit"], ["/check", "Check"], ["/ask", "Ask"]] as const;
 
 export default function Shell({ children }: { children: React.ReactNode }) {
   const path = usePathname();
+  const [menu, setMenu] = useState(false);
+  if (path.startsWith("/card")) return <>{children}</>;
   const active = (h: string) => (h === "/" ? path === "/" : path.startsWith(h));
+  const tab = (h: string, l: string) => (
+    <Link key={h} href={h} onClick={() => setMenu(false)} aria-current={active(h) ? "page" : undefined}
+      className={`px-3 h-10 inline-flex items-center rounded-[8px] text-[15px] ${active(h) ? "text-ink bg-surface" : "text-ink-2 hover:text-ink"}`}>{l}</Link>
+  );
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="h-14 shrink-0 flex items-center justify-between px-4 bg-surface border-b border-rule">
-        <Link href="/" className="flex items-center gap-2 text-ink no-underline">
-          <Glyph id="rw-mark" size={28} />
-          <span className="text-[20px] font-bold tracking-[-0.01em]">RollWatch</span>
-        </Link>
-        <span className="font-mono text-[12px] text-ink-2 hidden sm:block">Sampleabad · roll v1 → v2</span>
-      </header>
-      <div className="h-8 shrink-0 flex items-center px-4 bg-voter-ink-soft font-mono text-[12px] leading-4 text-ink overflow-hidden whitespace-nowrap" role="note">
-        SYNTHETIC DATA · SAMPLEABAD IS FICTIONAL · FLAGS ARE PATTERNS FOR HUMAN REVIEW, NOT FINDINGS
+    <div className="min-h-screen">
+      <div className="sticky top-0 z-20 px-4 pt-3 bg-page">
+        <header className="mx-auto max-w-[1240px] bg-panel rounded-[12px] h-14 px-2 sm:px-3 flex items-center justify-between">
+          <Link href="/" className="px-2 text-[20px] tracking-[-0.04em]">rollwatch</Link>
+          <nav aria-label="Main" className="hidden sm:flex items-center gap-1">
+            {TABS.map(([h, l]) => tab(h, l))}
+          </nav>
+          <nav aria-label="Trust" className="hidden sm:flex">{tab("/trust", "Trust")}</nav>
+          <button className="sm:hidden px-3 h-10 text-[15px]" aria-expanded={menu} onClick={() => setMenu(!menu)}>{menu ? "Close" : "Menu"}</button>
+        </header>
+        {menu && (
+          <nav aria-label="Main" className="sm:hidden mt-2 bg-panel rounded-[12px] p-2 flex flex-col">
+            {[...TABS, ["/trust", "Trust"] as const].map(([h, l]) => tab(h, l))}
+          </nav>
+        )}
+        <p role="note" className="mx-auto max-w-[1240px] mono text-[12px] leading-4 text-ink-3 py-3 px-2">
+          synthetic data · sampleabad is fictional · flags are patterns for human review, not findings
+        </p>
       </div>
-      <div className="flex flex-1 flex-col md:flex-row">
-        <nav aria-label="Main" className="md:w-[200px] shrink-0 md:border-r border-b md:border-b-0 border-rule bg-paper p-2 md:p-4 flex md:flex-col gap-1 overflow-x-auto">
-          {NAV.map(([h, l]) => (
-            <Link key={h} href={h}
-              className={`px-3 py-2 text-[14px] whitespace-nowrap rounded-[4px] border-l-[3px] ${active(h) ? "border-voter-ink bg-voter-ink-soft text-voter-ink font-bold" : "border-transparent text-ink-2 font-medium hover:bg-sunk"}`}>
-              {l}
-            </Link>
-          ))}
-        </nav>
-        <main className="flex-1 min-w-0 p-4 md:p-6"><div className="max-w-[1200px]">{children}</div></main>
-      </div>
+      <main className="mx-auto max-w-[1240px] px-4 pb-32 pt-6 sm:pt-12">{children}</main>
     </div>
   );
 }
