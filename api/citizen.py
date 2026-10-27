@@ -353,6 +353,29 @@ def gurmukhi(dev: str) -> str:
     return re.sub(f"(?<=[{_GUR_CONS}ਿੁੂ])ਂ", "ੰ", g)
 
 
+def _bracket(born: str) -> str:
+    a, b = C.DOB_CUTOFFS
+    return "before" if born < a else "between" if born <= b else "after"
+
+
+def docs_lines(voter_id: str, lang: str) -> list[str]:
+    """Which documents a notice would ask for, from the voter's age on the roll's qualifying date. Someone aged A
+    was born between Q-(A+1) years (exclusive) and Q-A years; if that window straddles a cutoff, show both cases."""
+    s = store()
+    row = s.r2.loc[voter_id] if voter_id in s.r2.index else s.r1.loc[voter_id] if voter_id in s.r1.index else None
+    try:
+        age = int(row["age"]) + (0 if voter_id in s.r2.index else s.age_shift)
+    except (TypeError, ValueError, KeyError):
+        return []
+    y, md = int(C.ROLL_QUALIFYING_DATE[:4]), C.ROLL_QUALIFYING_DATE[4:]
+    latest, earliest = f"{y - age}{md}", f"{y - age - 1}{md}"
+    lo, hi = _bracket(earliest), _bracket(latest)
+    out = [C.DOCS_HEAD[lang]] if lo == hi else [C.DOCS_HEAD[lang], C.DOCS_UNSURE[lang]]
+    order = ["before", "between", "after"]
+    out += [C.DOCS_BRACKET[k][lang] for k in order[order.index(lo):order.index(hi) + 1]]
+    return out + [C.DOCS_LIST[lang]]
+
+
 def _shown_name(match: SearchMatch, lang: str) -> str:
     if lang == "pa" and match.name_dev:
         return gurmukhi(match.name_dev)
@@ -416,6 +439,8 @@ def ask(req: CitizenAsk) -> CitizenAnswer:
     lines += [f"{i}. {t}" for i, t in enumerate(steps, 1)]
     if status != "present":
         lines.append(C.DEADLINE_LINE[lang])
+    if match and status in ("not_in_new_list", "modified"):
+        lines += docs_lines(match.voter_id, lang)
     return _answer(lang, status, reason, steps, conf, match, lines + footer, transcript)
 
 

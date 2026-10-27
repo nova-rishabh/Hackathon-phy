@@ -242,6 +242,47 @@ GUARD_FALLBACK = {
     "hi": "यह पाठ एक तटस्थ सारांश से बदला गया। ऊपर की संख्याएँ सूची से गणना की गई हैं। मानवीय समीक्षा ज़रूरी है।",
     "pa": "ਇਹ ਲਿਖਤ ਇੱਕ ਨਿਰਪੱਖ ਸਾਰ ਨਾਲ ਬਦਲੀ ਗਈ। ਉੱਪਰਲੇ ਅੰਕੜੇ ਸੂਚੀ ਤੋਂ ਗਿਣੇ ਗਏ ਹਨ। ਮਨੁੱਖੀ ਸਮੀਖਿਆ ਲੋੜੀਂਦੀ ਹੈ।",
 }
+# Documents if an ERO notice arrives (the SIR "Information Sheet for Enumeration Form", as handed out by BLOs).
+# Which documents depends on date of birth; we only know age on the roll's qualifying date, so the bracket is
+# estimated from age and both cases are shown when the birth window straddles a cutoff.
+ROLL_QUALIFYING_DATE = "2025-01-01"  # synthetic district's qualifying date (ASSUMPTION for the demo roll)
+DOB_CUTOFFS = ("1987-07-01", "2004-12-02")
+DOCS_HEAD = {
+    "en": "If you get a notice, the documents you need depend on when you were born:",
+    "hi": "अगर नोटिस आए, तो ज़रूरी दस्तावेज़ इस पर निर्भर हैं कि आपका जन्म कब हुआ:",
+    "pa": "ਜੇ ਨੋਟਿਸ ਆਵੇ, ਤਾਂ ਲੋੜੀਂਦੇ ਦਸਤਾਵੇਜ਼ ਇਸ 'ਤੇ ਨਿਰਭਰ ਹਨ ਕਿ ਤੁਹਾਡਾ ਜਨਮ ਕਦੋਂ ਹੋਇਆ:",
+}
+DOCS_BRACKET = {
+    "before": {"en": "Born before 1 July 1987: one document for yourself.",
+               "hi": "1 जुलाई 1987 से पहले जन्म: अपने लिए एक दस्तावेज़।",
+               "pa": "1 ਜੁਲਾਈ 1987 ਤੋਂ ਪਹਿਲਾਂ ਜਨਮ: ਆਪਣੇ ਲਈ ਇੱਕ ਦਸਤਾਵੇਜ਼।"},
+    "between": {"en": "Born 1 July 1987 to 2 December 2004: one for yourself, and one for your father or mother.",
+                "hi": "1 जुलाई 1987 से 2 दिसंबर 2004 के बीच जन्म: एक अपने लिए, और एक पिता या माता के लिए।",
+                "pa": "1 ਜੁਲਾਈ 1987 ਤੋਂ 2 ਦਸੰਬਰ 2004 ਵਿਚਕਾਰ ਜਨਮ: ਇੱਕ ਆਪਣੇ ਲਈ, ਅਤੇ ਇੱਕ ਪਿਤਾ ਜਾਂ ਮਾਤਾ ਲਈ।"},
+    "after": {"en": "Born after 2 December 2004: one for yourself, one for your father and one for your mother "
+                    "(a passport and visa copy if a parent was not Indian at your birth).",
+              "hi": "2 दिसंबर 2004 के बाद जन्म: एक अपने लिए, एक पिता के लिए और एक माता के लिए "
+                    "(अगर जन्म के समय कोई अभिभावक भारतीय नहीं थे, तो उनके पासपोर्ट और वीज़ा की कॉपी)।",
+              "pa": "2 ਦਸੰਬਰ 2004 ਤੋਂ ਬਾਅਦ ਜਨਮ: ਇੱਕ ਆਪਣੇ ਲਈ, ਇੱਕ ਪਿਤਾ ਲਈ ਅਤੇ ਇੱਕ ਮਾਤਾ ਲਈ "
+                    "(ਜੇ ਜਨਮ ਸਮੇਂ ਕੋਈ ਮਾਪਾ ਭਾਰਤੀ ਨਹੀਂ ਸੀ, ਤਾਂ ਉਸਦੇ ਪਾਸਪੋਰਟ ਅਤੇ ਵੀਜ਼ਾ ਦੀ ਕਾਪੀ)।"},
+}
+DOCS_UNSURE = {
+    "en": "Your age puts your birth near a cutoff date, so check which of these applies:",
+    "hi": "आपकी उम्र के हिसाब से जन्म-तिथि सीमा के पास है, इसलिए देखें कि इनमें से कौन-सा लागू है:",
+    "pa": "ਤੁਹਾਡੀ ਉਮਰ ਮੁਤਾਬਕ ਜਨਮ-ਤਾਰੀਖ਼ ਹੱਦ ਦੇ ਨੇੜੇ ਹੈ, ਇਸ ਲਈ ਵੇਖੋ ਕਿ ਇਨ੍ਹਾਂ ਵਿੱਚੋਂ ਕਿਹੜਾ ਲਾਗੂ ਹੈ:",
+}
+DOCS_LIST = {
+    "en": "Accepted documents include a birth certificate, passport, school-board (matriculation) certificate, a "
+          "government or PSU employee ID or pension order, a permanent residence certificate, a family register or "
+          "a government land or house allotment certificate (indicative list; Aadhaar as per ECI directions).",
+    "hi": "मान्य दस्तावेज़ों में जन्म प्रमाणपत्र, पासपोर्ट, मैट्रिक प्रमाणपत्र, सरकारी या सार्वजनिक उपक्रम कर्मचारी पहचान-पत्र "
+          "या पेंशन आदेश, स्थायी निवास प्रमाणपत्र, परिवार रजिस्टर या सरकारी ज़मीन या मकान आवंटन प्रमाणपत्र शामिल हैं "
+          "(सूची पूरी नहीं है; आधार के लिए आयोग के निर्देश लागू)।",
+    "pa": "ਮੰਨਣਯੋਗ ਦਸਤਾਵੇਜ਼ਾਂ ਵਿੱਚ ਜਨਮ ਸਰਟੀਫਿਕੇਟ, ਪਾਸਪੋਰਟ, ਮੈਟ੍ਰਿਕ ਸਰਟੀਫਿਕੇਟ, ਸਰਕਾਰੀ ਜਾਂ ਜਨਤਕ ਅਦਾਰੇ ਦਾ ਕਰਮਚਾਰੀ ਪਛਾਣ-ਪੱਤਰ "
+          "ਜਾਂ ਪੈਨਸ਼ਨ ਹੁਕਮ, ਪੱਕੀ ਰਿਹਾਇਸ਼ ਸਰਟੀਫਿਕੇਟ, ਪਰਿਵਾਰ ਰਜਿਸਟਰ ਜਾਂ ਸਰਕਾਰੀ ਜ਼ਮੀਨ ਜਾਂ ਮਕਾਨ ਅਲਾਟਮੈਂਟ ਸਰਟੀਫਿਕੇਟ ਸ਼ਾਮਲ ਹਨ "
+          "(ਸੂਚੀ ਪੂਰੀ ਨਹੀਂ; ਆਧਾਰ ਲਈ ਕਮਿਸ਼ਨ ਦੀਆਂ ਹਦਾਇਤਾਂ ਲਾਗੂ)।",
+}
+
 DEADLINE_LINE = {  # VERIFY the claims/objections window at H0 on voters.eci.gov.in
     "en": "Claims and objections have a deadline. Check the current dates on the portal and act before then.",
     "hi": "दावे और आपत्तियों की एक अंतिम तिथि होती है। पोर्टल पर मौजूदा तारीखें देखें और उससे पहले कार्रवाई करें।",
