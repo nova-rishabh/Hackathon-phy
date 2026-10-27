@@ -197,3 +197,10 @@ GUARD_FALLBACK = {
     "hi": "यह पाठ एक तटस्थ सारांश से बदला गया। ऊपर की संख्याएँ सूची से गणना की गई हैं। मानवीय समीक्षा ज़रूरी है।",
     "pa": "ਇਹ ਲਿਖਤ ਇੱਕ ਨਿਰਪੱਖ ਸਾਰ ਨਾਲ ਬਦਲੀ ਗਈ। ਉੱਪਰਲੇ ਅੰਕੜੇ ਸੂਚੀ ਤੋਂ ਗਿਣੇ ਗਏ ਹਨ। ਮਨੁੱਖੀ ਸਮੀਖਿਆ ਲੋੜੀਂਦੀ ਹੈ।",
 }
+DEADLINE_LINE = {  # VERIFY the claims/objections window at H0 on voters.eci.gov.in
+    "en": "Claims and objections have a deadline. Check the current dates on the portal and act before then.",
+    "hi": "दावे और आपत्तियों की एक अंतिम तिथि होती है। पोर्टल पर मौजूदा तारीखें देखें और उससे पहले कार्रवाई करें।",
+    "pa": "ਦਾਅਵਿਆਂ ਅਤੇ ਇਤਰਾਜ਼ਾਂ ਦੀ ਇੱਕ ਆਖ਼ਰੀ ਤਾਰੀਖ਼ ਹੁੰਦੀ ਹੈ। ਪੋਰਟਲ 'ਤੇ ਮੌਜੂਦਾ ਤਾਰੀਖ਼ਾਂ ਵੇਖੋ ਅਤੇ ਉਸ ਤੋਂ ਪਹਿਲਾਂ ਕਾਰਵਾਈ ਕਰੋ।",
+}
+
+STOPWORDS |= set("boot age umar umr saal sal years old naam: hello hi namaste".split())
