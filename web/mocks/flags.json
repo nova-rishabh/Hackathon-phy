@@ -244,11 +244,11 @@
      {
       "code": "boundary_change",
       "label": "Boundary change",
-      "count": 0,
-      "share": 0.0,
-      "ci_lo": 0,
-      "ci_hi": 0.01,
-      "evidence": "House in a re-drawn booth range"
+      "count": 84,
+      "share": 0.56,
+      "ci_lo": 0.4706,
+      "ci_hi": 0.6494,
+      "evidence": "Houses moved to another booth in the boundary-change log"
      },
      {
       "code": "duplicate_cleanup",
@@ -262,25 +262,26 @@
      {
       "code": "unexplained",
       "label": "Unexplained",
-      "count": 96,
-      "share": 0.64,
-      "ci_lo": 0.5532,
-      "ci_hi": 0.7268,
+      "count": 12,
+      "share": 0.08,
+      "ci_lo": 0.0266,
+      "ci_hi": 0.1334,
       "evidence": "No matching record in any source"
      }
     ],
     "residual": {
-     "count": 96,
+     "count": 12,
      "expected_background": 20.0,
      "p_value": 0.002,
-     "significant": true
+     "significant": false
     },
     "context_used": [
      "death_register",
      "hostel_list",
+     "boundary_changes",
      "duplicates"
     ],
-    "outcome": "mixed"
+    "outcome": "likely_benign"
    },
    "confidence": 0.64,
    "confidence_band": "medium",
