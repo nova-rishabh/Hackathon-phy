@@ -115,7 +115,13 @@ def run_bench(a) -> dict:
                             sum(s1["stages_ms"].get(k, 0) for k in ("duplicates_v1", "duplicates_v2", "rule_relation_conflict"))
                             / max(sN["stages_ms"].get("parallel_local_stages", 1), 1), 2),
                         "per_voter_us_serial": round(1000 * s1["total_ms"] / s1["n_v1"], 2),
-                        "per_voter_us_district": round(1000 * r1["total_ms"] / r1["n_v1"], 2)}
+                        "per_voter_us_district": round(1000 * r1["total_ms"] / r1["n_v1"], 2),
+                        "process_overhead_ms_est": round(r2["stages_ms"].get("parallel_local_stages", 0) - sum(
+                            r1["stages_ms"].get(k, 0) for k in ("duplicates_v1", "duplicates_v2", "rule_relation_conflict")) / par, 1),
+                        "note": "Only the booth-local stages (duplicates, relation rule) run per ward in parallel; the rest is "
+                                "serial. process_overhead_ms_est is the fixed cost of starting worker processes and "
+                                "importing the engine (large on Windows), estimated from the district run. Rolls are held "
+                                "in memory, so 'load' excludes disk reads."}
     (out / "bench.json").write_text(json.dumps(res, ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"[bench] wrote {out / 'bench.json'}")
     return res
