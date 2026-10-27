@@ -63,7 +63,19 @@ Measured on the synthetic district with a planted answer key (`python -m engine.
 - Found **6 of 6** planted anomalies. Cleared **7 of 7** innocent decoys (deaths, hostel move-outs, a boundary move). A removal spike is cleared only when what's left after the innocent stories is no higher than background. A decoy that shares a booth with a real anomaly counts as cleared only if its records are matched to the innocent story.
 - False-positive rate per raised flag: duplicates 9.8%, relation conflicts 11%, removal spikes 0% (1 raised, 8 cleared as likely benign), addition spikes 50% (2 raised), impossible age / oversized household / gender swing 0%.
 - Confidence is a Platt curve per rule, fit on a separate training district. When we say about 93%, the flags are right 90% of the time. For removal spikes the input is the leftover after innocent stories, not the raw spike.
-- **The official parent-child age-gap check** (a parent under 14 or over 40 years older) is measured, not raised: on our district it trips 170 households, and 98% of them hide no planted anomaly. A grandparent named as the relative trips it innocently. Sibling gaps under 9 months can't be checked from a roll, because rolls carry ages in years, not birth dates.
+- **The official "logical discrepancy" checks** reported for the 2025–26 revision are run and published, never raised as flags (`engine/official.py`). On our district:
+
+  | Check | Trips | Innocent |
+  |---|---|---|
+  | parent under 15 or over 50 years older | 113 | 81% |
+  | six or more children of one parent | 166 | 98% |
+  | own name changed since the last roll | 196 | 100% |
+  | relative's name changed | 323 | 100% |
+  | relation type changed (marriage) | 183 | 100% |
+  | age didn't progress | 44 | 100% |
+  | grandparent under 40 years older | 0 | – |
+
+  These are synthetic rates: they depend on the innocent churn the generator models (marriages, spelling fixes, typos, large families). The point stands: none of these checks can tell a marriage from an anomaly. Sibling gaps under 9 months can't be checked from a roll, because it carries ages in years, not birth dates.
 - The generator also adds realistic background noise (about 0.5% cross-script duplicates). It writes these to `<key>.background.json`, so a correct catch of one isn't counted as an error.
 - Still open: a blind test whose answer key we never see. The removal-spike curve rests on only 20 training flags, so its confidence is shown with that n.
 

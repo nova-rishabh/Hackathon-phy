@@ -95,7 +95,7 @@ DESIGN (strict)
 - **Audit** (home): booth grid, which-story bars, evidence on/off toggles.
 - **Check:** Claim Court. Paste a forward or drop a screenshot; it's split into sub-claims and each runs a fixed query (shown on screen). You get Verified / Disputed / Cannot be proven, plus the mirror claim and a share card with a QR code.
 - **Ask:** citizen lookup in any script or spelling. Status, reason, Form 6/7/8, 1950, "a BLO never asks for an OTP or money", Hindi voice.
-- **Trust:** scoreboard, reliability, the guard, error rate per rule (including the official age-gap check, 98% innocent), human reviews in a hash chain, ops (latency, ₹ per check), the 1M-voter bench.
+- **Trust:** scoreboard, reliability, the guard, error rate per rule (including 7 official discrepancy checks, 81–100% innocent on our data), human reviews in a hash chain, ops (latency, ₹ per check), the 1M-voter bench.
 - **Run it:** drop two roll CSVs (or the 10-booth sample) and get the audit in about 3 s. This is the "inside the government" path.
 - **Share card PNG:** every checked claim becomes a 1080×1350 image the bots send back into the chat.
 - **WhatsApp voice:** send a Hindi voice note and get the answer as text and audio.
@@ -136,7 +136,7 @@ DESIGN (strict)
 - *Couldn't a card be misused as "AI proves deletions"?* Every card says "pattern for human review, not a finding", shows the innocent explanations and the query, and never shows a voter's name.
 
 **Official checks**
-- *Why not just use the official "logical discrepancy" rules?* We ran one. The parent-child age-gap rule (under 14 or over 40 years) trips 170 households in our district, and 98% of them are innocent, mostly a grandparent named as the relative. A rule without a published error rate creates work and fear. We publish ours per rule.
+- *Why not just use the official "logical discrepancy" rules?* We ran the seven that a roll can support (parent gap under 15 or over 50, six or more children, name, relative or relation changed, age not progressing). On our district they trip 81–100% innocent records: marriages, spelling fixes, big families. That's synthetic data, but the logic holds: a rule that can't tell a marriage from an anomaly needs a published error rate and a "which story fits" step before anyone gets a notice. Reported scale: about 1.3 crore electors flagged in West Bengal, and 91% of decided appeals there restored the voter (sources: The News Minute on Karnataka's criteria, Internet Freedom Foundation analysis of SIR exclusions).
 - *Can you check siblings born under 9 months apart?* Not from a roll: it lists age in whole years, not birth dates. We'd need the date of birth, and we say so instead of guessing.
 
 **Neutrality**
