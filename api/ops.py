@@ -54,14 +54,28 @@ async def middleware(request, call_next):
         if route not in ("/ops", "/favicon.ico"):
             out = {k: rec[k] for k in ("route", "ms", "llm_tokens_in", "llm_tokens_out", "model", "cache_hit")}
             out["ts"] = time.time()
-            try:
-                with _lock:
-                    p = ops_path()
-                    p.parent.mkdir(parents=True, exist_ok=True)
-                    with open(p, "a", encoding="utf-8") as f:
-                        f.write(json.dumps(out, ensure_ascii=False) + "\n")
-            except OSError:
-                pass
+            _buf.append(json.dumps(out, ensure_ascii=False))
+            if len(_buf) >= 200 or out["ts"] - _last[0] > 2.0:  # batch the disk write, not one open() per request
+                flush()
+
+
+_buf: list[str] = []
+_last = [0.0]
+
+
+def flush():
+    with _lock:
+        lines, _buf[:] = list(_buf), []
+        _last[0] = time.time()
+        if not lines:
+            return
+        try:
+            p = ops_path()
+            p.parent.mkdir(parents=True, exist_ok=True)
+            with open(p, "a", encoding="utf-8") as f:
+                f.write("\n".join(lines) + "\n")
+        except OSError:
+            pass
 
 
 def _norm_route(r: str) -> str:
@@ -73,6 +87,7 @@ def _norm_route(r: str) -> str:
 
 
 def summary() -> dict:
+    flush()
     rows = []
     p = ops_path()
     if p.exists():

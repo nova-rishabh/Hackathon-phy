@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import base64
 import hashlib
+import json
 import tempfile
 import threading
 import time
@@ -26,7 +27,7 @@ if os.environ.get("DEMO_MODE", "0") == "1":
 
 from fastapi import FastAPI, Header, HTTPException, Query  # noqa: E402
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, Response
 from pydantic import BaseModel
 
 from api import citizen, claims, guard as guard_mod, keys, llm, ops, voice, wa_auth
@@ -78,9 +79,22 @@ def keys_status():
     return keys.status()
 
 
+# Answers that only change when the engine reruns: serialized once, then served as bytes with cache headers,
+# so a browser or CDN in front can answer most traffic without reaching Python at all.
+_FROZEN: dict[str, bytes] = {}
+
+
+def _frozen(key: str, build) -> Response:
+    if key not in _FROZEN:
+        obj = build()
+        _FROZEN[key] = (obj.model_dump_json() if hasattr(obj, "model_dump_json")
+                        else json.dumps([o.model_dump(mode="json") for o in obj], ensure_ascii=False)).encode("utf-8")
+    return Response(_FROZEN[key], media_type="application/json", headers={"Cache-Control": "public, max-age=300"})
+
+
 @app.get("/overview", response_model=Overview)
 def overview():
-    return store().overview()
+    return _frozen("overview", lambda: store().overview())
 
 
 def _with_stories(f: Flag) -> Flag:
@@ -207,15 +221,14 @@ def audit(req: AuditRequest):
 
 @app.get("/eval")
 def eval_():
-    e = store().eval_result()
-    if e is None:
+    if store().eval_result() is None:
         raise HTTPException(404, "the blind eval has not run yet")
-    return e
+    return _frozen("eval", lambda: store().eval_result())
 
 
 @app.get("/rules", response_model=list[RuleCard])
 def rules():
-    return store().rule_cards() or []
+    return _frozen("rules", lambda: store().rule_cards() or [])
 
 
 # ------------------------------------------------------------------ claims
