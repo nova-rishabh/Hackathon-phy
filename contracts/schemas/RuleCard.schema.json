@@ -1,0 +1,36 @@
+{
+  "properties": {
+    "rule_id": {
+      "title": "Rule Id",
+      "type": "string"
+    },
+    "what": {
+      "title": "What",
+      "type": "string"
+    },
+    "fires_on_benign_rate": {
+      "title": "Fires On Benign Rate",
+      "type": "number"
+    },
+    "innocent_explanations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Innocent Explanations",
+      "type": "array"
+    },
+    "resolves_with": {
+      "title": "Resolves With",
+      "type": "string"
+    }
+  },
+  "required": [
+    "rule_id",
+    "what",
+    "fires_on_benign_rate",
+    "innocent_explanations",
+    "resolves_with"
+  ],
+  "title": "RuleCard",
+  "type": "object"
+}

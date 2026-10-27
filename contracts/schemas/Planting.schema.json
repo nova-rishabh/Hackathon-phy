@@ -1,0 +1,63 @@
+{
+  "description": "One entry of the PRIVATE answer key (private/answer_key.json). The engine never reads this.",
+  "properties": {
+    "plant_id": {
+      "title": "Plant Id",
+      "type": "string"
+    },
+    "type": {
+      "anyOf": [
+        {
+          "enum": [
+            "deletion_spike",
+            "addition_spike",
+            "duplicate_cluster",
+            "impossible_age",
+            "relation_conflict",
+            "oversized_household",
+            "gender_ratio_swing"
+          ],
+          "type": "string"
+        },
+        {
+          "enum": [
+            "hostel_moveout",
+            "boundary_change",
+            "mass_death"
+          ],
+          "type": "string"
+        }
+      ],
+      "title": "Type"
+    },
+    "is_benign": {
+      "title": "Is Benign",
+      "type": "boolean"
+    },
+    "booth_id": {
+      "title": "Booth Id",
+      "type": "string"
+    },
+    "voter_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Voter Ids",
+      "type": "array"
+    },
+    "note": {
+      "default": "",
+      "title": "Note",
+      "type": "string"
+    }
+  },
+  "required": [
+    "plant_id",
+    "type",
+    "is_benign",
+    "booth_id",
+    "voter_ids"
+  ],
+  "title": "Planting",
+  "type": "object"
+}

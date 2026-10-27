@@ -1,0 +1,58 @@
+{
+  "properties": {
+    "text": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Text"
+    },
+    "audio_b64": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Audio B64"
+    },
+    "lang": {
+      "anyOf": [
+        {
+          "enum": [
+            "hi",
+            "en",
+            "pa"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Lang"
+    },
+    "channel": {
+      "enum": [
+        "web",
+        "telegram"
+      ],
+      "title": "Channel",
+      "type": "string"
+    }
+  },
+  "required": [
+    "channel"
+  ],
+  "title": "CitizenAsk",
+  "type": "object"
+}

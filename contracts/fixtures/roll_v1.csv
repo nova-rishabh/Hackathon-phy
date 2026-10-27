@@ -1,0 +1,21 @@
+voter_id,roll_version,ward_id,booth_id,serial_no,house_no,name_dev,name_lat,relation_type,relation_name_dev,relation_name_lat,age,gender
+SBD0000001,v1,W01,B001,1,12,सुनीता शर्मा,Sunita Sharma,father,रमेश शर्मा,Ramesh Sharma,34,F
+SBD0000002,v1,W01,B001,2,12,सुनीता शरमा,Suneeta Sarma,father,रमेश शर्मा,Ramesh Sarma,35,F
+SBD0000003,v1,W01,B001,3,9,हरि प्रसाद,Hari Prasad,father,गोविंद प्रसाद,Govind Prasad,117,M
+SBD0000004,v1,W01,B001,4,7,कमला देवी,Kamla Devi,husband,शिव नारायण,Shiv Narayan,81,F
+SBD0000005,v1,W01,B001,5,7,शिव नारायण,Shiv Narain,father,राम नारायण,Ram Narayan,84,M
+SBD0000006,v1,W01,B001,6,21,मीना कुमारी,Meena Kumari,husband,राजेश कुमार,Rajesh Kumar,52,F
+SBD0000007,v1,W01,B001,7,21,राजेश कुमार,Rajesh Kumar,father,मोहन लाल,Mohan Lal,55,M
+SBD0000008,v1,W01,B001,8,33,अनिल वर्मा,Anil Verma,father,सुरेश वर्मा,Suresh Verma,41,M
+SBD0000009,v1,W01,B001,9,33,पूजा वर्मा,Pooja Verma,husband,अनिल वर्मा,Anil Verma,38,F
+SBD0000013,v1,W01,B001,10,55,गुरप्रीत सिंह,Gurpreet Singh,father,हरभजन सिंह,Harbhajan Singh,29,M
+SBD0000014,v1,W01,B001,11,62,विकास यादव,Vikas Yadav,father,ओम प्रकाश यादव,Om Prakash Yadav,33,M
+SBD0000015,v1,W01,B001,12,64,अमनदीप कौर,Amandeep Kaur,father,जसवंत सिंह,Jaswant Singh,27,F
+SBD0000010,v1,W01,B002,1,40,रोहित मिश्रा,Rohit Mishra,father,अजय मिश्रा,Ajay Mishra,21,M
+SBD0000011,v1,W01,B002,2,40,नेहा गुप्ता,Neha Gupta,father,संजय गुप्ता,Sanjay Gupta,20,F
+SBD0000012,v1,W01,B002,3,40,आदित्य जैन,Aditya Jain,father,विनोद जैन,Vinod Jain,22,M
+SBD0000016,v1,W01,B002,4,8,सरिता देवी,Sarita Devi,husband,रामकिशन,Ramkishan,46,F
+SBD0000017,v1,W01,B002,5,8,रामकिशन,Ramkishan,father,भगवान दास,Bhagwan Das,49,M
+SBD0000018,v1,W01,B002,6,15,ललिता पाल,Lalita Pal,husband,दीपक पाल,Deepak Pal,42,F
+SBD0000019,v1,W01,B002,7,15,दीपक पाल,Deepak Pal,father,हरि पाल,Hari Pal,44,M
+SBD0000021,v1,W01,B002,8,26,सुखविंदर कौर,Sukhwinder Kaur,husband,बलविंदर सिंह,Balwinder Singh,36,F

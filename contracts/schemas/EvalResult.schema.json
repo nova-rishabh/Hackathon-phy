@@ -1,0 +1,153 @@
+{
+  "$defs": {
+    "Miss": {
+      "properties": {
+        "plant_id": {
+          "title": "Plant Id",
+          "type": "string"
+        },
+        "type": {
+          "title": "Type",
+          "type": "string"
+        },
+        "why": {
+          "title": "Why",
+          "type": "string"
+        }
+      },
+      "required": [
+        "plant_id",
+        "type",
+        "why"
+      ],
+      "title": "Miss",
+      "type": "object"
+    },
+    "ReliabilityBin": {
+      "properties": {
+        "bin_lo": {
+          "title": "Bin Lo",
+          "type": "number"
+        },
+        "bin_hi": {
+          "title": "Bin Hi",
+          "type": "number"
+        },
+        "mean_conf": {
+          "title": "Mean Conf",
+          "type": "number"
+        },
+        "frac_true": {
+          "title": "Frac True",
+          "type": "number"
+        },
+        "n": {
+          "title": "N",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "bin_lo",
+        "bin_hi",
+        "mean_conf",
+        "frac_true",
+        "n"
+      ],
+      "title": "ReliabilityBin",
+      "type": "object"
+    },
+    "TypeScore": {
+      "properties": {
+        "type": {
+          "title": "Type",
+          "type": "string"
+        },
+        "tp": {
+          "title": "Tp",
+          "type": "integer"
+        },
+        "fp": {
+          "title": "Fp",
+          "type": "integer"
+        },
+        "fn": {
+          "title": "Fn",
+          "type": "integer"
+        },
+        "precision": {
+          "title": "Precision",
+          "type": "number"
+        },
+        "recall": {
+          "title": "Recall",
+          "type": "number"
+        }
+      },
+      "required": [
+        "type",
+        "tp",
+        "fp",
+        "fn",
+        "precision",
+        "recall"
+      ],
+      "title": "TypeScore",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "planted_anomalies": {
+      "title": "Planted Anomalies",
+      "type": "integer"
+    },
+    "planted_decoys": {
+      "title": "Planted Decoys",
+      "type": "integer"
+    },
+    "found": {
+      "title": "Found",
+      "type": "integer"
+    },
+    "decoys_cleared": {
+      "title": "Decoys Cleared",
+      "type": "integer"
+    },
+    "by_type": {
+      "items": {
+        "$ref": "#/$defs/TypeScore"
+      },
+      "title": "By Type",
+      "type": "array"
+    },
+    "benign_fp_rate": {
+      "title": "Benign Fp Rate",
+      "type": "number"
+    },
+    "reliability": {
+      "items": {
+        "$ref": "#/$defs/ReliabilityBin"
+      },
+      "title": "Reliability",
+      "type": "array"
+    },
+    "misses": {
+      "items": {
+        "$ref": "#/$defs/Miss"
+      },
+      "title": "Misses",
+      "type": "array"
+    }
+  },
+  "required": [
+    "planted_anomalies",
+    "planted_decoys",
+    "found",
+    "decoys_cleared",
+    "by_type",
+    "benign_fp_rate",
+    "reliability",
+    "misses"
+  ],
+  "title": "EvalResult",
+  "type": "object"
+}

@@ -1,0 +1,33 @@
+{
+  "properties": {
+    "booth_id": {
+      "title": "Booth Id",
+      "type": "string"
+    },
+    "house_no": {
+      "title": "House No",
+      "type": "string"
+    },
+    "name_lat": {
+      "title": "Name Lat",
+      "type": "string"
+    },
+    "age": {
+      "title": "Age",
+      "type": "integer"
+    },
+    "date": {
+      "title": "Date",
+      "type": "string"
+    }
+  },
+  "required": [
+    "booth_id",
+    "house_no",
+    "name_lat",
+    "age",
+    "date"
+  ],
+  "title": "DeathRecord",
+  "type": "object"
+}

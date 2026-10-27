@@ -1,0 +1,59 @@
+{
+  "$defs": {
+    "Review": {
+      "properties": {
+        "status": {
+          "default": "open",
+          "enum": [
+            "open",
+            "benign",
+            "escalated"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "ts": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ts"
+        },
+        "hash": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Hash"
+        }
+      },
+      "title": "Review",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "review": {
+      "$ref": "#/$defs/Review"
+    },
+    "audit_hash": {
+      "title": "Audit Hash",
+      "type": "string"
+    }
+  },
+  "required": [
+    "review",
+    "audit_hash"
+  ],
+  "title": "ReviewResponse",
+  "type": "object"
+}

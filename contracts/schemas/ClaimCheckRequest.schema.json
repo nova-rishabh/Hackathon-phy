@@ -1,0 +1,35 @@
+{
+  "properties": {
+    "text": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Text"
+    },
+    "image_b64": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Image B64"
+    },
+    "mirror": {
+      "default": true,
+      "title": "Mirror",
+      "type": "boolean"
+    }
+  },
+  "title": "ClaimCheckRequest",
+  "type": "object"
+}

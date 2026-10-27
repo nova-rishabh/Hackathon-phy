@@ -1,0 +1,92 @@
+{
+  "description": "One elector in one roll version (roll_v1.parquet / roll_v2.parquet).\n\nvoter_id is stable for the same person across v1 and v2; duplicates get\nDIFFERENT ids; modified records keep their id.",
+  "properties": {
+    "voter_id": {
+      "pattern": "^SBD\\d{7}$",
+      "title": "Voter Id",
+      "type": "string"
+    },
+    "roll_version": {
+      "enum": [
+        "v1",
+        "v2"
+      ],
+      "title": "Roll Version",
+      "type": "string"
+    },
+    "ward_id": {
+      "pattern": "^W\\d{2}$",
+      "title": "Ward Id",
+      "type": "string"
+    },
+    "booth_id": {
+      "pattern": "^B\\d{3}$",
+      "title": "Booth Id",
+      "type": "string"
+    },
+    "serial_no": {
+      "title": "Serial No",
+      "type": "integer"
+    },
+    "house_no": {
+      "title": "House No",
+      "type": "string"
+    },
+    "name_dev": {
+      "title": "Name Dev",
+      "type": "string"
+    },
+    "name_lat": {
+      "title": "Name Lat",
+      "type": "string"
+    },
+    "relation_type": {
+      "enum": [
+        "father",
+        "husband",
+        "mother",
+        "other"
+      ],
+      "title": "Relation Type",
+      "type": "string"
+    },
+    "relation_name_dev": {
+      "title": "Relation Name Dev",
+      "type": "string"
+    },
+    "relation_name_lat": {
+      "title": "Relation Name Lat",
+      "type": "string"
+    },
+    "age": {
+      "title": "Age",
+      "type": "integer"
+    },
+    "gender": {
+      "enum": [
+        "M",
+        "F",
+        "T"
+      ],
+      "title": "Gender",
+      "type": "string"
+    }
+  },
+  "required": [
+    "voter_id",
+    "roll_version",
+    "ward_id",
+    "booth_id",
+    "serial_no",
+    "house_no",
+    "name_dev",
+    "name_lat",
+    "relation_type",
+    "relation_name_dev",
+    "relation_name_lat",
+    "age",
+    "gender"
+  ],
+  "title": "RollRow",
+  "type": "object"
+}

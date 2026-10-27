@@ -1,0 +1,38 @@
+{
+  "properties": {
+    "change_id": {
+      "title": "Change Id",
+      "type": "string"
+    },
+    "from_booth": {
+      "title": "From Booth",
+      "type": "string"
+    },
+    "to_booth": {
+      "title": "To Booth",
+      "type": "string"
+    },
+    "house_from": {
+      "title": "House From",
+      "type": "integer"
+    },
+    "house_to": {
+      "title": "House To",
+      "type": "integer"
+    },
+    "effective_date": {
+      "title": "Effective Date",
+      "type": "string"
+    }
+  },
+  "required": [
+    "change_id",
+    "from_booth",
+    "to_booth",
+    "house_from",
+    "house_to",
+    "effective_date"
+  ],
+  "title": "BoundaryChange",
+  "type": "object"
+}

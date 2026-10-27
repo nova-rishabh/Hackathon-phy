@@ -1,0 +1,468 @@
+{
+  "$defs": {
+    "Card": {
+      "properties": {
+        "found": {
+          "title": "Found",
+          "type": "string"
+        },
+        "why_unusual": {
+          "title": "Why Unusual",
+          "type": "string"
+        },
+        "innocent_explanations": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Innocent Explanations",
+          "type": "array"
+        },
+        "confidence_text": {
+          "title": "Confidence Text",
+          "type": "string"
+        },
+        "lang": {
+          "enum": [
+            "en",
+            "hi"
+          ],
+          "title": "Lang",
+          "type": "string"
+        },
+        "source": {
+          "enum": [
+            "llm",
+            "template"
+          ],
+          "title": "Source",
+          "type": "string"
+        }
+      },
+      "required": [
+        "found",
+        "why_unusual",
+        "innocent_explanations",
+        "confidence_text",
+        "lang",
+        "source"
+      ],
+      "title": "Card",
+      "type": "object"
+    },
+    "GuardResult": {
+      "properties": {
+        "passed": {
+          "title": "Passed",
+          "type": "boolean"
+        },
+        "blocked_terms": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Blocked Terms",
+          "type": "array"
+        },
+        "rewritten": {
+          "default": false,
+          "title": "Rewritten",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "passed"
+      ],
+      "title": "GuardResult",
+      "type": "object"
+    },
+    "Metrics": {
+      "properties": {
+        "observed": {
+          "title": "Observed",
+          "type": "number"
+        },
+        "expected": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Expected"
+        },
+        "n": {
+          "title": "N",
+          "type": "integer"
+        },
+        "p_value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "P Value"
+        },
+        "q_value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Q Value"
+        },
+        "unit": {
+          "default": "records",
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "observed",
+        "n"
+      ],
+      "title": "Metrics",
+      "type": "object"
+    },
+    "Residual": {
+      "properties": {
+        "count": {
+          "title": "Count",
+          "type": "integer"
+        },
+        "expected_background": {
+          "title": "Expected Background",
+          "type": "number"
+        },
+        "p_value": {
+          "title": "P Value",
+          "type": "number"
+        },
+        "significant": {
+          "title": "Significant",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "count",
+        "expected_background",
+        "p_value",
+        "significant"
+      ],
+      "title": "Residual",
+      "type": "object"
+    },
+    "Review": {
+      "properties": {
+        "status": {
+          "default": "open",
+          "enum": [
+            "open",
+            "benign",
+            "escalated"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "ts": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ts"
+        },
+        "hash": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Hash"
+        }
+      },
+      "title": "Review",
+      "type": "object"
+    },
+    "Scope": {
+      "properties": {
+        "level": {
+          "enum": [
+            "booth",
+            "household",
+            "record"
+          ],
+          "title": "Level",
+          "type": "string"
+        },
+        "booth_id": {
+          "title": "Booth Id",
+          "type": "string"
+        },
+        "house_no": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "House No"
+        },
+        "voter_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Voter Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "level",
+        "booth_id"
+      ],
+      "title": "Scope",
+      "type": "object"
+    },
+    "Story": {
+      "properties": {
+        "code": {
+          "enum": [
+            "death_registered",
+            "hostel_moveout",
+            "boundary_change",
+            "duplicate_cleanup",
+            "unexplained"
+          ],
+          "title": "Code",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "count": {
+          "title": "Count",
+          "type": "integer"
+        },
+        "share": {
+          "title": "Share",
+          "type": "number"
+        },
+        "ci_lo": {
+          "title": "Ci Lo",
+          "type": "number"
+        },
+        "ci_hi": {
+          "title": "Ci Hi",
+          "type": "number"
+        },
+        "evidence": {
+          "title": "Evidence",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "label",
+        "count",
+        "share",
+        "ci_lo",
+        "ci_hi",
+        "evidence"
+      ],
+      "title": "Story",
+      "type": "object"
+    },
+    "StoryResult": {
+      "properties": {
+        "booth_id": {
+          "title": "Booth Id",
+          "type": "string"
+        },
+        "removed_total": {
+          "title": "Removed Total",
+          "type": "integer"
+        },
+        "stories": {
+          "items": {
+            "$ref": "#/$defs/Story"
+          },
+          "title": "Stories",
+          "type": "array"
+        },
+        "residual": {
+          "$ref": "#/$defs/Residual"
+        },
+        "context_used": {
+          "items": {
+            "enum": [
+              "death_register",
+              "hostel_list",
+              "boundary_changes",
+              "duplicates"
+            ],
+            "type": "string"
+          },
+          "title": "Context Used",
+          "type": "array"
+        },
+        "outcome": {
+          "enum": [
+            "unusual",
+            "likely_benign",
+            "mixed"
+          ],
+          "title": "Outcome",
+          "type": "string"
+        }
+      },
+      "required": [
+        "booth_id",
+        "removed_total",
+        "stories",
+        "residual",
+        "context_used",
+        "outcome"
+      ],
+      "title": "StoryResult",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "flag_id": {
+      "title": "Flag Id",
+      "type": "string"
+    },
+    "type": {
+      "enum": [
+        "deletion_spike",
+        "addition_spike",
+        "duplicate_cluster",
+        "impossible_age",
+        "relation_conflict",
+        "oversized_household",
+        "gender_ratio_swing"
+      ],
+      "title": "Type",
+      "type": "string"
+    },
+    "scope": {
+      "$ref": "#/$defs/Scope"
+    },
+    "metrics": {
+      "$ref": "#/$defs/Metrics"
+    },
+    "reason_codes": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Reason Codes",
+      "type": "array"
+    },
+    "stories": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/StoryResult"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "confidence": {
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Confidence",
+      "type": "number"
+    },
+    "confidence_band": {
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ],
+      "title": "Confidence Band",
+      "type": "string"
+    },
+    "confidence_n": {
+      "title": "Confidence N",
+      "type": "integer"
+    },
+    "likely_benign": {
+      "title": "Likely Benign",
+      "type": "boolean"
+    },
+    "needs_human_review": {
+      "const": true,
+      "default": true,
+      "title": "Needs Human Review",
+      "type": "boolean"
+    },
+    "card": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Card"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "guard": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/GuardResult"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "review": {
+      "$ref": "#/$defs/Review",
+      "default": {
+        "status": "open",
+        "ts": null,
+        "hash": null
+      }
+    }
+  },
+  "required": [
+    "flag_id",
+    "type",
+    "scope",
+    "metrics",
+    "reason_codes",
+    "confidence",
+    "confidence_band",
+    "confidence_n",
+    "likely_benign"
+  ],
+  "title": "Flag",
+  "type": "object"
+}

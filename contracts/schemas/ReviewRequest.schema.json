@@ -1,0 +1,22 @@
+{
+  "properties": {
+    "status": {
+      "enum": [
+        "benign",
+        "escalated"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "note": {
+      "default": "",
+      "title": "Note",
+      "type": "string"
+    }
+  },
+  "required": [
+    "status"
+  ],
+  "title": "ReviewRequest",
+  "type": "object"
+}

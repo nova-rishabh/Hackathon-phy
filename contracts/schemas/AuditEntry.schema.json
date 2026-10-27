@@ -1,0 +1,40 @@
+{
+  "properties": {
+    "ts": {
+      "title": "Ts",
+      "type": "string"
+    },
+    "flag_id": {
+      "title": "Flag Id",
+      "type": "string"
+    },
+    "action": {
+      "title": "Action",
+      "type": "string"
+    },
+    "hash": {
+      "title": "Hash",
+      "type": "string"
+    },
+    "prev_hash": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Prev Hash"
+    }
+  },
+  "required": [
+    "ts",
+    "flag_id",
+    "action",
+    "hash",
+    "prev_hash"
+  ],
+  "title": "AuditEntry",
+  "type": "object"
+}

@@ -1,0 +1,335 @@
+{
+  "$defs": {
+    "ClaimInput": {
+      "properties": {
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "source": {
+          "enum": [
+            "text",
+            "image"
+          ],
+          "title": "Source",
+          "type": "string"
+        },
+        "lang": {
+          "enum": [
+            "hi",
+            "en",
+            "pa"
+          ],
+          "title": "Lang",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text",
+        "source",
+        "lang"
+      ],
+      "title": "ClaimInput",
+      "type": "object"
+    },
+    "Evidence": {
+      "properties": {
+        "series": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/EvidencePoint"
+          },
+          "title": "Series",
+          "type": "array"
+        },
+        "note": {
+          "default": "",
+          "title": "Note",
+          "type": "string"
+        }
+      },
+      "title": "Evidence",
+      "type": "object"
+    },
+    "EvidencePoint": {
+      "properties": {
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "number"
+        }
+      },
+      "required": [
+        "label",
+        "value"
+      ],
+      "title": "EvidencePoint",
+      "type": "object"
+    },
+    "GuardResult": {
+      "properties": {
+        "passed": {
+          "title": "Passed",
+          "type": "boolean"
+        },
+        "blocked_terms": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Blocked Terms",
+          "type": "array"
+        },
+        "rewritten": {
+          "default": false,
+          "title": "Rewritten",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "passed"
+      ],
+      "title": "GuardResult",
+      "type": "object"
+    },
+    "Mirror": {
+      "properties": {
+        "claim_text": {
+          "title": "Claim Text",
+          "type": "string"
+        },
+        "sub_claim_verdicts": {
+          "items": {
+            "enum": [
+              "verified",
+              "disputed",
+              "unprovable"
+            ],
+            "type": "string"
+          },
+          "title": "Sub Claim Verdicts",
+          "type": "array"
+        },
+        "identical_treatment": {
+          "title": "Identical Treatment",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "claim_text",
+        "sub_claim_verdicts",
+        "identical_treatment"
+      ],
+      "title": "Mirror",
+      "type": "object"
+    },
+    "SubClaim": {
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "tool": {
+          "enum": [
+            "deletion_count",
+            "deletion_rate",
+            "addition_count",
+            "duplicate_count",
+            "age_distribution",
+            "gender_ratio",
+            "compare_booths",
+            "story_shares",
+            "unanswerable"
+          ],
+          "title": "Tool",
+          "type": "string"
+        },
+        "params": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          },
+          "default": {},
+          "title": "Params",
+          "type": "object"
+        },
+        "query_shown": {
+          "title": "Query Shown",
+          "type": "string"
+        },
+        "claimed_value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Claimed Value"
+        },
+        "computed_value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Computed Value"
+        },
+        "tolerance": {
+          "default": 0.15,
+          "title": "Tolerance",
+          "type": "number"
+        },
+        "verdict": {
+          "enum": [
+            "verified",
+            "disputed",
+            "unprovable"
+          ],
+          "title": "Verdict",
+          "type": "string"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        },
+        "evidence": {
+          "$ref": "#/$defs/Evidence",
+          "default": {
+            "series": [],
+            "note": ""
+          }
+        },
+        "confidence": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "settle_with": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Settle With"
+        }
+      },
+      "required": [
+        "id",
+        "text",
+        "tool",
+        "query_shown",
+        "verdict",
+        "reason",
+        "confidence"
+      ],
+      "title": "SubClaim",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "claim_id": {
+      "title": "Claim Id",
+      "type": "string"
+    },
+    "input": {
+      "$ref": "#/$defs/ClaimInput"
+    },
+    "normalized_claim": {
+      "title": "Normalized Claim",
+      "type": "string"
+    },
+    "sub_claims": {
+      "items": {
+        "$ref": "#/$defs/SubClaim"
+      },
+      "title": "Sub Claims",
+      "type": "array"
+    },
+    "overall": {
+      "enum": [
+        "verified",
+        "disputed",
+        "unprovable",
+        "mixed"
+      ],
+      "title": "Overall",
+      "type": "string"
+    },
+    "confidence": {
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Confidence",
+      "type": "number"
+    },
+    "mirror": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Mirror"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "card_png": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Card Png"
+    },
+    "guard": {
+      "$ref": "#/$defs/GuardResult"
+    },
+    "cached": {
+      "default": false,
+      "title": "Cached",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "claim_id",
+    "input",
+    "normalized_claim",
+    "sub_claims",
+    "overall",
+    "confidence",
+    "guard"
+  ],
+  "title": "ClaimVerdict",
+  "type": "object"
+}

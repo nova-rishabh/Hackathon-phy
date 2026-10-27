@@ -1,0 +1,26 @@
+{
+  "properties": {
+    "ok": {
+      "title": "Ok",
+      "type": "boolean"
+    },
+    "demo_mode": {
+      "title": "Demo Mode",
+      "type": "boolean"
+    },
+    "versions": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Versions",
+      "type": "object"
+    }
+  },
+  "required": [
+    "ok",
+    "demo_mode",
+    "versions"
+  ],
+  "title": "Health",
+  "type": "object"
+}

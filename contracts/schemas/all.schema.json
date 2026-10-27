@@ -1,0 +1,1923 @@
+{
+  "$defs": {
+    "AuditEntry": {
+      "properties": {
+        "ts": {
+          "title": "Ts",
+          "type": "string"
+        },
+        "flag_id": {
+          "title": "Flag Id",
+          "type": "string"
+        },
+        "action": {
+          "title": "Action",
+          "type": "string"
+        },
+        "hash": {
+          "title": "Hash",
+          "type": "string"
+        },
+        "prev_hash": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Prev Hash"
+        }
+      },
+      "required": [
+        "ts",
+        "flag_id",
+        "action",
+        "hash",
+        "prev_hash"
+      ],
+      "title": "AuditEntry",
+      "type": "object"
+    },
+    "BoothSummary": {
+      "properties": {
+        "booth_id": {
+          "title": "Booth Id",
+          "type": "string"
+        },
+        "ward_id": {
+          "title": "Ward Id",
+          "type": "string"
+        },
+        "n_v1": {
+          "title": "N V1",
+          "type": "integer"
+        },
+        "n_v2": {
+          "title": "N V2",
+          "type": "integer"
+        },
+        "del_rate": {
+          "title": "Del Rate",
+          "type": "number"
+        },
+        "expected_del_rate": {
+          "title": "Expected Del Rate",
+          "type": "number"
+        },
+        "q_value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Q Value"
+        },
+        "flag_count": {
+          "title": "Flag Count",
+          "type": "integer"
+        },
+        "outcome": {
+          "anyOf": [
+            {
+              "enum": [
+                "unusual",
+                "likely_benign",
+                "mixed"
+              ],
+              "type": "string"
+            },
+            {
+              "const": "normal",
+              "type": "string"
+            }
+          ],
+          "title": "Outcome"
+        }
+      },
+      "required": [
+        "booth_id",
+        "ward_id",
+        "n_v1",
+        "n_v2",
+        "del_rate",
+        "expected_del_rate",
+        "q_value",
+        "flag_count",
+        "outcome"
+      ],
+      "title": "BoothSummary",
+      "type": "object"
+    },
+    "BoundaryChange": {
+      "properties": {
+        "change_id": {
+          "title": "Change Id",
+          "type": "string"
+        },
+        "from_booth": {
+          "title": "From Booth",
+          "type": "string"
+        },
+        "to_booth": {
+          "title": "To Booth",
+          "type": "string"
+        },
+        "house_from": {
+          "title": "House From",
+          "type": "integer"
+        },
+        "house_to": {
+          "title": "House To",
+          "type": "integer"
+        },
+        "effective_date": {
+          "title": "Effective Date",
+          "type": "string"
+        }
+      },
+      "required": [
+        "change_id",
+        "from_booth",
+        "to_booth",
+        "house_from",
+        "house_to",
+        "effective_date"
+      ],
+      "title": "BoundaryChange",
+      "type": "object"
+    },
+    "Card": {
+      "properties": {
+        "found": {
+          "title": "Found",
+          "type": "string"
+        },
+        "why_unusual": {
+          "title": "Why Unusual",
+          "type": "string"
+        },
+        "innocent_explanations": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Innocent Explanations",
+          "type": "array"
+        },
+        "confidence_text": {
+          "title": "Confidence Text",
+          "type": "string"
+        },
+        "lang": {
+          "enum": [
+            "en",
+            "hi"
+          ],
+          "title": "Lang",
+          "type": "string"
+        },
+        "source": {
+          "enum": [
+            "llm",
+            "template"
+          ],
+          "title": "Source",
+          "type": "string"
+        }
+      },
+      "required": [
+        "found",
+        "why_unusual",
+        "innocent_explanations",
+        "confidence_text",
+        "lang",
+        "source"
+      ],
+      "title": "Card",
+      "type": "object"
+    },
+    "CitizenAnswer": {
+      "properties": {
+        "lang": {
+          "enum": [
+            "hi",
+            "en",
+            "pa"
+          ],
+          "title": "Lang",
+          "type": "string"
+        },
+        "transcript": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Transcript"
+        },
+        "answer_text": {
+          "title": "Answer Text",
+          "type": "string"
+        },
+        "answer_audio_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Answer Audio Url"
+        },
+        "match": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SearchMatch"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "status": {
+          "enum": [
+            "present",
+            "modified",
+            "not_in_new_list",
+            "not_found"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "reason_category": {
+          "enum": [
+            "shifted",
+            "death_registered",
+            "duplicate_cleanup",
+            "boundary_change",
+            "unexplained",
+            "none"
+          ],
+          "title": "Reason Category",
+          "type": "string"
+        },
+        "next_steps": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Next Steps",
+          "type": "array"
+        },
+        "confidence": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "guard": {
+          "$ref": "#/$defs/GuardResult"
+        }
+      },
+      "required": [
+        "lang",
+        "answer_text",
+        "status",
+        "reason_category",
+        "next_steps",
+        "confidence",
+        "guard"
+      ],
+      "title": "CitizenAnswer",
+      "type": "object"
+    },
+    "CitizenAsk": {
+      "properties": {
+        "text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Text"
+        },
+        "audio_b64": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Audio B64"
+        },
+        "lang": {
+          "anyOf": [
+            {
+              "enum": [
+                "hi",
+                "en",
+                "pa"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Lang"
+        },
+        "channel": {
+          "enum": [
+            "web",
+            "telegram"
+          ],
+          "title": "Channel",
+          "type": "string"
+        }
+      },
+      "required": [
+        "channel"
+      ],
+      "title": "CitizenAsk",
+      "type": "object"
+    },
+    "ClaimCheckRequest": {
+      "properties": {
+        "text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Text"
+        },
+        "image_b64": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Image B64"
+        },
+        "mirror": {
+          "default": true,
+          "title": "Mirror",
+          "type": "boolean"
+        }
+      },
+      "title": "ClaimCheckRequest",
+      "type": "object"
+    },
+    "ClaimInput": {
+      "properties": {
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "source": {
+          "enum": [
+            "text",
+            "image"
+          ],
+          "title": "Source",
+          "type": "string"
+        },
+        "lang": {
+          "enum": [
+            "hi",
+            "en",
+            "pa"
+          ],
+          "title": "Lang",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text",
+        "source",
+        "lang"
+      ],
+      "title": "ClaimInput",
+      "type": "object"
+    },
+    "ClaimVerdict": {
+      "properties": {
+        "claim_id": {
+          "title": "Claim Id",
+          "type": "string"
+        },
+        "input": {
+          "$ref": "#/$defs/ClaimInput"
+        },
+        "normalized_claim": {
+          "title": "Normalized Claim",
+          "type": "string"
+        },
+        "sub_claims": {
+          "items": {
+            "$ref": "#/$defs/SubClaim"
+          },
+          "title": "Sub Claims",
+          "type": "array"
+        },
+        "overall": {
+          "enum": [
+            "verified",
+            "disputed",
+            "unprovable",
+            "mixed"
+          ],
+          "title": "Overall",
+          "type": "string"
+        },
+        "confidence": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "mirror": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Mirror"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "card_png": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Card Png"
+        },
+        "guard": {
+          "$ref": "#/$defs/GuardResult"
+        },
+        "cached": {
+          "default": false,
+          "title": "Cached",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "claim_id",
+        "input",
+        "normalized_claim",
+        "sub_claims",
+        "overall",
+        "confidence",
+        "guard"
+      ],
+      "title": "ClaimVerdict",
+      "type": "object"
+    },
+    "DeathRecord": {
+      "properties": {
+        "booth_id": {
+          "title": "Booth Id",
+          "type": "string"
+        },
+        "house_no": {
+          "title": "House No",
+          "type": "string"
+        },
+        "name_lat": {
+          "title": "Name Lat",
+          "type": "string"
+        },
+        "age": {
+          "title": "Age",
+          "type": "integer"
+        },
+        "date": {
+          "title": "Date",
+          "type": "string"
+        }
+      },
+      "required": [
+        "booth_id",
+        "house_no",
+        "name_lat",
+        "age",
+        "date"
+      ],
+      "title": "DeathRecord",
+      "type": "object"
+    },
+    "EngineRunResult": {
+      "properties": {
+        "flags_total": {
+          "title": "Flags Total",
+          "type": "integer"
+        },
+        "by_type": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "title": "By Type",
+          "type": "object"
+        },
+        "runtime_ms": {
+          "title": "Runtime Ms",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "flags_total",
+        "by_type",
+        "runtime_ms"
+      ],
+      "title": "EngineRunResult",
+      "type": "object"
+    },
+    "EvalResult": {
+      "properties": {
+        "planted_anomalies": {
+          "title": "Planted Anomalies",
+          "type": "integer"
+        },
+        "planted_decoys": {
+          "title": "Planted Decoys",
+          "type": "integer"
+        },
+        "found": {
+          "title": "Found",
+          "type": "integer"
+        },
+        "decoys_cleared": {
+          "title": "Decoys Cleared",
+          "type": "integer"
+        },
+        "by_type": {
+          "items": {
+            "$ref": "#/$defs/TypeScore"
+          },
+          "title": "By Type",
+          "type": "array"
+        },
+        "benign_fp_rate": {
+          "title": "Benign Fp Rate",
+          "type": "number"
+        },
+        "reliability": {
+          "items": {
+            "$ref": "#/$defs/ReliabilityBin"
+          },
+          "title": "Reliability",
+          "type": "array"
+        },
+        "misses": {
+          "items": {
+            "$ref": "#/$defs/Miss"
+          },
+          "title": "Misses",
+          "type": "array"
+        }
+      },
+      "required": [
+        "planted_anomalies",
+        "planted_decoys",
+        "found",
+        "decoys_cleared",
+        "by_type",
+        "benign_fp_rate",
+        "reliability",
+        "misses"
+      ],
+      "title": "EvalResult",
+      "type": "object"
+    },
+    "Evidence": {
+      "properties": {
+        "series": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/EvidencePoint"
+          },
+          "title": "Series",
+          "type": "array"
+        },
+        "note": {
+          "default": "",
+          "title": "Note",
+          "type": "string"
+        }
+      },
+      "title": "Evidence",
+      "type": "object"
+    },
+    "EvidencePoint": {
+      "properties": {
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "number"
+        }
+      },
+      "required": [
+        "label",
+        "value"
+      ],
+      "title": "EvidencePoint",
+      "type": "object"
+    },
+    "Flag": {
+      "properties": {
+        "flag_id": {
+          "title": "Flag Id",
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "deletion_spike",
+            "addition_spike",
+            "duplicate_cluster",
+            "impossible_age",
+            "relation_conflict",
+            "oversized_household",
+            "gender_ratio_swing"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "scope": {
+          "$ref": "#/$defs/Scope"
+        },
+        "metrics": {
+          "$ref": "#/$defs/Metrics"
+        },
+        "reason_codes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Reason Codes",
+          "type": "array"
+        },
+        "stories": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/StoryResult"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "confidence": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "confidence_band": {
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ],
+          "title": "Confidence Band",
+          "type": "string"
+        },
+        "confidence_n": {
+          "title": "Confidence N",
+          "type": "integer"
+        },
+        "likely_benign": {
+          "title": "Likely Benign",
+          "type": "boolean"
+        },
+        "needs_human_review": {
+          "const": true,
+          "default": true,
+          "title": "Needs Human Review",
+          "type": "boolean"
+        },
+        "card": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Card"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "guard": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/GuardResult"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "review": {
+          "$ref": "#/$defs/Review",
+          "default": {
+            "status": "open",
+            "ts": null,
+            "hash": null
+          }
+        }
+      },
+      "required": [
+        "flag_id",
+        "type",
+        "scope",
+        "metrics",
+        "reason_codes",
+        "confidence",
+        "confidence_band",
+        "confidence_n",
+        "likely_benign"
+      ],
+      "title": "Flag",
+      "type": "object"
+    },
+    "FlagList": {
+      "properties": {
+        "items": {
+          "items": {
+            "$ref": "#/$defs/Flag"
+          },
+          "title": "Items",
+          "type": "array"
+        },
+        "total": {
+          "title": "Total",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "items",
+        "total"
+      ],
+      "title": "FlagList",
+      "type": "object"
+    },
+    "GuardLog": {
+      "properties": {
+        "checked": {
+          "title": "Checked",
+          "type": "integer"
+        },
+        "blocked": {
+          "title": "Blocked",
+          "type": "integer"
+        },
+        "rewritten": {
+          "title": "Rewritten",
+          "type": "integer"
+        },
+        "items": {
+          "items": {
+            "$ref": "#/$defs/GuardLogItem"
+          },
+          "title": "Items",
+          "type": "array"
+        }
+      },
+      "required": [
+        "checked",
+        "blocked",
+        "rewritten",
+        "items"
+      ],
+      "title": "GuardLog",
+      "type": "object"
+    },
+    "GuardLogItem": {
+      "properties": {
+        "ts": {
+          "title": "Ts",
+          "type": "string"
+        },
+        "surface": {
+          "enum": [
+            "flag_card",
+            "claim",
+            "citizen",
+            "bot"
+          ],
+          "title": "Surface",
+          "type": "string"
+        },
+        "blocked_terms": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Blocked Terms",
+          "type": "array"
+        },
+        "rewritten": {
+          "title": "Rewritten",
+          "type": "boolean"
+        },
+        "fell_back_to_template": {
+          "title": "Fell Back To Template",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "ts",
+        "surface",
+        "blocked_terms",
+        "rewritten",
+        "fell_back_to_template"
+      ],
+      "title": "GuardLogItem",
+      "type": "object"
+    },
+    "GuardResult": {
+      "properties": {
+        "passed": {
+          "title": "Passed",
+          "type": "boolean"
+        },
+        "blocked_terms": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Blocked Terms",
+          "type": "array"
+        },
+        "rewritten": {
+          "default": false,
+          "title": "Rewritten",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "passed"
+      ],
+      "title": "GuardResult",
+      "type": "object"
+    },
+    "Health": {
+      "properties": {
+        "ok": {
+          "title": "Ok",
+          "type": "boolean"
+        },
+        "demo_mode": {
+          "title": "Demo Mode",
+          "type": "boolean"
+        },
+        "versions": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Versions",
+          "type": "object"
+        }
+      },
+      "required": [
+        "ok",
+        "demo_mode",
+        "versions"
+      ],
+      "title": "Health",
+      "type": "object"
+    },
+    "HostelRecord": {
+      "properties": {
+        "booth_id": {
+          "title": "Booth Id",
+          "type": "string"
+        },
+        "house_no": {
+          "title": "House No",
+          "type": "string"
+        },
+        "capacity": {
+          "title": "Capacity",
+          "type": "integer"
+        },
+        "academic_year_end": {
+          "title": "Academic Year End",
+          "type": "string"
+        }
+      },
+      "required": [
+        "booth_id",
+        "house_no",
+        "capacity",
+        "academic_year_end"
+      ],
+      "title": "HostelRecord",
+      "type": "object"
+    },
+    "Metrics": {
+      "properties": {
+        "observed": {
+          "title": "Observed",
+          "type": "number"
+        },
+        "expected": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Expected"
+        },
+        "n": {
+          "title": "N",
+          "type": "integer"
+        },
+        "p_value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "P Value"
+        },
+        "q_value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Q Value"
+        },
+        "unit": {
+          "default": "records",
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "observed",
+        "n"
+      ],
+      "title": "Metrics",
+      "type": "object"
+    },
+    "Mirror": {
+      "properties": {
+        "claim_text": {
+          "title": "Claim Text",
+          "type": "string"
+        },
+        "sub_claim_verdicts": {
+          "items": {
+            "enum": [
+              "verified",
+              "disputed",
+              "unprovable"
+            ],
+            "type": "string"
+          },
+          "title": "Sub Claim Verdicts",
+          "type": "array"
+        },
+        "identical_treatment": {
+          "title": "Identical Treatment",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "claim_text",
+        "sub_claim_verdicts",
+        "identical_treatment"
+      ],
+      "title": "Mirror",
+      "type": "object"
+    },
+    "Miss": {
+      "properties": {
+        "plant_id": {
+          "title": "Plant Id",
+          "type": "string"
+        },
+        "type": {
+          "title": "Type",
+          "type": "string"
+        },
+        "why": {
+          "title": "Why",
+          "type": "string"
+        }
+      },
+      "required": [
+        "plant_id",
+        "type",
+        "why"
+      ],
+      "title": "Miss",
+      "type": "object"
+    },
+    "Overview": {
+      "properties": {
+        "totals": {
+          "$ref": "#/$defs/Totals"
+        },
+        "booths": {
+          "items": {
+            "$ref": "#/$defs/BoothSummary"
+          },
+          "title": "Booths",
+          "type": "array"
+        }
+      },
+      "required": [
+        "totals",
+        "booths"
+      ],
+      "title": "Overview",
+      "type": "object"
+    },
+    "Planting": {
+      "description": "One entry of the PRIVATE answer key (private/answer_key.json). The engine never reads this.",
+      "properties": {
+        "plant_id": {
+          "title": "Plant Id",
+          "type": "string"
+        },
+        "type": {
+          "anyOf": [
+            {
+              "enum": [
+                "deletion_spike",
+                "addition_spike",
+                "duplicate_cluster",
+                "impossible_age",
+                "relation_conflict",
+                "oversized_household",
+                "gender_ratio_swing"
+              ],
+              "type": "string"
+            },
+            {
+              "enum": [
+                "hostel_moveout",
+                "boundary_change",
+                "mass_death"
+              ],
+              "type": "string"
+            }
+          ],
+          "title": "Type"
+        },
+        "is_benign": {
+          "title": "Is Benign",
+          "type": "boolean"
+        },
+        "booth_id": {
+          "title": "Booth Id",
+          "type": "string"
+        },
+        "voter_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Voter Ids",
+          "type": "array"
+        },
+        "note": {
+          "default": "",
+          "title": "Note",
+          "type": "string"
+        }
+      },
+      "required": [
+        "plant_id",
+        "type",
+        "is_benign",
+        "booth_id",
+        "voter_ids"
+      ],
+      "title": "Planting",
+      "type": "object"
+    },
+    "ReliabilityBin": {
+      "properties": {
+        "bin_lo": {
+          "title": "Bin Lo",
+          "type": "number"
+        },
+        "bin_hi": {
+          "title": "Bin Hi",
+          "type": "number"
+        },
+        "mean_conf": {
+          "title": "Mean Conf",
+          "type": "number"
+        },
+        "frac_true": {
+          "title": "Frac True",
+          "type": "number"
+        },
+        "n": {
+          "title": "N",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "bin_lo",
+        "bin_hi",
+        "mean_conf",
+        "frac_true",
+        "n"
+      ],
+      "title": "ReliabilityBin",
+      "type": "object"
+    },
+    "Residual": {
+      "properties": {
+        "count": {
+          "title": "Count",
+          "type": "integer"
+        },
+        "expected_background": {
+          "title": "Expected Background",
+          "type": "number"
+        },
+        "p_value": {
+          "title": "P Value",
+          "type": "number"
+        },
+        "significant": {
+          "title": "Significant",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "count",
+        "expected_background",
+        "p_value",
+        "significant"
+      ],
+      "title": "Residual",
+      "type": "object"
+    },
+    "Review": {
+      "properties": {
+        "status": {
+          "default": "open",
+          "enum": [
+            "open",
+            "benign",
+            "escalated"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "ts": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ts"
+        },
+        "hash": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Hash"
+        }
+      },
+      "title": "Review",
+      "type": "object"
+    },
+    "ReviewRequest": {
+      "properties": {
+        "status": {
+          "enum": [
+            "benign",
+            "escalated"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "note": {
+          "default": "",
+          "title": "Note",
+          "type": "string"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "title": "ReviewRequest",
+      "type": "object"
+    },
+    "ReviewResponse": {
+      "properties": {
+        "review": {
+          "$ref": "#/$defs/Review"
+        },
+        "audit_hash": {
+          "title": "Audit Hash",
+          "type": "string"
+        }
+      },
+      "required": [
+        "review",
+        "audit_hash"
+      ],
+      "title": "ReviewResponse",
+      "type": "object"
+    },
+    "RollRow": {
+      "description": "One elector in one roll version (roll_v1.parquet / roll_v2.parquet).\n\nvoter_id is stable for the same person across v1 and v2; duplicates get\nDIFFERENT ids; modified records keep their id.",
+      "properties": {
+        "voter_id": {
+          "pattern": "^SBD\\d{7}$",
+          "title": "Voter Id",
+          "type": "string"
+        },
+        "roll_version": {
+          "enum": [
+            "v1",
+            "v2"
+          ],
+          "title": "Roll Version",
+          "type": "string"
+        },
+        "ward_id": {
+          "pattern": "^W\\d{2}$",
+          "title": "Ward Id",
+          "type": "string"
+        },
+        "booth_id": {
+          "pattern": "^B\\d{3}$",
+          "title": "Booth Id",
+          "type": "string"
+        },
+        "serial_no": {
+          "title": "Serial No",
+          "type": "integer"
+        },
+        "house_no": {
+          "title": "House No",
+          "type": "string"
+        },
+        "name_dev": {
+          "title": "Name Dev",
+          "type": "string"
+        },
+        "name_lat": {
+          "title": "Name Lat",
+          "type": "string"
+        },
+        "relation_type": {
+          "enum": [
+            "father",
+            "husband",
+            "mother",
+            "other"
+          ],
+          "title": "Relation Type",
+          "type": "string"
+        },
+        "relation_name_dev": {
+          "title": "Relation Name Dev",
+          "type": "string"
+        },
+        "relation_name_lat": {
+          "title": "Relation Name Lat",
+          "type": "string"
+        },
+        "age": {
+          "title": "Age",
+          "type": "integer"
+        },
+        "gender": {
+          "enum": [
+            "M",
+            "F",
+            "T"
+          ],
+          "title": "Gender",
+          "type": "string"
+        }
+      },
+      "required": [
+        "voter_id",
+        "roll_version",
+        "ward_id",
+        "booth_id",
+        "serial_no",
+        "house_no",
+        "name_dev",
+        "name_lat",
+        "relation_type",
+        "relation_name_dev",
+        "relation_name_lat",
+        "age",
+        "gender"
+      ],
+      "title": "RollRow",
+      "type": "object"
+    },
+    "RuleCard": {
+      "properties": {
+        "rule_id": {
+          "title": "Rule Id",
+          "type": "string"
+        },
+        "what": {
+          "title": "What",
+          "type": "string"
+        },
+        "fires_on_benign_rate": {
+          "title": "Fires On Benign Rate",
+          "type": "number"
+        },
+        "innocent_explanations": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Innocent Explanations",
+          "type": "array"
+        },
+        "resolves_with": {
+          "title": "Resolves With",
+          "type": "string"
+        }
+      },
+      "required": [
+        "rule_id",
+        "what",
+        "fires_on_benign_rate",
+        "innocent_explanations",
+        "resolves_with"
+      ],
+      "title": "RuleCard",
+      "type": "object"
+    },
+    "Scope": {
+      "properties": {
+        "level": {
+          "enum": [
+            "booth",
+            "household",
+            "record"
+          ],
+          "title": "Level",
+          "type": "string"
+        },
+        "booth_id": {
+          "title": "Booth Id",
+          "type": "string"
+        },
+        "house_no": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "House No"
+        },
+        "voter_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Voter Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "level",
+        "booth_id"
+      ],
+      "title": "Scope",
+      "type": "object"
+    },
+    "SearchMatch": {
+      "properties": {
+        "voter_id": {
+          "title": "Voter Id",
+          "type": "string"
+        },
+        "name_dev": {
+          "title": "Name Dev",
+          "type": "string"
+        },
+        "name_lat": {
+          "title": "Name Lat",
+          "type": "string"
+        },
+        "booth_id": {
+          "title": "Booth Id",
+          "type": "string"
+        },
+        "status_v2": {
+          "enum": [
+            "present",
+            "modified",
+            "not_in_new_list",
+            "not_found"
+          ],
+          "title": "Status V2",
+          "type": "string"
+        },
+        "score": {
+          "title": "Score",
+          "type": "number"
+        }
+      },
+      "required": [
+        "voter_id",
+        "name_dev",
+        "name_lat",
+        "booth_id",
+        "status_v2",
+        "score"
+      ],
+      "title": "SearchMatch",
+      "type": "object"
+    },
+    "SearchResult": {
+      "properties": {
+        "matches": {
+          "items": {
+            "$ref": "#/$defs/SearchMatch"
+          },
+          "title": "Matches",
+          "type": "array"
+        },
+        "query_normalized": {
+          "title": "Query Normalized",
+          "type": "string"
+        }
+      },
+      "required": [
+        "matches",
+        "query_normalized"
+      ],
+      "title": "SearchResult",
+      "type": "object"
+    },
+    "Story": {
+      "properties": {
+        "code": {
+          "enum": [
+            "death_registered",
+            "hostel_moveout",
+            "boundary_change",
+            "duplicate_cleanup",
+            "unexplained"
+          ],
+          "title": "Code",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "count": {
+          "title": "Count",
+          "type": "integer"
+        },
+        "share": {
+          "title": "Share",
+          "type": "number"
+        },
+        "ci_lo": {
+          "title": "Ci Lo",
+          "type": "number"
+        },
+        "ci_hi": {
+          "title": "Ci Hi",
+          "type": "number"
+        },
+        "evidence": {
+          "title": "Evidence",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "label",
+        "count",
+        "share",
+        "ci_lo",
+        "ci_hi",
+        "evidence"
+      ],
+      "title": "Story",
+      "type": "object"
+    },
+    "StoryResult": {
+      "properties": {
+        "booth_id": {
+          "title": "Booth Id",
+          "type": "string"
+        },
+        "removed_total": {
+          "title": "Removed Total",
+          "type": "integer"
+        },
+        "stories": {
+          "items": {
+            "$ref": "#/$defs/Story"
+          },
+          "title": "Stories",
+          "type": "array"
+        },
+        "residual": {
+          "$ref": "#/$defs/Residual"
+        },
+        "context_used": {
+          "items": {
+            "enum": [
+              "death_register",
+              "hostel_list",
+              "boundary_changes",
+              "duplicates"
+            ],
+            "type": "string"
+          },
+          "title": "Context Used",
+          "type": "array"
+        },
+        "outcome": {
+          "enum": [
+            "unusual",
+            "likely_benign",
+            "mixed"
+          ],
+          "title": "Outcome",
+          "type": "string"
+        }
+      },
+      "required": [
+        "booth_id",
+        "removed_total",
+        "stories",
+        "residual",
+        "context_used",
+        "outcome"
+      ],
+      "title": "StoryResult",
+      "type": "object"
+    },
+    "StoryToggleRequest": {
+      "properties": {
+        "context_on": {
+          "items": {
+            "enum": [
+              "death_register",
+              "hostel_list",
+              "boundary_changes",
+              "duplicates"
+            ],
+            "type": "string"
+          },
+          "title": "Context On",
+          "type": "array"
+        }
+      },
+      "required": [
+        "context_on"
+      ],
+      "title": "StoryToggleRequest",
+      "type": "object"
+    },
+    "SubClaim": {
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "tool": {
+          "enum": [
+            "deletion_count",
+            "deletion_rate",
+            "addition_count",
+            "duplicate_count",
+            "age_distribution",
+            "gender_ratio",
+            "compare_booths",
+            "story_shares",
+            "unanswerable"
+          ],
+          "title": "Tool",
+          "type": "string"
+        },
+        "params": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          },
+          "default": {},
+          "title": "Params",
+          "type": "object"
+        },
+        "query_shown": {
+          "title": "Query Shown",
+          "type": "string"
+        },
+        "claimed_value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Claimed Value"
+        },
+        "computed_value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Computed Value"
+        },
+        "tolerance": {
+          "default": 0.15,
+          "title": "Tolerance",
+          "type": "number"
+        },
+        "verdict": {
+          "enum": [
+            "verified",
+            "disputed",
+            "unprovable"
+          ],
+          "title": "Verdict",
+          "type": "string"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "string"
+        },
+        "evidence": {
+          "$ref": "#/$defs/Evidence",
+          "default": {
+            "series": [],
+            "note": ""
+          }
+        },
+        "confidence": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "settle_with": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Settle With"
+        }
+      },
+      "required": [
+        "id",
+        "text",
+        "tool",
+        "query_shown",
+        "verdict",
+        "reason",
+        "confidence"
+      ],
+      "title": "SubClaim",
+      "type": "object"
+    },
+    "Totals": {
+      "properties": {
+        "v1": {
+          "title": "V1",
+          "type": "integer"
+        },
+        "v2": {
+          "title": "V2",
+          "type": "integer"
+        },
+        "added": {
+          "title": "Added",
+          "type": "integer"
+        },
+        "deleted": {
+          "title": "Deleted",
+          "type": "integer"
+        },
+        "modified": {
+          "title": "Modified",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "v1",
+        "v2",
+        "added",
+        "deleted",
+        "modified"
+      ],
+      "title": "Totals",
+      "type": "object"
+    },
+    "TypeScore": {
+      "properties": {
+        "type": {
+          "title": "Type",
+          "type": "string"
+        },
+        "tp": {
+          "title": "Tp",
+          "type": "integer"
+        },
+        "fp": {
+          "title": "Fp",
+          "type": "integer"
+        },
+        "fn": {
+          "title": "Fn",
+          "type": "integer"
+        },
+        "precision": {
+          "title": "Precision",
+          "type": "number"
+        },
+        "recall": {
+          "title": "Recall",
+          "type": "number"
+        }
+      },
+      "required": [
+        "type",
+        "tp",
+        "fp",
+        "fn",
+        "precision",
+        "recall"
+      ],
+      "title": "TypeScore",
+      "type": "object"
+    }
+  },
+  "title": "RollWatch",
+  "type": "object",
+  "properties": {
+    "RollRow": {
+      "$ref": "#/$defs/RollRow"
+    },
+    "DeathRecord": {
+      "$ref": "#/$defs/DeathRecord"
+    },
+    "HostelRecord": {
+      "$ref": "#/$defs/HostelRecord"
+    },
+    "BoundaryChange": {
+      "$ref": "#/$defs/BoundaryChange"
+    },
+    "Planting": {
+      "$ref": "#/$defs/Planting"
+    },
+    "Flag": {
+      "$ref": "#/$defs/Flag"
+    },
+    "StoryResult": {
+      "$ref": "#/$defs/StoryResult"
+    },
+    "ClaimVerdict": {
+      "$ref": "#/$defs/ClaimVerdict"
+    },
+    "Health": {
+      "$ref": "#/$defs/Health"
+    },
+    "Overview": {
+      "$ref": "#/$defs/Overview"
+    },
+    "FlagList": {
+      "$ref": "#/$defs/FlagList"
+    },
+    "StoryToggleRequest": {
+      "$ref": "#/$defs/StoryToggleRequest"
+    },
+    "EngineRunResult": {
+      "$ref": "#/$defs/EngineRunResult"
+    },
+    "EvalResult": {
+      "$ref": "#/$defs/EvalResult"
+    },
+    "RuleCard": {
+      "$ref": "#/$defs/RuleCard"
+    },
+    "SearchResult": {
+      "$ref": "#/$defs/SearchResult"
+    },
+    "CitizenAsk": {
+      "$ref": "#/$defs/CitizenAsk"
+    },
+    "CitizenAnswer": {
+      "$ref": "#/$defs/CitizenAnswer"
+    },
+    "ClaimCheckRequest": {
+      "$ref": "#/$defs/ClaimCheckRequest"
+    },
+    "ReviewRequest": {
+      "$ref": "#/$defs/ReviewRequest"
+    },
+    "ReviewResponse": {
+      "$ref": "#/$defs/ReviewResponse"
+    },
+    "AuditEntry": {
+      "$ref": "#/$defs/AuditEntry"
+    },
+    "GuardLog": {
+      "$ref": "#/$defs/GuardLog"
+    }
+  }
+}

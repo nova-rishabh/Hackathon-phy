@@ -1,0 +1,16 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+web/.next/
+
+# Secrets and private blind-eval material
+.env
+private/
+
+# Generated caches (committed at feature freeze via git add -f)
+cache/llm/
+cards/*.png

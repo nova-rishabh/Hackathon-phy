@@ -1,0 +1,23 @@
+{
+  "_about": "What the engine must find on these fixtures. Used by smoke_test.py (TRD §9). Not an eval answer key.",
+  "diff": {
+    "deleted": ["SBD0000002", "SBD0000004", "SBD0000010", "SBD0000011", "SBD0000012", "SBD0000014"],
+    "added": ["SBD0000020"],
+    "modified": ["SBD0000005", "SBD0000013"]
+  },
+  "duplicate_clusters": [["SBD0000001", "SBD0000002"]],
+  "impossible_age": ["SBD0000003"],
+  "story_attribution": {
+    "SBD0000002": "duplicate_cleanup",
+    "SBD0000004": "death_registered",
+    "SBD0000010": "hostel_moveout",
+    "SBD0000011": "hostel_moveout",
+    "SBD0000012": "hostel_moveout",
+    "SBD0000014": "unexplained",
+    "SBD0000013": "boundary_change"
+  },
+  "_story_note": "Stories are per booth: SBD0000013 is 'modified' in the district diff (booth changed) but counts as a removal from B001 explained by boundary change BC01.",
+  "boundary_moves": {"SBD0000013": {"from_booth": "B001", "to_booth": "B002", "change_id": "BC01"}},
+  "booth_outcomes": {"B002": "likely_benign"},
+  "citizen_search": {"query": "meena kumaari booth 1", "expect_voter_id": "SBD0000006", "expect_status": "present"}
+}

@@ -1,0 +1,16 @@
+voter_id,roll_version,ward_id,booth_id,serial_no,house_no,name_dev,name_lat,relation_type,relation_name_dev,relation_name_lat,age,gender
+SBD0000001,v2,W01,B001,1,12,सुनीता शर्मा,Sunita Sharma,father,रमेश शर्मा,Ramesh Sharma,34,F
+SBD0000003,v2,W01,B001,2,9,हरि प्रसाद,Hari Prasad,father,गोविंद प्रसाद,Govind Prasad,117,M
+SBD0000005,v2,W01,B001,3,7,शिव नारायण,Shiv Narayan,father,राम नारायण,Ram Narayan,84,M
+SBD0000006,v2,W01,B001,4,21,मीना कुमारी,Meena Kumari,husband,राजेश कुमार,Rajesh Kumar,52,F
+SBD0000007,v2,W01,B001,5,21,राजेश कुमार,Rajesh Kumar,father,मोहन लाल,Mohan Lal,55,M
+SBD0000008,v2,W01,B001,6,33,अनिल वर्मा,Anil Verma,father,सुरेश वर्मा,Suresh Verma,41,M
+SBD0000009,v2,W01,B001,7,33,पूजा वर्मा,Pooja Verma,husband,अनिल वर्मा,Anil Verma,38,F
+SBD0000015,v2,W01,B001,8,64,अमनदीप कौर,Amandeep Kaur,father,जसवंत सिंह,Jaswant Singh,27,F
+SBD0000020,v2,W01,B001,9,12,प्रिया शर्मा,Priya Sharma,father,रमेश शर्मा,Ramesh Sharma,18,F
+SBD0000016,v2,W01,B002,1,8,सरिता देवी,Sarita Devi,husband,रामकिशन,Ramkishan,46,F
+SBD0000017,v2,W01,B002,2,8,रामकिशन,Ramkishan,father,भगवान दास,Bhagwan Das,49,M
+SBD0000018,v2,W01,B002,3,15,ललिता पाल,Lalita Pal,husband,दीपक पाल,Deepak Pal,42,F
+SBD0000019,v2,W01,B002,4,15,दीपक पाल,Deepak Pal,father,हरि पाल,Hari Pal,44,M
+SBD0000021,v2,W01,B002,5,26,सुखविंदर कौर,Sukhwinder Kaur,husband,बलविंदर सिंह,Balwinder Singh,36,F
+SBD0000013,v2,W01,B002,6,55,गुरप्रीत सिंह,Gurpreet Singh,father,हरभजन सिंह,Harbhajan Singh,29,M

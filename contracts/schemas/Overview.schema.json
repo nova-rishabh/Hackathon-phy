@@ -1,0 +1,128 @@
+{
+  "$defs": {
+    "BoothSummary": {
+      "properties": {
+        "booth_id": {
+          "title": "Booth Id",
+          "type": "string"
+        },
+        "ward_id": {
+          "title": "Ward Id",
+          "type": "string"
+        },
+        "n_v1": {
+          "title": "N V1",
+          "type": "integer"
+        },
+        "n_v2": {
+          "title": "N V2",
+          "type": "integer"
+        },
+        "del_rate": {
+          "title": "Del Rate",
+          "type": "number"
+        },
+        "expected_del_rate": {
+          "title": "Expected Del Rate",
+          "type": "number"
+        },
+        "q_value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Q Value"
+        },
+        "flag_count": {
+          "title": "Flag Count",
+          "type": "integer"
+        },
+        "outcome": {
+          "anyOf": [
+            {
+              "enum": [
+                "unusual",
+                "likely_benign",
+                "mixed"
+              ],
+              "type": "string"
+            },
+            {
+              "const": "normal",
+              "type": "string"
+            }
+          ],
+          "title": "Outcome"
+        }
+      },
+      "required": [
+        "booth_id",
+        "ward_id",
+        "n_v1",
+        "n_v2",
+        "del_rate",
+        "expected_del_rate",
+        "q_value",
+        "flag_count",
+        "outcome"
+      ],
+      "title": "BoothSummary",
+      "type": "object"
+    },
+    "Totals": {
+      "properties": {
+        "v1": {
+          "title": "V1",
+          "type": "integer"
+        },
+        "v2": {
+          "title": "V2",
+          "type": "integer"
+        },
+        "added": {
+          "title": "Added",
+          "type": "integer"
+        },
+        "deleted": {
+          "title": "Deleted",
+          "type": "integer"
+        },
+        "modified": {
+          "title": "Modified",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "v1",
+        "v2",
+        "added",
+        "deleted",
+        "modified"
+      ],
+      "title": "Totals",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "totals": {
+      "$ref": "#/$defs/Totals"
+    },
+    "booths": {
+      "items": {
+        "$ref": "#/$defs/BoothSummary"
+      },
+      "title": "Booths",
+      "type": "array"
+    }
+  },
+  "required": [
+    "totals",
+    "booths"
+  ],
+  "title": "Overview",
+  "type": "object"
+}

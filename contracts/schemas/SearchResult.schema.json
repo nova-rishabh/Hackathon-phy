@@ -1,0 +1,67 @@
+{
+  "$defs": {
+    "SearchMatch": {
+      "properties": {
+        "voter_id": {
+          "title": "Voter Id",
+          "type": "string"
+        },
+        "name_dev": {
+          "title": "Name Dev",
+          "type": "string"
+        },
+        "name_lat": {
+          "title": "Name Lat",
+          "type": "string"
+        },
+        "booth_id": {
+          "title": "Booth Id",
+          "type": "string"
+        },
+        "status_v2": {
+          "enum": [
+            "present",
+            "modified",
+            "not_in_new_list",
+            "not_found"
+          ],
+          "title": "Status V2",
+          "type": "string"
+        },
+        "score": {
+          "title": "Score",
+          "type": "number"
+        }
+      },
+      "required": [
+        "voter_id",
+        "name_dev",
+        "name_lat",
+        "booth_id",
+        "status_v2",
+        "score"
+      ],
+      "title": "SearchMatch",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "matches": {
+      "items": {
+        "$ref": "#/$defs/SearchMatch"
+      },
+      "title": "Matches",
+      "type": "array"
+    },
+    "query_normalized": {
+      "title": "Query Normalized",
+      "type": "string"
+    }
+  },
+  "required": [
+    "matches",
+    "query_normalized"
+  ],
+  "title": "SearchResult",
+  "type": "object"
+}

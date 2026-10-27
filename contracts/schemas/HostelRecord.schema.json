@@ -1,0 +1,28 @@
+{
+  "properties": {
+    "booth_id": {
+      "title": "Booth Id",
+      "type": "string"
+    },
+    "house_no": {
+      "title": "House No",
+      "type": "string"
+    },
+    "capacity": {
+      "title": "Capacity",
+      "type": "integer"
+    },
+    "academic_year_end": {
+      "title": "Academic Year End",
+      "type": "string"
+    }
+  },
+  "required": [
+    "booth_id",
+    "house_no",
+    "capacity",
+    "academic_year_end"
+  ],
+  "title": "HostelRecord",
+  "type": "object"
+}

@@ -1,0 +1,26 @@
+{
+  "properties": {
+    "flags_total": {
+      "title": "Flags Total",
+      "type": "integer"
+    },
+    "by_type": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "By Type",
+      "type": "object"
+    },
+    "runtime_ms": {
+      "title": "Runtime Ms",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "flags_total",
+    "by_type",
+    "runtime_ms"
+  ],
+  "title": "EngineRunResult",
+  "type": "object"
+}

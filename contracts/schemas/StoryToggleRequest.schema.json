@@ -1,0 +1,22 @@
+{
+  "properties": {
+    "context_on": {
+      "items": {
+        "enum": [
+          "death_register",
+          "hostel_list",
+          "boundary_changes",
+          "duplicates"
+        ],
+        "type": "string"
+      },
+      "title": "Context On",
+      "type": "array"
+    }
+  },
+  "required": [
+    "context_on"
+  ],
+  "title": "StoryToggleRequest",
+  "type": "object"
+}

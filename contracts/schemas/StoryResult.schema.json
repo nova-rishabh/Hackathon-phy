@@ -1,0 +1,134 @@
+{
+  "$defs": {
+    "Residual": {
+      "properties": {
+        "count": {
+          "title": "Count",
+          "type": "integer"
+        },
+        "expected_background": {
+          "title": "Expected Background",
+          "type": "number"
+        },
+        "p_value": {
+          "title": "P Value",
+          "type": "number"
+        },
+        "significant": {
+          "title": "Significant",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "count",
+        "expected_background",
+        "p_value",
+        "significant"
+      ],
+      "title": "Residual",
+      "type": "object"
+    },
+    "Story": {
+      "properties": {
+        "code": {
+          "enum": [
+            "death_registered",
+            "hostel_moveout",
+            "boundary_change",
+            "duplicate_cleanup",
+            "unexplained"
+          ],
+          "title": "Code",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "count": {
+          "title": "Count",
+          "type": "integer"
+        },
+        "share": {
+          "title": "Share",
+          "type": "number"
+        },
+        "ci_lo": {
+          "title": "Ci Lo",
+          "type": "number"
+        },
+        "ci_hi": {
+          "title": "Ci Hi",
+          "type": "number"
+        },
+        "evidence": {
+          "title": "Evidence",
+          "type": "string"
+        }
+      },
+      "required": [
+        "code",
+        "label",
+        "count",
+        "share",
+        "ci_lo",
+        "ci_hi",
+        "evidence"
+      ],
+      "title": "Story",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "booth_id": {
+      "title": "Booth Id",
+      "type": "string"
+    },
+    "removed_total": {
+      "title": "Removed Total",
+      "type": "integer"
+    },
+    "stories": {
+      "items": {
+        "$ref": "#/$defs/Story"
+      },
+      "title": "Stories",
+      "type": "array"
+    },
+    "residual": {
+      "$ref": "#/$defs/Residual"
+    },
+    "context_used": {
+      "items": {
+        "enum": [
+          "death_register",
+          "hostel_list",
+          "boundary_changes",
+          "duplicates"
+        ],
+        "type": "string"
+      },
+      "title": "Context Used",
+      "type": "array"
+    },
+    "outcome": {
+      "enum": [
+        "unusual",
+        "likely_benign",
+        "mixed"
+      ],
+      "title": "Outcome",
+      "type": "string"
+    }
+  },
+  "required": [
+    "booth_id",
+    "removed_total",
+    "stories",
+    "residual",
+    "context_used",
+    "outcome"
+  ],
+  "title": "StoryResult",
+  "type": "object"
+}
