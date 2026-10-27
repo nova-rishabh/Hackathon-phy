@@ -132,7 +132,77 @@ export default function Trust() {
           </>
         ) : <Empty what="Ops numbers" />}
       </section>
+
+      <Scale o={o} />
+
+      <section className="panel mt-6">
+        <Eyebrow className="mb-5">Why statistics, not a black box.</Eyebrow>
+        <div className="grid gap-3 md:grid-cols-3 stagger">
+          {([
+            ["No answer key exists.", "Nobody has a labelled record of real wrongful deletions to train a large model on. A booth-level test needs none, and our confidence is calibrated on districts where the answer is known."],
+            ["A notice must say why.", "“412 removed against about 25 expected; 10 match the death register; 401 match no record” can be checked and contested. A model score cannot."],
+            ["Machine learning where it fits.", "Calibrated confidence, cross-script name matching and the language model are learned. The decision about a voter stays explainable."],
+          ] as const).map(([h, b]) => (
+            <div key={h} className="card p-5">
+              <p className="text-[20px] leading-7 tracking-[-0.02em]">{h}</p>
+              <p className="text-[14px] leading-6 text-ink-2 mt-2">{b}</p>
+            </div>
+          ))}
+        </div>
+        <p className="text-[13px] text-ink-2 mt-4 max-w-[80ch]">
+          Research on monitoring voter-file changes found statistical models comparing districts over short spans worked best, and labelled each change&apos;s likely cause, as we do here.{" "}
+          <a className="underline underline-offset-2 hover:text-ink" href="https://arxiv.org/abs/2106.15285" target="_blank" rel="noreferrer">Royston et al., 2021</a>.
+        </p>
+      </section>
     </div>
+  );
+}
+
+type Proj = { electors: number; electors_source: string; audit_core_hours: number; audit_minutes_on_64_cores: number;
+  checks_per_day: number; checks_per_s_avg: number; checks_per_s_peak: number; citizen_answers_per_s_4proc: number | null;
+  machines_at_peak: number | null; assumption: { share_checking: number; window_days: number; peak_factor: number } };
+type Load = { routes: Record<string, { rps: number; p50_ms: number }> };
+
+/** National scale: every number here is computed by the API (/ops: projection, loadtest) from measured runs. */
+function Scale({ o }: { o: Ops | null }) {
+  const p = o?.projection as Proj | undefined, lt = o?.loadtest as Record<string, Load> | undefined;
+  if (!p) return null;
+  const crore = (n: number) => `${(n / 1e7).toLocaleString("en-IN", { maximumFractionDigits: 1 })} crore`;
+  const lakh = (n: number) => `${(n / 1e5).toLocaleString("en-IN", { maximumFractionDigits: 0 })} lakh`;
+  const routes = lt?.["1"] ? Object.keys(lt["1"].routes) : [];
+  return (
+    <section className="panel mt-6">
+      <Eyebrow className="mb-5">At national scale.</Eyebrow>
+      <div className="grid gap-3 md:grid-cols-3 stagger">
+        <div className="card p-5">
+          <p className="mono text-[40px] leading-[48px] tracking-[-0.04em]"><CountUp to={p.audit_minutes_on_64_cores} decimals={1} suffix=" min" /></p>
+          <p className="text-[14px] leading-6 text-ink-2 mt-2">to audit all {crore(p.electors)} electors on 64 cores ({p.audit_core_hours} core-hours), each constituency an independent job.</p>
+        </div>
+        <div className="card p-5">
+          <p className="mono text-[40px] leading-[48px] tracking-[-0.04em]"><CountUp to={p.checks_per_s_peak} suffix="/s" /></p>
+          <p className="text-[14px] leading-6 text-ink-2 mt-2">peak checks if {Math.round(p.assumption.share_checking * 100)}% of voters check once in {p.assumption.window_days} days ({lakh(p.checks_per_day)} a day, {p.assumption.peak_factor}× peak).</p>
+        </div>
+        <div className="card p-5">
+          <p className="mono text-[40px] leading-[48px] tracking-[-0.04em]"><CountUp to={p.machines_at_peak ?? 0} suffix={p.machines_at_peak === 1 ? " machine" : " machines"} /></p>
+          <p className="text-[14px] leading-6 text-ink-2 mt-2">cover that peak at our measured {p.citizen_answers_per_s_4proc} full answers a second per 4-process laptop, before any CDN or claim cache.</p>
+        </div>
+      </div>
+      {routes.length > 0 && (
+        <div className="card overflow-x-auto mt-3">
+          <table className="tbl min-w-[520px]">
+            <thead><tr><th>measured on one laptop</th><th className="r">1 process</th><th className="r">4 processes</th></tr></thead>
+            <tbody className="stagger">
+              {routes.map((r) => (
+                <tr key={r}><td>{r}</td>
+                  <td className="r mono">{lt?.["1"]?.routes[r]?.rps} /s</td>
+                  <td className="r mono">{lt?.["4"]?.routes[r]?.rps ?? "–"} /s</td></tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+      <p className="mono text-[12px] text-ink-3 mt-3">{p.electors_source} · offline mode, one test client (lower bounds) · audit assumes independent constituency jobs</p>
+    </section>
   );
 }
 
