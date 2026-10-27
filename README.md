@@ -23,6 +23,8 @@ All numbers below come from the engine, seed 42.
 - **Run it on your own roll** (`/run`, `POST /audit`). Drop two roll CSVs, or use the 10-booth sample. The same engine flags Booth 47 in about 3 seconds. This is how an office would check a draft before publishing.
 - **Human review.** Signed-in reviewers mark a flag "looks innocent" or "needs a field check". Each review joins a hash chain, so editing an entry breaks the chain.
 - **Citizen lookup.** Search a name in any script, even misspelled. You get your status, the likely reason, Form 6 or Form 7, the 1950 helpline, and a reminder that a BLO never asks for an OTP or money. Hindi answers can be read aloud.
+- **WhatsApp (+91 80764 99841) and Telegram.** Say "hi", type a name, forward a claim (the verdict comes back with a share image), or send a Hindi voice note: it is transcribed and answered with a spoken reply in a native Hindi voice, written to be heard, not the card read aloud.
+- **Watch a booth.** Signed-in users get its current state on WhatsApp, and a message whenever a new audit changes it.
 
 ## The three questions
 
