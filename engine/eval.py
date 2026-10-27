@@ -43,6 +43,25 @@ def matches(f: Flag, p: Planting) -> bool:
     return f.scope.booth_id == p.booth_id or bool(set(f.scope.voter_ids) & set(p.voter_ids))
 
 
+DECOY_STORY = {"mass_death": "death_registered", "hostel_moveout": "hostel_moveout", "boundary_change": "boundary_change"}
+
+
+def decoy_cleared(p: Planting, flags: list[Flag], anomalies: list[Planting]) -> bool:
+    """A decoy is cleared when no raised flag lands on it. When it shares a booth with a real anomaly, the booth
+    flag is right to fire, so the decoy counts as cleared only if the engine attributes its records to the matching
+    innocent story (e.g. all 10 planted deaths matched to the death register), i.e. it was not mistaken for the anomaly."""
+    for f in flags:
+        if not matches(f, p) or f.likely_benign:
+            continue
+        if not any(matches(f, a) for a in anomalies):
+            return False
+        code = DECOY_STORY.get(p.type)
+        got = next((s.count for s in (f.stories.stories if f.stories else []) if s.code == code), 0)
+        if got < 0.9 * len(p.voter_ids):
+            return False
+    return True
+
+
 def evaluate(flags: list[Flag], key: list[Planting], background: list[dict] | None = None) -> EvalResult:
     anomalies = [p for p in key if not p.is_benign]
     decoys = [p for p in key if p.is_benign]
@@ -60,10 +79,7 @@ def evaluate(flags: list[Flag], key: list[Planting], background: list[dict] | No
             any_hit = [f for f in flags if matches(f, p)]
             misses.append(Miss(plant_id=p.plant_id, type=p.type,
                                why="flagged but judged likely benign" if any_hit else "no flag of this type at the planted location"))
-    cleared = 0
-    for p in decoys:
-        if not any(matches(f, p) and not f.likely_benign for f in flags):
-            cleared += 1
+    cleared = sum(decoy_cleared(p, flags, anomalies) for p in decoys)
     fp = {}
     true_flags = []
     for f in flags:
