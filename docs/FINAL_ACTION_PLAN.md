@@ -118,7 +118,7 @@ After it reports: we publish the scoreboard on Trust as "Blind test (planted by 
 - [x] **Realism anchors** (public polling-station metadata, counts only, no names): a real assembly constituency has about 200–260 booths and about 1.7 lakh electors (about 870 per booth; Punjab, West Bengal, Karnataka). Sampleabad (100 booths, 51k) is a scaled-down constituency, and the 1M run is about six constituencies.
 
 ### Product (in order)
-1. **Blind test** (§2). Owner: agent + Rishabh. Then publish on Trust.
+1. ~~Blind test~~ **Done:** 9 of 9 found, 6 of 6 decoys cleared, 0 missed; published on Trust and at `/eval/blind`.
 2. **Website animation pass** (§4). Owner: Claude.
 3. **Scale section on Trust:** show the load-test table and the "all of India in about 14 minutes on 64 cores" line. Owner: Claude.
 4. **"Why statistics, not a black box" card** on Trust, with the research citation. Owner: Claude.

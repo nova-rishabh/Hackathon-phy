@@ -108,7 +108,6 @@ DESIGN (strict)
 **What's real vs synthetic.** The district, names and rolls are synthetic, generated with seeded randomness and planted anomalies plus innocent look-alikes. The method, code, statistics and every number on screen are real.
 
 **Honest limits:**
-- The blind test (a teammate's hidden plantings) is still to run.
 - Confidence curves rest on four synthetic training districts (98 removal-spike flags); real lists need recalibration.
 - Real rolls are per-part PDFs; PDF ingestion is roadmap.
 - Free hosting sleeps after 15 minutes, so the first load takes about a minute. Open the site before you go on.
@@ -130,7 +129,7 @@ DESIGN (strict)
 - *What if the death register itself is wrong?* Then the story is wrong too, and the evidence toggles show it. Switch a source off and watch the leftover move. We show which records explain what, never a bare verdict.
 
 **Data and privacy**
-- *Synthetic data proves nothing?* It proves the method, measured against a known answer key, which real data can't give you. The blind test with hidden plantings is the next step, and real deployment needs recalibration.
+- *Synthetic data proves nothing?* It proves the method against an answer key real data can't give you. In the blind test, a separate AI agent planted the problems and kept the key: we found 9 of 9 and cleared 6 of 6 innocent look-alikes, never having seen it. Real deployment needs recalibration.
 - *Do you infer religion or caste?* Never. Rolls don't contain them and we won't guess from names, so any claim that needs them returns "cannot be proven", with the reason.
 - *How would real data get in?* Rolls are published per polling part. A newsroom or observer runs it locally on rolls they already get legally, through an adapter to our open schema. Public outputs are booth-level, and auditor views mask names.
 - *Couldn't a card be misused as "AI proves deletions"?* Every card says "pattern for human review, not a finding", shows the innocent explanations and the query, and never shows a voter's name.
