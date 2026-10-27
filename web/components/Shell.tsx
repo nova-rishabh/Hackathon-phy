@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useSession } from "@/lib/auth";
 
-const TABS = [["/", "Audit"], ["/check", "Check"], ["/ask", "Ask"]] as const;
+const TABS = [["/", "Audit"], ["/check", "Check"], ["/ask", "Ask"], ["/run", "Run it"]] as const;
 
 export default function Shell({ children }: { children: React.ReactNode }) {
   const path = usePathname();
