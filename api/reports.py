@@ -401,3 +401,44 @@ def export_booths_csv():
         ])
 
     return Response(output.getvalue(), media_type="text/csv", headers={"Content-Disposition": "attachment; filename=rollwatch_booths.csv"})
+
+
+@router.post("/audit/recalibrate")
+def recalibrate_confidence(reviewer_weight: float = 3.0):
+    """Recalibrate Platt confidence curves incorporating human-reviewed verdicts.
+
+    Uses immutable audit trail verdicts (escalated vs benign) to recalibrate
+    logistic regression curves and updates flag probabilities in-memory.
+    """
+    from engine.confidence import Calibrator, band_of, feature
+    s = store()
+    entries = _audit_entries()
+    if not entries:
+        return {
+            "status": "skipped",
+            "message": "No review log entries found to recalibrate from.",
+            "reviewed_cases_incorporated": 0,
+            "models": {},
+        }
+
+    calibrator = Calibrator()
+    res = calibrator.recalibrate_from_reviews(
+        flags_by_id=s.flag_by_id,
+        audit_entries=entries,
+        reviewer_weight=reviewer_weight,
+    )
+
+    updated_flags = 0
+    for f in s.flags:
+        if f.type in calibrator.models:
+            feat = feature(f.type, getattr(f.metrics, "q_value", None), getattr(f.metrics, "observed", None))
+            new_conf, n = calibrator.predict(f.type, feat, likely_benign=f.likely_benign)
+            f.confidence = new_conf
+            f.confidence_band = band_of(new_conf)
+            f.confidence_n = n
+            updated_flags += 1
+
+    res["flags_updated_in_memory"] = updated_flags
+    res["calibrator_state"] = calibrator.to_dict()
+    return res
+
