@@ -41,8 +41,8 @@ export function EyeRing({ size = 360 }: { size?: number }) {
       const r = ref.current?.getBoundingClientRect();
       if (!r) return;
       const dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2);
-      const d = Math.hypot(dx, dy) || 1, k = Math.min(1, d / 400);
-      setP({ x: (dx / d) * 16 * k, y: (dy / d) * 10 * k });
+      const d = Math.hypot(dx, dy) || 1, k = Math.min(1, d / 220);
+      setP({ x: (dx / d) * 24 * k, y: (dy / d) * 14 * k });
     };
     window.addEventListener("pointermove", move);
     return () => window.removeEventListener("pointermove", move);
@@ -57,7 +57,7 @@ export function EyeRing({ size = 360 }: { size?: number }) {
       </g>
       <g className="eyering-blink">
         <path d="M105,250 Q250,95 395,250 Q250,405 105,250 Z" fill="var(--color-surface)" stroke="var(--color-brand)" strokeWidth="9" />
-        <g style={{ transform: `translate(${p.x}px, ${p.y}px)`, transition: "transform 180ms ease-out" }}>
+        <g style={{ transform: `translate(${p.x}px, ${p.y}px)`, transition: "transform 70ms linear" }}>
           <circle cx="250" cy="250" r="72" fill="var(--color-brand)" />
           <circle cx="250" cy="250" r="40" fill="#2A2F33" />
           <circle cx="268" cy="232" r="13" fill="#FFFFFF" />

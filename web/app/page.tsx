@@ -54,28 +54,69 @@ export default function Audit() {
       <section className="grid gap-8 lg:grid-cols-[1fr_auto] items-center">
         <div className="min-w-0">
           <p className="eyebrow mb-5 words">
-            {"Audit. Sampleabad, roll v1 to v2.".split(" ").map((w, i) => <span key={i} style={{ animationDelay: `${i * 60}ms` }}>{w}&nbsp;</span>)}
+            {"Voter roll transparency.".split(" ").map((w, i) => <span key={i} style={{ animationDelay: `${i * 60}ms` }}>{w}&nbsp;</span>)}
           </p>
-          {booth && (
-            <Reveal>
-              <Display size="hero" dim={expected != null ? <>We expected about {fmt(expected)}.</> : undefined}>
-                <span className="mono tracking-[-0.06em]">{sel ? fmt(removed) : <CountUp to={Math.round(removed)} />}</span> names left <Obj><BoothTile booth={booth} outcome={outcome} /></Obj> Booth {boothNo(booth)}.
-              </Display>
-            </Reveal>
-          )}
-          <Reveal delay={250}>
-            <p className="mono text-[13px] text-ink-2 mt-6">
-              v1 {fmt(t.v1)} → v2 {fmt(t.v2)} · removed {fmt(t.deleted)} · added {fmt(t.added)} · modified {fmt(t.modified)}
-              {(ov.mocked || fl.mocked) && <span className="text-ink-3"> · mock data, api not reachable</span>}
+          <Reveal>
+            <Display size="hero" dim="And every rumour about it, checked.">
+              Every change to a voter roll, explained.
+            </Display>
+          </Reveal>
+          <Reveal delay={200}>
+            <p className="text-ink-2 text-[18px] leading-[28px] mt-6 max-w-[60ch]">
+              When a voter list is revised, thousands of names are added, moved or removed, and forwards claiming
+              &ldquo;600 names cut from one booth&rdquo; spread in hours. RollWatch compares the two versions of the list,
+              tells you which changes have an innocent explanation and which don&apos;t, checks viral claims part by part,
+              and helps any voter find out why their own name changed.
             </p>
             <div className="flex flex-wrap gap-3 mt-8">
-              <a href="#grid" className="btn">See every booth</a>
+              <a href="#example" className="btn">See a live example</a>
               <a href="/check" className="btn btn--quiet">Check a forwarded claim</a>
-              {booth && <WatchBooth boothId={booth} />}
+              <a href="/ask" className="btn btn--quiet">Is my name on the list?</a>
             </div>
           </Reveal>
         </div>
         <Reveal delay={150} className="hidden lg:block"><EyeRing size={340} /></Reveal>
+      </section>
+
+      <section className="mt-20 sm:mt-28">
+        <Reveal><Eyebrow className="mb-5">How it works.</Eyebrow></Reveal>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {STEPS.map(([n, title, body], i) => (
+            <Reveal key={n} delay={i * 100}>
+              <article className="panel h-full">
+                <p className="mono text-[13px] text-ink-3">{n}</p>
+                <h3 className="h-section mt-6">{title}</h3>
+                <p className="text-ink-2 text-[15px] mt-3">{body}</p>
+              </article>
+            </Reveal>
+          ))}
+        </div>
+        <Reveal delay={200}>
+          <p className="mono text-[12px] text-ink-3 mt-4">
+            every number is computed in plain Python · the AI only splits sentences and words replies · every output says &ldquo;needs human review&rdquo; · no real voter data: Sampleabad is a fictional district
+          </p>
+        </Reveal>
+      </section>
+
+      <section id="example" className="mt-20 sm:mt-28 scroll-mt-28">
+        <Reveal><Eyebrow className="mb-5">A live example. Sampleabad, roll v1 to v2.</Eyebrow></Reveal>
+        {booth && (
+          <Reveal>
+            <Display size="page" as="h2" dim={expected != null ? <>We expected about {fmt(expected)}. Here is how we tell if that matters.</> : undefined}>
+              <span className="mono tracking-[-0.06em]">{sel ? fmt(removed) : <CountUp to={Math.round(removed)} />}</span> names left <Obj><BoothTile booth={booth} outcome={outcome} /></Obj> Booth {boothNo(booth)}.
+            </Display>
+          </Reveal>
+        )}
+        <Reveal delay={150}>
+          <p className="mono text-[13px] text-ink-2 mt-6">
+            v1 {fmt(t.v1)} → v2 {fmt(t.v2)} · removed {fmt(t.deleted)} · added {fmt(t.added)} · modified {fmt(t.modified)}
+            {(ov.mocked || fl.mocked) && <span className="text-ink-3"> · mock data, api not reachable</span>}
+          </p>
+          <div className="flex flex-wrap gap-3 mt-6">
+            <a href="#grid" className="btn">See every booth</a>
+            {booth && <WatchBooth boothId={booth} />}
+          </div>
+        </Reveal>
       </section>
 
       <div className="mt-16 sm:mt-20 -mx-4">
@@ -215,3 +256,10 @@ function CtaRow() {
     </section>
   );
 }
+
+const STEPS: [string, string, string][] = [
+  ["01", "Compare the two lists.", "We line up the old and new voter list and count, booth by booth, who was added, removed or changed, against what a normal year looks like."],
+  ["02", "Find the story behind each removal.", "Each removal is matched to an innocent record: a registered death, a hostel emptying, a boundary redraw, a duplicate cleanup. What's left is marked unexplained."],
+  ["03", "Check the viral claim.", "Paste a forward. It is split into parts, and each part gets a real query: verified, disputed, or cannot be proven, with the reason shown."],
+  ["04", "Tell the voter what to do.", "Anyone types their name, in Hindi, English or Punjabi, by text or voice, and gets their status, the likely reason, and the official form to file."],
+];
