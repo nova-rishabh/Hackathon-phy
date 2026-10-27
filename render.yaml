@@ -13,6 +13,14 @@ services:
         sync: false
       - key: DEMO_MODE
         value: "0"
+      - key: AUTH_SECRET
+        sync: false
+      - key: WA_WORKER_SECRET
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
 
   - type: web
     name: rollwatch-web
