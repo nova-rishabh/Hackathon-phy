@@ -21,6 +21,8 @@ services:
         sync: false
       - key: SUPABASE_SERVICE_ROLE_KEY
         sync: false
+      - key: REDIS_URL  # optional: shared WhatsApp state so several workers/instances can run (api/shared.py)
+        sync: false
 
   - type: web
     name: rollwatch-web

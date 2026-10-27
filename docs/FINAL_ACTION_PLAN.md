@@ -38,7 +38,7 @@ The 4-process figures are **lower bounds**: our single test client saturates at 
 - **A name lookup is an index search** within one booth or ward, sharded by constituency.
 
 What still has to change for real scale (honest list):
-- WhatsApp sign-in codes and the outbox live in one process's memory. Move them to Redis to run several API instances.
+- ~~WhatsApp state in one process's memory~~ **Done:** `api/shared.py` keeps the outbox, sign-in codes, rate limits and heartbeat in Redis when `REDIS_URL` is set (tested: sign-in started on one process and verified on another). Memory stays the default.
 - Put a CDN (e.g. Cloudflare) in front of the static routes and the share images.
 - Run the engine per constituency in parallel (a job queue), writing per-booth results to object storage.
 - Rate-limit per phone number on WhatsApp (sign-in is already rate-limited).
@@ -122,7 +122,7 @@ After it reports: we publish the scoreboard on Trust as "Blind test (planted by 
 2. **Website animation pass** (§4). Owner: Claude.
 3. **Scale section on Trust:** show the load-test table and the "all of India in about 14 minutes on 64 cores" line. Owner: Claude.
 4. **"Why statistics, not a black box" card** on Trust, with the research citation. Owner: Claude.
-5. **Redis for WhatsApp state**, then two API instances behind Render. Owner: Claude (needs a Redis URL; Upstash free tier).
+5. ~~Redis for WhatsApp state~~ **Done in code.** To use it: create a free Redis (e.g. Upstash), set `REDIS_URL` on Render, then raise `WEB_CONCURRENCY`. Owner: Rishabh (account), Claude (verify).
 6. **Real-data path (roadmap slide only):** PDF-to-roll adapter for one constituency, aggregates only.
 
 ### Pitch

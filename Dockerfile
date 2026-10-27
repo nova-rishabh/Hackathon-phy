@@ -28,6 +28,7 @@ RUN python -m generator --auto-plant 60 --seed 7 --out artifacts && \
 
 EXPOSE 8000
 # Hosts like Render pass PORT; locally it defaults to 8000.
-# WEB_CONCURRENCY = worker processes (one per core). Read paths are stateless; WhatsApp sign-in codes and the
-# outbox live in process memory, so keep 1 worker per instance until they move to a shared store (e.g. Redis).
+# WEB_CONCURRENCY = worker processes (one per core). Read paths are stateless. WhatsApp sign-in codes, the outbox,
+# rate limits and the worker heartbeat live in memory unless REDIS_URL is set (api/shared.py); with it, run as many
+# workers and instances as you like.
 CMD ["sh", "-c", "exec uvicorn api.main:app --host 0.0.0.0 --port ${PORT:-8000} --workers ${WEB_CONCURRENCY:-1}"]
