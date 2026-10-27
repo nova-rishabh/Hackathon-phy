@@ -7,15 +7,33 @@ export const API = process.env.NEXT_PUBLIC_API_BASE || "http://localhost:8000";
 /** The RollWatch WhatsApp bot (a public, demo-only number). */
 export const WA_NUMBER = process.env.NEXT_PUBLIC_WA_NUMBER || "918076499841";
 
+// Requests still waiting after SLOW_MS: the free server sleeps when idle and takes ~30 s to wake.
+const SLOW_MS = 2500;
+let slow = 0;
+const subs = new Set<(n: number) => void>();
+function watchSlow(): () => void {
+  let fired = false;
+  const t = setTimeout(() => { fired = true; slow++; subs.forEach((f) => f(slow)); }, SLOW_MS);
+  return () => { clearTimeout(t); if (fired) { slow--; subs.forEach((f) => f(slow)); } };
+}
+/** True while any API request has been waiting longer than SLOW_MS. */
+export function useSlowApi(): boolean {
+  const [n, setN] = useState(slow);
+  useEffect(() => { subs.add(setN); return () => { subs.delete(setN); }; }, []);
+  return n > 0;
+}
+
 async function call<T>(path: string, init?: RequestInit, ms = 4000): Promise<T> {
   const ctl = new AbortController();
   const t = setTimeout(() => ctl.abort(), ms);
+  const done = watchSlow();
   try {
     const r = await fetch(API + path, { ...init, headers: { ...keyHeaders(), ...authHeaders(), ...(init?.headers as Record<string, string> | undefined) }, signal: ctl.signal });
     if (!r.ok) throw new ApiError(r.status);
     return (await r.json()) as T;
   } finally {
     clearTimeout(t);
+    done();
   }
 }
 
@@ -27,6 +45,7 @@ export class ApiError extends Error {
 export async function postBlob(path: string, body: unknown, ms = 30000): Promise<Blob> {
   const ctl = new AbortController();
   const t = setTimeout(() => ctl.abort(), ms);
+  const done = watchSlow();
   try {
     const r = await fetch(API + path, {
       method: "POST", headers: { ...keyHeaders(), ...authHeaders(), "Content-Type": "application/json" }, body: JSON.stringify(body), signal: ctl.signal,
@@ -35,6 +54,7 @@ export async function postBlob(path: string, body: unknown, ms = 30000): Promise
     return await r.blob();
   } finally {
     clearTimeout(t);
+    done();
   }
 }
 

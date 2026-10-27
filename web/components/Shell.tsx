@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useSession } from "@/lib/auth";
-import { WA_NUMBER } from "@/lib/api";
+import { WA_NUMBER, useSlowApi } from "@/lib/api";
 
 const TABS = [["/", "Audit"], ["/check", "Check"], ["/ask", "Ask"], ["/run", "Run it"]] as const;
 
@@ -43,6 +43,7 @@ export default function Shell({ children }: { children: React.ReactNode }) {
         </p>
       </div>
       <main className="mx-auto max-w-[1240px] px-4 pb-24 pt-6 sm:pt-12">{children}</main>
+      <Waking />
       <Footer />
     </div>
   );
@@ -88,5 +89,18 @@ function Footer() {
         </div>
       </div>
     </footer>
+  );
+}
+
+/** Shown while an API request is slow: the free server sleeps when idle and needs ~30 s to wake. */
+function Waking() {
+  const slow = useSlowApi();
+  return (
+    <div aria-live="polite" className={`waking ${slow ? "in" : ""}`} role="status">
+      {slow && <>
+        <span className="waking-bar" aria-hidden="true"><i /></span>
+        <span className="mono text-[12px] text-ink-2">waking the server · free hosting · about 30 seconds</span>
+      </>}
+    </div>
   );
 }
