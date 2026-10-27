@@ -1,6 +1,6 @@
 "use client";
 import { useMemo, useState } from "react";
-import { useApi, fmt, pct, boothNo } from "@/lib/api";
+import { useApi, fmt, pct, boothNo, WA_NUMBER } from "@/lib/api";
 import { OVERVIEW_MOCK, FLAGS_MOCK } from "@/lib/mocks";
 import type { BoothSummary, Flag, FlagList, Overview } from "@/lib/types";
 import FlagDrawer, { flagKind } from "@/components/FlagDrawer";
@@ -110,8 +110,8 @@ export default function Audit() {
                     <p className="text-[17px]">Message the Telegram bot <span className="dim">→</span></p>
                     <p className="mono text-[12px] text-ink-3 mt-1">@Rollwatch_bot · send a name or forward a claim</p>
                   </a>
-                  {process.env.NEXT_PUBLIC_WA_NUMBER && (
-                    <a href={`https://wa.me/${process.env.NEXT_PUBLIC_WA_NUMBER}`} target="_blank" rel="noreferrer" className="card p-4 group-row block">
+                  {WA_NUMBER && (
+                    <a href={`https://wa.me/${WA_NUMBER}`} target="_blank" rel="noreferrer" className="card p-4 group-row block">
                       <p className="text-[17px]">Message on WhatsApp <span className="dim">→</span></p>
                       <p className="mono text-[12px] text-ink-3 mt-1">same bot · send a name or forward a claim</p>
                     </a>

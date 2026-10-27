@@ -3,6 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useSession } from "@/lib/auth";
+import { WA_NUMBER } from "@/lib/api";
 
 const TABS = [["/", "Audit"], ["/check", "Check"], ["/ask", "Ask"], ["/run", "Run it"]] as const;
 
@@ -48,7 +49,7 @@ export default function Shell({ children }: { children: React.ReactNode }) {
 }
 
 const API_DOCS = (process.env.NEXT_PUBLIC_API_BASE || "http://localhost:8000") + "/docs";
-const WA = process.env.NEXT_PUBLIC_WA_NUMBER;
+const WA = WA_NUMBER;
 const COLS: [string, [string, string][]][] = [
   ["Product", [["/", "Audit"], ["/check", "Check a claim"], ["/ask", "Ask about a name"], ["/trust", "Trust and error rates"]]],
   ["Use it", [["/login", "Sign in"], ["/settings", "Bring your own keys"], ["https://t.me/Rollwatch_bot", "Telegram bot"], ...(WA ? [[`https://wa.me/${WA}`, "WhatsApp bot"] as [string, string]] : []), [API_DOCS, "Open API"]]],

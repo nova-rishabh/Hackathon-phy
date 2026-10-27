@@ -4,6 +4,8 @@ import { keyHeaders } from "./keys";
 import { authHeaders } from "./auth";
 
 export const API = process.env.NEXT_PUBLIC_API_BASE || "http://localhost:8000";
+/** The RollWatch WhatsApp bot (a public, demo-only number). */
+export const WA_NUMBER = process.env.NEXT_PUBLIC_WA_NUMBER || "918076499841";
 
 async function call<T>(path: string, init?: RequestInit, ms = 4000): Promise<T> {
   const ctl = new AbortController();
