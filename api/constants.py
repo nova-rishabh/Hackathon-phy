@@ -273,6 +273,15 @@ DOCS_UNSURE = {
     "hi": "आपकी उम्र के हिसाब से जन्म-तिथि सीमा के पास है, इसलिए देखें कि इनमें से कौन-सा लागू है:",
     "pa": "ਤੁਹਾਡੀ ਉਮਰ ਮੁਤਾਬਕ ਜਨਮ-ਤਾਰੀਖ਼ ਹੱਦ ਦੇ ਨੇੜੇ ਹੈ, ਇਸ ਲਈ ਵੇਖੋ ਕਿ ਇਨ੍ਹਾਂ ਵਿੱਚੋਂ ਕਿਹੜਾ ਲਾਗੂ ਹੈ:",
 }
+DOCS_OTHER = {
+    "en": ["Born outside India: proof of birth registration from the Indian Mission abroad.",
+           "Citizen by registration or naturalisation: the Certificate of Registration of Citizenship."],
+    "hi": ["भारत के बाहर जन्म: विदेश में भारतीय मिशन से जन्म पंजीकरण का प्रमाण।",
+           "पंजीकरण या देशीकरण से नागरिकता: नागरिकता पंजीकरण प्रमाणपत्र।"],
+    "pa": ["ਭਾਰਤ ਤੋਂ ਬਾਹਰ ਜਨਮ: ਵਿਦੇਸ਼ ਵਿੱਚ ਭਾਰਤੀ ਮਿਸ਼ਨ ਤੋਂ ਜਨਮ ਰਜਿਸਟ੍ਰੇਸ਼ਨ ਦਾ ਸਬੂਤ।",
+           "ਰਜਿਸਟ੍ਰੇਸ਼ਨ ਜਾਂ ਨੈਚੁਰਲਾਈਜ਼ੇਸ਼ਨ ਨਾਲ ਨਾਗਰਿਕਤਾ: ਨਾਗਰਿਕਤਾ ਰਜਿਸਟ੍ਰੇਸ਼ਨ ਸਰਟੀਫਿਕੇਟ।"],
+}
+DOCS_SOURCE = "SIR Information Sheet for Enumeration Form, as handed out by BLOs. Indicative, not exhaustive: confirm with your BLO."
 DOCS_LIST = {
     "en": "Accepted documents include a birth certificate, passport, school-board (matriculation) certificate, a "
           "government or PSU employee ID or pension order, a permanent residence certificate, a family register or "

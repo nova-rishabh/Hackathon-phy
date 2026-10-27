@@ -444,7 +444,26 @@ def ask(req: CitizenAsk) -> CitizenAnswer:
     return _answer(lang, status, reason, steps, conf, match, lines + footer, transcript)
 
 
+def documents(dob: str | None, lang: str) -> dict:
+    """Which documents a notice would ask for, from a date of birth (YYYY-MM-DD); without one, every case."""
+    lang = lang if lang in ("en", "hi", "pa") else "en"
+    order = ["before", "between", "after"]
+    if dob and re.fullmatch(r"\d{4}-\d{2}-\d{2}", dob):
+        b = _bracket(dob)
+        lines = [C.DOCS_HEAD[lang], C.DOCS_BRACKET[b][lang]]
+    else:
+        b = None
+        lines = [C.DOCS_HEAD[lang]] + [C.DOCS_BRACKET[k][lang] for k in order]
+    return {"bracket": b, "lang": lang, "lines": lines, "other": C.DOCS_OTHER[lang], "list": C.DOCS_LIST[lang],
+            "cutoffs": list(C.DOB_CUTOFFS), "source": C.DOCS_SOURCE}
+
+
 # ------------------------------------------------------------------ router
+@router.get("/documents")
+def documents_route(dob: str | None = None, lang: str = "en"):
+    return documents(dob, lang)
+
+
 @router.get("/search", response_model=SearchResult)
 def get_search(q: str, booth_id: str | None = None, age: int | None = None):
     return search(q, booth_id, age)
