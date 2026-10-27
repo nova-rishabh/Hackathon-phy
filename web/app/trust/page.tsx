@@ -149,12 +149,19 @@ function Reliability({ bins }: { bins: EvalResult["reliability"] }) {
         {[0, 0.5, 1].map((t) => (
           <g key={t} fontFamily="var(--font-mono)" fontSize="10" fill="var(--color-ink-3)">
             <text x={x(t)} y={S - 8} textAnchor="middle">{t * 100}%</text>
-            <text x={6} y={y(t) + 3}>{t * 100}</text>
+            <text x={6} y={y(t) + 3}>{t * 100}%</text>
           </g>
         ))}
-        {bins.map((b, i) => <circle key={i} cx={x(b.mean_conf)} cy={y(b.frac_true)} r={3 + 7 * Math.sqrt(b.n / maxN)} fill="var(--color-ink)" />)}
+        {bins.map((b, i) => (
+          <g key={i}>
+            <circle cx={x(b.mean_conf)} cy={y(b.frac_true)} r={3 + 7 * Math.sqrt(b.n / maxN)} fill="var(--color-ink)" />
+            <text x={x(b.mean_conf)} y={y(b.frac_true) - 14 - 7 * Math.sqrt(b.n / maxN) + (i % 2) * -12} textAnchor="middle"
+              fontFamily="var(--font-mono)" fontSize="9" fill="var(--color-ink-2)">{Math.round(b.frac_true * 100)}% · n {b.n}</text>
+          </g>
+        ))}
       </svg>
       <p className="mono text-[11px] text-ink-3 text-center mt-2">stated confidence → share that were real · dot size = n</p>
+      <p className="text-[13px] text-ink-2 mt-3">Dots below the dashed line mean we sound surer than we are. Every flag still goes to a person.</p>
     </div>
   );
 }

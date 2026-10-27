@@ -33,6 +33,14 @@ export default function Card() {
   const [v, setV] = useState<ClaimVerdict | null>(null);
   const [done, setDone] = useState(false);
   const [origin, setOrigin] = useState("");
+  // Fit the fixed 1080px card to a phone; the headless 1080px screenshot still gets scale 1.
+  const [scale, setScale] = useState(1);
+  useEffect(() => {
+    const fit = () => setScale(Math.min(1, document.documentElement.clientWidth / 1080));
+    fit();
+    window.addEventListener("resize", fit);
+    return () => window.removeEventListener("resize", fit);
+  }, []);
 
   useEffect(() => {
     setOrigin(window.location.origin);
@@ -48,7 +56,8 @@ export default function Card() {
   const claim = v?.input.text ?? "";
   const big = claim.length > 90 ? 44 : 56;
   return (
-    <div style={{ width: 1080, height: 1350, background: "var(--color-page)", padding: 48, boxSizing: "border-box" }} data-ready={done ? "1" : "0"}>
+    <div style={{ width: 1080 * scale, height: 1350 * scale, overflow: "hidden" }}>
+    <div style={{ width: 1080, height: 1350, background: "var(--color-page)", padding: 48, boxSizing: "border-box", transform: `scale(${scale})`, transformOrigin: "top left" }} data-ready={done ? "1" : "0"}>
       <div className="panel" style={{ height: "100%", padding: 56, borderRadius: 28, display: "flex", flexDirection: "column" }}>
         <div className="flex justify-between items-baseline">
           <span className="text-[30px] tracking-[-0.04em]">rollwatch</span>
@@ -83,12 +92,13 @@ export default function Card() {
         <div className="mt-auto flex items-end justify-between gap-8 pt-10">
           <div className="min-w-0">
             {v && <p className="mono text-[20px] leading-8">how sure {Math.round(v.confidence * 100)}% · patterns for human review, not findings</p>}
-            {v?.mirror && <p className="mono text-[18px] leading-7 text-ink-2 mt-2">mirror claim checked · identical treatment · same tools · same tolerance</p>}
+            {v?.mirror && <p className="mono text-[18px] leading-7 text-ink-2 mt-2">mirror claim checked · {v.mirror.identical_treatment ? "identical treatment · same tools · same tolerance" : "treatment differed · needs human review"}</p>}
             <p className="mono text-[16px] leading-6 text-ink-3 mt-4">synthetic data · sampleabad is fictional · check any claim at the link</p>
           </div>
           {origin && <QR text={`${origin}/check`} />}
         </div>
       </div>
+    </div>
     </div>
   );
 }

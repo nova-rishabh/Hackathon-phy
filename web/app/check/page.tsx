@@ -104,7 +104,7 @@ export default function Check() {
                 <div className="grid gap-3 md:grid-cols-2">
                   <MirrorCard title={res.input.text} verdicts={subs.map((s) => s.verdict)} rows={subs.map((s) => s.text)} />
                   <MirrorCard title={mirror.claim_text} verdicts={mirror.sub_claim_verdicts}
-                    rows={mirror.sub_claim_verdicts.map((_, i) => (mocked ? MIRROR_ROWS[i]?.text : null) ?? `Sub-claim ${i + 1}`)} />
+                    rows={mirrorRows(mirror.claim_text, mirror.sub_claim_verdicts.length, mocked)} />
                 </div>
                 <p className="mono text-[12px] text-ink-3 text-center pt-4 pb-2">
                   {mirror.identical_treatment ? "identical treatment · same tools · same tolerance" : "treatment differed · needs human review"}
@@ -116,6 +116,12 @@ export default function Check() {
       )}
     </div>
   );
+}
+
+// The API joins one restatement per sub-claim with "; " (api/claims.py mirror_of), so split it back.
+function mirrorRows(text: string, n: number, mocked: boolean): string[] {
+  const parts = text.split("; ").map((t) => t.charAt(0).toUpperCase() + t.slice(1));
+  return Array.from({ length: n }, (_, i) => (mocked ? MIRROR_ROWS[i]?.text : null) ?? (parts.length === n ? parts[i] : `Part ${i + 1} of the opposite claim`));
 }
 
 function MirrorCard({ title, verdicts, rows }: { title: string; verdicts: string[]; rows: string[] }) {
