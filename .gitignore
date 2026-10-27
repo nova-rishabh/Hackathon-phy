@@ -5,6 +5,8 @@ __pycache__/
 
 # Node
 node_modules/
+wa/.auth/
+wa/qr.png
 web/.next/
 
 # Secrets and private blind-eval material
