@@ -228,9 +228,7 @@ def claims_check(req: ClaimCheckRequest):
     if not (req.text or req.image_b64):
         raise HTTPException(422, "send text or image_b64")
     v = claims.check(req)
-    card = ROOT / "cards" / f"{v.claim_id}.png"
-    if card.exists():
-        v.card_png = f"/cards/{v.claim_id}.png"
+    v.card_png = f"/cards/{v.claim_id}.png"  # drawn on first request by the web app and cached (card_png route)
     _claims[v.claim_id] = v
     try:
         _claims_dir().mkdir(parents=True, exist_ok=True)
