@@ -6,6 +6,7 @@ import type { BoothSummary, Flag, FlagList, Overview } from "@/lib/types";
 import FlagDrawer, { flagKind } from "@/components/FlagDrawer";
 import StoryPanel from "@/components/StoryPanel";
 import { Display, Obj, BoothTile, Eyebrow } from "@/components/Display";
+import { WatchBooth } from "@/components/AccountActions";
 import FlagGroups from "@/components/FlagGroups";
 import { Reveal, CountUp, EyeRing, Marquee } from "@/components/Motion";
 import { benchSummary, big } from "@/lib/bench";
@@ -70,6 +71,7 @@ export default function Audit() {
             <div className="flex flex-wrap gap-3 mt-8">
               <a href="#grid" className="btn">See every booth</a>
               <a href="/check" className="btn btn--quiet">Check a forwarded claim</a>
+              {booth && <WatchBooth boothId={booth} />}
             </div>
           </Reveal>
         </div>

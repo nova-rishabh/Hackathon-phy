@@ -1,6 +1,7 @@
 "use client";
-import { useState } from "react";
-import { postJson, boothNo } from "@/lib/api";
+import { useRef, useState } from "react";
+import Link from "next/link";
+import { postJson, postBlob, ApiError, boothNo } from "@/lib/api";
 import { citizenMock } from "@/lib/mocks";
 import type { CitizenAnswer } from "@/lib/types";
 import Chip from "@/components/Chip";
@@ -36,8 +37,38 @@ export default function Ask() {
   const [busy, setBusy] = useState(false);
   const [log, setLog] = useState<Msg[]>([]);
 
-  const send = async () => {
-    const q = text.trim();
+  const [voiceErr, setVoiceErr] = useState<"" | "nokey" | "fail">("");
+  const [rec, setRec] = useState<"idle" | "rec" | "busy">("idle");
+  const recRef = useRef<MediaRecorder | null>(null);
+
+  const onVoiceErr = (e: unknown) => setVoiceErr(e instanceof ApiError && e.status === 503 ? "nokey" : "fail");
+
+  const speak = async () => {
+    if (rec === "rec") { recRef.current?.stop(); return; }
+    setVoiceErr("");
+    let stream: MediaStream;
+    try { stream = await navigator.mediaDevices.getUserMedia({ audio: true }); } catch { setVoiceErr("fail"); return; }
+    const mr = new MediaRecorder(stream);
+    const parts: Blob[] = [];
+    mr.ondataavailable = (e) => { if (e.data.size) parts.push(e.data); };
+    mr.onstop = async () => {
+      stream.getTracks().forEach((t) => t.stop());
+      setRec("busy");
+      try {
+        const mime = mr.mimeType || "audio/webm";
+        const b64 = await blobToB64(new Blob(parts, { type: mime }));
+        const r = await postJson<{ text: string }>("/voice/stt", { audio_b64: b64, mime, lang }, 30000);
+        if (r.text?.trim()) { setText(r.text); await send(r.text); }
+      } catch (e) { onVoiceErr(e); }
+      setRec("idle");
+    };
+    recRef.current = mr;
+    mr.start();
+    setRec("rec");
+  };
+
+  const send = async (said?: string) => {
+    const q = (said ?? text).trim();
     if (!q) return;
     setLog((l) => [...l, { me: q }]);
     setText(""); setBusy(true);
@@ -68,20 +99,63 @@ export default function Ask() {
           {log.map((m, i) =>
             "me" in m ? <p key={i} className="bubble bubble--me">{m.me}</p>
             : "err" in m ? <p key={i} className="bubble bubble--rw text-ink-2">{m.err}</p>
-            : <Status key={i} a={m.rw} mocked={m.mocked} />,
+            : <Status key={i} a={m.rw} mocked={m.mocked} onVoiceErr={onVoiceErr} />,
           )}
           {busy && <p className="mono text-[13px] text-ink-3">looking up the roll…</p>}
         </div>
         <form className="mt-6 flex gap-3 flex-col sm:flex-row" onSubmit={(e) => { e.preventDefault(); send(); }}>
           <input className="input" lang={lang} value={text} onChange={(e) => setText(e.target.value)} placeholder={PLACEHOLDER[lang]} aria-label="Your question" />
+          <button type="button" className="btn btn--quiet shrink-0 justify-center" style={{ height: 56 }} disabled={busy || rec === "busy"} onClick={speak} aria-pressed={rec === "rec"}>
+            {rec === "rec" ? "Stop" : rec === "busy" ? "Listening…" : "Speak"}
+          </button>
           <button className="btn shrink-0 justify-center" style={{ height: 56 }} disabled={busy || !text.trim()}>Ask</button>
         </form>
+        {voiceErr && (
+          <p className="text-[14px] text-ink-2 mt-3" aria-live="polite">
+            {voiceErr === "nokey"
+              ? <>Voice needs an ElevenLabs key: add one in <Link href="/settings" className="underline underline-offset-2 text-ink">Keys</Link>.</>
+              : "Voice did not work this time. Type your question instead."}
+          </p>
+        )}
       </section>
     </div>
   );
 }
 
-function Status({ a, mocked }: { a: CitizenAnswer; mocked: boolean }) {
+const blobToB64 = (b: Blob) => new Promise<string>((ok, no) => {
+  const r = new FileReader();
+  r.onload = () => ok(String(r.result).split(",")[1] ?? "");
+  r.onerror = no;
+  r.readAsDataURL(b);
+});
+
+function Listen({ text, lang, onErr }: { text: string; lang: string; onErr: (e: unknown) => void }) {
+  const [state, setState] = useState<"idle" | "busy" | "play">("idle");
+  const audio = useRef<HTMLAudioElement | null>(null);
+  const url = useRef<string>("");
+  const play = async () => {
+    if (state === "play") { audio.current?.pause(); setState("idle"); return; }
+    try {
+      if (!url.current) {
+        setState("busy");
+        url.current = URL.createObjectURL(await postBlob("/voice/tts", { text, lang }));
+      }
+      const el = audio.current ?? new Audio();
+      audio.current = el;
+      el.src = url.current;
+      el.onended = () => setState("idle");
+      await el.play();
+      setState("play");
+    } catch (e) { setState("idle"); onErr(e); }
+  };
+  return (
+    <button type="button" className="btn btn--quiet" onClick={play} disabled={state === "busy"} aria-pressed={state === "play"}>
+      {state === "busy" ? "Loading…" : state === "play" ? "Stop" : "Listen"}
+    </button>
+  );
+}
+
+function Status({ a, mocked, onVoiceErr }: { a: CitizenAnswer; mocked: boolean; onVoiceErr: (e: unknown) => void }) {
   const [kind, label] = STATUS[a.status] ?? ["unprovable", a.status];
   const m = a.match;
   const scriptLang = a.lang === "en" ? "en" : "hi";
@@ -110,7 +184,9 @@ function Status({ a, mocked }: { a: CitizenAnswer; mocked: boolean }) {
         how sure {Math.round(a.confidence * 100)}% · needs human review · confirm on the official voter portal or call 1950
         {mocked && " · mock data, api not reachable"}
       </p>
-      {a.answer_audio_url && <audio className="mt-3 w-full" controls src={a.answer_audio_url} />}
+      {a.answer_audio_url
+        ? <audio className="mt-3 w-full" controls src={a.answer_audio_url} />
+        : <div className="mt-4"><Listen text={a.answer_text} lang={a.lang} onErr={onVoiceErr} /></div>}
     </div>
   );
 }

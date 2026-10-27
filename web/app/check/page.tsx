@@ -6,6 +6,7 @@ import { CLAIM_MOCK, DEMO_CLAIM, MIRROR_ROWS } from "@/lib/mocks";
 import type { ClaimVerdict } from "@/lib/types";
 import Chip from "@/components/Chip";
 import Glyph from "@/components/Glyph";
+import { SaveCheck } from "@/components/AccountActions";
 import { Display, Eyebrow } from "@/components/Display";
 
 const toB64 = (f: File) => new Promise<string>((ok, no) => {
@@ -93,6 +94,7 @@ export default function Check() {
             how sure {Math.round(res.confidence * 100)}% · patterns for human review, not findings ·{" "}
             <Link className="underline underline-offset-2 hover:text-ink" href={`/card/${encodeURIComponent(res.claim_id)}`}>open share card</Link>
           </p>
+          {!mocked && <div className="mt-4"><SaveCheck claimId={res.claim_id} claimText={res.input.text || String(res.normalized_claim ?? "")} overall={res.overall} /></div>}
 
           {mirror && (
             <section className="mt-24">
