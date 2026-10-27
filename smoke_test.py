@@ -60,11 +60,30 @@ def per_record_story(a, d):
     return out
 
 
-# PLACEHOLDER check 3: neutrality guard blocks 5 seeded bad strings (owner: guard session)
-# PLACEHOLDER check 4: claim verdict rule maps claimed vs computed (owner: claims session)
-# PLACEHOLDER check 5: API boots and /overview returns 100 booths (owner: api session)
+def api_checks():
+    """Checks 3-5 (owner: A1)."""
+    from api.guard import check as guard_check
+    bad = ["The roll was rigged in this booth", "A party worker from BJP did this", "Kejriwal removed these names",
+           "बूथ में धांधली हुई", "ਇਹ ਵੋਟ ਚੋਰੀ ਹੈ"]
+    for s in bad:
+        check(f"3 guard blocks: {s[:24]}", not guard_check(s).passed)
+    check("3 guard passes neutral text", guard_check("412 records were removed in Booth B047.").passed)
+    from api.claims import verdict_of
+    got = [verdict_of(100, 105)[0], verdict_of(600, 412)[0], verdict_of(None, 412)[0]]
+    check("4 claim verdict rule", got == ["verified", "disputed", "unprovable"], f"got {got}")
+    if not (ROOT / "artifacts" / "roll_v2.parquet").exists():
+        check("5 API /overview 100 booths", False, "artifacts/ missing: run the generator + engine first")
+        return
+    os.environ.setdefault("ROLLWATCH_DATA", str(ROOT / "artifacts"))
+    from fastapi.testclient import TestClient
+    from api.main import app
+    r = TestClient(app).get("/overview")
+    n = len(r.json().get("booths", [])) if r.status_code == 200 else 0
+    check("5 API /overview 100 booths", n == 100, f"status={r.status_code} booths={n}")
+
 
 if __name__ == "__main__":
     engine_checks()
+    api_checks()
     print("FAILED: " + ", ".join(FAILS) if FAILS else "ALL PASSED")
     sys.exit(1 if FAILS else 0)

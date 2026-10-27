@@ -66,7 +66,8 @@ async def middleware(request, call_next):
 
 def _norm_route(r: str) -> str:
     parts = r.strip("/").split("/")
-    if parts and parts[0] in ("flags", "stories", "cards", "review") and len(parts) > 1:
+    if parts and len(parts) > 1 and (parts[0] in ("flags", "stories", "cards", "review")
+                                     or (parts[0] == "claims" and parts[1] != "check")):
         return f"/{parts[0]}/{{id}}"
     return r
 

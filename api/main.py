@@ -12,7 +12,16 @@ import threading
 import time
 from pathlib import Path
 
-from fastapi import FastAPI, HTTPException, Query
+import os
+
+_ROOT = Path(__file__).resolve().parent.parent
+if os.environ.get("DEMO_MODE", "0") == "1":
+    # Demo mode: data only from artifacts/, LLM only from cache/llm/ (cache miss -> template). No overrides.
+    os.environ["ROLLWATCH_DATA"] = str(_ROOT / "artifacts")
+    os.environ["ROLLWATCH_CACHE"] = str(_ROOT / "cache" / "llm")
+    os.environ.pop("ROLLWATCH_OPS", None)
+
+from fastapi import FastAPI, HTTPException, Query  # noqa: E402
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
@@ -231,8 +240,9 @@ def claim_get(claim_id: str):
 
 @app.get("/cards/{claim_id}.png")
 def card_png(claim_id: str):
-    p = ROOT / "cards" / f"{Path(claim_id).name}.png"
-    if not p.exists():
+    name = f"{Path(claim_id).name}.png"
+    p = next((x for x in (data_dir() / "cards" / name, ROOT / "cards" / name) if x.exists()), None)
+    if p is None:
         raise HTTPException(404, "card not rendered")
     return FileResponse(p, media_type="image/png")
 
