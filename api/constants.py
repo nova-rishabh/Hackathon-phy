@@ -243,6 +243,10 @@ DEADLINE_LINE = {  # VERIFY the claims/objections window at H0 on voters.eci.gov
 }
 
 STOPWORDS |= set("boot age umar umr saal sal years old naam: hello hi namaste".split())
+# Spoken filler: voice notes come in full sentences ("namaste, mera naam ... hai, booth 47").
+STOPWORDS |= set("""from hey hii hiii sir madam ji namaskar can you tell check please this here
+नमस्ते नमस्कार हेलो हैलो हाय जी बताइए बताइये बताओ बताएं चेक करो करें कीजिए कीजिये देखो देखिए यह ये वाला वाली से
+ਸਤ ਸ੍ਰੀ ਅਕਾਲ ਹੈਲੋ ਜੀ ਦੱਸੋ ਚੈੱਕ ਕਰੋ""".split())
 
 # ------------------------------------------------------------------ rule cards (Trust page, M10)
 # Per rule: (innocent explanations, what resolves it). Rates come from engine/eval.py -> rules.json.
