@@ -160,7 +160,8 @@ export default function Trust() {
 
 type Proj = { electors: number; electors_source: string; audit_core_hours: number; audit_minutes_on_64_cores: number;
   checks_per_day: number; checks_per_s_avg: number; checks_per_s_peak: number; citizen_answers_per_s_4proc: number | null;
-  machines_at_peak: number | null; assumption: { share_checking: number; window_days: number; peak_factor: number } };
+  machines_at_peak: number | null; assumption: { share_checking: number; window_days: number; peak_factor: number };
+  states?: Record<string, string | number>[]; state_cores?: number };
 type Load = { routes: Record<string, { rps: number; p50_ms: number }> };
 
 /** National scale: every number here is computed by the API (/ops: projection, loadtest) from measured runs. */
@@ -196,6 +197,20 @@ function Scale({ o }: { o: Ops | null }) {
                 <tr key={r}><td>{r}</td>
                   <td className="r mono">{lt?.["1"]?.routes[r]?.rps} /s</td>
                   <td className="r mono">{lt?.["4"]?.routes[r]?.rps ?? "–"} /s</td></tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+      {p.states && p.states.length > 0 && (
+        <div className="card overflow-x-auto mt-3">
+          <table className="tbl min-w-[520px]">
+            <thead><tr><th>largest states</th><th className="r">electors</th><th className="r">audit on one {p.state_cores}-core server</th></tr></thead>
+            <tbody className="stagger">
+              {p.states.slice(0, 6).map((s) => (
+                <tr key={String(s.state)}><td>{s.state}</td>
+                  <td className="r mono">{crore(Number(s.electors))}</td>
+                  <td className="r mono">{s[`minutes_on_${p.state_cores}_cores`]} min</td></tr>
               ))}
             </tbody>
           </table>
