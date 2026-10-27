@@ -8,6 +8,16 @@ import Chip from "@/components/Chip";
 // Booth-level patterns first; record-level checks (many small flags) fold below them.
 const ORDER = ["deletion_spike", "addition_spike", "gender_ratio_swing", "impossible_age", "oversized_household", "duplicate_cluster", "relation_conflict"];
 const PAGE = 8;
+// One plain line per check, so a reader knows what each group means before opening it.
+const HELP: Record<string, string> = {
+  deletion_spike: "far more removals than the booth's ages predict",
+  addition_spike: "far more additions than the district rate",
+  gender_ratio_swing: "the share of women moved sharply between lists",
+  impossible_age: "an age below 18 or above 110",
+  oversized_household: "more than 15 voters at one house number",
+  duplicate_cluster: "the same person may appear twice, in two spellings or scripts",
+  relation_conflict: "a family link that can't be right, e.g. a parent younger than the child",
+};
 const bid = (id: string) => "B" + String(boothNo(id)).padStart(3, "0");
 
 export default function FlagGroups({ flags, onOpen }: { flags: Flag[]; onOpen: (f: Flag) => void }) {
@@ -35,9 +45,12 @@ export default function FlagGroups({ flags, onOpen }: { flags: Flag[]; onOpen: (
           <div key={type} className="border-t border-line first:border-t-0">
             <button onClick={() => setOpen({ ...open, [type]: !o })} aria-expanded={o}
               className="group-row w-full text-left px-4 py-4 flex items-center justify-between gap-3 rounded-[16px]">
-              <span className="flex items-center gap-3 min-w-0">
-                <span className="caret mono text-ink-3" data-open={o}>›</span>
-                <span className="text-[17px]">{typeLabel(type)}</span>
+              <span className="flex items-start gap-3 min-w-0">
+                <span className="caret mono text-ink-3 mt-0.5" data-open={o}>›</span>
+                <span className="min-w-0">
+                  <span className="block text-[17px]">{typeLabel(type)}</span>
+                  {HELP[type] && <span className="block text-[13px] text-ink-3 mt-0.5">{HELP[type]}</span>}
+                </span>
               </span>
               <span className="mono text-[12px] text-ink-3 shrink-0">{fmt(items.length)} · {fmt(review)} to review</span>
             </button>

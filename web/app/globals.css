@@ -175,7 +175,8 @@ button { cursor: pointer; font: inherit; color: inherit; background: none; borde
 .group-row:hover { background: var(--color-page); }
 .caret { display: inline-block; transition: transform 200ms; }
 .caret[data-open="true"] { transform: rotate(90deg); }
-.flaglist { max-height: 560px; overflow-y: auto; }
+.flaglist { max-height: 420px; overflow-y: auto; width: 100%; }
+@media (min-width: 1024px) { .flaglist { max-height: none; height: 100%; } }
 
 @media (prefers-reduced-motion: reduce) {
   .reveal, .words > span, .grid10 .tile { opacity: 1; transform: none; animation: none; transition: none; }

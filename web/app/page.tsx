@@ -80,9 +80,9 @@ export default function Audit() {
 
       <section className="mt-16 sm:mt-24">
         <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] items-stretch">
-          <div className="min-w-0">
+          <div className="min-w-0 flex flex-col">
             <Reveal><Eyebrow className="mb-5">How it works.</Eyebrow></Reveal>
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-4 sm:grid-cols-2 flex-1 auto-rows-fr">
               {STEPS.map(([n, title, body], i) => (
                 <Reveal key={n} delay={i * 100} className="h-full">
                   <article className="panel h-full !p-6">
@@ -96,10 +96,33 @@ export default function Audit() {
           </div>
           <div className="min-w-0 flex flex-col">
             <Reveal><Eyebrow className="mb-5">Watch it in 33 seconds.</Eyebrow></Reveal>
-            <Reveal delay={150} className="flex-1 flex">
-              <div className="panel !p-3 flex-1 flex items-center">
+            <Reveal delay={150}>
+              <div className="panel !p-3">
                 <video className="w-full rounded-[20px] block bg-surface" src="/rollwatch-film.mp4" poster="/film-poster.jpg"
                   controls playsInline preload="metadata" />
+              </div>
+            </Reveal>
+            <Reveal delay={250} className="flex-1 flex mt-4">
+              <div className="panel !p-6 flex-1 flex flex-col">
+                <Eyebrow>Try it yourself.</Eyebrow>
+                <div className="grid gap-3 sm:grid-cols-2 mt-4">
+                  <a href="https://t.me/Rollwatch_bot" target="_blank" rel="noreferrer" className="card p-4 group-row block">
+                    <p className="text-[17px]">Message the Telegram bot <span className="dim">→</span></p>
+                    <p className="mono text-[12px] text-ink-3 mt-1">@Rollwatch_bot · send a name or forward a claim</p>
+                  </a>
+                  <a href="/ask" className="card p-4 group-row block">
+                    <p className="text-[17px]">Ask on the web <span className="dim">→</span></p>
+                    <p className="mono text-[12px] text-ink-3 mt-1">Hindi · English · Punjabi · voice</p>
+                  </a>
+                </div>
+                <p className="mono text-[12px] text-ink-3 mt-auto pt-4">try one of these fictional voters</p>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {[["Meena Kumari", "47"], ["Ravi Verma", "12"], ["Harpreet Kaur", "63"]].map(([n, d]) => (
+                    <a key={n} href="/ask" className="card px-3 py-2 group-row">
+                      <span className="text-[14px]">{n}</span> <span className="mono text-[11px] text-ink-3">booth {d}</span>
+                    </a>
+                  ))}
+                </div>
               </div>
             </Reveal>
           </div>
@@ -145,9 +168,19 @@ export default function Audit() {
       </div>
 
       <section id="grid" className="panel mt-16 sm:mt-20 scroll-mt-28">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,614px)_1fr]">
+        <div className="mb-8 max-w-[72ch]">
+          <Eyebrow className="mb-3">Every booth, at a glance.</Eyebrow>
+          <h2 className="h-section">Each square is one polling booth. <span className="dim">The number is the share of its voters removed between the two lists.</span></h2>
+          <div className="flex flex-wrap gap-x-5 gap-y-2 mt-5 mono text-[12px] text-ink-2">
+            <span className="flex items-center gap-2"><i className="inline-block w-4 h-4 rounded-[4px] bg-signal" />unusual, needs human review</span>
+            <span className="flex items-center gap-2"><i className="inline-block w-4 h-4 rounded-[4px] bg-benign" />unusual, but an innocent record explains it</span>
+            <span className="flex items-center gap-2"><i className="inline-block w-4 h-4 rounded-[4px] hatch" />partly explained</span>
+            <span className="flex items-center gap-2"><i className="inline-block w-4 h-4 rounded-[4px] bg-surface border border-line" />normal for its size and ages</span>
+          </div>
+        </div>
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,614px)_1fr] lg:items-stretch">
           <div className="min-w-0">
-            <Eyebrow className="mb-5">Removal rate by booth. Tap a booth.</Eyebrow>
+            <Eyebrow className="mb-5">Tap a booth to see why.</Eyebrow>
             <div className="grid10">
               {ov.data.booths.map((b, i) => (
                 <button key={b.booth_id} className={`tile ${TILE[b.outcome]} ${b.outcome === "unusual" ? "ping" : ""}`} aria-pressed={b.booth_id === booth}
@@ -162,12 +195,16 @@ export default function Audit() {
             <p className="mono text-[12px] text-ink-2 mt-4 min-h-10">
               {hover
                 ? <>{bid(hover.booth_id)} · {hover.ward_id} · {fmt(hover.n_v1)} → {fmt(hover.n_v2)} · removed {pct(hover.del_rate, 1)} vs {pct(hover.expected_del_rate, 1)} expected · {OUT[hover.outcome]}</>
-                : msg || "yellow unusual · periwinkle likely benign · hatched mixed · white neutral"}
+                : msg || "hover a booth for its numbers · tap it for the full story"}
             </p>
           </div>
-          <div className="min-w-0">
-            <Eyebrow className="mb-5">Flags, grouped by check. Booth patterns first.</Eyebrow>
-            <FlagGroups flags={flags} onOpen={(f) => { setSel(f.scope.booth_id); setOpen(f); setMsg(""); }} />
+          <div className="min-w-0 flex flex-col lg:relative">
+            <Eyebrow className="mb-5">What the engine flagged, by check. Tap one to see why.</Eyebrow>
+            <div className="flex-1 min-h-[420px] lg:min-h-0 lg:relative">
+              <div className="lg:absolute lg:inset-0 flex">
+                <FlagGroups flags={flags} onOpen={(f) => { setSel(f.scope.booth_id); setOpen(f); setMsg(""); }} />
+              </div>
+            </div>
           </div>
         </div>
       </section>
