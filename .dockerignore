@@ -1,0 +1,11 @@
+.venv/
+**/__pycache__/
+web/
+bot/
+private/
+artifacts/
+cache/
+cards/
+.env
+.git/
+docs/

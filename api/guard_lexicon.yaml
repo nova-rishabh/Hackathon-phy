@@ -1,0 +1,37 @@
+# Neutrality Guard lexicon (TRD §6). Matched case-insensitively on word boundaries.
+# Procedural text from api/constants.py is allowlisted before matching.
+fraud:
+  en: [fraud, fraudulent, rigged, rigging, rig, scam, scammed, conspiracy, conspire, stolen, steal, stealing,
+       vote theft, vote chori, ghost voter, ghost voters, fake voter, fake voters, bogus, manipulated, manipulation,
+       tampered, tampering, deliberately, targeted, targeting, purge, purged, cheating, cheated, loot, illegal]
+  hi: [धोखाधड़ी, धांधली, घोटाला, साजिश, साज़िश, षड्यंत्र, चोरी, वोट चोरी, फर्जी, फ़र्जी, जानबूझकर, जान बूझकर,
+       हेराफेरी, गड़बड़ी, घपला, बेईमानी, फर्जीवाड़ा, निशाना]
+  pa: [ਧੋਖਾਧੜੀ, ਧਾਂਦਲੀ, ਘੁਟਾਲਾ, ਸਾਜ਼ਿਸ਼, ਸਾਜਿਸ਼, ਚੋਰੀ, ਵੋਟ ਚੋਰੀ, ਜਾਅਲੀ, ਫ਼ਰਜ਼ੀ, ਫਰਜ਼ੀ, ਜਾਣਬੁੱਝ ਕੇ, ਹੇਰਾਫੇਰੀ, ਘਪਲਾ]
+  translit: [dhandhli, dhaandhli, ghotala, saazish, sajish, farzi, farji, chori, jaanbujhkar, herapheri, ghapla]
+party:
+  en: [BJP, INC, Congress, AAP, Aam Aadmi, BSP, SP, Samajwadi, TMC, Trinamool, CPI, CPM, "CPI(M)", Akali Dal, SAD,
+       Shiromani Akali, NCP, Shiv Sena, DMK, AIADMK, RJD, JDU, "JD(U)", BRS, TDP, YSRCP, NDA, UPA, INDIA bloc, Bharatiya Janata]
+  hi: [भाजपा, कांग्रेस, आप पार्टी, बसपा, सपा, तृणमूल, अकाली दल, शिवसेना, राजद, जदयू, एनडीए, यूपीए]
+  pa: [ਭਾਜਪਾ, ਕਾਂਗਰਸ, ਆਪ ਪਾਰਟੀ, ਅਕਾਲੀ ਦਲ, ਬਸਪਾ]
+institution:
+  en: [Election Commission, ECI, Chief Electoral Officer, CEO office, Supreme Court, High Court, Home Ministry,
+       NIA, CBI, Police]
+  hi: [चुनाव आयोग, निर्वाचन आयोग, सुप्रीम कोर्ट, उच्चतम न्यायालय, हाई कोर्ट, पुलिस, गृह मंत्रालय]
+  pa: [ਚੋਣ ਕਮਿਸ਼ਨ, ਸੁਪਰੀਮ ਕੋਰਟ, ਹਾਈ ਕੋਰਟ, ਪੁਲਿਸ]
+public_figure:
+  en: [Modi, Narendra Modi, Rahul Gandhi, Sonia Gandhi, Kejriwal, Amit Shah, Mamata, Mamata Banerjee, Yogi Adityanath,
+       Akhilesh, Mayawati, Bhagwant Mann, Nitish Kumar, Owaisi]
+  hi: [मोदी, राहुल गांधी, सोनिया गांधी, केजरीवाल, अमित शाह, ममता, योगी, अखिलेश, मायावती, भगवंत मान, नीतीश, ओवैसी]
+  pa: [ਮੋਦੀ, ਰਾਹੁਲ ਗਾਂਧੀ, ਕੇਜਰੀਵਾਲ, ਭਗਵੰਤ ਮਾਨ]
+community:  # never inferred; flagged in claims, blocked in generated text
+  en: [community, religion, religious, caste, Hindu, Hindus, Muslim, Muslims, Sikh, Sikhs, Christian, Christians,
+       Dalit, Dalits, OBC, SC/ST, minority, minorities, Brahmin, Jat, Yadav]
+  hi: [समुदाय, धर्म, जाति, हिंदू, हिन्दू, मुस्लिम, मुसलमान, सिख, ईसाई, दलित, अल्पसंख्यक, ब्राह्मण, जाट, यादव, क़ौम, कौम]
+  pa: [ਭਾਈਚਾਰਾ, ਭਾਈਚਾਰੇ, ਧਰਮ, ਜਾਤ, ਜਾਤੀ, ਹਿੰਦੂ, ਮੁਸਲਮਾਨ, ਸਿੱਖ, ਈਸਾਈ, ਦਲਿਤ, ਘੱਟਗਿਣਤੀ]
+  translit: [samudaay, samuday, dharam, jaati, jati, biradari, qaum, kaum]
+real_place:  # real places outside the synthetic district
+  en: [Delhi, New Delhi, Mumbai, Kolkata, Chennai, Bengaluru, Bangalore, Hyderabad, Lucknow, Patna, Jaipur, Chandigarh,
+       Amritsar, Ludhiana, Jalandhar, Patiala, Bathinda, Punjab, Haryana, Uttar Pradesh, Bihar, Bengal, West Bengal,
+       Maharashtra, Gujarat, Rajasthan, Karnataka, Kerala, Tamil Nadu, Assam, Varanasi, Ayodhya, Noida, Gurugram, Gurgaon]
+  hi: [दिल्ली, मुंबई, कोलकाता, चेन्नई, लखनऊ, पटना, जयपुर, चंडीगढ़, अमृतसर, लुधियाना, पंजाब, हरियाणा, उत्तर प्रदेश, बिहार, बंगाल, महाराष्ट्र, गुजरात, राजस्थान, वाराणसी, अयोध्या]
+  pa: [ਦਿੱਲੀ, ਅੰਮ੍ਰਿਤਸਰ, ਲੁਧਿਆਣਾ, ਜਲੰਧਰ, ਪਟਿਆਲਾ, ਬਠਿੰਡਾ, ਪੰਜਾਬ, ਹਰਿਆਣਾ, ਚੰਡੀਗੜ੍ਹ]
