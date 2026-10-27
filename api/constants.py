@@ -255,3 +255,21 @@ RULE_CONTEXT = {
 WA_OTP_TEXT = {
     "en": "Your RollWatch code is {code}. It expires in 5 minutes. Never share it with anyone, including a BLO.",
 }
+
+# Watched booths (numbers filled in from the engine). Plain text, no emoji.
+WA_BOOTH_STATUS = {
+    "en": "Booth {b}: {removed} names removed between the two lists, {unexplained}% not explained by any record. {label}.",
+    "en_normal": "Booth {b}: {removed} names removed between the two lists, about what a booth like this usually loses. {label}.",
+}
+WA_BOOTH_LABEL = {
+    "review": "Needs human review",
+    "benign": "Likely benign: a record explains most of it",
+    "normal": "In line with a normal booth",
+}
+WA_WATCH_TEXT = {
+    "en": "You are watching Booth {b} on RollWatch.\n{status}\nWe will message you when a new audit changes it. "
+          "Synthetic demo district. Patterns for human review, not findings.",
+}
+WA_ALERT_TEXT = {
+    "en": "RollWatch: a new audit ran.\n{status}\nSee why: {link}\nPatterns for human review, not findings.",
+}

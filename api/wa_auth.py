@@ -248,6 +248,15 @@ class _Store:
                              headers=self._h({"Prefer": "resolution=merge-duplicates,return=minimal"}))
         r.raise_for_status()
 
+    async def all(self, table: str) -> list[dict]:
+        """Every row with its phone (server-side alerts only; never exposed through an endpoint)."""
+        if self.kind == "memory":
+            return [{**r, "phone": p} for p, rows in self.mem.items() for (t, _), r in rows.items() if t == table]
+        async with httpx.AsyncClient(timeout=15) as c:
+            r = await c.get(f"{self.url}/rest/v1/{table}", headers=self._h(), params={"select": "*"})
+        r.raise_for_status()
+        return r.json()
+
     async def delete(self, table: str, phone: str, key: str, val: str):
         if self.kind == "memory":
             self.mem.get(phone, {}).pop((table, val), None)
@@ -307,10 +316,49 @@ async def me_booths(authorization: str | None = Header(None)):
     return await _do(account().list("wa_watched_booths", _user(authorization)))
 
 
+def booth_status(booth_id: str) -> str | None:
+    """One line on a booth, every number from the engine; wording from constants."""
+    from api.store import store
+    s = store()
+    st = s.stories.get(booth_id)
+    if st is None:
+        return None
+    un = next((x for x in st.stories if x.code == "unexplained"), None)
+    spike = next((f for f in s.flags if f.type == "deletion_spike" and f.scope.booth_id == booth_id), None)
+    label = C.WA_BOOTH_LABEL["normal" if spike is None else "benign" if spike.likely_benign else "review"]
+    tpl = C.WA_BOOTH_STATUS["en_normal" if spike is None else "en"]
+    return tpl.format(b=int(booth_id[1:]), removed=st.removed_total,
+                                          unexplained=round((un.share if un else 0) * 100), label=label)
+
+
+def _queue(to: str, text: str):
+    _outbox.append({"id": secrets.token_hex(8), "to": to, "text": text})
+    _evt().set()
+
+
 @router.post("/me/booths")
 async def me_booths_add(body: BoothIn, authorization: str | None = Header(None)):
-    await _do(account().put("wa_watched_booths", _user(authorization), "booth_id", body.model_dump()))
+    phone = _user(authorization)
+    await _do(account().put("wa_watched_booths", phone, "booth_id", body.model_dump()))
+    status = booth_status(body.booth_id)
+    if status and _worker_online():  # confirm on WhatsApp with the booth's state right now
+        _queue(phone, C.WA_WATCH_TEXT["en"].format(b=int(body.booth_id[1:]), status=status))
     return {"ok": True}
+
+
+@router.post("/wa/alerts")
+async def wa_alerts(x_wa_secret: str | None = Header(None)):
+    """After a new audit run: every watcher gets their booth's latest state. Worker secret only."""
+    _check_worker(x_wa_secret)
+    web = os.environ.get("WEB_BASE", "https://rollwatch-web.onrender.com").rstrip("/")
+    rows = await _do(account().all("wa_watched_booths"))
+    sent = 0
+    for r in rows:
+        status = booth_status(r["booth_id"])
+        if status:
+            _queue(r["phone"], C.WA_ALERT_TEXT["en"].format(status=status, link=f"{web}/"))
+            sent += 1
+    return {"queued": sent}
 
 
 @router.delete("/me/booths/{booth_id}")
