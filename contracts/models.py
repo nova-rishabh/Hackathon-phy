@@ -387,6 +387,78 @@ class GuardLog(BaseModel):
     items: list[GuardLogItem]
 
 
+# ---------------------------------------------------------------- Organizations, RBAC & API Keys
+OrgRole = Literal["owner", "admin", "auditor", "reviewer", "viewer"]
+OrgTier = Literal["free", "pro", "enterprise"]
+
+
+class QuotaInfo(BaseModel):
+    checks_limit: int = 1000
+    checks_used: int = 0
+    max_seats: int = 5
+    seats_used: int = 1
+    rate_limit_per_min: int = 60
+    pdf_ingest: bool = True
+
+
+class OrgMember(BaseModel):
+    member_id: str
+    email: str
+    role: OrgRole
+    joined_at: str
+
+
+class ApiKeyItem(BaseModel):
+    key_id: str
+    name: str
+    prefix: str
+    last4: str
+    role: OrgRole = "auditor"
+    scopes: list[str] = ["audit:read", "audit:write", "search"]
+    created_at: str
+    expires_at: str | None = None
+    is_active: bool = True
+    last_used_at: str | None = None
+
+
+class Organization(BaseModel):
+    id: str
+    name: str
+    slug: str
+    tier: OrgTier = "pro"
+    quotas: QuotaInfo = QuotaInfo()
+    created_at: str
+
+
+class CreateOrgRequest(BaseModel):
+    name: str
+    slug: str | None = None
+    tier: OrgTier = "pro"
+    admin_email: str = "admin@rollwatch.org"
+
+
+class AddMemberRequest(BaseModel):
+    email: str
+    role: OrgRole = "auditor"
+
+
+class CreateKeyRequest(BaseModel):
+    name: str
+    role: OrgRole = "auditor"
+    scopes: list[str] = ["audit:read", "audit:write", "search"]
+    expires_in_days: int | None = 90
+
+
+class CreateKeyResponse(BaseModel):
+    key_id: str
+    name: str
+    token: str  # Plaintext key shown once upon creation
+    role: OrgRole
+    scopes: list[str]
+    created_at: str
+    expires_at: str | None
+
+
 # Everything the exporter writes to contracts/schemas/ (and on to web/lib/types.ts).
 EXPORTED: list[type[BaseModel]] = [
     RollRow, DeathRecord, HostelRecord, BoundaryChange, Planting,
@@ -394,4 +466,7 @@ EXPORTED: list[type[BaseModel]] = [
     Health, Overview, FlagList, StoryToggleRequest, EngineRunResult, EvalResult, RuleCard,
     SearchResult, CitizenAsk, CitizenAnswer, ClaimCheckRequest, ReviewRequest, ReviewResponse,
     AuditEntry, GuardLog,
+    Organization, QuotaInfo, OrgMember, ApiKeyItem, CreateOrgRequest, AddMemberRequest,
+    CreateKeyRequest, CreateKeyResponse,
 ]
+
