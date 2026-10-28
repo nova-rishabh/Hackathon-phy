@@ -269,9 +269,29 @@ def eval_blind():
         d = ROOT / "api" / "data"
         e = json.loads((d / "blind_eval.json").read_text(encoding="utf-8"))
         r = json.loads((d / "blind_rules.json").read_text(encoding="utf-8"))
+        own = [x for x in r["rules"] if not x["rule"].startswith("official_")]
         rules = [{"rule": x["rule"], "raised": x["flags_raised"], "false_positive_rate": x["false_positive_rate"]}
-                 for x in r["rules"] if not x["rule"].startswith("official_")]
-        return {"eval": e, "rules": rules, "planted_by": "a separate AI agent; config and key kept private",
+                 for x in own]
+        # False alarms counted on flags raised for review. Flags the engine itself cleared as "likely benign" are
+        # not alarms (eval's per-type precision counts them as false positives, which reads worse than it is).
+        raised = sum(x["flags_raised"] for x in own)
+        false = sum(x["raised_not_matching_planting"] for x in own)
+        high = [b for b in e.get("reliability", []) if b["bin_lo"] >= 0.75]
+        n_high = sum(b["n"] for b in high)
+        false_alarms = {
+            "flags_total": sum(x["flags_total"] for x in own), "raised": raised, "raised_real": raised - false,
+            "raised_false": false, "real_share": round((raised - false) / raised, 4) if raised else None,
+            "cleared_likely_benign": sum(x["flags_cleared_likely_benign"] for x in own),
+            "cleared_on_planted_decoy": sum(x["cleared_on_planted_decoy"] for x in own),
+            "high_conf_flags": n_high,
+            "high_conf_real_share": round(sum(b["frac_true"] * b["n"] for b in high) / n_high, 4) if n_high else None,
+            "by_rule": [{"rule": x["rule"], "raised": x["flags_raised"], "false": x["raised_not_matching_planting"]}
+                        for x in own if x["flags_raised"]],
+            "booth_spike_false": sum(x["raised_not_matching_planting"] for x in own
+                                     if x["rule"] in ("deletion_spike", "addition_spike")),
+        }
+        return {"eval": e, "rules": rules, "false_alarms": false_alarms,
+                "planted_by": "a separate AI agent; config and key kept private",
                 "calibration": "four public training districts only"}
     try:
         return _frozen_dict("eval_blind", build)

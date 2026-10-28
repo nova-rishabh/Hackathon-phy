@@ -1,10 +1,11 @@
 "use client";
+import type { ReactNode } from "react";
 import { useApi, pct } from "@/lib/api";
 import { benchSummary, big } from "@/lib/bench";
 import type { EvalResult, RuleCard, GuardLog } from "@/lib/types";
 import Glyph from "@/components/Glyph";
 import { Display, Eyebrow } from "@/components/Display";
-import { CountUp } from "@/components/Motion";
+import { CountUp, InView } from "@/components/Motion";
 
 // /ops is not in contracts/api.md yet, so read it loosely.
 type Ops = Record<string, unknown>;
@@ -80,6 +81,7 @@ export default function Trust() {
               <p className="text-[13px] text-ink-2 mt-3">Weakest spot: impossible-relation checks, about a quarter of which fire on innocent records here. Every flag still goes to a person.</p>
             </div>
           </div>
+          {blind.data.false_alarms && <FalseAlarms f={blind.data.false_alarms} noMisses={b.misses.length === 0} />}
           <p className="text-[13px] text-ink-2 mt-4 max-w-[80ch]">
             A separate AI agent wrote the plantings (anomalies and innocent look-alikes) for a fresh district and kept the answer key private. The engine was calibrated only on {blind.data.calibration}, and never saw the key; only this scoreboard was published.
           </p>
@@ -201,8 +203,51 @@ export default function Trust() {
   );
 }
 
+type FalseAlarmStats = { flags_total: number; raised: number; raised_real: number; raised_false: number;
+  real_share: number | null; cleared_likely_benign: number; cleared_on_planted_decoy: number; high_conf_flags: number;
+  high_conf_real_share: number | null; by_rule: { rule: string; raised: number; false: number }[]; booth_spike_false: number };
 type Blind = { eval: EvalResult; rules: { rule: string; raised: number; false_positive_rate: number | null }[];
-  planted_by: string; calibration: string };
+  false_alarms?: FalseAlarmStats; planted_by: string; calibration: string };
+
+const RULE_WORDS: Record<string, string> = {
+  duplicate_cluster: "duplicate pairs", relation_conflict: "relation conflicts", impossible_age: "impossible ages",
+  oversized_household: "oversized households", gender_ratio_swing: "gender swings",
+  deletion_spike: "removal spikes", addition_spike: "addition spikes",
+};
+
+/** How many flags sent to a person were wrong. Counts come from the API (/eval/blind: false_alarms). */
+function FalseAlarms({ f, noMisses }: { f: FalseAlarmStats; noMisses: boolean }) {
+  const wrong = f.by_rule.filter((r) => r.false > 0);
+  const cells: [ReactNode, string][] = [
+    [<CountUp key="r" to={Math.round((f.real_share ?? 0) * 100)} suffix="%" />,
+      `of the ${f.raised} flags raised for review were real (${f.raised_real}); ${f.raised_false} were false alarms.`],
+    [<CountUp key="s" to={f.booth_spike_false} />,
+      "false alarms on booth removal or addition spikes, the flags a rumour is built on."],
+    [<CountUp key="c" to={f.cleared_likely_benign} />,
+      `flags the engine marked likely innocent itself (deaths, hostels, large families)${noMisses ? "; none of them hid a planted anomaly" : ""}.`],
+  ];
+  return (
+    <div className="card p-5 mt-3">
+      <p className="eyebrow mb-4">False alarms, counted.</p>
+      <div className="grid gap-x-6 gap-y-5 md:grid-cols-3 stagger">
+        {cells.map(([v, k], i) => (
+          <div key={i}>
+            <p className="mono text-[32px] leading-[40px] tracking-[-0.03em]">{v}</p>
+            <p className="text-[14px] leading-6 text-ink-2 mt-1">{k}</p>
+          </div>
+        ))}
+      </div>
+      {wrong.length > 0 && (
+        <p className="text-[13px] text-ink-2 mt-5 pt-4 border-t border-line">
+          The {f.raised_false} false alarms are all record-level:{" "}
+          {wrong.map((r) => `${r.false} ${RULE_WORDS[r.rule] ?? r.rule.replace(/_/g, " ")}`).join(", ")}.
+          {f.high_conf_real_share != null && <> At high confidence ({f.high_conf_flags} flags), {Math.round(f.high_conf_real_share * 100)}% were real.</>}
+          {" "}Every flag goes to a person; none becomes a notice on its own.
+        </p>
+      )}
+    </div>
+  );
+}
 type Proj = { electors: number; electors_source: string; audit_core_hours: number; audit_minutes_on_64_cores: number;
   checks_per_day: number; checks_per_s_avg: number; checks_per_s_peak: number; citizen_answers_per_s_4proc: number | null;
   machines_at_peak: number | null; assumption: { share_checking: number; window_days: number; peak_factor: number };
@@ -290,7 +335,7 @@ const BINS = [[0, 0.25], [0.25, 0.5], [0.5, 0.75], [0.75, 1]] as const;
 function Reliability({ bins }: { bins: EvalResult["reliability"] }) {
   const pc = (v: number) => `${Math.round(v * 100)}%`;
   return (
-    <div className="card p-5">
+    <InView className="card p-5">
       <div className="grid grid-cols-[72px_1fr_88px] gap-x-4 text-[12px] mono text-ink-3 pb-3 border-b border-line">
         <span>we said</span><span>share that were real</span><span className="text-right">flags</span>
       </div>
@@ -301,7 +346,7 @@ function Reliability({ bins }: { bins: EvalResult["reliability"] }) {
             <span className="mono text-[13px]">{lo * 100}–{hi * 100}%</span>
             {b ? (
               <div className="relative h-6 rounded-[6px] bg-panel" aria-label={`said ${pc(b.mean_conf)}, real ${pc(b.frac_true)}`}>
-                <div className="absolute inset-y-0 left-0 rounded-[6px] bg-ink grow" style={{ width: `max(${b.frac_true * 100}%, 2px)` }} />
+                <div className="absolute inset-y-0 left-0 rounded-[6px] bg-ink grow-in-view" style={{ width: `max(${b.frac_true * 100}%, 2px)` }} />
                 <div className="absolute -top-1 -bottom-1 w-[2px] bg-ink-3" style={{ left: `calc(${b.mean_conf * 100}% - 1px)` }} />
                 <span className="absolute inset-y-0 flex items-center mono text-[12px]"
                   style={b.frac_true > 0.7 ? { right: `calc(${100 - b.frac_true * 100}% + 8px)`, color: "var(--color-surface)" } : { left: `calc(${b.frac_true * 100}% + 8px)` }}>
@@ -314,7 +359,7 @@ function Reliability({ bins }: { bins: EvalResult["reliability"] }) {
         );
       })}
       <p className="text-[13px] text-ink-2 mt-4">Bar: share of flags that matched a planted anomaly. Line: the confidence we stated. Bar ending near the line means the number can be taken at face value.</p>
-    </div>
+    </InView>
   );
 }
 

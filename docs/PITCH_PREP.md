@@ -122,6 +122,7 @@ DESIGN (strict)
 - *Why a binomial test?* Each voter is either removed or not, with a known background probability from the booth's age mix. That's exactly a binomial. Benjamini-Hochberg keeps false alarms in check across 100 booths.
 - *Why not O(n²) duplicate matching?* 51k voters would be 1.3 billion pairs. Blocking by booth/house and relation name cuts that to about 500k candidates, and union-find merges matches. At 1M voters: 9.9M pairs instead of 521B.
 - *What does "93%" mean?* Of flags we stated at about 93%, 90% matched a planted anomaly. The curve was fit on a separate training district, not on the one we score.
+- *You found 9 of 9, but how many false alarms?* On the blind district the engine raised 283 flags for review and 263 were real (93%). Zero false alarms on booth removal or addition spikes, the flags a rumour is built on. The 20 false ones are record-level: 14 duplicate pairs and 6 relation conflicts. Another 11 flags it marked "likely innocent" itself, and none of those hid a planted anomaly. All of this is on the Trust page under "False alarms, counted".
 
 **"Likely benign" and the stats**
 - *What does "likely benign" mean?* The booth lost more names than expected, but a record explains most of them, and what's left is no more than a normal booth loses. Example: Booth 22 lost 87 against ~21 expected, and 70 of the 87 were students leaving a listed hostel at the end of the academic year. It still says "needs human review".
