@@ -1,6 +1,8 @@
-"""Tests for Organization Workspaces, RBAC Roles, Quotas, and API Keys."""
+"""Organization workspaces, roles, quotas and API keys, under the secure model: roles come from membership in a
+specific workspace; the signed-in creator becomes owner; nobody grants above their own role."""
 from __future__ import annotations
 
+import os
 import sys
 from pathlib import Path
 
@@ -10,117 +12,62 @@ sys.path.insert(0, str(ROOT))
 from fastapi.testclient import TestClient
 
 from api.main import app
+from api import wa_auth
 from api.organizations import enforce_quota
+
+OP = {"X-WA-Secret": os.environ.get("WA_WORKER_SECRET", "")}
+owner = {"Authorization": "Bearer " + wa_auth.make_token("+919876543210")}
+stranger = {"Authorization": "Bearer " + wa_auth.make_token("+919812345678")}
 
 
 def test_organizations_lifecycle_and_rbac():
     client = TestClient(app)
 
-    # 1. Default org is present
-    r = client.get("/orgs")
+    # A signed-in user creates a workspace and becomes its owner. Paid tiers come through billing, so a
+    # self-service workspace starts free; the operator can set a tier directly.
+    ada = client.post("/orgs", headers=owner, json={"name": "Democratic Audits Desk", "tier": "enterprise"})
+    assert ada.status_code == 200, ada.text
+    ada = ada.json()
+    ada_id = ada["id"]
+    assert ada["tier"] == "free"
+    paid = client.post("/orgs", headers=OP, json={"name": "Paid Desk", "tier": "enterprise", "admin_email": "+919876543210"})
+    assert paid.status_code == 200 and paid.json()["tier"] == "enterprise"
+    paid_id = paid.json()["id"]
+
+    # The owner sees their workspaces; a stranger sees none of them.
+    mine = {o["id"] for o in client.get("/orgs", headers=owner).json()}
+    assert {ada_id, paid_id} <= mine
+    assert not ({ada_id, paid_id} & {o["id"] for o in client.get("/orgs", headers=stranger).json()})
+
+    # Members with different roles (seat limit on the free tier is 2: owner + one).
+    r = client.post(f"/orgs/{paid_id}/members", headers=owner, json={"email": "auditor_sam@desk.org", "role": "auditor"})
+    assert r.status_code == 200 and r.json()["role"] == "auditor"
+    r = client.post(f"/orgs/{paid_id}/members", headers=owner, json={"email": "reviewer_priya@desk.org", "role": "reviewer"})
     assert r.status_code == 200
-    orgs = r.json()
-    assert len(orgs) >= 1
-    default_org = orgs[0]
-    org_id = default_org["id"]
+    members = client.get(f"/orgs/{paid_id}/members", headers=owner).json()
+    assert len(members) == 3
 
-    # 2. Create a new organization workspace
-    create_res = client.post(
-        "/orgs",
-        json={
-            "name": "Association for Democratic Audits",
-            "slug": "ada-audit",
-            "tier": "enterprise",
-            "admin_email": "lead@ada-audit.org",
-        },
-    )
-    assert create_res.status_code == 200
-    ada_org = create_res.json()
-    ada_id = ada_org["id"]
-    assert ada_org["tier"] == "enterprise"
-    assert ada_org["quotas"]["checks_limit"] == 50000
+    # API key for the auditor; the secret is shown once and never listed.
+    key = client.post(f"/orgs/{paid_id}/keys", headers=owner,
+                      json={"name": "Constituency scanner", "role": "auditor", "expires_in_days": 30}).json()
+    raw, key_id = key["token"], key["key_id"]
+    assert raw.startswith("rw_live_")
+    listed = client.get(f"/orgs/{paid_id}/keys", headers=owner).json()
+    found = next(k for k in listed if k["key_id"] == key_id)
+    assert "token" not in found and found["last4"] == raw[-4:]
 
-    from api import wa_auth
-    admin_token = wa_auth.make_token("+919876543210")
-    admin_headers = {"Authorization": f"Bearer {admin_token}"}
+    who = client.get("/auth/whoami", headers={"X-API-Key": raw}).json()
+    assert who["auth_type"] == "api_key" and who["role"] == "auditor" and who["organization"]["id"] == paid_id
 
-    # 3. Add members with different roles
-    add_auditor = client.post(
-        f"/orgs/{ada_id}/members",
-        headers=admin_headers,
-        json={"email": "auditor_sam@ada-audit.org", "role": "auditor"},
-    )
-    assert add_auditor.status_code == 200
-    assert add_auditor.json()["role"] == "auditor"
+    # Usage and atomic quota.
+    usage = client.get(f"/orgs/{paid_id}/usage", headers=owner).json()
+    assert usage["checks_limit"] == 50000 and usage["pdf_ingest_allowed"] is True
+    enforce_quota(paid_id, count=10)
+    assert client.get(f"/orgs/{paid_id}/usage", headers=owner).json()["checks_used"] == 10
 
-    add_reviewer = client.post(
-        f"/orgs/{ada_id}/members",
-        headers=admin_headers,
-        json={"email": "reviewer_priya@ada-audit.org", "role": "reviewer"},
-    )
-    assert add_reviewer.status_code == 200
-    assert add_reviewer.json()["role"] == "reviewer"
-
-    # List members
-    members_res = client.get(f"/orgs/{ada_id}/members", headers=admin_headers)
-    assert members_res.status_code == 200
-    members = members_res.json()
-    assert len(members) == 3  # owner + auditor + reviewer
-
-    # 4. Generate an API Key for the auditor
-    key_res = client.post(
-        f"/orgs/{ada_id}/keys",
-        headers=admin_headers,
-        json={
-            "name": "Automated CI/CD Constituency Scanner",
-            "role": "auditor",
-            "scopes": ["audit:read", "audit:write", "search"],
-            "expires_in_days": 30,
-        },
-    )
-    assert key_res.status_code == 200
-    key_data = key_res.json()
-    raw_token = key_data["token"]
-    key_id = key_data["key_id"]
-    assert raw_token.startswith("rw_live_")
-
-    # List keys - plaintext token must NOT be present
-    keys_list_res = client.get(f"/orgs/{ada_id}/keys", headers=admin_headers)
-    assert keys_list_res.status_code == 200
-    keys_list = keys_list_res.json()
-    assert len(keys_list) >= 1
-    found_key = next((k for k in keys_list if k["key_id"] == key_id), None)
-    assert found_key is not None
-    assert "token" not in found_key
-    assert found_key["last4"] == raw_token[-4:]
-
-    # 5. Authenticate with X-API-Key against /auth/whoami
-    whoami_res = client.get("/auth/whoami", headers={"X-API-Key": raw_token})
-    assert whoami_res.status_code == 200
-    whoami = whoami_res.json()
-    assert whoami["auth_type"] == "api_key"
-    assert whoami["role"] == "auditor"
-    assert whoami["organization"]["id"] == ada_id
-    assert "audit:write" in whoami["scopes"]
-
-    # 6. Usage and quota consumption
-    usage_res = client.get(f"/orgs/{ada_id}/usage", headers=admin_headers)
-    assert usage_res.status_code == 200
-    usage = usage_res.json()
-    assert usage["checks_limit"] == 50000
-    assert usage["pdf_ingest_allowed"] is True
-
-    # Test atomic quota enforcement
-    enforce_quota(ada_id, count=10)
-    usage_res2 = client.get(f"/orgs/{ada_id}/usage", headers=admin_headers)
-    assert usage_res2.json()["checks_used"] == 10
-
-    # 7. Revoke API key and verify subsequent calls are denied with 401
-    rev_res = client.delete(f"/orgs/{ada_id}/keys/{key_id}", headers=admin_headers)
-    assert rev_res.status_code == 200
-
-    denied_res = client.get("/auth/whoami", headers={"X-API-Key": raw_token})
-    assert denied_res.status_code == 401
+    # Revoked keys stop working.
+    assert client.delete(f"/orgs/{paid_id}/keys/{key_id}", headers=owner).status_code == 200
+    assert client.get("/auth/whoami", headers={"X-API-Key": raw}).status_code == 401
 
 
 if __name__ == "__main__":

@@ -21,3 +21,4 @@ cards/*.png
 artifacts/
 wa/pair-code.txt
 artifacts_blind/
+web/package-lock.json

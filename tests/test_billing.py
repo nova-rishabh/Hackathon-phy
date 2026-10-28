@@ -14,6 +14,11 @@ os.environ["RAZORPAY_WEBHOOK_SECRET"] = "test_webhook_secret_key"
 from fastapi.testclient import TestClient
 from api.main import app
 
+import os as _os
+from api import wa_auth as _wa
+OP = {"X-WA-Secret": _os.environ.get("WA_WORKER_SECRET", "")}          # operator (our own workers)
+BEARER = {"Authorization": "Bearer " + _wa.make_token("+919876543210")}  # a signed-in reviewer
+
 def test_billing_flow():
     client = TestClient(app)
 
@@ -52,7 +57,7 @@ def test_billing_flow():
     print("Signed webhook verified and recorded:", wh_resp.json())
 
     # 3. Check status & quotas
-    sub_resp = client.get(f"/billing/subscriptions/{sub_id}")
+    sub_resp = client.get(f"/billing/subscriptions/{sub_id}", headers=OP)
     assert sub_resp.status_code == 200
     sub_data = sub_resp.json()
     assert sub_data["subscription"]["status"] == "active"
@@ -61,17 +66,17 @@ def test_billing_flow():
     print("Subscription active with custom quotas:", sub_data["quotas"]["tier"])
 
     # 4. Check events audit list
-    ev_resp = client.get("/billing/events")
+    ev_resp = client.get("/billing/events", headers=OP)
     assert ev_resp.status_code == 200
     print("Persisted webhook events count:", len(ev_resp.json()["events"]))
 
     # 5. Cancel subscription
-    cancel_resp = client.post(f"/billing/subscriptions/{sub_id}/cancel")
+    cancel_resp = client.post(f"/billing/subscriptions/{sub_id}/cancel", headers=OP)
     assert cancel_resp.status_code == 200
     assert cancel_resp.json()["status"] == "cancelled"
 
     # Quota reverts
-    q_resp = client.get(f"/billing/subscriptions/{sub_id}/quotas")
+    q_resp = client.get(f"/billing/subscriptions/{sub_id}/quotas", headers=OP)
     assert q_resp.status_code == 200
     assert q_resp.json()["tier"] == "free"
     print("Cancelled subscription cleanly reverted to free tier")

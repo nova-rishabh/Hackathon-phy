@@ -11,6 +11,11 @@ sys.path.insert(0, str(ROOT))
 from fastapi.testclient import TestClient
 
 from api.main import app
+
+import os as _os
+from api import wa_auth as _wa
+OP = {"X-WA-Secret": _os.environ.get("WA_WORKER_SECRET", "")}          # operator (our own workers)
+BEARER = {"Authorization": "Bearer " + _wa.make_token("+919876543210")}  # a signed-in reviewer
 from api.reports import _audit_path
 from contracts.models import AuditEntry, Flag
 from engine.confidence import Calibrator, band_of, feature
@@ -113,7 +118,7 @@ def test_api_recalibrate_endpoint():
     assert rev_data["audit_hash"] is not None
 
     # 3. Trigger recalibration
-    recal_resp = client.post("/audit/recalibrate?reviewer_weight=3.5")
+    recal_resp = client.post("/audit/recalibrate?reviewer_weight=3.5", headers=OP)
     assert recal_resp.status_code == 200
     recal_data = recal_resp.json()
     assert recal_data["status"] in ("recalibrated", "skipped")

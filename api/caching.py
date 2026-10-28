@@ -22,6 +22,7 @@ import pandas as pd
 from fastapi import APIRouter, Depends, Header, HTTPException, Request, Response
 from pydantic import BaseModel
 
+from api import limits
 from api.store import ROOT, data_dir, store
 from contracts.models import Flag, Metrics, Overview, Scope, StoryResult
 
@@ -223,7 +224,9 @@ def compute_incremental_audit(changed_booth_ids: list[str] | None = None) -> Inc
 
 
 @router.post("/audit/incremental", response_model=IncrementalAuditResult)
-def trigger_incremental_audit(req: IncrementalAuditRequest):
+def trigger_incremental_audit(req: IncrementalAuditRequest, _=Depends(limits.rate("incremental"))):
+    if len(req.changed_booth_ids) > 600:
+        raise HTTPException(413, "too many booths in one incremental audit")
     """Trigger an incremental audit on updated booths without recomputing unaffected ones."""
     return compute_incremental_audit(req.changed_booth_ids)
 

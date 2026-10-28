@@ -11,6 +11,11 @@ os.environ.setdefault("ROLLWATCH_DATA", str(ROOT / "artifacts"))
 from fastapi.testclient import TestClient
 from api.main import app
 
+import os as _os
+from api import wa_auth as _wa
+OP = {"X-WA-Secret": _os.environ.get("WA_WORKER_SECRET", "")}          # operator (our own workers)
+BEARER = {"Authorization": "Bearer " + _wa.make_token("+919876543210")}  # a signed-in reviewer
+
 def test_async_jobs_flow():
     client = TestClient(app)
     sample_dir = ROOT / "web" / "public" / "sample"
@@ -29,13 +34,14 @@ def test_async_jobs_flow():
     assert resp.status_code == 200, resp.text
     data = resp.json()
     job_id = data["job_id"]
+    tok = data["job_token"]
     print("Submitted async job:", job_id, "status:", data["status"])
 
     # 2. Poll job status until completed (timeout 20s)
     t0 = time.time()
     completed = False
     while time.time() - t0 < 25:
-        st_resp = client.get(f"/jobs/{job_id}")
+        st_resp = client.get(f"/jobs/{job_id}", headers={"X-Job-Token": tok})
         assert st_resp.status_code == 200
         st = st_resp.json()
         print(f"Polling job {job_id}: {st['status']} ({st['progress']['percent']}%) - {st['progress']['stage']}")
@@ -49,7 +55,7 @@ def test_async_jobs_flow():
     assert completed, f"Job did not complete within timeout. Current status: {st['status']}"
 
     # 3. Fetch full result
-    res_resp = client.get(f"/jobs/{job_id}/result")
+    res_resp = client.get(f"/jobs/{job_id}/result", headers={"X-Job-Token": tok})
     assert res_resp.status_code == 200, res_resp.text
     result = res_resp.json()
     assert result["flags_total"] > 0
@@ -57,7 +63,7 @@ def test_async_jobs_flow():
     print(f"Audit completed: {result['flags_total']} flags, {len(result['stories'])} booths in {result['runtime_ms']} ms")
 
     # 4. List jobs
-    list_resp = client.get("/jobs?limit=5")
+    list_resp = client.get("/jobs?limit=5", headers=OP)
     assert list_resp.status_code == 200
     jobs = list_resp.json()["jobs"]
     assert any(j["job_id"] == job_id for j in jobs)

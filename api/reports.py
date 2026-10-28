@@ -129,9 +129,7 @@ class BatchReviewRequest(BaseModel):
 @router.post("/review/batch")
 def review_batch(req: BatchReviewRequest, authorization: str | None = Header(None)):
     """Apply a review verdict to multiple flags in a single tamper-evident chained transaction."""
-    tok = (authorization or "").removeprefix("Bearer ").strip()
-    user = wa_auth.read_token(tok) if tok else None
-    reviewer_id = user or "reviewer_dev"
+    reviewer_id = wa_auth._user(authorization)  # signed-in reviewers only; anonymous writes would poison the chain
     who = hashlib.sha256(("reviewer|" + reviewer_id).encode("utf-8")).hexdigest()[:12]
     s = store()
     updated = []
@@ -404,12 +402,13 @@ def export_booths_csv():
 
 
 @router.post("/audit/recalibrate")
-def recalibrate_confidence(reviewer_weight: float = 3.0):
+def recalibrate_confidence(reviewer_weight: float = 3.0, x_wa_secret: str | None = Header(None)):
     """Recalibrate Platt confidence curves incorporating human-reviewed verdicts.
 
     Uses immutable audit trail verdicts (escalated vs benign) to recalibrate
-    logistic regression curves and updates flag probabilities in-memory.
+    logistic regression curves and updates flag probabilities in-memory. Operator only: it changes live numbers.
     """
+    wa_auth._check_worker(x_wa_secret)
     from engine.confidence import Calibrator, band_of, feature
     s = store()
     entries = _audit_entries()

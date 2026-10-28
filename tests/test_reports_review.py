@@ -10,6 +10,11 @@ os.environ.setdefault("ROLLWATCH_DATA", str(ROOT / "artifacts"))
 from fastapi.testclient import TestClient
 from api.main import app
 
+import os as _os
+from api import wa_auth as _wa
+OP = {"X-WA-Secret": _os.environ.get("WA_WORKER_SECRET", "")}          # operator (our own workers)
+BEARER = {"Authorization": "Bearer " + _wa.make_token("+919876543210")}  # a signed-in reviewer
+
 def test_reports_and_review_workflow():
     client = TestClient(app)
 
@@ -30,7 +35,7 @@ def test_reports_and_review_workflow():
     print("Review queue PASSED (total open flags:", q_data["total"], ")")
 
     # 3. Batch review
-    b_resp = client.post("/review/batch", json={"flag_ids": [sample_flag_id], "status": "escalated", "note": "Verified by newsroom desk"})
+    b_resp = client.post("/review/batch", headers=BEARER, json={"flag_ids": [sample_flag_id], "status": "escalated", "note": "Verified by newsroom desk"})
     assert b_resp.status_code == 200
     assert b_resp.json()["updated_count"] == 1
     print("Batch review submission PASSED")

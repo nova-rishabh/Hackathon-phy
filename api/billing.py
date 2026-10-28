@@ -54,6 +54,11 @@ def _subs_path() -> Path:
     return _data_dir() / "subscriptions.json"
 
 
+def _operator(secret: str | None):
+    from api import wa_auth
+    wa_auth._check_worker(secret)
+
+
 def _keys() -> tuple[str, str] | None:
     k = os.environ.get("RAZORPAY_KEY_ID", "").strip()
     s = os.environ.get("RAZORPAY_KEY_SECRET", "").strip()
@@ -461,8 +466,9 @@ def billing_webhook(payload: dict[str, Any], x_razorpay_signature: str | None = 
 
 
 @router.get("/billing/events")
-def billing_events(limit: int = Query(50, ge=1, le=200)):
+def billing_events(limit: int = Query(50, ge=1, le=200), x_wa_secret: str | None = Header(None)):
     """List persisted signed webhook events."""
+    _operator(x_wa_secret)  # customer data and cancellation: operator only
     p = _events_path()
     if not p.exists():
         return {"events": [], "count": 0}
@@ -478,7 +484,8 @@ def billing_events(limit: int = Query(50, ge=1, le=200)):
 
 
 @router.get("/billing/subscriptions")
-def list_subscriptions(org: str | None = None):
+def list_subscriptions(org: str | None = None, x_wa_secret: str | None = Header(None)):
+    _operator(x_wa_secret)  # customer data and cancellation: operator only
     with _LOCK:
         subs = list(_SUBSCRIPTIONS.values())
     if org:
@@ -487,7 +494,8 @@ def list_subscriptions(org: str | None = None):
 
 
 @router.get("/billing/subscriptions/{sub_id}")
-def get_subscription(sub_id: str):
+def get_subscription(sub_id: str, x_wa_secret: str | None = Header(None)):
+    _operator(x_wa_secret)  # customer data and cancellation: operator only
     with _LOCK:
         sub = _SUBSCRIPTIONS.get(sub_id)
     if not sub:
@@ -496,7 +504,8 @@ def get_subscription(sub_id: str):
 
 
 @router.get("/billing/subscriptions/{sub_id}/quotas")
-def get_subscription_quotas(sub_id: str):
+def get_subscription_quotas(sub_id: str, x_wa_secret: str | None = Header(None)):
+    _operator(x_wa_secret)  # customer data and cancellation: operator only
     with _LOCK:
         sub = _SUBSCRIPTIONS.get(sub_id)
     if not sub:
@@ -509,7 +518,8 @@ class CancelRequest(BaseModel):
 
 
 @router.post("/billing/subscriptions/{sub_id}/cancel")
-def cancel_subscription(sub_id: str, req: CancelRequest = CancelRequest()):
+def cancel_subscription(sub_id: str, req: CancelRequest = CancelRequest(), x_wa_secret: str | None = Header(None)):
+    _operator(x_wa_secret)  # customer data and cancellation: operator only
     with _LOCK:
         sub = _SUBSCRIPTIONS.get(sub_id)
         if not sub:

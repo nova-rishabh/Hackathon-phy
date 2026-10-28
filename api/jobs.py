@@ -14,6 +14,9 @@ from __future__ import annotations
 
 import base64
 import json
+import secrets
+import hmac
+import hashlib
 import logging
 import os
 import shutil
@@ -25,7 +28,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, Header, HTTPException, Query
 from pydantic import BaseModel, Field
 
 from api import limits
@@ -89,6 +92,20 @@ class AuditJob(BaseModel):
 # In-memory registry of jobs
 _JOBS: dict[str, AuditJob] = {}
 _CANCELLATIONS: set[str] = set()
+_JOB_TOKENS: dict[str, str] = {}  # job_id -> sha256 of the private token handed to whoever submitted it
+
+
+def _authorize(job_id: str, token: str | None, operator_secret: str | None):
+    """Only the submitter (holding the job token) or the operator may see or cancel a job. Unknown and
+    unauthorised look the same (404), so job ids can't be probed."""
+    if operator_secret:
+        from api import wa_auth
+        wa_auth._check_worker(operator_secret)
+        return
+    want = _JOB_TOKENS.get(job_id)
+    got = hashlib.sha256((token or "").encode("utf-8")).hexdigest()
+    if not (want and token and hmac.compare_digest(want, got)):
+        raise HTTPException(404, f"Job {job_id} not found")
 
 
 def _save_job_index():
@@ -287,8 +304,10 @@ def submit_audit_job(req: AsyncAuditRequest, _=Depends(limits.rate("audit"))):
         progress=JobProgress(stage="queued", percent=0, message="Job queued in async background runner"),
     )
 
+    token = secrets.token_urlsafe(24)
     with _LOCK:
         _JOBS[job_id] = job
+        _JOB_TOKENS[job_id] = hashlib.sha256(token.encode("utf-8")).hexdigest()
         _save_job_index()
 
     req_dict = req.model_dump()
@@ -298,6 +317,7 @@ def submit_audit_job(req: AsyncAuditRequest, _=Depends(limits.rate("audit"))):
         "job_id": job_id,
         "constituency_id": req.constituency_id,
         "status": "queued",
+        "job_token": token,  # send as X-Job-Token to see progress, fetch the result or cancel; shown once
         "check_url": f"/jobs/{job_id}",
         "result_url": f"/jobs/{job_id}/result",
         "created_at": _iso(now),
@@ -305,8 +325,9 @@ def submit_audit_job(req: AsyncAuditRequest, _=Depends(limits.rate("audit"))):
 
 
 @router.get("/jobs/{job_id}")
-def get_audit_job(job_id: str):
+def get_audit_job(job_id: str, x_job_token: str | None = Header(None), x_wa_secret: str | None = Header(None)):
     """Returns the current execution state, stage, and progress of an audit job."""
+    _authorize(job_id, x_job_token, x_wa_secret)
     with _LOCK:
         job = _JOBS.get(job_id)
     if not job:
@@ -315,8 +336,9 @@ def get_audit_job(job_id: str):
 
 
 @router.get("/jobs/{job_id}/result")
-def get_audit_job_result(job_id: str):
+def get_audit_job_result(job_id: str, x_job_token: str | None = Header(None), x_wa_secret: str | None = Header(None)):
     """Returns the completed audit results for a job."""
+    _authorize(job_id, x_job_token, x_wa_secret)
     with _LOCK:
         job = _JOBS.get(job_id)
     if not job:
@@ -340,9 +362,12 @@ def get_audit_job_result(job_id: str):
 def list_audit_jobs(
     status: str | None = None,
     constituency_id: str | None = None,
-    limit: int = Query(20, ge=1, le=100)
+    limit: int = Query(20, ge=1, le=100),
+    x_wa_secret: str | None = Header(None),
 ):
-    """Lists recent audit jobs with optional status and constituency filtering."""
+    """Lists recent audit jobs (operator only: it would hand out other people's job ids)."""
+    from api import wa_auth
+    wa_auth._check_worker(x_wa_secret)
     with _LOCK:
         jobs = list(_JOBS.values())
 
@@ -356,8 +381,9 @@ def list_audit_jobs(
 
 
 @router.post("/jobs/{job_id}/cancel")
-def cancel_audit_job(job_id: str):
-    """Requests cancellation of a queued or active audit job."""
+def cancel_audit_job(job_id: str, x_job_token: str | None = Header(None), x_wa_secret: str | None = Header(None)):
+    """Requests cancellation of a queued or active audit job (submitter or operator)."""
+    _authorize(job_id, x_job_token, x_wa_secret)
     with _LOCK:
         job = _JOBS.get(job_id)
         if not job:

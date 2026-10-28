@@ -397,24 +397,28 @@ async def ops_monitoring():
 
 
 @app.get("/ops/monitoring/probe")
-async def ops_monitoring_probe():
+async def ops_monitoring_probe(x_wa_secret: str | None = Header(None)):
+    wa_auth._check_worker(x_wa_secret)  # makes outbound requests: operator only
     return await monitoring.get_system_monitoring(probe_remote_web=True)
 
 
 @app.post("/ops/monitoring/heartbeat")
-def ops_monitoring_heartbeat(hb: monitoring.HeartbeatPayload):
+def ops_monitoring_heartbeat(hb: monitoring.HeartbeatPayload, x_wa_secret: str | None = Header(None)):
+    wa_auth._check_worker(x_wa_secret)  # only our own bots and workers report status
     monitoring.record_heartbeat(hb.component, hb.state, hb.details)
     return {"ok": True, "component": hb.component}
 
 
 @app.post("/ops/monitoring/error")
-def ops_monitoring_error(err: monitoring.ErrorPayload):
+def ops_monitoring_error(err: monitoring.ErrorPayload, x_wa_secret: str | None = Header(None)):
+    wa_auth._check_worker(x_wa_secret)
     monitoring.record_error(err.component, err.message, err.level, err.details)
     return {"ok": True, "recorded": True}
 
 
 @app.get("/ops/monitoring/errors")
-def ops_monitoring_errors(component: str | None = None):
+def ops_monitoring_errors(component: str | None = None, x_wa_secret: str | None = Header(None)):
+    wa_auth._check_worker(x_wa_secret)  # error details are internal
     with monitoring._LOCK:
         errors = list(monitoring._RECENT_ERRORS)
     if component:

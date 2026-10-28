@@ -22,6 +22,8 @@ LIMITS = {
     "audit": (4, 60),        # a full engine run per request
     "cards": (60, 60),       # may trigger a render on the web app
     "subscribe": (6, 600),   # creates objects in the Razorpay account
+    "orgs": (5, 3600),       # new workspaces
+    "incremental": (10, 60), # partial engine runs
 }
 MAX_TEXT = 4000                  # characters of claim or question text
 MAX_B64 = 8_000_000              # ~6 MB image or audio, base64
