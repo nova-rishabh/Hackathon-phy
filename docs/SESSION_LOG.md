@@ -367,3 +367,9 @@ Directional only: different, mostly US hackathons, small samples for niche theme
 - **Citizen matching:** every typed word must match a name word, bar 0.85 (0 of 2,950 names not in the roll matched anyone; 381/400 real voters with a typo found, 0 wrong person); a first name alone asks for surname/age; unmatched names say "Not listed". Regression: `tests/test_name_matching.py`.
 - **UI:** dark theme (system default + sun/moon toggle, tokens only), header language picker removed, Ask composer card, one blinking-eye loader for every wait, cycling booth tile in the hero, fixed blank "mixed" tiles.
 - **Decision (Rishabh):** dark mode allowed (DESIGN_SYSTEM rule 1 updated). Phase 2 requirements come from Rishabh to the next session; see docs/HANDOFF.md.
+
+## 28 Oct 2026: Phase 2 prep (deck prompt and brief)
+- **New:** `docs/PHASE2_DECK_PROMPT.md` (Claude Design prompt: 13 main + 6 backup slides, design tokens incl. dark, the Round 1 feedback table, every number from the live API) and `docs/PHASE2_BRIEF.md` (demo-proofing, Round 1 problems and answers, what's new, numbers with sources, demo run, Q&A, never-say list).
+- **Screenshots:** `deliver/deck-screens/` (18 PNGs from the live site, 1440x900 @2x, light + one dark + phone), not committed.
+- **Verified live today:** warmup all OK; Booth 47 412/401 (97%) vs ~25; Booth 12 390, 79% hostel; Booth 63 154, 64% -> 8%; claim card 86%; blind 9/9, 6/6, 263 of 283 real; limits median 19 (8-40), Booth 23 limit 18; spread 1,000/100 booths -> 58 show a spike, 2 reach review; quotes newsroom Rs 9,098, watch Rs 28,494, office Rs 1,84,473.
+- **Doc drift noted (not fixed):** START_HERE §4/§6, PITCH_PREP §A and FINAL_BRIEF §1 still carry Phase 1 numbers (60 expected, 380/81%, 76%, light only, PDF roadmap). The Phase 2 docs list them under "don't quote".
