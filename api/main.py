@@ -31,13 +31,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, Response
 from pydantic import BaseModel
 
-from api import billing, citizen, limits, claims, guard as guard_mod, jobs, keys, llm, monitoring, ops, organizations, reports, voice, wa_auth
+from api import billing, caching, citizen, limits, claims, guard as guard_mod, jobs, keys, llm, monitoring, ops, organizations, reports, voice, wa_auth
 from api.store import ROOT, data_dir, store
 from contracts.models import (AuditEntry, ClaimCheckRequest, ClaimVerdict, EngineRunResult, Flag, FlagList,
                               GuardLog, Health, Overview, Review, ReviewRequest, ReviewResponse, RuleCard,
                               StoryResult, StoryToggleRequest)
 
 app = FastAPI(title="RollWatch API", version="1.0")
+app.middleware("http")(caching.cdn_cache_middleware)  # HTTP ETag & 304 Not Modified CDN caching
 app.middleware("http")(ops.middleware)  # logs route + timings only, never headers
 app.middleware("http")(keys.middleware)  # BYOK: X-Gemini-Key / X-ElevenLabs-Key -> contextvar (never stored)
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"],
@@ -49,6 +50,7 @@ app.include_router(billing.router)  # pricing quotes and Razorpay custom subscri
 app.include_router(jobs.router)  # asynchronous constituency-level audit jobs
 app.include_router(reports.router)  # exportable reports, reviewer workflow, quality & provenance
 app.include_router(organizations.router)  # organization workspaces, roles, quotas, API keys
+app.include_router(caching.router)  # CDN cache status and incremental audits
 
 _lock = threading.Lock()
 _claims: dict[str, ClaimVerdict] = {}
