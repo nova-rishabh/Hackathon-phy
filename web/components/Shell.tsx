@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useSession } from "@/lib/auth";
 import { WA_NUMBER, useSlowApi } from "@/lib/api";
 import { I18nProvider, useI18n } from "@/lib/i18n";
+import Glyph from "@/components/Glyph";
 
 function ShellInner({ children }: { children: React.ReactNode }) {
   const path = usePathname();
@@ -108,20 +109,26 @@ export default function Shell({ children }: { children: React.ReactNode }) {
 function ThemeToggle() {
   const [dark, setDark] = useState<boolean | null>(null);
   useEffect(() => {
-    const set = document.documentElement.dataset.theme;
-    setDark(set ? set === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches);
+    // Read the effective theme now and whenever any toggle (desktop or phone header) changes it.
+    const read = () => {
+      const set = document.documentElement.dataset.theme;
+      setDark(set ? set === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches);
+    };
+    read();
+    window.addEventListener("rw-theme", read);
+    return () => window.removeEventListener("rw-theme", read);
   }, []);
-  if (dark === null) return <span className="w-[52px]" aria-hidden="true" />;
+  if (dark === null) return <span className="w-10 h-10" aria-hidden="true" />;
   const flip = () => {
     const next = dark ? "light" : "dark";
     document.documentElement.dataset.theme = next;
     try { localStorage.setItem("rw_theme", next); } catch { /* private mode: still switches for this visit */ }
-    setDark(!dark);
+    window.dispatchEvent(new Event("rw-theme"));
   };
   return (
-    <button onClick={flip} aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
-      className="px-3 h-10 inline-flex items-center rounded-[8px] mono text-[13px] text-ink-2 hover:text-ink">
-      {dark ? "Light" : "Dark"}
+    <button onClick={flip} aria-label={dark ? "Switch to light mode" : "Switch to dark mode"} title={dark ? "Light mode" : "Dark mode"}
+      className="w-10 h-10 inline-flex items-center justify-center rounded-[8px] text-ink-2 hover:text-ink hover:bg-surface">
+      <Glyph id={dark ? "rw-sun" : "rw-moon"} size={20} />
     </button>
   );
 }
