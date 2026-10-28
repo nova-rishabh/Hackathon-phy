@@ -10,7 +10,6 @@ import { WatchBooth } from "@/components/AccountActions";
 import FlagGroups from "@/components/FlagGroups";
 import { Reveal, CountUp, EyeRing, Marquee, CyclingBooth } from "@/components/Motion";
 import { benchSummary, big } from "@/lib/bench";
-import DemoTour from "@/components/DemoTour";
 
 const TILE: Record<string, string> = { normal: "", unusual: "tile--unusual", likely_benign: "tile--benign", mixed: "hatch tile--mixed" };
 const OUT: Record<string, string> = { normal: "neutral", unusual: "unusual, needs human review", likely_benign: "likely benign", mixed: "mixed" };
@@ -227,7 +226,6 @@ export default function Audit() {
       <Why bench={bench} />
       <CtaRow />
       <FlagDrawer flag={open} onClose={() => setOpen(null)} />
-      <DemoTour onSelectBooth={(bId) => { setSel(bId); const f = flagFor(bId); if (f) setOpen(f); }} />
     </div>
   );
 }
