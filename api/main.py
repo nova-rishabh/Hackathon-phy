@@ -299,6 +299,41 @@ def eval_blind():
         raise HTTPException(404, "the blind test has not been published")
 
 
+# ------------------------------------------------------------------ "Try to fool RollWatch"
+_SIM: dict = {}
+
+
+def _sim_booths():
+    """Per-booth counts for engine.simulate, read once from the engine's own aggregates."""
+    if "b" not in _SIM:
+        from engine.simulate import Booths
+        _SIM["b"] = Booths(json.loads((data_dir() / "aggregates.json").read_text(encoding="utf-8")))
+    return _SIM["b"]
+
+
+@app.get("/simulate/limits")
+def simulate_limits():
+    """Smallest number of names removed with no record that each booth's tests would send to human review."""
+    from engine.simulate import limits as sim_limits
+    try:
+        return _frozen_dict("sim_limits", lambda: sim_limits(_sim_booths()))
+    except (OSError, ValueError, KeyError):
+        raise HTTPException(404, "aggregates not computed")
+
+
+@app.get("/simulate")
+def simulate_removal(booth: str = Query(..., pattern=r"^B\d{3}$"), k: int = Query(0, ge=0, le=5000),
+                     record: bool = False, spread: int = Query(1, ge=1, le=100)):
+    """Hide k extra removals in a booth (or spread over several) and rerun the engine's own spike and residual tests."""
+    from engine.simulate import simulate
+    try:
+        return simulate(_sim_booths(), booth, k, with_record=record, spread=spread)
+    except KeyError:
+        raise HTTPException(404, f"no booth {booth}")
+    except (OSError, ValueError):
+        raise HTTPException(404, "aggregates not computed")
+
+
 @app.get("/rules", response_model=list[RuleCard])
 def rules():
     return _frozen("rules", lambda: store().rule_cards() or [])
