@@ -8,12 +8,14 @@ import StoryPanel from "@/components/StoryPanel";
 import { Display, Obj, BoothTile, Eyebrow } from "@/components/Display";
 import { WatchBooth } from "@/components/AccountActions";
 import FlagGroups from "@/components/FlagGroups";
-import { Reveal, CountUp, EyeRing, Marquee } from "@/components/Motion";
+import { Reveal, CountUp, EyeRing, Marquee, CyclingBooth } from "@/components/Motion";
 import { benchSummary, big } from "@/lib/bench";
 import DemoTour from "@/components/DemoTour";
 
 const TILE: Record<string, string> = { normal: "", unusual: "tile--unusual", likely_benign: "tile--benign", mixed: "hatch tile--mixed" };
 const OUT: Record<string, string> = { normal: "neutral", unusual: "unusual, needs human review", likely_benign: "likely benign", mixed: "mixed" };
+// The demo's three booths: unexplained (47), hostel move-out (12), mixed (63).
+const HERO_BOOTHS = ["B047", "B012", "B063"];
 const bid = (id: string) => "B" + String(boothNo(id)).padStart(3, "0");
 
 export default function Audit() {
@@ -59,7 +61,8 @@ export default function Audit() {
           </p>
           <Reveal>
             <Display size="hero" dim="And every rumour about it, checked.">
-              Every change to a voter roll, explained.
+              Every change to a voter <span className="whitespace-nowrap">roll<Obj><CyclingBooth booths={HERO_BOOTHS.map((id) => ({ booth: id,
+                outcome: ov.data!.booths.find((b) => b.booth_id === id)?.outcome ?? "normal" }))} /></Obj>,</span> explained.
             </Display>
           </Reveal>
           <Reveal delay={200}>

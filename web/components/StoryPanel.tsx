@@ -5,6 +5,7 @@ import { CTX, Ctx, STORY_ORDER, STORY_SHORT, recompute } from "@/lib/stories";
 import { postJson, boothNo, fmt } from "@/lib/api";
 import { Display, Obj, Eyebrow } from "./Display";
 import Chip from "./Chip";
+import { useInView } from "./Motion";
 
 const FILL: Record<string, string> = {
   death_registered: "var(--color-story-death)", duplicate_cleanup: "var(--color-story-dupes)",
@@ -34,8 +35,9 @@ type Stories = StoryResult["stories"];
 const ordered = (r: StoryResult) => STORY_ORDER.map((c) => r.stories.find((s) => s.code === c)).filter(Boolean) as Stories;
 
 export function StoryBar({ res, mini }: { res: StoryResult; mini?: boolean }) {
+  const [ref, seen] = useInView<HTMLDivElement>(0.5);
   return (
-    <div className={mini ? "sbar sbar-mini" : "sbar"} role="img" aria-label={ordered(res).map((s) => `${STORY_SHORT[s.code]} ${s.count}`).join(", ")}>
+    <div ref={ref} className={`${mini ? "sbar sbar-mini" : "sbar"} ${seen ? "" : "sbar--wait"}`} role="img" aria-label={ordered(res).map((s) => `${STORY_SHORT[s.code]} ${s.count}`).join(", ")}>
       {ordered(res).map((s) => (
         <div key={s.code} className={s.code === "unexplained" ? "hatch" : ""}
           style={{ width: `${s.share * 100}%`, background: s.code === "unexplained" ? undefined : FILL[s.code] }} />

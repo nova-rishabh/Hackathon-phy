@@ -117,6 +117,7 @@ button { cursor: pointer; font: inherit; color: inherit; background: none; borde
 .tile .b { position: absolute; right: 6px; bottom: 5px; font: 500 11px/1 var(--font-mono); font-variant-numeric: tabular-nums; }
 .tile--unusual { background: var(--color-signal); }
 .tile--benign { background: var(--color-benign); }
+.tile.hatch { background: repeating-linear-gradient(135deg, var(--color-signal) 0 5px, var(--color-ink) 5px 6.5px); } /* .tile's surface fill above would hide the hatch */
 .tile--mixed .a, .tile--mixed .b { background: var(--color-signal); padding: 1px 2px; border-radius: 3px; color: var(--color-ink); }
 @media (max-width: 640px) { .grid10 { gap: 4px; } .tile { border-radius: 6px; } .tile .b { display: none; } .tile .a { left: 3px; top: 3px; font-size: 10px; } }
 .tile-inline { width: 0.78em; height: 0.78em; border-radius: 0.14em; display: inline-flex; align-items: flex-start; justify-content: flex-start; padding: 0.06em; letter-spacing: 0; }
@@ -218,12 +219,18 @@ button { cursor: pointer; font: inherit; color: inherit; background: none; borde
 .sbar > div { transform-origin: left center; animation: barIn 900ms var(--spring) both; }
 .sbar > div:nth-child(2) { animation-delay: 80ms; } .sbar > div:nth-child(3) { animation-delay: 160ms; }
 .sbar > div:nth-child(4) { animation-delay: 240ms; } .sbar > div:nth-child(5) { animation-delay: 360ms; }
+.sbar--wait > div { animation-play-state: paused; } /* held at scaleX(0) until the bar scrolls into view */
 .grow { transform-origin: left center; animation: barIn 1100ms var(--spring) both; }
 .grow-in-view { transform-origin: left center; transform: scaleX(0); transition: transform 1100ms var(--spring); }
 .in .grow-in-view, .grow-in-view.in { transform: none; }
 @keyframes barIn { from { transform: scaleX(0); } to { transform: none; } }
 
+/* Headline booth tile: cycles 47 -> 12 -> 63, each swap through a short blur. */
+.cycle-tile { display: inline-flex; transition: opacity 240ms ease, filter 240ms ease, transform 420ms var(--spring); }
+.cycle-tile.out { opacity: 0; filter: blur(6px); transform: scale(.82); }
+
 @media (prefers-reduced-motion: reduce) {
+  .cycle-tile { transition: none; }
   .reveal, .words > span, .grid10 .tile { opacity: 1; transform: none; animation: none; transition: none; }
   .eyering-spin, .eyering-blink, .marquee-track, .tile--unusual.ping::after { animation: none; }
   .h-hero, .stagger > *, .stagger .chip, .sbar > div, .grow { animation: none; }
