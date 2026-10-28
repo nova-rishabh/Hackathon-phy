@@ -14,7 +14,7 @@ const TYPE_LABEL: Record<string, string> = {
 };
 const GLYPH: Record<string, string> = { deletion_spike: "rw-spike", addition_spike: "rw-spike", duplicate_cluster: "rw-twins", oversized_household: "rw-crowd", impossible_age: "rw-age" };
 export const typeLabel = (t: string) => TYPE_LABEL[t] ?? t;
-export const flagKind = (f: Flag) => (f.likely_benign ? "likely_benign" : f.stories?.outcome === "mixed" ? "mixed" : "unusual");
+export const flagKind = (f: Flag) => f.stories?.outcome ?? (f.likely_benign ? "likely_benign" : "unusual");
 const MASKED = ["सु*** श*** · S*** S***", "सु*** शर्*** · S*** S***", "सु*** शा*** · S*** S***"];
 
 export default function FlagDrawer({ flag, onClose }: { flag: Flag | null; onClose: () => void }) {

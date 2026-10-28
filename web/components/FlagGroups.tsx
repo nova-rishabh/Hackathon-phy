@@ -62,7 +62,8 @@ export default function FlagGroups({ flags, onOpen }: { flags: Flag[]; onOpen: (
                       <span className="mono text-[12px] text-ink-2 min-w-0 truncate">
                         {bid(f.scope.booth_id)}{f.scope.house_no ? ` · house ${f.scope.house_no}` : ""} · {fmt(f.metrics.observed)} obs · {Math.round(f.confidence * 100)}%
                       </span>
-                      <Chip kind={f.likely_benign ? "likely_benign" : "review"} label={f.likely_benign ? "Likely benign" : "Review"} />
+                      {f.stories?.outcome === "mixed" ? <Chip kind="mixed" label="Mixed" />
+                        : <Chip kind={f.likely_benign ? "likely_benign" : "review"} label={f.likely_benign ? "Likely benign" : "Review"} />}
                     </button>
                   </li>
                 ))}
