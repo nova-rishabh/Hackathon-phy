@@ -37,15 +37,18 @@ WHAT'S LIVE
 LOOSE ENDS, IN ORDER
 1. Verify the latest deploy once: GET /health, /eval/blind (9/9, 6/6), /wa/status (connected), /billing/config
    (enabled, test_mode), and that home "/" HTML has og:image and a /card/<id> page has its own og:image.
-2. Redis: on Render, REDIS_URL must be `rediss://default:<Upstash token>@crisp-whippet-241484.upstash.io:6379`
-   (it currently holds the literal placeholder YOUR_TOKEN, so /wa/status says "memory (redis unreachable)").
-   After the owner fixes it and redeploys, check /wa/status once: expect "shared_state": "redis".
+2. Redis: done (live /wa/status shows "shared_state": "redis").
 3. Razorpay: the owner runs one test checkout on /pricing with a Razorpay test card; confirm the page shows
    "Subscribed. Reference sub_..." (server verified the signature). Nothing is stored yet: optionally add a
    Supabase table + POST /billing/webhook (verify X-Razorpay-Signature) for renewals/cancellations.
 4. Small polish (optional): the cycling booth tile (47 -> 12 -> 63) inside the home headline.
 5. After the event: owner resets the Upstash password (it was pasted in chat), deletes
    .github/workflows/keepalive.yml, and rotates any key that appeared in chat.
+
+ALSO DONE (28 Oct evening): monitoring (/ops/monitoring), Razorpay webhook + lifecycle, PDF ingestion, async
+jobs with private job tokens, reports + review history + recalibration, workspaces/roles/API keys (roles from
+membership), caching + incremental audits, 7 languages, demo tour, access-control fixes (tests/test_access_control.py).
+Redis is live. tests/ exists now; run them with PYTHONPATH=. .venv\Scripts\python.exe tests/test_<name>.py.
 
 DONE: KEEP AS IS UNLESS ASKED
 Engine (diff, binomial + BH, which-story-fits, cross-script duplicates, rule checks, 7 official discrepancy

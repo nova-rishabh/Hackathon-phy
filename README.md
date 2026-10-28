@@ -85,12 +85,24 @@ Measured on the synthetic district with a planted answer key (`python -m engine.
 - The generator also adds realistic background noise (about 0.5% cross-script duplicates). It writes these to `<key>.background.json`, so a correct catch of one isn't counted as an error.
 - Confidence curves are fit on four synthetic training districts (98 removal-spike flags); real lists would need recalibration.
 
+## Platform features (for organisations)
+- **Workspaces, roles and API keys** (`/orgs`): owner, admin, auditor, reviewer, viewer. Roles come from membership in that workspace; keys are hashed, expire, and work only in their own workspace.
+- **Async constituency audits** (`POST /jobs/audit`): returns a private job token; progress, result and cancel need it.
+- **Reports:** newsroom briefing (Markdown, HTML), CSV exports of flags and booths, data-quality and provenance reports (`/reports/*`).
+- **Review workflow:** review queue, batch reviews (signed in), a tamper-evident hash-chained history with a verify endpoint, and recalibration of confidence from reviewed outcomes (operator only).
+- **Public-roll PDF ingestion:** `engine/adapters/inrolls.py` reads searchable roll PDFs as well as parsed CSVs.
+- **Caching and incremental audits:** ETag/304 responses and re-running only changed booths (`/audit/incremental`).
+- **Monitoring:** `/ops/monitoring` (status of web, API, Redis, Telegram, WhatsApp); writes and error details are operator only.
+- **Seven languages** in citizen answers: Hindi, English, Punjabi, Bengali, Marathi, Tamil, Telugu; skip link and reduced-motion support; a guided demo tour on the home page.
+- **Deployment and rollback:** `docs/DEPLOYMENT_AND_ROLLBACK.md` and `scripts/deployment_check.py`.
+
 ## Who pays
 - **Citizens never pay:** name lookup on the web, WhatsApp and Telegram, claim checks with the share image, the documents guide, three languages with voice.
 - **Organisations build a plan** on `/pricing`: platform, constituencies audited, their own WhatsApp number, extra languages, reviewer seats, voice replies, or a private deployment. Newsrooms and NGOs get 50% off, and yearly billing gets two months free. Prices are quoted by the API (`api/billing.py`, list prices in `api/constants.py`), and payment is a Razorpay subscription created server-side for exactly that plan, with its signature verified server-side.
 
 ## Safety of the service
 - Per-client rate limits on the endpoints that cost money or CPU, input size caps, strict ids, the engine rerun operator-only, and a per-number limit on WhatsApp (`api/limits.py`). Counts live in Redis when `REDIS_URL` is set.
+- Access control (`tests/test_access_control.py`, 26 attack checks): no anonymous workspace access, no cross-workspace keys, no granting above your own role, billing records and cancellation, recalibration and monitoring writes are operator only, jobs need their private token, batch reviews need sign-in.
 - Sign-in codes are hashed and rate-limited; tokens are HMAC-signed; worker and payment secrets are compared in constant time; secrets live only in the environment.
 - Shared links preview with a proper card, and a shared claim previews as its own verdict card.
 

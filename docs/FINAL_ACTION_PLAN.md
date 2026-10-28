@@ -125,6 +125,13 @@ After it reports: we publish the scoreboard on Trust as "Blind test (planted by 
 - [x] Security review and fixes: per-client limits, size caps, strict card ids, operator-only engine rerun, per-number WhatsApp limit, trusted client IP.
 - [x] Link previews: site card, and each shared claim previews as its own verdict card.
 
+### Done on 28 Oct (evening, second agent + security fix)
+- [x] Keep-alive workflow removed; deployment and rollback checklist (`docs/DEPLOYMENT_AND_ROLLBACK.md`).
+- [x] Monitoring, Razorpay webhook + subscription lifecycle, PDF ingestion, async jobs, reports, review history, provenance, recalibration from reviews, workspaces/roles/API keys, caching + incremental audits, 7 languages, guided demo tour.
+- [x] Security review of that work: access-control holes fixed (workspace roles from membership, operator-only billing/recalibration/monitoring, job tokens, signed-in batch reviews); 26 attack checks pass.
+- [x] Redis live on Render (`shared_state: redis`).
+- [ ] Known: `tests/test_recalibration.py` needs blind-test data that exists only on the machine that generated it (git-ignored).
+
 ### Product (in order)
 1. ~~Blind test~~ **Done:** 9 of 9 found, 6 of 6 decoys cleared, 0 missed; published on Trust and at `/eval/blind`.
 2. **Website animation pass** (§4). Owner: Claude.
