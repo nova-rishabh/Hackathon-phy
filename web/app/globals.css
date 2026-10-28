@@ -186,7 +186,23 @@ button { cursor: pointer; font: inherit; color: inherit; background: none; borde
 
 /* Chat */
 .bubble { max-width: 85%; padding: 12px 16px; border-radius: 16px; }
-.bubble--me { background: var(--color-panel); margin-left: auto; }
+.bubble--me { background: var(--color-panel-2); margin-left: auto; } /* panel-2, not panel: it sits on a panel */
+
+/* Chat composer: one card holding the input and its buttons; the card's border, not the input, shows focus. */
+.composer { display: flex; align-items: center; gap: 8px; padding: 8px 8px 8px 18px; background: var(--color-surface);
+  border: 1px solid var(--color-line); border-radius: var(--radius-card); transition: border-color 120ms; }
+.composer:focus-within { border-color: var(--color-ink-3); }
+.composer-input { flex: 1; min-width: 0; height: 44px; background: transparent; border: 0; outline: none; font-size: 16px; color: var(--color-ink); }
+.composer-input::placeholder { color: var(--color-ink-3); }
+.composer-input:focus-visible { outline: none; }
+.composer-actions { display: flex; gap: 8px; flex-shrink: 0; }
+.composer .btn { height: 44px; justify-content: center; }
+@media (max-width: 639px) {
+  .composer { flex-wrap: wrap; padding: 8px; }
+  .composer-input { flex-basis: 100%; padding: 0 10px; }
+  .composer-actions { flex: 1; }
+  .composer-actions .btn { flex: 1; }
+}
 .bubble--rw { background: var(--color-surface); }
 
 /* Big butter option text */

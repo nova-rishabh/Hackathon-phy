@@ -103,12 +103,14 @@ export default function Ask() {
           )}
           {busy && <p className="mono text-[13px] text-ink-3">looking up the roll…</p>}
         </div>
-        <form className="mt-6 flex gap-3 flex-col sm:flex-row" onSubmit={(e) => { e.preventDefault(); send(); }}>
-          <input className="input" lang={lang} value={text} onChange={(e) => setText(e.target.value)} placeholder={PLACEHOLDER[lang]} aria-label="Your question" />
-          <button type="button" className="btn btn--quiet shrink-0 justify-center" style={{ height: 56 }} disabled={busy || rec === "busy"} onClick={speak} aria-pressed={rec === "rec"}>
-            {rec === "rec" ? "Stop" : rec === "busy" ? "Listening…" : "Speak"}
-          </button>
-          <button className="btn shrink-0 justify-center" style={{ height: 56 }} disabled={busy || !text.trim()}>Ask</button>
+        <form className={`composer ${log.length ? "mt-6" : "mt-4"}`} onSubmit={(e) => { e.preventDefault(); send(); }}>
+          <input className="composer-input" lang={lang} value={text} onChange={(e) => setText(e.target.value)} placeholder={PLACEHOLDER[lang]} aria-label="Your question" />
+          <div className="composer-actions">
+            <button type="button" className="btn btn--quiet" disabled={busy || rec === "busy"} onClick={speak} aria-pressed={rec === "rec"}>
+              {rec === "rec" ? "Stop" : rec === "busy" ? "Listening…" : "Speak"}
+            </button>
+            <button className="btn" disabled={busy || !text.trim()}>Ask</button>
+          </div>
         </form>
         {voiceErr && (
           <p className="text-[14px] text-ink-2 mt-3" aria-live="polite">
@@ -154,7 +156,7 @@ function Documents({ lang }: { lang: Lang }) {
           <input type="date" className="input" style={{ width: 220, padding: "10px 14px" }} value={dob} min="1900-01-01" max="2010-12-31"
             onChange={(e) => { setDob(e.target.value); if (e.target.value) load(e.target.value); }} />
         </label>
-        <button className="btn btn--quiet" onClick={() => { setDob(""); load(""); }} lang={lang}>{ui.all}</button>
+        <button className="btn btn--quiet !bg-panel-2" onClick={() => { setDob(""); load(""); }} lang={lang}>{ui.all}</button>
       </div>
       {d && (
         <div className="card p-5 mt-5 stagger" lang={lang}>
