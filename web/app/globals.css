@@ -44,7 +44,7 @@
 }
 
 :root { color-scheme: light; --color-on-fill: #0F0F0F; --color-button-ink: #FAFAFA; --color-button-hover: #000000;
-  --color-scrim: rgba(249, 249, 249, .72); }
+  --color-scrim: rgba(249, 249, 249, .72); --color-tour-dim: rgba(15, 15, 15, .5); }
 
 /* Dark: same layout and signal chips, base greys inverted. Follows the system unless the header toggle pinned a
    choice (data-theme on <html>, set before paint in layout.tsx). Signal fills keep dark text in both themes. */
@@ -67,6 +67,7 @@
     --color-story-boundary: #7A7A7A;
     --color-story-hostel: #4F4F4F;
     --color-scrim: rgba(15, 15, 15, .72);
+  --color-tour-dim: rgba(0, 0, 0, .62);
     color-scheme: dark;
   }
 }
@@ -88,6 +89,7 @@
   --color-story-boundary: #7A7A7A;
   --color-story-hostel: #4F4F4F;
   --color-scrim: rgba(15, 15, 15, .72);
+  --color-tour-dim: rgba(0, 0, 0, .62);
   color-scheme: dark;
 }
 html, body { background: var(--color-page); color: var(--color-ink); font-family: var(--font-sans); font-size: 16px; line-height: 1.5; }
@@ -273,12 +275,27 @@ button { cursor: pointer; font: inherit; color: inherit; background: none; borde
 .in .grow-in-view, .grow-in-view.in { transform: none; }
 @keyframes barIn { from { transform: scaleX(0); } to { transform: none; } }
 
+/* Onboarding tour: the page dims, one element is cut out and ringed, a card explains it. No shadows: the dim is a
+   painted SVG layer with a hole, and the ring is a plain border. */
+.tour { position: fixed; inset: 0; z-index: 70; pointer-events: none; }
+.tour-dim { position: fixed; inset: 0; }
+.tour-dim path { fill: var(--color-tour-dim); pointer-events: visiblePainted; }
+.tour-ring { position: fixed; border: 2px solid var(--color-signal); border-radius: 12px; }
+.tour-card { position: fixed; pointer-events: auto; width: min(380px, calc(100vw - 32px)); padding: 20px;
+  background: var(--color-surface); border: 1px solid var(--color-line); border-radius: var(--radius-card);
+  opacity: 0; transform: translateY(8px); transition: opacity 220ms ease, transform 420ms var(--spring); }
+.tour-card.in { opacity: 1; transform: none; }
+@media (max-width: 639px) { .tour-card { left: 16px !important; right: 16px; bottom: 16px; top: auto !important; width: auto; } }
+.tour-pip { display: block; width: 14px; height: 3px; border-radius: 2px; background: var(--color-line); }
+.tour-pip.done { background: var(--color-ink-3); }
+.tour-pip.on { background: var(--color-ink); }
+
 /* Headline booth tile: cycles 47 -> 12 -> 63, each swap through a short blur. */
 .cycle-tile { display: inline-flex; transition: opacity 240ms ease, filter 240ms ease, transform 420ms var(--spring); }
 .cycle-tile.out { opacity: 0; filter: blur(6px); transform: scale(.82); }
 
 @media (prefers-reduced-motion: reduce) {
-  .cycle-tile { transition: none; }
+  .cycle-tile, .tour-card { transition: none; }
   .reveal, .words > span, .grid10 .tile { opacity: 1; transform: none; animation: none; transition: none; }
   .eyering-spin, .eyering-blink, .marquee-track, .tile--unusual.ping::after { animation: none; }
   .h-hero, .stagger > *, .stagger .chip, .sbar > div, .grow { animation: none; }

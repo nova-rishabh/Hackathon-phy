@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useApi, fmt, pct, boothNo, WA_NUMBER } from "@/lib/api";
 import { OVERVIEW_MOCK, FLAGS_MOCK } from "@/lib/mocks";
 import type { BoothSummary, Flag, FlagList, Overview } from "@/lib/types";
@@ -10,6 +10,7 @@ import { WatchBooth } from "@/components/AccountActions";
 import FlagGroups from "@/components/FlagGroups";
 import { Reveal, CountUp, EyeRing, Marquee, CyclingBooth } from "@/components/Motion";
 import { benchSummary, big } from "@/lib/bench";
+import Tour, { type TourStep } from "@/components/Tour";
 
 const TILE: Record<string, string> = { normal: "", unusual: "tile--unusual", likely_benign: "tile--benign", mixed: "hatch tile--mixed" };
 const OUT: Record<string, string> = { normal: "neutral", unusual: "unusual, needs human review", likely_benign: "likely benign", mixed: "mixed" };
@@ -26,6 +27,20 @@ export default function Audit() {
   const [open, setOpen] = useState<Flag | null>(null);
   const [hover, setHover] = useState<BoothSummary | null>(null);
   const [msg, setMsg] = useState("");
+  const [tour, setTour] = useState(false);
+
+  // First visit (or ?tour=1): start the guided tour once the real numbers are in.
+  const ready = !!ov.data && !ov.mocked && !!fl.data && !fl.mocked;
+  useEffect(() => {
+    if (!ready) return;
+    let seen = true;
+    try { seen = !!localStorage.getItem("rw_tour_seen"); } catch { /* storage blocked: don't auto-start */ }
+    if (new URLSearchParams(window.location.search).get("tour") === "1") seen = false;
+    if (seen) return;
+    const t = setTimeout(() => setTour(true), 1200);
+    return () => clearTimeout(t);
+  }, [ready]);
+  const endTour = () => { setTour(false); try { localStorage.setItem("rw_tour_seen", "1"); } catch { /* fine */ } };
 
   const flags = useMemo(() => fl.data?.items ?? [], [fl.data]);
   const lead = useMemo(() => {
@@ -51,6 +66,44 @@ export default function Audit() {
     if (f) { setOpen(f); setMsg(""); } else setMsg(`No flags in Booth ${boothNo(b.booth_id)}. That's normal for most booths.`);
   };
 
+  // Tour text. Every number is engine output (flag metrics and story counts), read from the API like the rest of the page.
+  const tourSteps = (): TourStep[] => {
+    const leadId = lead?.scope.booth_id;
+    const lf = leadId ? flagFor(leadId) : undefined;
+    const lun = lf?.stories?.stories.find((x) => x.code === "unexplained");
+    const benign = ov.data!.booths.find((b) => b.outcome === "likely_benign" && flagFor(b.booth_id)?.stories);
+    const bfl = benign ? flagFor(benign.booth_id) : undefined;
+    const top = bfl?.stories ? [...bfl.stories.stories].filter((x) => x.code !== "unexplained").sort((a, b) => b.count - a.count)[0] : undefined;
+    const STORY: Record<string, string> = { hostel_moveout: "a hostel move-out", death_registered: "a registered death",
+      boundary_change: "a boundary change", duplicate_cleanup: "a duplicate cleanup" };
+    const toLead = () => { if (leadId) { setSel(leadId); setOpen(null); } };
+    const s: TourStep[] = [
+      { target: '[data-tour="hero"]', title: "Welcome to RollWatch.",
+        body: "When a voter list is revised, names are added, moved and removed. RollWatch shows which changes have an innocent explanation and which don't. This takes about a minute." },
+      { target: '[data-tour="grid"]', title: "Every booth, at a glance.",
+        body: "Each square is one polling booth, and the number is the share of its voters removed. Yellow: more removals than expected and no record explains them. Blue: unusual, but an innocent record does. Hatched: partly explained." },
+    ];
+    if (lf && leadId) s.push({ target: `[data-booth="${leadId}"]`, onEnter: toLead, title: `Booth ${boothNo(leadId)} stands out.`,
+      body: <>{fmt(lf.metrics.observed)} names were removed against about {fmt(lf.metrics.expected)} expected for its size and ages. Tap any booth to see its full story.</> });
+    if (benign && bfl && top) s.push({ target: `[data-booth="${benign.booth_id}"]`, title: `Booth ${boothNo(benign.booth_id)} looks the same to a rumour.`,
+      body: <>{fmt(bfl.metrics.observed)} names removed too, but {Math.round(top.share * 100)}% of them match {STORY[top.code] ?? "an innocent record"}, so it is marked likely benign, not unusual.</> });
+    if (lf?.stories) s.push(
+      { target: '[data-tour="story"]', onEnter: toLead, title: "Which story fits.",
+        body: <>Every removal in Booth {boothNo(lf.stories.booth_id)} is checked against deaths, hostels, boundary moves and duplicate cleanups. {fmt(lun?.count ?? 0)} of {fmt(lf.stories.removed_total)} match none of them, so a person should look.</> },
+      { target: '[data-tour="sources"]', onEnter: toLead, title: "Switch the evidence yourself.",
+        body: "Turn a source off and watch the answer move. Nothing is hidden: you can see exactly what each record explains." });
+    s.push(
+      { target: '[data-tour="flags"]', title: "Every flag goes to a person.",
+        body: <>{fmt(flags.length)} patterns, grouped by check, each with its confidence. A flag is never a finding on its own.</> },
+      { target: 'header a[href="/check"], header button[aria-expanded]', title: "Check a forwarded claim.",
+        body: "Paste a viral message or drop a screenshot. It is split into parts, and each part is checked against the roll with a fixed query you can read." },
+      { target: 'header a[href="/ask"], header button[aria-expanded]', title: "Is my name on the list?",
+        body: "Any voter can search in Hindi, English or Punjabi, in any spelling, and see their status, the likely reason and which form to file." },
+      { target: 'header a[href="/trust"], header button[aria-expanded]', title: "What we miss.",
+        body: "A blind test planted by a separate agent, false alarms counted, and the error rate of every rule. That's the tour." });
+    return s;
+  };
+
   return (
     <div>
       <section className="hero grid gap-8 lg:grid-cols-[1fr_auto] items-center">
@@ -59,10 +112,12 @@ export default function Audit() {
             {"Voter roll transparency.".split(" ").map((w, i) => <span key={i} style={{ animationDelay: `${i * 60}ms` }}>{w}&nbsp;</span>)}
           </p>
           <Reveal>
+            <div data-tour="hero">
             <Display size="hero" dim="And every rumour about it, checked.">
               Every change to a voter <span className="whitespace-nowrap">roll<Obj><CyclingBooth booths={HERO_BOOTHS.map((id) => ({ booth: id,
                 outcome: ov.data!.booths.find((b) => b.booth_id === id)?.outcome ?? "normal" }))} /></Obj>,</span> explained.
             </Display>
+            </div>
           </Reveal>
           <Reveal delay={200}>
             <p className="text-ink-2 text-[18px] leading-[28px] mt-6 max-w-[60ch]">
@@ -75,6 +130,7 @@ export default function Audit() {
               <a href="#example" className="btn">See a live example</a>
               <a href="/check" className="btn btn--quiet">Check a forwarded claim</a>
               <a href="/ask" className="btn btn--quiet">Is my name on the list?</a>
+              <button className="btn btn--quiet" onClick={() => setTour(true)}>Take the 1-minute tour</button>
             </div>
           </Reveal>
         </div>
@@ -189,9 +245,9 @@ export default function Audit() {
         <div className="grid gap-10 lg:grid-cols-[minmax(0,614px)_1fr] lg:items-stretch">
           <div className="min-w-0">
             <Eyebrow className="mb-5">Tap a booth to see why.</Eyebrow>
-            <div className="grid10">
+            <div className="grid10" data-tour="grid">
               {ov.data.booths.map((b, i) => (
-                <button key={b.booth_id} className={`tile ${TILE[b.outcome]} ${b.outcome === "unusual" ? "ping" : ""}`} aria-pressed={b.booth_id === booth}
+                <button key={b.booth_id} data-booth={b.booth_id} className={`tile ${TILE[b.outcome]} ${b.outcome === "unusual" ? "ping" : ""}`} aria-pressed={b.booth_id === booth}
                   style={{ animationDelay: `${(Math.floor(i / 10) + (i % 10)) * 35}ms` }}
                   onClick={() => click(b)} onMouseEnter={() => setHover(b)} onMouseLeave={() => setHover(null)} onFocus={() => setHover(b)} onBlur={() => setHover(null)}
                   aria-label={`Booth ${boothNo(b.booth_id)}, ${pct(b.del_rate, 1)} removed, ${OUT[b.outcome]}`}>
@@ -208,7 +264,7 @@ export default function Audit() {
           </div>
           <div className="min-w-0 flex flex-col lg:relative">
             <Eyebrow className="mb-5">What the engine flagged, by check. Tap one to see why.</Eyebrow>
-            <div className="flex-1 min-h-[420px] lg:min-h-0 lg:relative">
+            <div className="flex-1 min-h-[420px] lg:min-h-0 lg:relative" data-tour="flags">
               <div className="lg:absolute lg:inset-0 flex">
                 <FlagGroups flags={flags} onOpen={(f) => { setSel(f.scope.booth_id); setOpen(f); setMsg(""); }} />
               </div>
@@ -226,6 +282,7 @@ export default function Audit() {
       <Why bench={bench} />
       <CtaRow />
       <FlagDrawer flag={open} onClose={() => setOpen(null)} />
+      <Tour open={tour && !open} onClose={endTour} steps={tourSteps()} />
     </div>
   );
 }

@@ -77,7 +77,7 @@ export default function StoryPanel({ base }: { base: StoryResult }) {
 
   const p = res.residual.p_value;
   return (
-    <section className="panel" aria-label="Which story fits">
+    <section className="panel" aria-label="Which story fits" data-tour="story">
       <Eyebrow className="mb-6">Which story fits.</Eyebrow>
       <div className="grid gap-8 lg:grid-cols-[1fr_360px]">
         <div className="min-w-0">
@@ -99,7 +99,7 @@ export default function StoryPanel({ base }: { base: StoryResult }) {
             ))}
           </ul>
         </div>
-        <div className="card p-5 sm:p-6 self-start">
+        <div className="card p-5 sm:p-6 self-start" data-tour="sources">
           <Eyebrow className="mb-4">Context controls.</Eyebrow>
           <div className="grid gap-3">
             {CTX.map((c) => (
