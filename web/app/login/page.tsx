@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { authFetch, setToken, useSession, type User } from "@/lib/auth";
 import { Display, Eyebrow } from "@/components/Display";
+import Loader from "@/components/Loader";
 
 type StartOk = { sent: true; to: string; expires_in: number };
 type Err = { error?: string; retry_in?: number; attempts_left?: number };
@@ -103,7 +104,7 @@ export default function Login() {
 
       <section className="panel mt-16 max-w-[720px]">
         {loading ? (
-          <p className="mono text-[13px] text-ink-3">loading…</p>
+          <Loader label="loading" />
         ) : user ? (
           <p className="text-[18px] leading-7">
             Signed in as <span className="mono">{user.mobile_masked}</span>.{" "}
@@ -146,7 +147,7 @@ export default function Login() {
               ))}
             </div>
             {msg && <p className="text-[14px] text-ink-2 mt-4" aria-live="polite">{msg}</p>}
-            {busy && <p className="mono text-[12px] text-ink-3 mt-4">checking…</p>}
+            {busy && <Loader className="mt-4" label="checking…" />}
             <div className="flex flex-wrap items-center gap-x-5 gap-y-2 mt-6 mono text-[13px] text-ink-2">
               {wait > 0
                 ? <span className="text-ink-3">new code in {wait} s</span>

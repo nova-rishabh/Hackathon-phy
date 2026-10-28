@@ -8,6 +8,7 @@ import Chip from "@/components/Chip";
 import Glyph from "@/components/Glyph";
 import { SaveCheck } from "@/components/AccountActions";
 import { Display, Eyebrow } from "@/components/Display";
+import { AnswerPending } from "@/components/Loader";
 
 const toB64 = (f: File) => new Promise<string>((ok, no) => {
   const r = new FileReader();
@@ -71,6 +72,8 @@ export default function Check() {
         </div>
         {err && <p className="text-[14px] text-ink-2 mt-4">{err}</p>}
       </section>
+
+      {busy && <AnswerPending className="mt-10" lines={4} label="splitting the claim and running each query…" />}
 
       {res && (
         <section className="mt-24" aria-live="polite">

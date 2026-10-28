@@ -11,6 +11,7 @@ import FlagGroups from "@/components/FlagGroups";
 import { Reveal, CountUp, EyeRing, Marquee, CyclingBooth } from "@/components/Motion";
 import { benchSummary, big } from "@/lib/bench";
 import Tour, { type TourStep } from "@/components/Tour";
+import { PageLoader } from "@/components/Loader";
 
 const TILE: Record<string, string> = { normal: "", unusual: "tile--unusual", likely_benign: "tile--benign", mixed: "hatch tile--mixed" };
 const OUT: Record<string, string> = { normal: "neutral", unusual: "unusual, needs human review", likely_benign: "likely benign", mixed: "mixed" };
@@ -48,7 +49,7 @@ export default function Audit() {
     return [...spikes].sort((a, b) => b.metrics.observed - a.metrics.observed)[0] ?? flags[0];
   }, [flags]);
 
-  if (!ov.data) return <p className="eyebrow">Loading roll comparison.</p>;
+  if (!ov.data) return <PageLoader label="comparing the two rolls" />;
   const t = ov.data.totals;
   const booth = sel ?? lead?.scope.booth_id ?? null;
   const flagFor = (id: string) => flags.find((x) => x.scope.booth_id === id && x.stories) ?? flags.find((x) => x.scope.booth_id === id);

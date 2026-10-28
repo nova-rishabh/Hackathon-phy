@@ -6,6 +6,7 @@ import { citizenMock } from "@/lib/mocks";
 import type { CitizenAnswer } from "@/lib/types";
 import Chip from "@/components/Chip";
 import { Display, Eyebrow } from "@/components/Display";
+import { AnswerPending } from "@/components/Loader";
 
 type Lang = "hi" | "en" | "pa";
 const LANGS: [Lang, string][] = [["hi", "हिंदी"], ["en", "English"], ["pa", "ਪੰਜਾਬੀ"]];
@@ -101,7 +102,7 @@ export default function Ask() {
             : "err" in m ? <p key={i} className="bubble bubble--rw text-ink-2">{m.err}</p>
             : <Status key={i} a={m.rw} mocked={m.mocked} onVoiceErr={onVoiceErr} />,
           )}
-          {busy && <p className="mono text-[13px] text-ink-3">looking up the roll…</p>}
+          {busy && <AnswerPending label={lang === "hi" ? "सूची में खोज रहे हैं…" : lang === "pa" ? "ਸੂਚੀ ਵਿੱਚ ਲੱਭ ਰਹੇ ਹਾਂ…" : "looking up the roll…"} />}
         </div>
         <form className={`composer ${log.length ? "mt-6" : "mt-4"}`} onSubmit={(e) => { e.preventDefault(); send(); }}>
           <input className="composer-input" lang={lang} value={text} onChange={(e) => setText(e.target.value)} placeholder={PLACEHOLDER[lang]} aria-label="Your question" />

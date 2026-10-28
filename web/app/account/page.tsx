@@ -6,6 +6,7 @@ import { authFetch, useSession, type SavedCheck, type WatchedBooth } from "@/lib
 import { boothNo } from "@/lib/api";
 import Chip from "@/components/Chip";
 import { Display, Eyebrow } from "@/components/Display";
+import Loader, { PageLoader } from "@/components/Loader";
 
 export default function Account() {
   const { user, loading, signOut } = useSession();
@@ -34,7 +35,7 @@ export default function Account() {
     else setBooths((b) => (b ?? []).filter((x) => x.booth_id !== id));
   };
 
-  if (loading) return <p className="mono text-[13px] text-ink-3">loading…</p>;
+  if (loading) return <PageLoader label="loading your account" />;
   if (!user)
     return (
       <div>
@@ -56,7 +57,7 @@ export default function Account() {
       <section className="mt-20">
         <Display size="section" as="h2" dim={checks ? `${checks.length} saved.` : undefined}>Your saved checks.</Display>
         <div className="panel mt-6" style={{ padding: 12 }}>
-          {checks === null ? <p className="mono text-[13px] text-ink-3 p-4">loading…</p>
+          {checks === null ? <div className="p-4"><Loader label="loading your saved checks" /></div>
             : checks.length === 0 ? <p className="text-ink-2 p-4">No saved checks yet. Check a claim and press Save this check.</p>
             : (
               <ul className="grid gap-3">
@@ -78,7 +79,7 @@ export default function Account() {
       <section className="mt-20">
         <Display size="section" as="h2" dim={booths ? `${booths.length} watched.` : undefined}>Booths you watch.</Display>
         <div className="panel mt-6">
-          {booths === null ? <p className="mono text-[13px] text-ink-3">loading…</p>
+          {booths === null ? <Loader label="loading your watched booths" />
             : booths.length === 0 ? <p className="text-ink-2">No booths yet. Open a booth on the Audit page and press Watch this booth.</p>
             : (
               <ul className="flex flex-wrap gap-2">

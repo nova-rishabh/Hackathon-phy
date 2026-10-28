@@ -4,6 +4,7 @@
 import { useEffect, useRef, useState } from "react";
 import { getJson, postJson, fmt } from "@/lib/api";
 import { Display, Eyebrow } from "@/components/Display";
+import Loader from "@/components/Loader";
 
 type Plan = { constituencies: number; whatsapp: boolean; languages: number; reviewers: number; voice_replies: number;
   onprem: boolean; nonprofit: boolean; annual: boolean };
@@ -161,7 +162,7 @@ export default function Pricing() {
                 {pay.state === "done" && <p className="text-[14px] mt-3">Subscribed. Reference <span className="mono">{pay.msg}</span>. We will be in touch to set up your constituencies.</p>}
                 {pay.state === "error" && <p className="text-[14px] text-ink-2 mt-3">{pay.msg}</p>}
               </>
-            ) : <p className="text-[15px] text-ink-2 mt-5">Working out your price…</p>}
+            ) : <Loader className="mt-5" label="working out your price…" />}
           </aside>
         </div>
       </section>
