@@ -45,9 +45,17 @@
 
 :root { color-scheme: light; }
 html, body { background: var(--color-page); color: var(--color-ink); font-family: var(--font-sans); font-size: 16px; line-height: 1.5; }
-.num, code, kbd { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
-[lang="hi"], [lang="pa"] { line-height: 1.6; font-size: 1.0625em; }
+[lang="hi"], [lang="pa"], [lang="bn"], [lang="mr"], [lang="ta"], [lang="te"] { line-height: 1.6; font-size: 1.0625em; }
 :focus-visible { outline: 2px solid var(--color-ink); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
 
 /* Display: big, regular weight, tight. Wrap the second half in .dim for the two-tone headline. */
 .display { font-weight: 400; letter-spacing: -0.035em; line-height: 1.02; }

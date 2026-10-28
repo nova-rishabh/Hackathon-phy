@@ -384,9 +384,14 @@ def _shown_name(match: SearchMatch, lang: str) -> str:
     return f"{match.name_lat} / {match.name_dev}" if match.name_dev else match.name_lat
 
 
+def _t(d: dict, lang: str) -> str:
+    """Safe localized string lookup with fallback to English."""
+    return d.get(lang, d.get("en", ""))
+
+
 def _review_line(lang: str) -> str:
     """The human-review sentence, taken from the constants' "sure" template (its last sentence)."""
-    return re.split(r"(?<=[.।])\s+", C.LABELS["sure"][lang].strip())[-1]
+    return re.split(r"(?<=[.।])\s+", _t(C.LABELS["sure"], lang).strip())[-1]
 
 
 def _transcribe(audio_b64: str) -> str:
@@ -408,13 +413,13 @@ def ask(req: CitizenAsk) -> CitizenAnswer:
         if not text:
             lang = req.lang or "hi"
             return _answer(lang, "not_found", "none", [], 0.0, None,
-                           [C.VOICE_SOON[lang], _review_line(lang), C.PORTAL_LINE[lang], C.SCAM_LINE[lang]])
+                           [_t(C.VOICE_SOON, lang), _review_line(lang), _t(C.PORTAL_LINE, lang), _t(C.SCAM_LINE, lang)])
     lang = detect_lang(text, req.lang)
-    footer = [C.PORTAL_LINE[lang], C.SCAM_LINE[lang]]
+    footer = [_t(C.PORTAL_LINE, lang), _t(C.SCAM_LINE, lang)]
     name, _, _, _ = parse_query(text)
     if not normalize(name):
         return _answer(lang, "not_found", "none", [], 0.0, None,
-                       [C.NO_QUERY[lang], _review_line(lang)] + footer, transcript)
+                       [_t(C.NO_QUERY, lang), _review_line(lang)] + footer, transcript)
     res = search(text, limit=1)
     best = res.matches[0] if res.matches else None
     if not best or best.score < MATCH_MIN:
@@ -424,21 +429,22 @@ def ask(req: CitizenAsk) -> CitizenAnswer:
         status, match, conf = best.status_v2, best, best.score
         reason = reason_of(store(), best.voter_id, status)
     key = reason if reason in C.NEXT_STEPS[status] else None
-    steps = [st[lang] for st in C.NEXT_STEPS[status][key]]
+    steps = [_t(st, lang) for st in C.NEXT_STEPS[status][key]]
     lines = []
     if match:
-        lines.append(C.STATUS_LINE[status][lang].format(name=_shown_name(match, lang), booth=match.booth_id))
+        status_tmpl = _t(C.STATUS_LINE[status], lang)
+        lines.append(status_tmpl.format(name=_shown_name(match, lang), booth=match.booth_id))
         if reason in C.REASON_LINE:
-            lines.append(C.REASON_LINE[reason][lang])
-        lines.append(C.LABELS["sure"][lang].format(pct=round(conf * 100)))
+            lines.append(_t(C.REASON_LINE[reason], lang))
+        lines.append(_t(C.LABELS["sure"], lang).format(pct=round(conf * 100)))
     else:
-        lines.append(C.STATUS_LINE["not_found"][lang])
-        lines.append(C.LABELS["sure_none"][lang])
+        lines.append(_t(C.STATUS_LINE["not_found"], lang))
+        lines.append(_t(C.LABELS["sure_none"], lang))
         lines.append(_review_line(lang))
-    lines.append(C.LABELS["next"][lang])
+    lines.append(_t(C.LABELS["next"], lang))
     lines += [f"{i}. {t}" for i, t in enumerate(steps, 1)]
     if status != "present":
-        lines.append(C.DEADLINE_LINE[lang])
+        lines.append(_t(C.DEADLINE_LINE, lang))
     if match and status in ("not_in_new_list", "modified"):
         lines += docs_lines(match.voter_id, lang)
     return _answer(lang, status, reason, steps, conf, match, lines + footer, transcript)
