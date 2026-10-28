@@ -1,0 +1,35 @@
+{
+  "properties": {
+    "member_id": {
+      "title": "Member Id",
+      "type": "string"
+    },
+    "email": {
+      "title": "Email",
+      "type": "string"
+    },
+    "role": {
+      "enum": [
+        "owner",
+        "admin",
+        "auditor",
+        "reviewer",
+        "viewer"
+      ],
+      "title": "Role",
+      "type": "string"
+    },
+    "joined_at": {
+      "title": "Joined At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "member_id",
+    "email",
+    "role",
+    "joined_at"
+  ],
+  "title": "OrgMember",
+  "type": "object"
+}

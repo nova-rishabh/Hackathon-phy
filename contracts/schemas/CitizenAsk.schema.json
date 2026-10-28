@@ -30,7 +30,11 @@
           "enum": [
             "hi",
             "en",
-            "pa"
+            "pa",
+            "bn",
+            "mr",
+            "ta",
+            "te"
           ],
           "type": "string"
         },

@@ -1,0 +1,40 @@
+{
+  "properties": {
+    "name": {
+      "title": "Name",
+      "type": "string"
+    },
+    "slug": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Slug"
+    },
+    "tier": {
+      "default": "pro",
+      "enum": [
+        "free",
+        "pro",
+        "enterprise"
+      ],
+      "title": "Tier",
+      "type": "string"
+    },
+    "admin_email": {
+      "default": "admin@rollwatch.org",
+      "title": "Admin Email",
+      "type": "string"
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "title": "CreateOrgRequest",
+  "type": "object"
+}

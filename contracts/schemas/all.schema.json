@@ -1,5 +1,116 @@
 {
   "$defs": {
+    "AddMemberRequest": {
+      "properties": {
+        "email": {
+          "title": "Email",
+          "type": "string"
+        },
+        "role": {
+          "default": "auditor",
+          "enum": [
+            "owner",
+            "admin",
+            "auditor",
+            "reviewer",
+            "viewer"
+          ],
+          "title": "Role",
+          "type": "string"
+        }
+      },
+      "required": [
+        "email"
+      ],
+      "title": "AddMemberRequest",
+      "type": "object"
+    },
+    "ApiKeyItem": {
+      "properties": {
+        "key_id": {
+          "title": "Key Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "prefix": {
+          "title": "Prefix",
+          "type": "string"
+        },
+        "last4": {
+          "title": "Last4",
+          "type": "string"
+        },
+        "role": {
+          "default": "auditor",
+          "enum": [
+            "owner",
+            "admin",
+            "auditor",
+            "reviewer",
+            "viewer"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "scopes": {
+          "default": [
+            "audit:read",
+            "audit:write",
+            "search"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Scopes",
+          "type": "array"
+        },
+        "created_at": {
+          "title": "Created At",
+          "type": "string"
+        },
+        "expires_at": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Expires At"
+        },
+        "is_active": {
+          "default": true,
+          "title": "Is Active",
+          "type": "boolean"
+        },
+        "last_used_at": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Last Used At"
+        }
+      },
+      "required": [
+        "key_id",
+        "name",
+        "prefix",
+        "last4",
+        "created_at"
+      ],
+      "title": "ApiKeyItem",
+      "type": "object"
+    },
     "AuditEntry": {
       "properties": {
         "ts": {
@@ -206,7 +317,11 @@
           "enum": [
             "hi",
             "en",
-            "pa"
+            "pa",
+            "bn",
+            "mr",
+            "ta",
+            "te"
           ],
           "title": "Lang",
           "type": "string"
@@ -333,7 +448,11 @@
               "enum": [
                 "hi",
                 "en",
-                "pa"
+                "pa",
+                "bn",
+                "mr",
+                "ta",
+                "te"
               ],
               "type": "string"
             },
@@ -413,7 +532,11 @@
           "enum": [
             "hi",
             "en",
-            "pa"
+            "pa",
+            "bn",
+            "mr",
+            "ta",
+            "te"
           ],
           "title": "Lang",
           "type": "string"
@@ -505,6 +628,155 @@
         "guard"
       ],
       "title": "ClaimVerdict",
+      "type": "object"
+    },
+    "CreateKeyRequest": {
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "role": {
+          "default": "auditor",
+          "enum": [
+            "owner",
+            "admin",
+            "auditor",
+            "reviewer",
+            "viewer"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "scopes": {
+          "default": [
+            "audit:read",
+            "audit:write",
+            "search"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "title": "Scopes",
+          "type": "array"
+        },
+        "expires_in_days": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": 90,
+          "title": "Expires In Days"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "CreateKeyRequest",
+      "type": "object"
+    },
+    "CreateKeyResponse": {
+      "properties": {
+        "key_id": {
+          "title": "Key Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "token": {
+          "title": "Token",
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "owner",
+            "admin",
+            "auditor",
+            "reviewer",
+            "viewer"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "scopes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Scopes",
+          "type": "array"
+        },
+        "created_at": {
+          "title": "Created At",
+          "type": "string"
+        },
+        "expires_at": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Expires At"
+        }
+      },
+      "required": [
+        "key_id",
+        "name",
+        "token",
+        "role",
+        "scopes",
+        "created_at",
+        "expires_at"
+      ],
+      "title": "CreateKeyResponse",
+      "type": "object"
+    },
+    "CreateOrgRequest": {
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "slug": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Slug"
+        },
+        "tier": {
+          "default": "pro",
+          "enum": [
+            "free",
+            "pro",
+            "enterprise"
+          ],
+          "title": "Tier",
+          "type": "string"
+        },
+        "admin_email": {
+          "default": "admin@rollwatch.org",
+          "title": "Admin Email",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "CreateOrgRequest",
       "type": "object"
     },
     "DeathRecord": {
@@ -1064,6 +1336,90 @@
       "title": "Miss",
       "type": "object"
     },
+    "OrgMember": {
+      "properties": {
+        "member_id": {
+          "title": "Member Id",
+          "type": "string"
+        },
+        "email": {
+          "title": "Email",
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "owner",
+            "admin",
+            "auditor",
+            "reviewer",
+            "viewer"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "joined_at": {
+          "title": "Joined At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "member_id",
+        "email",
+        "role",
+        "joined_at"
+      ],
+      "title": "OrgMember",
+      "type": "object"
+    },
+    "Organization": {
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "slug": {
+          "title": "Slug",
+          "type": "string"
+        },
+        "tier": {
+          "default": "pro",
+          "enum": [
+            "free",
+            "pro",
+            "enterprise"
+          ],
+          "title": "Tier",
+          "type": "string"
+        },
+        "quotas": {
+          "$ref": "#/$defs/QuotaInfo",
+          "default": {
+            "checks_limit": 1000,
+            "checks_used": 0,
+            "max_seats": 5,
+            "seats_used": 1,
+            "rate_limit_per_min": 60,
+            "pdf_ingest": true
+          }
+        },
+        "created_at": {
+          "title": "Created At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "slug",
+        "created_at"
+      ],
+      "title": "Organization",
+      "type": "object"
+    },
     "Overview": {
       "properties": {
         "totals": {
@@ -1145,6 +1501,42 @@
         "voter_ids"
       ],
       "title": "Planting",
+      "type": "object"
+    },
+    "QuotaInfo": {
+      "properties": {
+        "checks_limit": {
+          "default": 1000,
+          "title": "Checks Limit",
+          "type": "integer"
+        },
+        "checks_used": {
+          "default": 0,
+          "title": "Checks Used",
+          "type": "integer"
+        },
+        "max_seats": {
+          "default": 5,
+          "title": "Max Seats",
+          "type": "integer"
+        },
+        "seats_used": {
+          "default": 1,
+          "title": "Seats Used",
+          "type": "integer"
+        },
+        "rate_limit_per_min": {
+          "default": 60,
+          "title": "Rate Limit Per Min",
+          "type": "integer"
+        },
+        "pdf_ingest": {
+          "default": true,
+          "title": "Pdf Ingest",
+          "type": "boolean"
+        }
+      },
+      "title": "QuotaInfo",
       "type": "object"
     },
     "ReliabilityBin": {
@@ -1919,6 +2311,30 @@
     },
     "GuardLog": {
       "$ref": "#/$defs/GuardLog"
+    },
+    "Organization": {
+      "$ref": "#/$defs/Organization"
+    },
+    "QuotaInfo": {
+      "$ref": "#/$defs/QuotaInfo"
+    },
+    "OrgMember": {
+      "$ref": "#/$defs/OrgMember"
+    },
+    "ApiKeyItem": {
+      "$ref": "#/$defs/ApiKeyItem"
+    },
+    "CreateOrgRequest": {
+      "$ref": "#/$defs/CreateOrgRequest"
+    },
+    "AddMemberRequest": {
+      "$ref": "#/$defs/AddMemberRequest"
+    },
+    "CreateKeyRequest": {
+      "$ref": "#/$defs/CreateKeyRequest"
+    },
+    "CreateKeyResponse": {
+      "$ref": "#/$defs/CreateKeyResponse"
     }
   }
 }

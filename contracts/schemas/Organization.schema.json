@@ -1,0 +1,87 @@
+{
+  "$defs": {
+    "QuotaInfo": {
+      "properties": {
+        "checks_limit": {
+          "default": 1000,
+          "title": "Checks Limit",
+          "type": "integer"
+        },
+        "checks_used": {
+          "default": 0,
+          "title": "Checks Used",
+          "type": "integer"
+        },
+        "max_seats": {
+          "default": 5,
+          "title": "Max Seats",
+          "type": "integer"
+        },
+        "seats_used": {
+          "default": 1,
+          "title": "Seats Used",
+          "type": "integer"
+        },
+        "rate_limit_per_min": {
+          "default": 60,
+          "title": "Rate Limit Per Min",
+          "type": "integer"
+        },
+        "pdf_ingest": {
+          "default": true,
+          "title": "Pdf Ingest",
+          "type": "boolean"
+        }
+      },
+      "title": "QuotaInfo",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "name": {
+      "title": "Name",
+      "type": "string"
+    },
+    "slug": {
+      "title": "Slug",
+      "type": "string"
+    },
+    "tier": {
+      "default": "pro",
+      "enum": [
+        "free",
+        "pro",
+        "enterprise"
+      ],
+      "title": "Tier",
+      "type": "string"
+    },
+    "quotas": {
+      "$ref": "#/$defs/QuotaInfo",
+      "default": {
+        "checks_limit": 1000,
+        "checks_used": 0,
+        "max_seats": 5,
+        "seats_used": 1,
+        "rate_limit_per_min": 60,
+        "pdf_ingest": true
+      }
+    },
+    "created_at": {
+      "title": "Created At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "slug",
+    "created_at"
+  ],
+  "title": "Organization",
+  "type": "object"
+}

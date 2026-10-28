@@ -1,0 +1,49 @@
+{
+  "properties": {
+    "name": {
+      "title": "Name",
+      "type": "string"
+    },
+    "role": {
+      "default": "auditor",
+      "enum": [
+        "owner",
+        "admin",
+        "auditor",
+        "reviewer",
+        "viewer"
+      ],
+      "title": "Role",
+      "type": "string"
+    },
+    "scopes": {
+      "default": [
+        "audit:read",
+        "audit:write",
+        "search"
+      ],
+      "items": {
+        "type": "string"
+      },
+      "title": "Scopes",
+      "type": "array"
+    },
+    "expires_in_days": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": 90,
+      "title": "Expires In Days"
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "title": "CreateKeyRequest",
+  "type": "object"
+}

@@ -1,0 +1,86 @@
+{
+  "properties": {
+    "key_id": {
+      "title": "Key Id",
+      "type": "string"
+    },
+    "name": {
+      "title": "Name",
+      "type": "string"
+    },
+    "prefix": {
+      "title": "Prefix",
+      "type": "string"
+    },
+    "last4": {
+      "title": "Last4",
+      "type": "string"
+    },
+    "role": {
+      "default": "auditor",
+      "enum": [
+        "owner",
+        "admin",
+        "auditor",
+        "reviewer",
+        "viewer"
+      ],
+      "title": "Role",
+      "type": "string"
+    },
+    "scopes": {
+      "default": [
+        "audit:read",
+        "audit:write",
+        "search"
+      ],
+      "items": {
+        "type": "string"
+      },
+      "title": "Scopes",
+      "type": "array"
+    },
+    "created_at": {
+      "title": "Created At",
+      "type": "string"
+    },
+    "expires_at": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Expires At"
+    },
+    "is_active": {
+      "default": true,
+      "title": "Is Active",
+      "type": "boolean"
+    },
+    "last_used_at": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Last Used At"
+    }
+  },
+  "required": [
+    "key_id",
+    "name",
+    "prefix",
+    "last4",
+    "created_at"
+  ],
+  "title": "ApiKeyItem",
+  "type": "object"
+}

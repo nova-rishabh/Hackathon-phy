@@ -10,6 +10,11 @@ import sys
 from pathlib import Path
 
 os.environ.setdefault("PYTHONUTF8", "1")
+if sys.stdout.encoding != "utf-8":
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
 ROOT = Path(__file__).parent
 sys.path.insert(0, str(ROOT))
 FIX = ROOT / "contracts" / "fixtures"

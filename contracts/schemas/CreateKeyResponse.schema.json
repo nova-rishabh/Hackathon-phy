@@ -1,0 +1,60 @@
+{
+  "properties": {
+    "key_id": {
+      "title": "Key Id",
+      "type": "string"
+    },
+    "name": {
+      "title": "Name",
+      "type": "string"
+    },
+    "token": {
+      "title": "Token",
+      "type": "string"
+    },
+    "role": {
+      "enum": [
+        "owner",
+        "admin",
+        "auditor",
+        "reviewer",
+        "viewer"
+      ],
+      "title": "Role",
+      "type": "string"
+    },
+    "scopes": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Scopes",
+      "type": "array"
+    },
+    "created_at": {
+      "title": "Created At",
+      "type": "string"
+    },
+    "expires_at": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Expires At"
+    }
+  },
+  "required": [
+    "key_id",
+    "name",
+    "token",
+    "role",
+    "scopes",
+    "created_at",
+    "expires_at"
+  ],
+  "title": "CreateKeyResponse",
+  "type": "object"
+}

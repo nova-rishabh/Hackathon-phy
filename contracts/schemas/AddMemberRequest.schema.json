@@ -1,0 +1,25 @@
+{
+  "properties": {
+    "email": {
+      "title": "Email",
+      "type": "string"
+    },
+    "role": {
+      "default": "auditor",
+      "enum": [
+        "owner",
+        "admin",
+        "auditor",
+        "reviewer",
+        "viewer"
+      ],
+      "title": "Role",
+      "type": "string"
+    }
+  },
+  "required": [
+    "email"
+  ],
+  "title": "AddMemberRequest",
+  "type": "object"
+}

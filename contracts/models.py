@@ -11,7 +11,7 @@ from pydantic import BaseModel, Field
 
 # ---------------------------------------------------------------- shared enums
 
-Lang = Literal["hi", "en", "pa"]
+Lang = Literal["hi", "en", "pa", "bn", "mr", "ta", "te"]
 RollVersion = Literal["v1", "v2"]
 Gender = Literal["M", "F", "T"]
 RelationType = Literal["father", "husband", "mother", "other"]

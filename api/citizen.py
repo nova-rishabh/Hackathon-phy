@@ -370,10 +370,10 @@ def docs_lines(voter_id: str, lang: str) -> list[str]:
     y, md = int(C.ROLL_QUALIFYING_DATE[:4]), C.ROLL_QUALIFYING_DATE[4:]
     latest, earliest = f"{y - age}{md}", f"{y - age - 1}{md}"
     lo, hi = _bracket(earliest), _bracket(latest)
-    out = [C.DOCS_HEAD[lang]] if lo == hi else [C.DOCS_HEAD[lang], C.DOCS_UNSURE[lang]]
+    out = [_t(C.DOCS_HEAD, lang)] if lo == hi else [_t(C.DOCS_HEAD, lang), _t(C.DOCS_UNSURE, lang)]
     order = ["before", "between", "after"]
-    out += [C.DOCS_BRACKET[k][lang] for k in order[order.index(lo):order.index(hi) + 1]]
-    return out + [C.DOCS_LIST[lang]]
+    out += [_t(C.DOCS_BRACKET[k], lang) for k in order[order.index(lo):order.index(hi) + 1]]
+    return out + [_t(C.DOCS_LIST, lang)]
 
 
 def _shown_name(match: SearchMatch, lang: str) -> str:

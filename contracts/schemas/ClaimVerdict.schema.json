@@ -18,7 +18,11 @@
           "enum": [
             "hi",
             "en",
-            "pa"
+            "pa",
+            "bn",
+            "mr",
+            "ta",
+            "te"
           ],
           "title": "Lang",
           "type": "string"
