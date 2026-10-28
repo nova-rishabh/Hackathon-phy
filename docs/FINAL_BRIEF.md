@@ -3,6 +3,11 @@
 Live: **rollwatch-web.onrender.com** · WhatsApp **+91 80764 99841** · Telegram **@Rollwatch_bot** · API rollwatch-api.onrender.com
 Before presenting: open the site 2 minutes early (first load can take ~40 s), keep the laptop on (WhatsApp + Telegram run on it).
 
+**Demo-proof checklist (nothing keeps Render awake any more; it sleeps after 15 idle minutes):**
+1. 5 min before: `python scripts/warmup.py`. It hits every page and route of the demo once, including the demo claim and Meena's lookup. All lines should say OK.
+2. If any line says FAIL, or the venue Wi-Fi is bad: `powershell -File scripts\demo_local.ps1` (API in DEMO_MODE on :8000, web on :3000, same numbers, cached AI text), then `python scripts/warmup.py --local`, and present from http://127.0.0.1:3000. Sign-in and live voice need the internet; Audit, Check, Ask and Trust don't.
+3. Start the WhatsApp worker and Telegram bot (one of each), and send the demo forward to WhatsApp yourself once, so the first reply on stage is warm.
+
 ---
 
 ## 1. Prompt to update the slides (paste into Claude with the current deck PDF attached)
