@@ -359,3 +359,11 @@ Directional only: different, mostly US hackathons, small samples for niche theme
 - **Second agent's work** (monitoring, webhook/lifecycle, PDF ingestion, async jobs, reports, review history, workspaces/API keys, caching, 7 languages, demo tour) reviewed; access-control holes found and fixed (26 attack checks pass).
 - **Decisions:** citizens never pay; organisations subscribe. Paid tiers only through billing. Workspace roles only from membership. Operator-only for billing records, recalibration and monitoring writes.
 - **Open:** `tests/test_recalibration.py` depends on local-only blind data; reset the Upstash password and rotate any key that appeared in chat after the event.
+
+## 28 Oct 2026: late session (demo-proofing, honesty, Phase 1 polish)
+- **Demo-proof:** `scripts/warmup.py` (one pass over every demo page/route; `--local` for the fallback) and `scripts/demo_local.ps1` (API in DEMO_MODE on :8000 + web on :3000, no internet). Keep-alive workflow restored until 29 Oct (antiGravity had deleted it).
+- **Trust:** "False alarms, counted" from `/eval/blind` (`false_alarms`): 263 of 283 raised flags real (93%), 0 on booth spikes, 20 record-level (14 duplicate pairs, 6 relation conflicts), 11 self-cleared. "Try to fool it": hide names in any booth, `engine/simulate.py` reruns the spike + leftover tests (reproduces the engine's 9 flags exactly); detection limit median 19 names (8-40); spread 1,000 over 100 booths -> 2 new booths reach review (the honest blind spot).
+- **antiGravity review:** its demo tour had invented numbers (53 removals, 100%, 118/118): removed. Replaced by a spotlight onboarding tour (10 stops, live engine numbers, `/?tour=1`).
+- **Citizen matching:** every typed word must match a name word, bar 0.85 (0 of 2,950 names not in the roll matched anyone; 381/400 real voters with a typo found, 0 wrong person); a first name alone asks for surname/age; unmatched names say "Not listed". Regression: `tests/test_name_matching.py`.
+- **UI:** dark theme (system default + sun/moon toggle, tokens only), header language picker removed, Ask composer card, one blinking-eye loader for every wait, cycling booth tile in the hero, fixed blank "mixed" tiles.
+- **Decision (Rishabh):** dark mode allowed (DESIGN_SYSTEM rule 1 updated). Phase 2 requirements come from Rishabh to the next session; see docs/HANDOFF.md.
