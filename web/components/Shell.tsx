@@ -14,7 +14,7 @@ function ShellInner({ children }: { children: React.ReactNode }) {
   const { t } = useI18n();
 
   const TABS: [string, string][] = [
-    ["/", t("nav_audit")],
+    ["/audit", t("nav_audit")],
     ["/check", t("nav_check")],
     ["/ask", t("nav_ask")],
     ["/run", t("nav_run")],
@@ -28,8 +28,9 @@ function ShellInner({ children }: { children: React.ReactNode }) {
     acct,
   ];
 
-  if (path.startsWith("/card")) return <>{children}</>;
-  const active = (h: string) => (h === "/" ? path === "/" : path.startsWith(h));
+  // The home page (/) is the full-screen v3 page with its own nav; share cards render bare too.
+  if (path === "/" || path.startsWith("/card")) return <>{children}</>;
+  const active = (h: string) => path.startsWith(h);
   const tab = (h: string, l: string) => (
     <Link
       key={h}
@@ -136,7 +137,7 @@ function ThemeToggle() {
 const API_DOCS = (process.env.NEXT_PUBLIC_API_BASE || "http://localhost:8000") + "/docs";
 const WA = WA_NUMBER;
 const COLS: [string, [string, string][]][] = [
-  ["Product", [["/", "Audit"], ["/check", "Check a claim"], ["/ask", "Ask about a name"], ["/trust", "Trust and error rates"]]],
+  ["Product", [["/", "Home"], ["/audit", "Audit"], ["/check", "Check a claim"], ["/ask", "Ask about a name"], ["/trust", "Trust and error rates"]]],
   ["Use it", [["/login", "Sign in"], ["/settings", "Bring your own keys"], ["https://t.me/Rollwatch_bot", "Telegram bot"], ...(WA ? [[`https://wa.me/${WA}`, "WhatsApp bot"] as [string, string]] : []), [API_DOCS, "Open API"]]],
   ["Project", [["https://github.com/nova-rishabh/Hackathon-phy", "Source code"], ["/trust", "What we miss"], ["https://voters.eci.gov.in", "Official voter portal"]]],
 ];

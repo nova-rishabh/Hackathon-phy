@@ -11,7 +11,7 @@ Everything either of us needs before the final round, on one page. Every number 
 1. **5 minutes before:** `python scripts/warmup.py`. Every line must say OK. The web sleeps after 15 idle minutes, and the first load takes about 30 to 60 s.
 2. **If any line says FAIL, or the Wi-Fi is bad:** `powershell -File scripts\demo_local.ps1`, then `python scripts/warmup.py --local`, then present from **http://127.0.0.1:3000**. Audit, Check, Ask and Trust work offline with the same numbers. Sign-in and live voice need the internet.
 3. **On the laptop:** start one WhatsApp worker and one Telegram bot. Never run two WhatsApp workers. Send the demo forward to WhatsApp yourself once, so the first reply on stage is warm.
-4. **Tabs open in this order:** Audit (home), Check, Ask, Trust (scrolled to "Try to fool it"), Run it, Pricing. Keep the film (`web/public/rollwatch-film.mp4`) open as the last-resort backup.
+4. **Tabs open in this order:** Home (`/`, the new scroll page), Audit (`/audit`), Check, Ask, Trust (scrolled to "Try to fool it"), Run it, Pricing. Keep the film (`web/public/rollwatch-film.mp4`) open as the last-resort backup.
 5. **Laptop plugged in, sleep off.** The bots run on it.
 
 ---
@@ -74,6 +74,7 @@ The presentation round showed a plan. Everything below is now live:
 - **Pricing and billing:** citizens free; organisations build a plan; Razorpay subscriptions (test mode) verified server-side.
 - **Platform:** workspaces, roles and API keys; async constituency audits; newsroom report and CSV exports; review queue with a hash-chained history; recalibration from reviews; 7 languages in citizen answers; monitoring; link previews (a shared claim previews as its verdict card).
 - **Safety:** neutrality guard on every outbound message; per-client rate limits; size caps; 26 access-control checks.
+- **New home page** (`/`): a dark, scroll-driven 3D page where 2,400 voter points form the booth grid and recolour with live engine numbers; the dashboard moved to `/audit`.
 - **UI:** dark theme (sun/moon toggle), 10-stop onboarding tour (`/?tour=1`), one loader for every wait, phone layout.
 
 ---
@@ -112,7 +113,7 @@ The presentation round showed a plan. Everything below is now live:
 |---|---|---|---|
 | 0:00 | — | Read the forward aloud | "Forwards like this spread in hours after every revision. Nobody can check them." |
 | 0:20 | **Check** | Paste the forward → three rows → point at the queries → mirror card | "Gemini only splits the sentence. Python runs a fixed query for each part. We never infer community, so that part can't be proven, and it says why." |
-| 1:00 | **Audit** | Booth 47, then Booth 12, then Booth 63 and switch the boundary log | "To a rumour these look the same. Only one is unexplained. Switch a source off and the answer moves." |
+| 1:00 | **Audit** (`/audit`) | Booth 47, then Booth 12, then Booth 63 and switch the boundary log | "To a rumour these look the same. Only one is unexplained. Switch a source off and the answer moves." |
 | 1:50 | **Ask** | `meena kumaari booth 47` → Listen | "Wrong spelling, wrong script, still found. The reason, the form, 1950, and a BLO never asks for an OTP." |
 | 2:30 | **Trust** | Scoreboard → False alarms → Try to fool it: Booth 23, slide to 17 then 18 | "A separate agent hid the problems. We found all 9. Here's every false alarm. And here's what we can't catch." |
 | 3:20 | **Run it** | Run the 10-booth sample | "This is the inside path: an office checks a draft before publishing." |

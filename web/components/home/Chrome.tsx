@@ -30,6 +30,8 @@ export function TopBar({ active }: { active: number }) {
             <a href={`#${id}`} aria-current={at === id || (id === "tested" && at === "scale") ? "true" : undefined}>{label}</a>
           </span>
         ))}
+        <span className="sep" aria-hidden="true" />
+        <a href="/audit">Dashboard</a>
       </nav>
     </header>
   );

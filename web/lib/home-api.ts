@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 
 /** The RollWatch API. Every number on the page comes from here; nothing is written into the page by hand. */
 export const API = (process.env.NEXT_PUBLIC_API_BASE || "https://rollwatch-api.onrender.com").replace(/\/$/, "");
-export const WEB_V1 = "https://rollwatch-web.onrender.com";
 export const WA_NUMBER = "918076499841";
 
 export async function get<T>(path: string, ms = 60000): Promise<T> {

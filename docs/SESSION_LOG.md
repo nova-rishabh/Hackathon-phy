@@ -378,3 +378,8 @@ Directional only: different, mostly US hackathons, small samples for niche theme
 - **Decision (Rishabh):** the site will be rebuilt completely in a dark, immersive style (motion reference: activetheory.net), in a separate folder until it replaces `web/`. Their code and assets are not copied; the scene is written from scratch.
 - **web2/:** Next.js 15 + three.js 0.186. Loader orb counting real loading, chrome ring with the RollWatch eye on a looping wire, 2,400 voter points that morph into the booth grid and recolour by live booth outcomes and story shares, glass nav, ten scroll chapters wired to `/overview`, `/stories`, `/claims/check`, `/citizen/ask`, `/eval/blind`, `/simulate`, `/ops`. Checked at 1366x768 and 375 px against a local API; numbers match the engine (Booth 47 401/412, claim 86%, 9/9, 263 of 283, Booth 23 caught at 18, 13.5 min, 189/s). Production build passes. Not deployed.
 - **Open:** corner tour pill in `web/` (uncommitted, see web/components/Shell.tsx) pending Rishabh's call; web2 Render service not created yet.
+
+## 28 Oct 2026: v3 home live at /
+- **Decision (Rishabh):** keep the old pages, add a new home. The v3 scroll page is now `/` on rollwatch-web.onrender.com; the Audit dashboard moved to `/audit`; Check, Ask, Run it, Trust, Pricing, Account and Keys are unchanged.
+- Code moved from `web2/` into `web/` (`app/page.tsx`, `app/home.css` scoped under `.v3`, `components/home/`, `scene/Scene.ts`, `lib/home-api.ts`); `web2/` removed so there is one copy. Notes: `docs/HOME_V3.md`. three.js 0.186.1 added to `web/`.
+- Shell skips its header/footer on `/`; the Audit tab and footer link go to `/audit`; the booth-watch WhatsApp alert links to `/audit`; `scripts/warmup.py` also warms `/audit`.

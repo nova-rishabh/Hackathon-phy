@@ -30,10 +30,10 @@ export default function Loader({ done, total, onFinish }: { done: number; total:
   }, [shown, out, onFinish]);
 
   return (
-    <div className={`loader ${out ? "done" : ""}`} aria-hidden={out} role="status" aria-label="Loading">
-      <div className="loader-orb">
-        <div className="loader-hatch" aria-hidden="true">{HATCH}</div>
-        <span className="loader-count">/{String(shown).padStart(2, "0")}</span>
+    <div className={`v3loader ${out ? "done" : ""}`} aria-hidden={out} role="status" aria-label="Loading">
+      <div className="v3loader-orb">
+        <div className="v3loader-hatch" aria-hidden="true">{HATCH}</div>
+        <span className="v3loader-count">/{String(shown).padStart(2, "0")}</span>
       </div>
     </div>
   );

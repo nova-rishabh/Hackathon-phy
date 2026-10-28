@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
-  ALL_SOURCES, WA_NUMBER, WEB_V1, ask, checkClaim, crore, fmt, get, pct, simulate, story, useApi,
+  ALL_SOURCES, WA_NUMBER, ask, checkClaim, crore, fmt, get, pct, simulate, story, useApi,
   type BlindEval, type CitizenAnswer, type ClaimResult, type Limits, type Ops, type Overview, type Sim, type Story, type Verdict,
-} from "@/lib/api";
+} from "@/lib/home-api";
 
 const DEMO_CLAIM = "Booth 47 mein 600 naam kaat diye, sabse zyada, aur sab ek community ke!";
 
@@ -53,7 +53,7 @@ export function Problem({ ov }: { ov: Overview | null }) {
       <div className="wrap"><div className="col">
         <p className="eyebrow rise">The rumour.</p>
         <h2 className="title"><Rise text={`${fmt(ov?.totals.deleted)} names left the roll.`} /><span className="dim"><Rise text="The forward arrived first." start={5} /></span></h2>
-        <div className="bubble glass rise" style={{ "--i": 9 } as React.CSSProperties} lang="hi">
+        <div className="v3bubble glass rise" style={{ "--i": 9 } as React.CSSProperties} lang="hi">
           {DEMO_CLAIM}
           <div className="foot" style={{ marginTop: 8 }}>forwarded many times</div>
         </div>
@@ -122,7 +122,7 @@ export function WhichStory({ onStory }: { onStory: (s: Story) => void }) {
     <section id="story" className="chapter chapter--tall">
       <div className="wrap"><div className="col">
         <p className="eyebrow rise">Which story fits.</p>
-        <div className="seg rise" style={{ "--i": 1, alignSelf: "flex-start" } as React.CSSProperties} role="group" aria-label="Booth">
+        <div className="v3seg rise" style={{ "--i": 1, alignSelf: "flex-start" } as React.CSSProperties} role="group" aria-label="Booth">
           {["B047", "B012", "B063"].map((b) => (
             <button key={b} aria-pressed={booth === b} onClick={() => { setBooth(b); setBoundary(true); }}>Booth {Number(b.slice(1))}</button>
           ))}
@@ -131,8 +131,8 @@ export function WhichStory({ onStory }: { onStory: (s: Story) => void }) {
           {s && un ? <>{fmt(un.count)} of {fmt(s.removed_total)} removals fit no story. <span className="dim">Booth {Number(booth.slice(1))}, about {fmt(Math.round(s.residual.expected_background))} expected to go anyway.</span></>
             : <span className="dim">{err ? "The engine didn't answer. Try again in a moment." : "Asking the engine…"}</span>}
         </h2>
-        {s && <div className="glass card" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-          <div className="sbar" role="img" aria-label="Story shares">
+        {s && <div className="glass v3card" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          <div className="v3bar" role="img" aria-label="Story shares">
             {s.stories.filter((x) => x.count > 0).map((x) => (
               <div key={x.code} className={x.code === "unexplained" ? "hatch" : ""} style={{ flexGrow: x.count, background: STORY_COL[x.code] }} />
             ))}
@@ -144,7 +144,7 @@ export function WhichStory({ onStory }: { onStory: (s: Story) => void }) {
           <div className="row" style={{ justifyContent: "space-between" }}>
             {chip && <Chip kind={chip[0]}>{chip[1]}</Chip>}
             {booth === "B063" && (
-              <div className="seg" role="group" aria-label="Boundary-change log">
+              <div className="v3seg" role="group" aria-label="Boundary-change log">
                 <button aria-pressed={boundary} onClick={() => setBoundary(true)}>Boundary log on</button>
                 <button aria-pressed={!boundary} onClick={() => setBoundary(false)}>Off</button>
               </div>
@@ -178,14 +178,14 @@ export function ClaimCourt({ visible }: { visible: boolean }) {
       <div className="wrap"><div className="col col--wide">
         <p className="eyebrow rise">Claim court.</p>
         <h2 className="title"><Rise text="The agent plans." /><span className="dim"><Rise text="Code decides." start={3} /></span></h2>
-        <form className="glass card" style={{ display: "flex", flexDirection: "column", gap: 12 }} onSubmit={(e) => { e.preventDefault(); if (text.trim()) run(text.trim()); }}>
+        <form className="glass v3card" style={{ display: "flex", flexDirection: "column", gap: 12 }} onSubmit={(e) => { e.preventDefault(); if (text.trim()) run(text.trim()); }}>
           <label className="eyebrow" htmlFor="claim">Paste a forward</label>
           <textarea id="claim" className="field" rows={2} value={text} onChange={(e) => setText(e.target.value)} maxLength={600} />
           <div className="row"><button className="btn btn--solid" disabled={busy}>{busy ? "Checking…" : "Check this claim"}</button>
             <span className="foot">the model only splits the sentence · every number comes from a fixed query</span></div>
         </form>
         {err && <p className="small">The engine didn&apos;t answer. Try again in a moment.</p>}
-        {res && <div className="glass card" aria-live="polite">
+        {res && <div className="glass v3card" aria-live="polite">
           {res.sub_claims.map((c) => {
             const [k, l] = VERDICT_CHIP[c.verdict];
             return (
@@ -226,7 +226,7 @@ export function Ask() {
       <div className="wrap"><div className="col">
         <p className="eyebrow rise">Ask. For voters.</p>
         <h2 className="title"><Rise text="Is my name still on the list?" /><span className="dim"><Rise text="Why it changed, and what to do next." start={6} /></span></h2>
-        <div className="seg rise" style={{ "--i": 12, alignSelf: "flex-start" } as React.CSSProperties} role="group" aria-label="Language">
+        <div className="v3seg rise" style={{ "--i": 12, alignSelf: "flex-start" } as React.CSSProperties} role="group" aria-label="Language">
           {([["hi", "हिंदी"], ["en", "English"], ["pa", "ਪੰਜਾਬੀ"]] as const).map(([k, l]) => (
             <button key={k} aria-pressed={lang === k} onClick={() => { setLang(k); setText(PROMPT[k]); setRes(null); }} lang={k}>{l}</button>
           ))}
@@ -236,7 +236,7 @@ export function Ask() {
           <button className="btn btn--solid" disabled={busy}>{busy ? "Looking…" : "Ask"}</button>
         </form>
         {err && <p className="small">The engine didn&apos;t answer. Try again in a moment.</p>}
-        {res && <div className="glass card" style={{ display: "flex", flexDirection: "column", gap: 12 }} aria-live="polite">
+        {res && <div className="glass v3card" style={{ display: "flex", flexDirection: "column", gap: 12 }} aria-live="polite">
           {res.match && <div className="row" style={{ justifyContent: "space-between" }}>
             <span style={{ fontSize: 26 }} lang="hi">{res.match.name_dev}</span>
             <span className="foot">booth {res.match.booth_id.slice(1)} · {res.match.voter_id}</span>
@@ -281,7 +281,7 @@ export function Tested() {
         </div>
         {fa && <p className="small" style={{ margin: 0 }}>{fa.booth_spike_false} false alarms on booth spikes, the flags a rumour is built on. The {fa.raised_false} false ones are record-level: {record}.</p>}
 
-        <div className="glass card" style={{ display: "flex", flexDirection: "column", gap: 14, marginTop: 12 }}>
+        <div className="glass v3card" style={{ display: "flex", flexDirection: "column", gap: 14, marginTop: 12 }}>
           <p className="eyebrow" style={{ margin: 0 }}>Try to fool it.</p>
           <p style={{ margin: 0, fontSize: 22, lineHeight: 1.25, letterSpacing: "-.02em" }}>Remove names quietly. <span className="dim">The engine reruns the same tests it ran on the roll.</span></p>
           <div className="row">
@@ -367,8 +367,8 @@ export function Connect() {
         <div className="links rise" style={{ "--i": 11, justifyContent: "center" } as React.CSSProperties}>
           <a className="btn btn--solid" href={`https://wa.me/${WA_NUMBER}`} target="_blank" rel="noreferrer">WhatsApp</a>
           <a className="btn" href="https://t.me/Rollwatch_bot" target="_blank" rel="noreferrer">Telegram</a>
-          <a className="btn" href={WEB_V1} target="_blank" rel="noreferrer">Open the dashboard</a>
-          <a className="btn" href={`${WEB_V1}/pricing`} target="_blank" rel="noreferrer">For organisations</a>
+          <a className="btn" href="/audit">Open the dashboard</a>
+          <a className="btn" href="/pricing">For organisations</a>
           <a className="btn" href="https://github.com/nova-rishabh/Hackathon-phy" target="_blank" rel="noreferrer">Source</a>
         </div>
         <p className="foot rise" style={{ "--i": 12 } as React.CSSProperties}>

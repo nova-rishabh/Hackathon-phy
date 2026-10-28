@@ -333,7 +333,7 @@ async def wa_alerts(x_wa_secret: str | None = Header(None)):
     for r in rows:
         status = booth_status(r["booth_id"])
         if status:
-            await _queue(r["phone"], C.WA_ALERT_TEXT["en"].format(status=status, link=f"{web}/"))
+            await _queue(r["phone"], C.WA_ALERT_TEXT["en"].format(status=status, link=f"{web}/audit"))
             sent += 1
     return {"queued": sent}
 

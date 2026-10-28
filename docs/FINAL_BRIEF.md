@@ -57,7 +57,7 @@ stock icons or party colours). Change only content. Use only these numbers; neve
 - **Data is synthetic** (fictional district "Sampleabad", ~51,000 voters). The method and every number are real code output.
 - **AI's job is small:** Gemini only splits a claim into parts and phrases text; ElevenLabs does voice. **Python computes every number.** Turn the AI off and the verdicts don't change.
 - **Every output** says "needs human review", shows its reasoning and a confidence.
-- **Pages:** Audit (home) · Check (claims) · Ask (your name, and which documents a notice needs) · Run it (upload your own roll) · Trust (blind test, error rates, official checks, national scale) · Pricing (free for citizens; organisations build a plan).
+- **Pages:** Home (new scroll page) · Audit (`/audit`) · Check (claims) · Ask (your name, and which documents a notice needs) · Run it (upload your own roll) · Trust (blind test, error rates, official checks, national scale) · Pricing (free for citizens; organisations build a plan).
 - **Blind test:** a separate AI agent hid 9 problems and 6 innocent look-alikes in a district we never saw. We found 9 of 9 and cleared 6 of 6.
 - **Scale:** from ECI's own 2024 numbers, all 97.8 crore electors audit in 13.5 minutes on 64 cores; Uttar Pradesh in 8.5 minutes on one server. Peak citizen traffic (about 190 checks a second) fits on two machines.
 - **Money:** citizens never pay. Newsrooms, election-watch groups and election offices subscribe to a plan they build themselves (constituencies, WhatsApp number, languages, reviewers), paid through Razorpay.

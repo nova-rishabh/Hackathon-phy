@@ -50,6 +50,7 @@ def main() -> int:
         ("POST", f"{api}/claims/check", {"text": DEMO_CLAIM, "mirror": True}),
         ("POST", f"{api}/citizen/ask", {"text": DEMO_NAME, "channel": "web"}),
         ("GET", f"{web}/", None),
+        ("GET", f"{web}/audit", None),
         ("GET", f"{web}/check", None),
         ("GET", f"{web}/ask", None),
         ("GET", f"{web}/trust", None),
