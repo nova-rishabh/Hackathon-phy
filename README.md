@@ -93,7 +93,7 @@ Measured on the synthetic district with a planted answer key (`python -m engine.
 - **Public-roll PDF ingestion:** `engine/adapters/inrolls.py` reads searchable roll PDFs as well as parsed CSVs.
 - **Caching and incremental audits:** ETag/304 responses and re-running only changed booths (`/audit/incremental`).
 - **Monitoring:** `/ops/monitoring` (status of web, API, Redis, Telegram, WhatsApp); writes and error details are operator only.
-- **Seven languages** in citizen answers: Hindi, English, Punjabi, Bengali, Marathi, Tamil, Telugu; skip link and reduced-motion support; light and dark themes (follows the system, with a header toggle). A 10-stop onboarding tour on the home page spotlights each part with live engine numbers; it starts on a first visit, from "Take the 1-minute tour", or with `/?tour=1`.
+- **Seven languages** in citizen answers: Hindi, English, Punjabi, Bengali, Marathi, Tamil, Telugu; skip link and reduced-motion support; light and dark themes (follows the system, with a header toggle). "Try to fool it" on Trust: hide names in any booth and the engine reruns its own spike and leftover tests live, with each booth's smallest catchable removal (`GET /simulate`, `/simulate/limits`; `engine/simulate.py`). A 10-stop onboarding tour on the home page spotlights each part with live engine numbers; it starts on a first visit, from "Take the 1-minute tour", or with `/?tour=1`.
 - **Deployment and rollback:** `docs/DEPLOYMENT_AND_ROLLBACK.md` and `scripts/deployment_check.py`.
 
 ## Who pays

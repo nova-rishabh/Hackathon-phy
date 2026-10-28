@@ -101,7 +101,7 @@ export default function Audit() {
       { target: 'header a[href="/ask"], header button[aria-expanded]', title: "Is my name on the list?",
         body: "Any voter can search in Hindi, English or Punjabi, in any spelling, and see their status, the likely reason and which form to file." },
       { target: 'header a[href="/trust"], header button[aria-expanded]', title: "What we miss.",
-        body: "A blind test planted by a separate agent, false alarms counted, and the error rate of every rule. That's the tour." });
+        body: "A blind test planted by a separate agent, false alarms counted, the error rate of every rule, and a place to try to fool the engine yourself. That's the tour." });
     return s;
   };
 

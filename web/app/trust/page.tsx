@@ -6,6 +6,7 @@ import type { EvalResult, RuleCard, GuardLog } from "@/lib/types";
 import Glyph from "@/components/Glyph";
 import { Display, Eyebrow } from "@/components/Display";
 import { CountUp, InView } from "@/components/Motion";
+import FoolIt from "@/components/FoolIt";
 
 // /ops is not in contracts/api.md yet, so read it loosely.
 type Ops = Record<string, unknown>;
@@ -87,6 +88,8 @@ export default function Trust() {
           </p>
         </section>
       )}
+
+      <FoolIt />
 
       <section className={`panel ${b ? "mt-6" : "mt-16"}`}>
         <Eyebrow className="mb-5">{b ? "Demo district scoreboard (we planted it)." : "Scoreboard."}</Eyebrow>

@@ -275,6 +275,17 @@ button { cursor: pointer; font: inherit; color: inherit; background: none; borde
 .pending-bar { display: block; height: 10px; border-radius: 5px; background: var(--color-line); animation: breathe 1.4s ease-in-out infinite; }
 @keyframes breathe { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
 
+/* Try to fool it: slider, the k-vs-limit meter fill, and one dot per booth when the removal is spread. */
+.fool-range { width: 100%; accent-color: var(--color-button); height: 28px; }
+.fool-fill { transition: width 260ms var(--spring), background-color 200ms ease; }
+.fool-dots { display: grid; grid-template-columns: repeat(20, minmax(0, 1fr)); gap: 4px; max-width: 420px; }
+.fool-dots i { display: block; aspect-ratio: 1; border-radius: 3px; background: var(--color-panel-2); transition: background-color 200ms ease; }
+.fool-dots i.f { background: var(--color-benign); }
+.fool-dots i.c, .fool-key.c { background: var(--color-signal); }
+.fool-key { display: inline-block; width: 10px; height: 10px; border-radius: 3px; background: var(--color-panel-2); }
+.fool-key.f { background: var(--color-benign); }
+.fool-dots i.a, .fool-key.a { background: transparent; box-shadow: inset 0 0 0 1.5px var(--color-ink-3); }
+
 /* Spring-like curve: a fast start and a tiny overshoot at most (design rule: no bounce). */
 :root { --spring: cubic-bezier(.22,1,.36,1); --spring-over: cubic-bezier(.3,1.25,.5,1); }
 
@@ -329,5 +340,6 @@ button { cursor: pointer; font: inherit; color: inherit; background: none; borde
   .pageload-bar i, .waking-bar i { animation: none; width: 100%; opacity: .25; }
   .pageload-mark, .waking { animation: none; transition: none; }
   .loader-blink, .pending, .pending-bar { animation: none; }
+  .fool-fill, .fool-dots i { transition: none; }
   .loader-sweep i { animation: none; width: 100%; opacity: .4; }
 }
