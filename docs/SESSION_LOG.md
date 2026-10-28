@@ -373,3 +373,8 @@ Directional only: different, mostly US hackathons, small samples for niche theme
 - **Screenshots:** `deliver/deck-screens/` (18 PNGs from the live site, 1440x900 @2x, light + one dark + phone), not committed.
 - **Verified live today:** warmup all OK; Booth 47 412/401 (97%) vs ~25; Booth 12 390, 79% hostel; Booth 63 154, 64% -> 8%; claim card 86%; blind 9/9, 6/6, 263 of 283 real; limits median 19 (8-40), Booth 23 limit 18; spread 1,000/100 booths -> 58 show a spike, 2 reach review; quotes newsroom Rs 9,098, watch Rs 28,494, office Rs 1,84,473.
 - **Doc drift noted (not fixed):** START_HERE §4/§6, PITCH_PREP §A and FINAL_BRIEF §1 still carry Phase 1 numbers (60 expected, 380/81%, 76%, light only, PDF roadmap). The Phase 2 docs list them under "don't quote".
+
+## 28 Oct 2026: v3 UI started (web2/)
+- **Decision (Rishabh):** the site will be rebuilt completely in a dark, immersive style (motion reference: activetheory.net), in a separate folder until it replaces `web/`. Their code and assets are not copied; the scene is written from scratch.
+- **web2/:** Next.js 15 + three.js 0.186. Loader orb counting real loading, chrome ring with the RollWatch eye on a looping wire, 2,400 voter points that morph into the booth grid and recolour by live booth outcomes and story shares, glass nav, ten scroll chapters wired to `/overview`, `/stories`, `/claims/check`, `/citizen/ask`, `/eval/blind`, `/simulate`, `/ops`. Checked at 1366x768 and 375 px against a local API; numbers match the engine (Booth 47 401/412, claim 86%, 9/9, 263 of 283, Booth 23 caught at 18, 13.5 min, 189/s). Production build passes. Not deployed.
+- **Open:** corner tour pill in `web/` (uncommitted, see web/components/Shell.tsx) pending Rishabh's call; web2 Render service not created yet.
