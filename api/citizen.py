@@ -26,7 +26,8 @@ from contracts.models import (CitizenAnswer, CitizenAsk, GuardResult, SearchMatc
 from api import constants as C, limits  # noqa: E402
 from api.normalize import has_devanagari, has_gurmukhi, normalize  # noqa: E402
 
-MATCH_MIN = 0.70
+MATCH_MIN = 0.80  # every typed word must match a name word this well (see _token_score)
+TIE = 0.02  # two different voters this close to the best score: ask for more detail instead of picking one
 router = APIRouter()
 
 
@@ -241,8 +242,9 @@ def _sims(qn: str, keys: list[str]) -> np.ndarray:
 
 
 def _token_score(s: "Store", qn: str, idx: np.ndarray) -> np.ndarray:
-    """Every query token must find a close name token: 0.5*mean + 0.5*min of per-token best ratio.
-    Stops 'meena kumari' from matching 'meena kapoor' on the shared first name alone."""
+    """Every query token must find a close name token; a candidate scores as its weakest token.
+    Stops 'meena kumari' matching 'meena kapoor', and 'sonam kumar' matching 'shanti kumar' (an average let one
+    exact surname carry a 60% first name). Spelling variants score >= 0.91 after normalize(); different names <= 0.73."""
     per = []
     for qt in qn.split()[:4]:
         best = np.zeros(len(idx))
@@ -250,8 +252,15 @@ def _token_score(s: "Store", qn: str, idx: np.ndarray) -> np.ndarray:
             keys = [col[i] for i in idx]
             best = np.maximum(best, process.cdist([qt], keys, scorer=fuzz.ratio)[0] / 100.0)
         per.append(best)
-    per = np.vstack(per)
-    return 0.5 * per.mean(axis=0) + 0.5 * per.min(axis=0)
+    return np.vstack(per).min(axis=0)
+
+
+def _words_match(voter_id: str, q: str) -> bool:
+    """True when every word typed matches a word of this voter's name (the name may still have more words)."""
+    s = store()
+    qn = normalize(parse_query(q)[0])
+    idx = np.flatnonzero((s.cand.voter_id == voter_id).to_numpy())
+    return bool(qn and len(idx) and _token_score(s, qn, idx[:1])[0] >= MATCH_MIN)
 
 
 def search(q: str, booth_id: str | None = None, age: int | None = None, limit: int = 3) -> SearchResult:
@@ -420,11 +429,14 @@ def ask(req: CitizenAsk) -> CitizenAnswer:
     if not normalize(name):
         return _answer(lang, "not_found", "none", [], 0.0, None,
                        [_t(C.NO_QUERY, lang), _review_line(lang)] + footer, transcript)
-    res = search(text, limit=1)
+    res = search(text, limit=2)
     best = res.matches[0] if res.matches else None
-    if not best or best.score < MATCH_MIN:
+    tied = len(res.matches) > 1 and best is not None and best.score >= MATCH_MIN         and res.matches[1].voter_id != best.voter_id and best.score - res.matches[1].score <= TIE
+    # Every typed word matched a real name but the name is incomplete ("shanti booth 23"): ask for more, don't guess.
+    tied = tied or (best is not None and best.score < MATCH_MIN and _words_match(best.voter_id, text))
+    if not best or best.score < MATCH_MIN or tied:
         status, reason, match = "not_found", "none", None
-        conf = float(best.score) if best else 0.0
+        conf = 0.0 if tied else (float(best.score) if best else 0.0)
     else:
         status, match, conf = best.status_v2, best, best.score
         reason = reason_of(store(), best.voter_id, status)
@@ -438,8 +450,9 @@ def ask(req: CitizenAsk) -> CitizenAnswer:
             lines.append(_t(C.REASON_LINE[reason], lang))
         lines.append(_t(C.LABELS["sure"], lang).format(pct=round(conf * 100)))
     else:
-        lines.append(_t(C.STATUS_LINE["not_found"], lang))
-        lines.append(_t(C.LABELS["sure_none"], lang))
+        lines.append(_t(C.AMBIGUOUS_LINE if tied else C.STATUS_LINE["not_found"], lang))
+        if not tied:  # "no close match, check the spelling" would contradict "add your surname"
+            lines.append(_t(C.LABELS["sure_none"], lang))
         lines.append(_review_line(lang))
     lines.append(_t(C.LABELS["next"], lang))
     lines += [f"{i}. {t}" for i, t in enumerate(steps, 1)]

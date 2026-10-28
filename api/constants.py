@@ -186,6 +186,12 @@ VOICE_SOON = {
     "pa": "ਆਵਾਜ਼ ਵਾਲੇ ਸੁਨੇਹੇ ਜਲਦ ਆ ਰਹੇ ਹਨ। ਹੁਣ ਕਿਰਪਾ ਕਰਕੇ ਆਪਣਾ ਨਾਂ ਲਿਖ ਕੇ ਭੇਜੋ।",
 }
 
+AMBIGUOUS_LINE = {
+    "en": "We need a little more to be sure it is you. Type your full name as printed on your voter slip, with your surname, age, or father's or husband's name.",
+    "hi": "यह पक्का करने के लिए कि यह आप ही हैं, थोड़ी और जानकारी चाहिए। वोटर पर्ची पर छपा पूरा नाम, उपनाम, उम्र, या पिता या पति का नाम लिखें।",
+    "pa": "ਇਹ ਪੱਕਾ ਕਰਨ ਲਈ ਕਿ ਇਹ ਤੁਸੀਂ ਹੀ ਹੋ, ਥੋੜ੍ਹੀ ਹੋਰ ਜਾਣਕਾਰੀ ਚਾਹੀਦੀ ਹੈ। ਵੋਟਰ ਪਰਚੀ 'ਤੇ ਛਪਿਆ ਪੂਰਾ ਨਾਂ, ਗੋਤ, ਉਮਰ, ਜਾਂ ਪਿਤਾ ਜਾਂ ਪਤੀ ਦਾ ਨਾਂ ਲਿਖੋ।",
+}
+
 NO_QUERY = {
     "en": "Please type your name as printed on your voter slip.",
     "hi": "कृपया वोटर पर्ची पर छपा अपना नाम लिखें।",
