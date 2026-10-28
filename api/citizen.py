@@ -26,7 +26,10 @@ from contracts.models import (CitizenAnswer, CitizenAsk, GuardResult, SearchMatc
 from api import constants as C, limits  # noqa: E402
 from api.normalize import has_devanagari, has_gurmukhi, normalize  # noqa: E402
 
-MATCH_MIN = 0.80  # every typed word must match a name word this well (see _token_score)
+# Every typed word must match a name word this well (see _token_score). Measured 28 Oct on the demo roll: 2,950
+# common names not in the roll -> 0 matched anyone (highest 0.80); 400 real voters typed with a spelling slip,
+# booth and age -> 381 found, 0 given the wrong person. Real spelling variants score >= 0.91.
+MATCH_MIN = 0.85
 TIE = 0.02  # two different voters this close to the best score: ask for more detail instead of picking one
 router = APIRouter()
 

@@ -132,9 +132,9 @@ STATUS_LINE = {
         "pa": "ਤੁਹਾਡਾ ਨਾਂ ({name}) ਨਵੀਂ ਸੂਚੀ ਵਿੱਚ ਨਹੀਂ ਹੈ।",
     },
     "not_found": {
-        "en": "We could not find a close match for this name.",
-        "hi": "इस नाम से मिलता-जुलता कोई रिकॉर्ड नहीं मिला।",
-        "pa": "ਇਸ ਨਾਂ ਨਾਲ ਮਿਲਦਾ-ਜੁਲਦਾ ਕੋਈ ਰਿਕਾਰਡ ਨਹੀਂ ਮਿਲਿਆ।",
+        "en": "Not listed. This name is not in the voter list we have.",
+        "hi": "सूची में नहीं। यह नाम हमारे पास मौजूद मतदाता सूची में नहीं है।",
+        "pa": "ਸੂਚੀ ਵਿੱਚ ਨਹੀਂ। ਇਹ ਨਾਂ ਸਾਡੇ ਕੋਲ ਮੌਜੂਦ ਵੋਟਰ ਸੂਚੀ ਵਿੱਚ ਨਹੀਂ ਹੈ।",
     },
 }
 
@@ -245,8 +245,8 @@ SPOKEN = {
                  "en": "{name}, your name is on the new list, but some details have changed."},
     "present": {"hi": "{name} जी, अच्छी खबर है। आपका नाम नई लिस्ट में है, बूथ {booth} में।",
                 "en": "{name}, good news. Your name is on the new list, in booth {booth}."},
-    "not_found": {"hi": "माफ़ कीजिए, इस नाम से कोई मिलती-जुलती एंट्री नहीं मिली। अपना पूरा नाम और बूथ नंबर, जैसा वोटर पर्ची पर लिखा है, एक बार फिर बोलिए।",
-                  "en": "Sorry, I couldn't find a close match for that name. Please say your full name and booth number again, the way they are printed on your voter slip."},
+    "not_found": {"hi": "माफ़ कीजिए, यह नाम हमारे पास मौजूद मतदाता सूची में नहीं है। अपना पूरा नाम और बूथ नंबर, जैसा वोटर पर्ची पर लिखा है, एक बार फिर बोलिए।",
+                  "en": "Sorry, that name is not listed in the voter list we have. Please say your full name and booth number again, the way they are printed on your voter slip."},
     "reason": {
         "unexplained": {"hi": "और रिकॉर्ड से इसकी वजह पता नहीं चलती।", "en": "And the records don't show why."},
         "shifted": {"hi": "रिकॉर्ड में लगता है कि आप इस पते से कहीं और चले गए हैं।",

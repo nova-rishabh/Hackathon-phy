@@ -13,7 +13,7 @@ const STATUS: Record<string, [string, string]> = {
   present: ["verified", "In the new list"],
   modified: ["review", "Details changed"],
   not_in_new_list: ["review", "Not in the new list"],
-  not_found: ["unprovable", "No match found"],
+  not_found: ["unprovable", "Not listed"],
 };
 const REASON: Record<string, string> = {
   shifted: "Marked as shifted to another address.",
@@ -229,7 +229,7 @@ function Status({ a, mocked, onVoiceErr }: { a: CitizenAnswer; mocked: boolean; 
         </>
       )}
       <p className="mono text-[12px] text-ink-3 mt-5 pt-4 border-t border-line">
-        how sure {Math.round(a.confidence * 100)}% · needs human review · confirm on the official voter portal or call 1950
+        {a.match ? `how sure ${Math.round(a.confidence * 100)}%` : "no name matched closely enough"} · needs human review · confirm on the official voter portal or call 1950
         {mocked && " · mock data, api not reachable"}
       </p>
       {a.answer_audio_url
