@@ -43,8 +43,55 @@
   --radius-panel: 28px;
 }
 
-:root { color-scheme: light; }
+:root { color-scheme: light; --color-on-fill: #0F0F0F; --color-button-ink: #FAFAFA; --color-button-hover: #000000;
+  --color-scrim: rgba(249, 249, 249, .72); }
+
+/* Dark: same layout and signal chips, base greys inverted. Follows the system unless the header toggle pinned a
+   choice (data-theme on <html>, set before paint in layout.tsx). Signal fills keep dark text in both themes. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+  --color-page: #0F0F0F;
+    --color-panel: #1A1A1A;
+    --color-panel-2: #262626;
+    --color-surface: #222222;
+    --color-line: #2F2F2F;
+    --color-ink: #EDEDED;
+    --color-ink-2: #A6A6A6;
+    --color-ink-3: #707070;
+    --color-button: #EDEDED;
+    --color-button-ink: #0F0F0F;
+    --color-button-hover: #FFFFFF;
+    --color-unprovable: #262626;
+    --color-story-death: #D9D9D9;
+    --color-story-dupes: #A6A6A6;
+    --color-story-boundary: #7A7A7A;
+    --color-story-hostel: #4F4F4F;
+    --color-scrim: rgba(15, 15, 15, .72);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --color-page: #0F0F0F;
+  --color-panel: #1A1A1A;
+  --color-panel-2: #262626;
+  --color-surface: #222222;
+  --color-line: #2F2F2F;
+  --color-ink: #EDEDED;
+  --color-ink-2: #A6A6A6;
+  --color-ink-3: #707070;
+  --color-button: #EDEDED;
+  --color-button-ink: #0F0F0F;
+  --color-button-hover: #FFFFFF;
+  --color-unprovable: #262626;
+  --color-story-death: #D9D9D9;
+  --color-story-dupes: #A6A6A6;
+  --color-story-boundary: #7A7A7A;
+  --color-story-hostel: #4F4F4F;
+  --color-scrim: rgba(15, 15, 15, .72);
+  color-scheme: dark;
+}
 html, body { background: var(--color-page); color: var(--color-ink); font-family: var(--font-sans); font-size: 16px; line-height: 1.5; }
+.num, code, kbd { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
 [lang="hi"], [lang="pa"], [lang="bn"], [lang="mr"], [lang="ta"], [lang="te"] { line-height: 1.6; font-size: 1.0625em; }
 :focus-visible { outline: 2px solid var(--color-ink); outline-offset: 2px; }
 
@@ -67,20 +114,20 @@ html, body { background: var(--color-page); color: var(--color-ink); font-family
 .panel { background: var(--color-panel); border-radius: var(--radius-panel); }
 
 .btn { display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: var(--radius-button);
-  background: var(--color-button); color: #FAFAFA; font-size: 15px; }
+  background: var(--color-button); color: var(--color-button-ink); font-size: 15px; }
 .btn--quiet { background: var(--color-panel); color: var(--color-ink); }
 
 /* Verdict chip */
 .chip { display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 10px; border-radius: var(--radius-chip);
   font: 500 12px/1 var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; }
-.chip--review, .chip--unusual { background: var(--color-signal); color: var(--color-ink); }
-.chip--verified { background: var(--color-verified); color: var(--color-ink); }
+.chip--review, .chip--unusual { background: var(--color-signal); color: var(--color-on-fill); }
+.chip--verified { background: var(--color-verified); color: var(--color-on-fill); }
 .chip--disputed { background: var(--color-disputed); color: #FFFFFF; }
-.chip--benign { background: var(--color-benign); color: var(--color-ink); }
+.chip--benign { background: var(--color-benign); color: var(--color-on-fill); }
 .chip--unprovable { background: var(--color-unprovable); color: var(--color-ink-2); border: 1px dashed var(--color-ink-3); }
 
 /* The one allowed pattern: hatching on the unexplained segment and on "mixed" booths */
-.hatch { background: repeating-linear-gradient(135deg, var(--color-signal) 0 5px, var(--color-ink) 5px 6.5px); }
+.hatch { background: repeating-linear-gradient(135deg, var(--color-signal) 0 5px, var(--color-on-fill) 5px 6.5px); }
 
 /* ---------- app layer (web/ only; built on the v2 tokens above) ---------- */
 body { min-height: 100vh; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
@@ -97,7 +144,7 @@ button { cursor: pointer; font: inherit; color: inherit; background: none; borde
 @media (max-width: 640px) { .panel { padding: 20px; border-radius: 20px; } }
 .card { background: var(--color-surface); border-radius: var(--radius-card); }
 .btn { border: 0; cursor: pointer; transition: background 120ms; }
-.btn:hover { background: #000; }
+.btn:hover { background: var(--color-button-hover); }
 .btn--quiet:hover { background: var(--color-panel-2); }
 .btn:disabled { opacity: .5; cursor: default; }
 .input { width: 100%; background: var(--color-surface); border: 1px solid var(--color-line); border-radius: 12px; padding: 16px; outline: none; }
@@ -117,8 +164,9 @@ button { cursor: pointer; font: inherit; color: inherit; background: none; borde
 .tile .b { position: absolute; right: 6px; bottom: 5px; font: 500 11px/1 var(--font-mono); font-variant-numeric: tabular-nums; }
 .tile--unusual { background: var(--color-signal); }
 .tile--benign { background: var(--color-benign); }
-.tile.hatch { background: repeating-linear-gradient(135deg, var(--color-signal) 0 5px, var(--color-ink) 5px 6.5px); } /* .tile's surface fill above would hide the hatch */
-.tile--mixed .a, .tile--mixed .b { background: var(--color-signal); padding: 1px 2px; border-radius: 3px; color: var(--color-ink); }
+.tile.hatch { background: repeating-linear-gradient(135deg, var(--color-signal) 0 5px, var(--color-on-fill) 5px 6.5px); } /* .tile's surface fill above would hide the hatch */
+.tile--mixed .a, .tile--mixed .b { background: var(--color-signal); padding: 1px 2px; border-radius: 3px; color: var(--color-on-fill); }
+.tile--unusual .a, .tile--unusual .b, .tile--benign .a, .tile--benign .b, .tile-inline.tile--unusual, .tile-inline.tile--benign { color: var(--color-on-fill); }
 @media (max-width: 640px) { .grid10 { gap: 4px; } .tile { border-radius: 6px; } .tile .b { display: none; } .tile .a { left: 3px; top: 3px; font-size: 10px; } }
 .tile-inline { width: 0.78em; height: 0.78em; border-radius: 0.14em; display: inline-flex; align-items: flex-start; justify-content: flex-start; padding: 0.06em; letter-spacing: 0; }
 .tile-inline-n { font: 400 0.16em/1 var(--font-mono); }
@@ -129,7 +177,7 @@ button { cursor: pointer; font: inherit; color: inherit; background: none; borde
 .sbar-mini { height: 0.32em; width: 2.4em; border-radius: 0.06em; }
 
 /* Drawer */
-.scrim { position: fixed; inset: 0; background: rgba(249, 249, 249, .72); z-index: 30; }
+.scrim { position: fixed; inset: 0; background: var(--color-scrim); z-index: 30; }
 .drawer { position: fixed; right: 0; top: 0; bottom: 0; width: min(560px, 100vw); background: var(--color-surface); z-index: 40; overflow-y: auto;
   border-radius: 28px 0 0 28px; border-left: 1px solid var(--color-line); padding: 28px; }
 @media (max-width: 640px) { .drawer { border-radius: 0; padding: 20px 16px; } }

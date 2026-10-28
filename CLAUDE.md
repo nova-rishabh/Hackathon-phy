@@ -21,7 +21,7 @@ Read before coding: `docs/START_HERE.md` (what, the edge, demo numbers, decision
 - **Auditor views mask names.** A full name appears only in the citizen's own lookup result.
 - **Contracts in `contracts/models.py` are the source of truth.** Never change them; ask Rishabh.
 - **UTF-8 everywhere:** `PYTHONUTF8=1`, `open(..., encoding="utf-8")`, `json.dump(..., ensure_ascii=False)`.
-- **UI:** design system v2 (butter.video-inspired): light only, tokens from `design/tokens.css` v2, Geist + Geist Mono, glyphs from `design/glyphs.svg`. Colour only as small signal chips. **No lucide/heroicons/emoji icons, no gradients (except the hatch), no shadows, no dark mode or dark panels, no Inter/Space Grotesk/Plus Jakarta.** No logo drawing: Rishabh designs it.
+- **UI:** design system v2 (butter.video-inspired): light by default plus a dark theme (same tokens redefined in `web/app/globals.css`; header toggle), tokens from `design/tokens.css` v2, Geist + Geist Mono, glyphs from `design/glyphs.svg`. Colour only as small signal chips. **No lucide/heroicons/emoji icons, no gradients (except the hatch), no shadows, no dark panels inside the light theme, no Inter/Space Grotesk/Plus Jakarta.** No logo drawing: Rishabh designs it.
 - **Testing:** don't write test suites. Add only your one smoke check in `smoke_test.py` (TRD §9). Ship.
 
 ## Run

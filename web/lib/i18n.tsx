@@ -184,13 +184,8 @@ const I18nContext = createContext<I18nContextType>({
 export function I18nProvider({ children }: { children: React.ReactNode }) {
   const [lang, setLangState] = useState<Language>("en");
 
-  useEffect(() => {
-    const saved = localStorage.getItem("rw_lang") as Language;
-    if (saved && saved in DICT) {
-      setLangState(saved);
-      document.documentElement.lang = saved;
-    }
-  }, []);
+  // The header language picker is gone, so a language saved by it earlier must not stick with no way back.
+  useEffect(() => { try { localStorage.removeItem("rw_lang"); } catch { /* storage blocked */ } }, []);
 
   const setLang = (l: Language) => {
     setLangState(l);

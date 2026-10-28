@@ -110,7 +110,7 @@ export function EyeRing({ size = 360 }: { size?: number }) {
         </text>
       </g>
       <g className="eyering-blink">
-        <path d="M105,250 Q250,95 395,250 Q250,405 105,250 Z" fill="var(--color-surface)" stroke="var(--color-brand)" strokeWidth="9" />
+        <path d="M105,250 Q250,95 395,250 Q250,405 105,250 Z" fill="#FFFFFF" stroke="var(--color-brand)" strokeWidth="9" />
         <g style={{ transform: `translate(${p.x}px, ${p.y}px)`, transition: "transform 70ms linear" }}>
           <circle cx="250" cy="250" r="72" fill="var(--color-brand)" />
           <circle cx="250" cy="250" r="40" fill="#2A2F33" />

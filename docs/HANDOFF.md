@@ -14,7 +14,7 @@ RULES (from CLAUDE.md, binding)
   outbound text passes api/guard.py. Never name parties, people or institutions; no fraud/rigging words.
 - Never read, list or import private/ (the blind-test key lives there). artifacts_blind/ is git-ignored.
 - No real voter data. Never infer religion, caste or community.
-- UI: design system v2 (docs/DESIGN_SYSTEM.md): light only, Geist/Geist Mono, colour only as small chips,
+- UI: design system v2 (docs/DESIGN_SYSTEM.md): light + dark theme (tokens only), Geist/Geist Mono, colour only as small chips,
   no icon libraries, emoji, gradients (except the hatch) or shadows. Check UI at 1366x768 and 375 px; measure.
 - Secrets live only in .env, web/.env.local and Render. Never print, commit or paste them. Before every push,
   scan `git log -p origin/main..main` for any .env value.
@@ -47,7 +47,7 @@ LOOSE ENDS, IN ORDER
 
 ALSO DONE (28 Oct evening): monitoring (/ops/monitoring), Razorpay webhook + lifecycle, PDF ingestion, async
 jobs with private job tokens, reports + review history + recalibration, workspaces/roles/API keys (roles from
-membership), caching + incremental audits, 7 languages, demo tour, access-control fixes (tests/test_access_control.py).
+membership), caching + incremental audits, 7 languages (header picker removed 28 Oct), access-control fixes (tests/test_access_control.py).
 Redis is live. tests/ exists now; run them with PYTHONPATH=. .venv\Scripts\python.exe tests/test_<name>.py.
 
 DONE: KEEP AS IS UNLESS ASKED

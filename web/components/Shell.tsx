@@ -1,11 +1,10 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from "@/lib/auth";
 import { WA_NUMBER, useSlowApi } from "@/lib/api";
 import { I18nProvider, useI18n } from "@/lib/i18n";
-import LanguageSelector from "@/components/LanguageSelector";
 
 function ShellInner({ children }: { children: React.ReactNode }) {
   const path = usePathname();
@@ -48,7 +47,7 @@ function ShellInner({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen">
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:px-3 focus:py-1.5 focus:bg-ink focus:text-surface focus:rounded-[8px] focus:shadow-md text-sm font-medium"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:px-3 focus:py-1.5 focus:bg-ink focus:text-surface focus:rounded-[8px] text-sm font-medium"
       >
         {t("skip_to_content")}
       </a>
@@ -65,10 +64,10 @@ function ShellInner({ children }: { children: React.ReactNode }) {
             <nav aria-label="Trust and account" className="flex items-center gap-1">
               {RIGHT.map(([h, l]) => tab(h, l))}
             </nav>
-            <LanguageSelector />
+            <ThemeToggle />
           </div>
           <div className="sm:hidden flex items-center gap-2">
-            <LanguageSelector />
+            <ThemeToggle />
             <button
               className="px-3 h-10 text-[15px] rounded-[8px] border border-line"
               aria-expanded={menu}
@@ -102,6 +101,28 @@ export default function Shell({ children }: { children: React.ReactNode }) {
     <I18nProvider>
       <ShellInner>{children}</ShellInner>
     </I18nProvider>
+  );
+}
+
+/** Light or dark. Starts from the system setting; a click pins the choice (layout.tsx applies it before paint). */
+function ThemeToggle() {
+  const [dark, setDark] = useState<boolean | null>(null);
+  useEffect(() => {
+    const set = document.documentElement.dataset.theme;
+    setDark(set ? set === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches);
+  }, []);
+  if (dark === null) return <span className="w-[52px]" aria-hidden="true" />;
+  const flip = () => {
+    const next = dark ? "light" : "dark";
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem("rw_theme", next); } catch { /* private mode: still switches for this visit */ }
+    setDark(!dark);
+  };
+  return (
+    <button onClick={flip} aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
+      className="px-3 h-10 inline-flex items-center rounded-[8px] mono text-[13px] text-ink-2 hover:text-ink">
+      {dark ? "Light" : "Dark"}
+    </button>
   );
 }
 

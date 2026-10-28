@@ -193,7 +193,7 @@ function Num({ v, min, max, step = 1, onChange, slider, sliderMax }: { v: number
   return (
     <div className="flex items-center gap-3">
       {slider && <input type="range" min={min} max={sliderMax ?? max} step={step} value={Math.min(v, sliderMax ?? max)}
-        onChange={(e) => onChange(clamp(Number(e.target.value)))} className="w-[160px] accent-[#1E1E1E] hidden sm:block" aria-label="amount" />}
+        onChange={(e) => onChange(clamp(Number(e.target.value)))} className="w-[160px] accent-[var(--color-button)] hidden sm:block" aria-label="amount" />}
       <span className="seg">
         <button onClick={() => onChange(clamp(v - step))} aria-label="less">−</button>
         <input type="number" value={v} min={min} max={max} onChange={(e) => onChange(clamp(Number(e.target.value) || 0))}

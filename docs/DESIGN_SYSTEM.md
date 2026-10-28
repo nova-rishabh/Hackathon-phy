@@ -23,7 +23,7 @@
 
 ## 2. Hard rules
 
-1. **Light only.** No dark mode, no dark sections, no dark product panels.
+1. **Light first, plus one dark theme.** Dark mode (28 Oct) redefines the base tokens only (page, panel, surface, line, ink, story greys); signal chips keep their fills and dark text. Follows the system setting; the header toggle pins a choice. Still no dark sections or dark panels inside the light theme. Share cards always render light.
 2. **No gradients, glows, glass or shadows.** The only pattern is the yellow/black **hatch** on "unexplained" and "mixed".
 3. **No stock icons.** No lucide, heroicons, emoji, sparkles, robots or brains. Use our glyphs (§7) or a word. Most UI needs neither.
 4. **Colour is a signal, never decoration.** The page is greyscale. The five signal colours appear only as chips, one story-bar segment or one booth-tile fill. **No colour ever fills a large area**, so nothing reads as a party colour. Never use saffron, tricolour combinations or election-symbol shapes.

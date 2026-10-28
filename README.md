@@ -93,7 +93,7 @@ Measured on the synthetic district with a planted answer key (`python -m engine.
 - **Public-roll PDF ingestion:** `engine/adapters/inrolls.py` reads searchable roll PDFs as well as parsed CSVs.
 - **Caching and incremental audits:** ETag/304 responses and re-running only changed booths (`/audit/incremental`).
 - **Monitoring:** `/ops/monitoring` (status of web, API, Redis, Telegram, WhatsApp); writes and error details are operator only.
-- **Seven languages** in citizen answers: Hindi, English, Punjabi, Bengali, Marathi, Tamil, Telugu; skip link and reduced-motion support; a guided demo tour on the home page.
+- **Seven languages** in citizen answers: Hindi, English, Punjabi, Bengali, Marathi, Tamil, Telugu; skip link and reduced-motion support; light and dark themes (follows the system, with a header toggle).
 - **Deployment and rollback:** `docs/DEPLOYMENT_AND_ROLLBACK.md` and `scripts/deployment_check.py`.
 
 ## Who pays

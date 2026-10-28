@@ -6,7 +6,7 @@ export default function Loading() {
       <div className="pageload-mark" aria-hidden="true">
         <svg viewBox="0 0 500 500" width="72" height="72">
           <g className="eyering-blink">
-            <path d="M105,250 Q250,95 395,250 Q250,405 105,250 Z" fill="var(--color-surface)" stroke="var(--color-brand)" strokeWidth="14" />
+            <path d="M105,250 Q250,95 395,250 Q250,405 105,250 Z" fill="#FFFFFF" stroke="var(--color-brand)" strokeWidth="14" />
             <circle cx="250" cy="250" r="72" fill="var(--color-brand)" />
             <circle cx="250" cy="250" r="40" fill="#2A2F33" />
           </g>
